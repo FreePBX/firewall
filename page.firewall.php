@@ -3,7 +3,7 @@ $fw = FreePBX::create()->Firewall;
 ?>
 
 <div class='container-fluid'>
-  <h1><?php echo $fw->_("Firewall"); ?></h1>
+  <h1><?php echo _("Firewall"); ?></h1>
   <div class='row'>
     <div class='col-sm-9'>
 <?php

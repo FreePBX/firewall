@@ -5,18 +5,6 @@ namespace FreePBX\modules;
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public static $dbDefaults = array("status" => false);
-	public static $i18n = false;
-
-	public function __construct() {
-		if (!self::$i18n) {
-			include __DIR__."/I18n.class.php";
-			self::$i18n = new Firewall\I18n();
-		}
-	}
-
-	public function _($var) {
-		return self::$i18n->$var;
-	}
 
 	public function install() {}
 	public function uninstall() {}
@@ -102,6 +90,4 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function showBootnav() {
 		return load_view(__DIR__."/views/bootnav.php", array("fw" => $this));
 	}
-
-
 }
