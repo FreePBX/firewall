@@ -10,7 +10,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function uninstall() {}
 	public function backup() {}
 	public function restore($backup) {}
-	public function doConfigPageInit($page) {}
 
 	public function chownFreepbx() {
 		$files = array(
@@ -95,11 +94,25 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (strpos(".", $page) !== false) {
 			throw new \Exception("Invalid page name $page");
 		}
-		$view = __DIR__."/views/view.$page.php";
+		$view = __DIR__."/views/page.$page.php";
 		if (!file_exists($view)) {
 			throw new \Exception("Can't find page $page");
 		}
 
 		return load_view($view, array("fw" => $this));
+	}
+
+	// Now comes the real code. Let's catch the POST and see if there's an action
+	public function doConfigPageInit($display) {
+		$action = $this->getReq('action');
+		switch ($action) {
+		case false:
+			return;
+		case 'enablefw':
+			$this->setConfig("status", true);
+			return;
+		default:
+			throw new \Exception("Unknown action $action");
+		}
 	}
 }

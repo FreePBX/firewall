@@ -1,3 +1,5 @@
+<form method='post'>
+
 <div class='alert alert-warning'>
   <p><?php echo _("This module is not enabled!"); ?></p>
 </div>
@@ -9,10 +11,9 @@
   </div>
   <div class='panel-footer clearfix'>
     <div class='btn-group pull-right'>
-      <button type='button' class='btn btn-default'>Button 1</button>
-      <button type='button' class='btn btn-default'>Button 2</button>
+      <button type='submit' name='action' value='enablefw' class='btn btn-default'>Enable Firewall</button>
     </div>
   </div>
 </div>
 
-
+</form>
