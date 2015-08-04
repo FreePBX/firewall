@@ -87,7 +87,19 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return load_view(__DIR__."/views/disabled.php", array("fw" => $this));
 	}
 
-	public function showBootnav() {
-		return load_view(__DIR__."/views/bootnav.php", array("fw" => $this));
+	public function showBootnav($page) {
+		return load_view(__DIR__."/views/bootnav.php", array("fw" => $this, "thispage" => $page));
+	}
+
+	public function showPage($page) {
+		if (strpos(".", $page) !== false) {
+			throw new \Exception("Invalid page name $page");
+		}
+		$view = __DIR__."/views/view.$page.php";
+		if (!file_exists($view)) {
+			throw new \Exception("Can't find page $page");
+		}
+
+		return load_view($view, array("fw" => $this));
 	}
 }
