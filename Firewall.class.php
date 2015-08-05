@@ -5,7 +5,6 @@ namespace FreePBX\modules;
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public static $dbDefaults = array("status" => false);
-	private static $zones = false;
 
 	public function install() {}
 	public function uninstall() {}
@@ -103,16 +102,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return load_view($view, array("fw" => $this));
 	}
 
-	public function getZones() {
-		if (!self::$zones) {
-			include 'Zones.class.php';
-			$z = new Firewall\Zones;
-			self::$zones = $z->getZones();
-		}
-
-		return self::$zones;
-	}
-
 	// Now comes the real code. Let's catch the POST and see if there's an action
 	public function doConfigPageInit($display) {
 		$action = $this->getReq('action');
@@ -124,6 +113,36 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return;
 		default:
 			throw new \Exception("Unknown action $action");
+		}
+	}
+
+	public function getZones() {
+		static $zones = false;
+		if (!$zones) {
+			include 'Zones.class.php';
+			$z = new Firewall\Zones;
+			$zones = $z->getZones();
+		}
+
+		return $zones;
+	}
+
+	public function getInterfaces() {
+		static $ints = false;
+		if (!$ints) {
+			include 'Network.class.php';
+			$n = new Firewall\Network;
+			$ints = $n->discoverInterfaces();
+		}
+		return $ints;
+	}
+
+	public function getZone($int) {
+		$zone = $this->getConfig($int, "zone");
+		if (!$zone) {
+			return "trusted";
+		} else {
+			return $zone;
 		}
 	}
 }

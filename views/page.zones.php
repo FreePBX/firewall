@@ -1,3 +1,6 @@
+<!-- <script type="text/javascript" src="modules/firewall/assets/js/button.js"></script> -->
+
+<form method='post'>
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
@@ -23,10 +26,48 @@ echo "</ul>";
 
       </div>
       <div role="tabpanel" id="zonesettings" class="tab-pane">
-<p>Setings panel</p>
+      <p><?php echo _("Please assign a zone to all interfaces. Note that 'Trusted' means that no filtering will be applied to this interface."); ?></p>
+<?php
+$ints = $fw->getInterfaces();
+
+// This is for screenreaders. The IDs mean nothing.
+$counter = 0;
+
+foreach ($ints as $i => $conf) {
+	$currentzone = $fw->getZone($i);
+?>
+<div class='element-container'>
+  <div class='row'>
+    <div class='col-md-3'>
+      <label class='control-label' for='int-<?php echo $i; ?>'><?php echo $i;?></label>
+    </div>
+    <div class='col-md-9'>
+      <div class='btn-group' data-toggle='buttons'>
+<?php
+	foreach ($z as $zn => $zone) {
+		$counter++;
+		if ($zn === $currentzone) {
+			$active = "active";
+			$checked = "checked";
+		} else {
+			$active = "";
+			$checked = "";
+		}
+		print "<label class='btn btn-primary $active'><input type='radio' name='int-$i' id='int$counter' $checked>".$zone['name']."</label>\n";
+	}
+?>
+      </div>
+    </div>
+  </div>
+</div>
+<?php
+}
+
+?>
+
       </div>
     </div>
   </div>
 </div>
 
-
+</form>
