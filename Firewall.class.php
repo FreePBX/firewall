@@ -91,7 +91,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function showPage($page) {
-		if (strpos(".", $page) !== false) {
+		if (strpos($page, ".") !== false) {
 			throw new \Exception("Invalid page name $page");
 		}
 		$view = __DIR__."/views/page.$page.php";
@@ -144,5 +144,40 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		} else {
 			return $zone;
 		}
+	}
+
+	private function getDriver() {
+		static $driverObject = false;
+
+		if (!$driverObject) {
+			// For the moment, only C7.
+			if (!file_exists("/usr/bin/firewall-cmd")) {
+				throw new \Exception("Only C7 with firewalld");
+			}
+			$driver = "Firewalld";
+
+			$fn = __DIR__."/drivers/$driver.class.php";
+			if (!file_exists($fn)) {
+				throw new \Exception("Unknown driver $driver");
+			}
+
+			$class = '\FreePBX\modules\Firewall\Drivers\\'.$driver;
+			// Do we need to load it?
+			if (!class_exists($class)) {
+				include $fn;
+			} else {
+				// Debugging
+				throw new \Exception("How did $class already exist?");
+			}
+
+			$driverObject = new $class();
+		}
+
+		return $driverObject;
+	}
+
+	public function getSystemZones() {
+		$d = $this->getDriver();
+		return $d->getKnownZones();
 	}
 }

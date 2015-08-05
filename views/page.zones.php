@@ -1,5 +1,3 @@
-<!-- <script type="text/javascript" src="modules/firewall/assets/js/button.js"></script> -->
-
 <form method='post'>
 <div class="display no-border">
   <div class="nav-container">
@@ -22,6 +20,8 @@ foreach ($z as $zone) {
 	print "<li><strong>".$zone['name']."</strong><br/>".$zone['descr']."</li>\n";
 }
 echo "</ul>";
+
+// print_r($fw->getSystemZones());
 ?>
 
       </div>
@@ -45,7 +45,6 @@ foreach ($ints as $i => $conf) {
       <div class='btn-group' data-toggle='buttons'>
 <?php
 	foreach ($z as $zn => $zone) {
-		$counter++;
 		if ($zn === $currentzone) {
 			$active = "active";
 			$checked = "checked";
@@ -53,18 +52,30 @@ foreach ($ints as $i => $conf) {
 			$active = "";
 			$checked = "";
 		}
-		print "<label class='btn btn-primary $active'><input type='radio' name='int-$i' id='int$counter' $checked>".$zone['name']."</label>\n";
+		print "<label class='btn btn-primary $active'><input type='radio' name='int-$i' $checked>".$zone['name']."</label>\n";
 	}
 ?>
       </div>
     </div>
+    <div class='col-md-9 col-md-offset-3'>
+<?php
+	if (empty($conf['addresses'])) {
+		print _("No IP Addresses assigned to this interface.");
+	} else {
+		print _("IP Address(es): ");
+		$tmparr = array();
+		foreach ($conf['addresses'] as $ips) {
+			$tmparr[] = $ips[0]."/".$ips[2];
+		}
+		print join(", ", $tmparr);
+	}
+?>
+    </div>
   </div>
 </div>
-<?php
+<?php // foreach ints
 }
-
 ?>
-
       </div>
     </div>
   </div>
