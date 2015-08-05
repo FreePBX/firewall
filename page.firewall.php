@@ -2,7 +2,7 @@
 $fw = FreePBX::create()->Firewall;
 ?>
 
-<div class='container-fluid'>
+<div class='fpbx-container container-fluid'>
   <h1><?php echo _("Firewall"); ?></h1>
   <div class='row'>
 <?php

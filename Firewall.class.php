@@ -5,6 +5,7 @@ namespace FreePBX\modules;
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public static $dbDefaults = array("status" => false);
+	private static $zones = false;
 
 	public function install() {}
 	public function uninstall() {}
@@ -100,6 +101,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 
 		return load_view($view, array("fw" => $this));
+	}
+
+	public function getZones() {
+		if (!self::$zones) {
+			include 'Zones.class.php';
+			$z = new Firewall\Zones;
+			self::$zones = $z->getZones();
+		}
+
+		return self::$zones;
 	}
 
 	// Now comes the real code. Let's catch the POST and see if there's an action
