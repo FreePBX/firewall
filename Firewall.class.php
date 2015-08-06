@@ -6,6 +6,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public static $dbDefaults = array("status" => false);
 
+	private static $services = false;
+
 	public function install() {}
 	public function uninstall() {}
 	public function backup() {}
@@ -116,6 +118,27 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
+	public function getServices() {
+		if (!self::$services) {
+			include 'Services.class.php';
+			self::$services = new Firewall\Services;
+		}
+
+		return self::$services->getAllServices();
+	}
+
+	public function getService($svc = false) {
+		if (!$svc) {
+			throw new \Exception("No service?");
+		}
+		if (!self::$services) {
+			include 'Services.class.php';
+			self::$services = new Firewall\Services;
+		}
+
+		return self::$services->getService($svc);
+	}
+
 	public function getZones() {
 		static $zones = false;
 		if (!$zones) {
@@ -123,7 +146,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$z = new Firewall\Zones;
 			$zones = $z->getZones();
 		}
-
 		return $zones;
 	}
 
