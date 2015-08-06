@@ -124,7 +124,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			self::$services = new Firewall\Services;
 		}
 
-		return self::$services->getAllServices();
+		$retarr = array("core" => self::$services->getCoreServices(), "extra" => self::$services->getExtraServices());
+		return $retarr;
 	}
 
 	public function getService($svc = false) {
