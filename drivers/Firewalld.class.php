@@ -6,8 +6,12 @@ namespace FreePBX\modules\Firewall\Drivers;
 class Firewalld {
 
 	public function getKnownZones() {
-		// This takes a surprisingly long time.
-		exec("/usr/bin/firewall-cmd --list-all-zones", $out, $ret);
+		// Caching
+		static $out = false;
+		if (!$out) {
+			// This takes a surprisingly long time.
+			exec("/usr/bin/firewall-cmd --list-all-zones", $out, $ret);
+		}
 
 		$zones = array();
 
@@ -47,6 +51,24 @@ class Firewalld {
 		}
 
 		return $zones;
+	}
+
+	public function getKnownNetworks() {
+		// Returns array that looks like ("network/cdr" => "zone", "network/cdr" => "zone")
+		$known = $this->getKnownZones();
+		$retarr = array();
+		foreach ($known as $z => $settings) {
+			if (empty($settings['sources'])) {
+				continue;
+			}
+			$sources = explode(" ", $settings['sources']);
+			foreach ($sources as $source) {
+				if (!empty($source)) {
+					$retarr[$source] = $z;
+				}
+			}
+		}
+		return $retarr;
 	}
 }
 

@@ -180,4 +180,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$d = $this->getDriver();
 		return $d->getKnownZones();
 	}
+
+	public function getZoneNetworks() {
+		$d = $this->getDriver();
+		return $d->getKnownNetworks();
+	}
 }

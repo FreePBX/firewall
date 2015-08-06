@@ -2,3 +2,27 @@ label.btn {
 	margin: 0;
 }
 
+.x-btn-danger {
+	color: #fff !important;
+	background-color: #d9534f !important;
+	border-color: #d43f3a !important;
+}
+
+.x-btn-success {
+	color: #fff !important;
+	background-color: #449d44 !important;
+	border-color: #398439 !important;
+}
+
+.x-btn {
+	padding: 5px 12px !important;
+}
+
+.noright {
+	padding-right: 0px;
+}
+
+.noleft {
+	padding-left: 0px;
+}
+
