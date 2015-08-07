@@ -35,43 +35,9 @@ foreach ($coresvc as $s) {
 	foreach ($svc['zones'] as $zone) {
 		$currentzones[$zone] = true;
 	}
-?>
-<div class='element-container'>
-  <div class='row'>
-    <div class='col-sm-4'>
-      <label class='control-label' for='svc[<?php echo $s; ?>]'><?php echo $svc['name']; ?></label>
-    </div>
-    <div class='col-sm-8 noright'>
-      <span class='radioset'>
-<?php
 	// Display the buttons
-	foreach ($z as $zn => $zone) {
-		if (!$zone['selectable']) {
-			continue;
-		}
-		if (isset($currentzones[$zn])) {
-			$active = "active";
-			$checked = "checked";
-		} else {
-			$active = "";
-			$checked = "";
-		}
-		print "<input type='checkbox' name='svc[$s][$zn]' id='stuff-$s-$zn' $checked><label for='stuff-$s-$zn'>".$zone['name']."</label>\n";
-
-		// We want 'Reject' to be seperate
-		if ($zn === "reject") {
-			print "</span><span class='radioset'>\n";
-		}
-	}
-?>
-      </span>
-    </div>
-  </div>
-</div>
-
-<?php
-}
-?>
+	displayService($s, $svc, $z, $currentzones);
+} ?>
       </div>
       <div role="tabpanel" id="extraservices" class="tab-pane">
 <?php
@@ -84,15 +50,23 @@ foreach ($extrasvc as $s) {
 	foreach ($svc['zones'] as $zone) {
 		$currentzones[$zone] = true;
 	}
-?>
-<div class='element-container'>
-  <div class='row'>
-    <div class='col-sm-4'>
-      <label class='control-label' for='svc[<?php echo $s; ?>]'><?php echo $svc['name']; ?></label>
+	displayService($s, $svc, $z, $currentzones);
+} ?>
+      </div>
+      <div role="tabpanel" id="customsvc" class="tab-pane">
+	<p>Define custom services here...</p>
+      </div>
     </div>
-    <div class='col-sm-8 noright'>
-      <span class='radioset'>
+  </div>
+</div>
+
+</form>
+
 <?php
+
+function displayService($sn, $svc, $z, $currentzones) {
+	print "<div class='element-container'><div class='row'><div class='col-sm-3 col-md-4'><label class='control-label' for='svc[$sn]'>";
+	print $svc['name']."</label></div><div class='col-sm-9 col-md-8 noright'><span class='radioset'>";
 	// Display the buttons
 	foreach ($z as $zn => $zone) {
 		if (!$zone['selectable']) {
@@ -105,27 +79,18 @@ foreach ($extrasvc as $s) {
 			$active = "";
 			$checked = "";
 		}
-		print "<input type='checkbox' name='svc[$s][$zn]' id='stuff-$s-$zn' $checked><label for='stuff-$s-$zn'>".$zone['name']."</label>\n";
+		print "<input type='checkbox' name='svc[$sn][$zn]' id='stuff-$s-$zn' $checked><label for='stuff-$sn-$zn'>".$zone['name']."</label>\n";
 
 		// We want 'Reject' to be seperate
 		if ($zn === "reject") {
 			print "</span><span class='radioset'>\n";
 		}
 	}
-?>
-      </span>
-    </div>
-  </div>
-</div>
-<?php
-}
-?>
-      </div>
-      <div role="tabpanel" id="customsvc" class="tab-pane">
-	<p>Define custom services here...</p>
-      </div>
-    </div>
-  </div>
-</div>
+	print "</span></div>\n";
+	
+	// Help text.
+	print "<div class='hidden-xs col-sm-11 col-sm-offset-1 col-md-12 col-md-offset-0'><span class='help-block'>".$svc['descr']."</span></div>\n";
 
-</form>
+	// /row and /element-container
+	print "</div></div>\n";
+}

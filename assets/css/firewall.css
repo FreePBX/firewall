@@ -16,6 +16,7 @@ label.btn {
 
 .x-btn {
 	padding: 5px 12px;
+	min-width: 40px;
 }
 
 .noright {
