@@ -63,10 +63,34 @@ foreach ($nets as $net => $currentzone) {
 <?php
 $counter++;
 } // foreach nets
+
+// Text for Shortcuts is here
+$rfc = array(
+	_("RFC1918"),
+	_("%s is the RFC that defineds the reserved, internal, network address space to be used when you're not directly connected to the internet. This adds 192.168.0.0/16, 172.16.0.0/12, and 10.0.0.0/8 to the 'Trusted' zone, and excludes it from all firewalls. Be warned that if you are in a hosted environment (for example, AWS), and you enable this, you may be inadvertently allowing other hosted clients unrestricted access to your machine.")
+);
 ?>
       </div>
       <div role="tabpanel" id="shortcuts" class="tab-pane">
-	<p><?php echo _("This covers a pre-configured set of networks to ease configuration. Setting a network to 'No Assignment' does <strong>not</strong> override an assignment in the 'Networks' tab."); ?></p>
+        <div class='container-fluid'>
+	  <p><?php echo _("This allows you to simply add a pre-configured set of networks to your trusted zone. Once you have added your selections, you can fine-tune them, if required, on the Networks tab."); ?></p>
+          <div class='row'>
+	    <div class='col-sm-8'>
+	      <h3><?php echo $rfc[0]; ?></h3>
+            </div>
+            <div class='col-sm-4'>
+	       <button type='button'>Add to Trusted</button>
+            </div>
+	    <div class='col-sm-12'><?php echo sprintf($rfc[1], $rfc[0]); ?></div>
+          </div>
+          <div class='row'>
+            <h4>Your Machine</h4>
+              <div class='col-sm-8'>Your machine, the one that you are looking at this page from. I see it as //blah//.</div>
+	      <div class='col-sm-4'><button type='button'>Add Host</button><button type='button'>Add Network</button></div>
+          </div>
+        </div>
+
+
       </div>
       <div role="tabpanel" id="overrides" class="tab-pane">
         <p>Stuff about overrides here...</p>
