@@ -223,4 +223,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$d = $this->getDriver();
 		return $d->getKnownNetworks();
 	}
+
+	public function detectNetwork() {
+		return "1.1.1.0/24";
+	}
+
+	public function detectHost() {
+		return "1.1.1.1/32";
+	}
 }
