@@ -50,7 +50,7 @@ class Services {
 		// TODO: Check /etc/ssh/sshd_config
 		$retarr = array(
 			"name" => _("SSH"),
-			"defzones" => array("public", "internal", "trusted"),
+			"defzones" => array("external", "internal"),
 			"descr" => _("SSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>do not</strong> recommend blocking this port, but we do recommend using a strong password and SSH keys."),
 			"fw" => array("protocol" => "tcp", "port" => 22),
 		);
@@ -71,7 +71,7 @@ class Services {
 	private function getSvc_https() {
 		$retarr = array(
 			"name" => _("Web Management (Secure)"),
-			"defzones" => array("public", "internal", "trusted"),
+			"defzones" => array("public", "external", "internal"),
 			"descr" => _("Web management interface for FreePBX. This is the https interface."),
 			"fw" => array("protocol" => "tcp", "port" => 443),
 		);
@@ -81,7 +81,7 @@ class Services {
 	private function getSvc_ucp() {
 		$retarr = array(
 			"name" => _("UCP"),
-			"defzones" => array("public", "internal", "trusted"),
+			"defzones" => array("public", "external", "internal"),
 			"descr" => _("UCP - User Control Panel - is the main user interface to FreePBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
 			"fw" => array("protocol" => "tcp", "port" => 81),
 		);
@@ -103,7 +103,7 @@ class Services {
 	private function getSvc_pjsip() {
 		$retarr = array(
 			"name" => _("SIP Protocol"),
-			"defzones" => array("public", "internal", "trusted"),
+			"defzones" => array("external", "internal"),
 			"descr" => _("This is the SIP driver (pjsip). Most devices use SIP."),
 			"fw" => array(
 				array("protocol" => "udp", "port" => 5060),
@@ -116,7 +116,7 @@ class Services {
 	private function getSvc_chansip() {
 		$retarr = array(
 			"name" => _("CHAN_SIP Protocol"),
-			"defzones" => array("internal", "trusted"),
+			"defzones" => array("external", "internal"),
 			"descr" => _("This is the legacy chan_sip driver."),
 			"fw" => array(
 				array("protocol" => "udp", "port" => 5061),
@@ -129,7 +129,7 @@ class Services {
 	private function getSvc_iax() {
 		$retarr = array(
 			"name" => _("IAX Protocol"),
-			"defzones" => array("trusted"),
+			"defzones" => array("internal"),
 			"descr" => _("IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than SIP, but few providers support it."),
 			"fw" => array("protocol" => "udp", "port" => 4569),
 		);
@@ -139,7 +139,7 @@ class Services {
 	private function getSvc_provis() {
 		$retarr = array(
 			"name" => _("HTTP Provisioning"),
-			"defzones" => array("trusted"),
+			"defzones" => array("external", "internal"),
 			"descr" => _("Text for HTTP Provisioning not done..."),
 			"fw" => array("protocol" => "tcp", "port" => 84),
 		); 
@@ -149,7 +149,7 @@ class Services {
 	private function getSvc_restapps() {
 		$retarr = array(
 			"name" => _("REST Apps"),
-			"defzones" => array("trusted"),
+			"defzones" => array("internal"),
 			"descr" => _("Text for REST Apps not done..."),
 			"fw" => array("protocol" => "tcp", "port" => 85),
 		); 
@@ -159,7 +159,7 @@ class Services {
 	private function getSvc_xmpp() {
 		$retarr = array(
 			"name" => _("XMPP"),
-			"defzones" => array("trusted"),
+			"defzones" => array("external", "internal"),
 			"descr" => _("Text for XMPP not done..."),
 			"fw" => array("protocol" => "tcp", "port" => 5222),
 		); 
@@ -169,7 +169,7 @@ class Services {
 	private function getSvc_ftp() {
 		$retarr = array(
 			"name" => _("FTP"),
-			"defzones" => array("trusted"),
+			"defzones" => array("internal"),
 			"descr" => _("FTP is used by things to do stuff. Redo this text."),
 			"fw" => array("protocol" => "tcp", "port" => 21),
 		); 
@@ -179,7 +179,7 @@ class Services {
 	private function getSvc_tftp() {
 		$retarr = array(
 			"name" => _("TFTP"),
-			"defzones" => array("internal", "trusted"),
+			"defzones" => array("internal"),
 			"descr" => _("TFTP is used normally for provisioning and upgrading of devices."),
 			"fw" => array("protocol" => "udp", "port" => 69),
 		); 
@@ -259,6 +259,5 @@ class Services {
 		); 
 		return $retarr;
 	}
-
 }
 

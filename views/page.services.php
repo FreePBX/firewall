@@ -46,6 +46,9 @@ foreach ($coresvc as $s) {
 <?php
 	// Display the buttons
 	foreach ($z as $zn => $zone) {
+		if (!$zone['selectable']) {
+			continue;
+		}
 		if (isset($currentzones[$zn])) {
 			$active = "active";
 			$checked = "checked";
@@ -92,6 +95,9 @@ foreach ($extrasvc as $s) {
 <?php
 	// Display the buttons
 	foreach ($z as $zn => $zone) {
+		if (!$zone['selectable']) {
+			continue;
+		}
 		if (isset($currentzones[$zn])) {
 			$active = "active";
 			$checked = "checked";

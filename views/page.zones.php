@@ -26,7 +26,7 @@ echo "</ul>";
 
       </div>
       <div role="tabpanel" id="zonesettings" class="tab-pane">
-      <p><?php echo _("Please assign a zone to all interfaces. Note that 'Trusted' means that no filtering will be applied to this interface."); ?></p>
+      <p><?php echo _("Please assign a zone to all interfaces. Note that 'Trusted' means that <strong>no filtering</strong> will be applied to this interface. 'Reject' means <strong>no inbound connections will be permitted</strong> to that interface."); ?></p>
 <?php
 $ints = $fw->getInterfaces();
 
