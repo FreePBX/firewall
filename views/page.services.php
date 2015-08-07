@@ -79,7 +79,14 @@ function displayService($sn, $svc, $z, $currentzones) {
 			$active = "";
 			$checked = "";
 		}
-		print "<input type='checkbox' name='svc[$sn][$zn]' id='stuff-$s-$zn' $checked><label for='stuff-$sn-$zn'>".$zone['name']."</label>\n";
+
+		if ($zn === "reject" && isset($svc['noreject'])) {
+			$disabled = "disabled";
+		} else {
+			$disabled = "";
+		}
+
+		print "<input type='checkbox' name='svc[$sn][$zn]' id='stuff-$sn-$zn' $checked $disabled><label for='stuff-$sn-$zn'>".$zone['name']."</label>\n";
 
 		// We want 'Reject' to be seperate
 		if ($zn === "reject") {

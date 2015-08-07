@@ -51,8 +51,9 @@ class Services {
 		$retarr = array(
 			"name" => _("SSH"),
 			"defzones" => array("external", "internal"),
-			"descr" => _("SSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>do not</strong> recommend blocking this port, but we do recommend using a strong password and SSH keys."),
+			"descr" => _("SSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>strongly recommend</strong> using a strong password and SSH keys."),
 			"fw" => array("protocol" => "tcp", "port" => 22),
+			"noreject" => true,
 		);
 		return $retarr;
 	}
