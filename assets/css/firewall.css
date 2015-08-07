@@ -3,19 +3,19 @@ label.btn {
 }
 
 .x-btn-danger {
-	color: #fff !important;
-	background-color: #d9534f !important;
-	border-color: #d43f3a !important;
+	color: #fff;
+	background-color: #d9534f;
+	border-color: #d43f3a;
 }
 
 .x-btn-success {
-	color: #fff !important;
-	background-color: #449d44 !important;
-	border-color: #398439 !important;
+	color: #fff;
+	background-color: #449d44;
+	border-color: #398439;
 }
 
 .x-btn {
-	padding: 5px 12px !important;
+	padding: 5px 12px;
 }
 
 .noright {

@@ -91,7 +91,7 @@ class Services {
 	private function getSvc_webrtc() {
 		$retarr = array(
 			"name" => _("WebRTC"),
-			"defzones" => array("block"),
+			"defzones" => array("reject"),
 			"descr" => _("WebRTC is used by UCP (and other services) to enable calls to be made via a web browser."),
 			"fw" => array("protocol" => "tcp", "port" => 8088),
 		);
@@ -192,7 +192,7 @@ class Services {
 
 		$retarr = array(
 			"name" => _("NFS"),
-			"defzones" => array("block")
+			"defzones" => array("reject")
 		);
 
 		if (!$ports) {
@@ -248,7 +248,7 @@ class Services {
 	private function getSvc_smb() {
 		$retarr = array(
 			"name" => _("SMB/CIFS"),
-			"defzones" => array("block"),
+			"defzones" => array("reject"),
 			"descr" => _("SMB/CIFS is used to access files on this machine from Windows or Mac systems."),
 			"fw" => array(
 				array('protocol' => 'udp', 'dport' => '137'),

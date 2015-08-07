@@ -33,7 +33,7 @@ foreach ($nets as $net => $currentzone) {
       <input type='text' name='netname[<?php echo $counter; ?>]' value='<?php echo $net; ?>'>
     </div>
     <div class='col-sm-8 noright'>
-      <div class='btn-group' data-toggle='buttons'>
+      <span class='radioset'>
 <?php
 	// Display the buttons
 	foreach ($z as $zn => $zone) {
@@ -44,10 +44,10 @@ foreach ($nets as $net => $currentzone) {
 			$active = "";
 			$checked = "";
 		}
-		print "<label class='btn btn-primary $active'><input type='radio' name='int-$counter' $checked>".$zone['name']."</label>\n";
+		print "<input type='radio' name='net-$counter' id='net-$counter-$zn' value='$zn' $checked><label class='$active' for='net-$counter-$zn'>".$zone['name']."</label>\n";
 	}
 ?>
-      </div>
+      </span>
     </div>
     <div class='col-sm-1 noleft'>
 <?php
@@ -63,8 +63,8 @@ foreach ($nets as $net => $currentzone) {
   </div>
 </div>
 <?php
-} // foreach nets
 $counter++;
+} // foreach nets
 ?>
       </div>
       <div role="tabpanel" id="shortcuts" class="tab-pane">

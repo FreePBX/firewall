@@ -42,7 +42,7 @@ foreach ($coresvc as $s) {
       <label class='control-label' for='svc[<?php echo $s; ?>]'><?php echo $svc['name']; ?></label>
     </div>
     <div class='col-sm-8 noright'>
-      <div class='btn-group' data-toggle='buttons'>
+      <span class='radioset'>
 <?php
 	// Display the buttons
 	foreach ($z as $zn => $zone) {
@@ -53,10 +53,10 @@ foreach ($coresvc as $s) {
 			$active = "";
 			$checked = "";
 		}
-		print "<label class='btn btn-primary $active'><input type='checkbox' name='svc[$s][$zn]' $checked>".$zone['name']."</label>\n";
+		print "<input type='checkbox' name='svc[$s][$zn]' id='stuff-$s-$zn' $checked><label for='stuff-$s-$zn'>".$zone['name']."</label>\n";
 	}
 ?>
-      </div>
+      </span>
     </div>
   </div>
 </div>
@@ -83,7 +83,7 @@ foreach ($extrasvc as $s) {
       <label class='control-label' for='svc[<?php echo $s; ?>]'><?php echo $svc['name']; ?></label>
     </div>
     <div class='col-sm-8 noright'>
-      <div class='btn-group' data-toggle='buttons'>
+      <span class='radioset'>
 <?php
 	// Display the buttons
 	foreach ($z as $zn => $zone) {
@@ -94,10 +94,10 @@ foreach ($extrasvc as $s) {
 			$active = "";
 			$checked = "";
 		}
-		print "<label class='btn btn-primary $active'><input type='checkbox' name='svc[$s][$zn]' $checked>".$zone['name']."</label>\n";
+		print "<input type='checkbox' name='svc[$s][$zn]' id='stuff-$s-$zn' $checked><label for='stuff-$s-$zn'>".$zone['name']."</label>\n";
 	}
 ?>
-      </div>
+      </span>
     </div>
   </div>
 </div>

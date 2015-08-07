@@ -42,7 +42,7 @@ foreach ($ints as $i => $conf) {
       <label class='control-label' for='int-<?php echo $i; ?>'><?php echo $i;?></label>
     </div>
     <div class='col-md-9'>
-      <div class='btn-group' data-toggle='buttons'>
+      <span class='radioset'>
 <?php
 	foreach ($z as $zn => $zone) {
 		if ($zn === $currentzone) {
@@ -52,10 +52,10 @@ foreach ($ints as $i => $conf) {
 			$active = "";
 			$checked = "";
 		}
-		print "<label class='btn btn-primary $active'><input type='radio' name='int-$i' $checked>".$zone['name']."</label>\n";
+		print "<input type='radio' name='int-$i' id='int-$i-$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
 	}
 ?>
-      </div>
+      </span>
     </div>
     <div class='col-md-9 col-md-offset-3'>
 <?php
