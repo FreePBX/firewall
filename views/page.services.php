@@ -24,7 +24,7 @@ $extrasvc = $services['extra'];
     <div class="tab-content display">
       <div role="tabpanel" id="services" class="tab-pane active">
 	<p><?php echo _("Services that are assigned to zones <strong>are accessable</strong> to connections matching the zones."); ?></p>
-        <p><?php echo _("Note that the 'Blocked' setting explicitly blocks that service totally, and can only be overridden by whitelisting."); ?></p>
+        <p><?php echo _("Note that the 'Reject' setting explicitly blocks that service totally, and can not be overridden. This does <strong>not</strong> allow access to the service from connections that match the 'Reject' zone. This is usually equivalent to turning off access from all zones, which is more intuitive, and can be overridden."); ?></p>
 <?php
 foreach ($coresvc as $s) {
 	$currentzones = array();
@@ -54,6 +54,11 @@ foreach ($coresvc as $s) {
 			$checked = "";
 		}
 		print "<input type='checkbox' name='svc[$s][$zn]' id='stuff-$s-$zn' $checked><label for='stuff-$s-$zn'>".$zone['name']."</label>\n";
+
+		// We want 'Reject' to be seperate
+		if ($zn === "reject") {
+			print "</span><span class='radioset'>\n";
+		}
 	}
 ?>
       </span>
@@ -95,6 +100,11 @@ foreach ($extrasvc as $s) {
 			$checked = "";
 		}
 		print "<input type='checkbox' name='svc[$s][$zn]' id='stuff-$s-$zn' $checked><label for='stuff-$s-$zn'>".$zone['name']."</label>\n";
+
+		// We want 'Reject' to be seperate
+		if ($zn === "reject") {
+			print "</span><span class='radioset'>\n";
+		}
 	}
 ?>
       </span>
