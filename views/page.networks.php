@@ -29,10 +29,10 @@ foreach ($nets as $net => $currentzone) {
 ?>
 <div class='element-container'>
   <div class='row'>
-    <div class='col-sm-3'>
+    <div class='col-sm-4 col-md-3'>
       <input type='text' name='netname[<?php echo $counter; ?>]' value='<?php echo $net; ?>'>
     </div>
-    <div class='col-sm-8 noright'>
+    <div class='col-sm-8 col-md-9'>
       <span class='radioset'>
 <?php
 	// Display the buttons
@@ -48,15 +48,13 @@ foreach ($nets as $net => $currentzone) {
 	}
 ?>
       </span>
-    </div>
-    <div class='col-sm-1 noleft'>
 <?php
 	// Add the 'remove' X if the net isn't empty
 	if (trim($net)) {
-		print "<button type='button' class='btn x-btn x-btn-danger noleft'><span class='glyphicon glyphicon-remove'></span></button>";
+		print "<button type='button' class='btn x-btn x-btn-danger'><span class='glyphicon glyphicon-remove'></span></button>";
 	} else {
 		// Or a '+' add if it is.
-		print "<button type='button' class='btn x-btn x-btn-success noleft'><span class='glyphicon glyphicon-plus'></span></button>";
+		print "<button type='button' class='btn x-btn x-btn-success'><span class='glyphicon glyphicon-plus'></span></button>";
 	}
 ?>
     </div>
