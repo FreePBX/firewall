@@ -161,12 +161,27 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function getZone($int) {
-		$zone = $this->getConfig($int, "zone");
-		if (!$zone) {
-			return "trusted";
-		} else {
-			return $zone;
+		static $ints = false;
+		if (!$ints) {
+			$ints = array();
+			$zones = $this->getSystemZones();
+			foreach ($zones as $name => $zone) {
+				if (!$zone['interfaces']) {
+					continue;
+				}
+				foreach (explode(" ", $zone['interfaces']) as $i) {
+					$myInt = trim($i);
+					if ($myInt) {
+						$ints[$myInt] = $name;
+					}
+				}
+			}
 		}
+		if (!isset($ints[$int])) {
+			$ints[$int] = 'trusted';
+		}
+
+		return $ints[$int];
 	}
 
 	private function getDriver() {

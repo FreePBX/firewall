@@ -12,7 +12,7 @@ class Firewalld {
 			// This takes a surprisingly long time.
 			exec("/usr/bin/firewall-cmd --list-all-zones", $out, $ret);
 		}
-		if ($ret !== 0) {
+		if ($ret) {
 			throw new \Exception("Error: $ret - ".json_encode($out));
 		}
 
