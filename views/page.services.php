@@ -80,10 +80,13 @@ function displayService($sn, $svc, $z, $currentzones) {
 			$checked = "";
 		}
 
-		if ($zn === "reject" && isset($svc['noreject'])) {
+		$disabled = "";
+		if ($zn === "reject") {
+		       if (isset($svc['noreject'])) {
+			       $disabled = "disabled";
+		       }
+		} elseif (isset($svc['disabled'])) {
 			$disabled = "disabled";
-		} else {
-			$disabled = "";
 		}
 
 		print "<input type='checkbox' name='svc[$sn][$zn]' id='stuff-$sn-$zn' $checked $disabled><label for='stuff-$sn-$zn'>".$zone['name']."</label>\n";
