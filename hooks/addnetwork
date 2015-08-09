@@ -1,0 +1,82 @@
+#!/usr/bin/env php
+<?php
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+
+// This adds a network, or networks, to the trusted zone.
+// Used by 'preconfigured'
+
+// Make sure we have a param
+if (empty($argv[1])) {
+	throw new \Exception("Needs a param");
+}
+
+// Underp the base64 that the param is using.
+$b = str_replace('_', '/', $argv[1]);
+$settings = @json_decode(gzuncompress(@base64_decode($b)), true);
+
+$settings = array("10.2.3.0/24", "1.2.3.0/24");
+if (!is_array($settings)) {
+	throw new \Exception("Invalid param");
+}
+
+// ///////////////////////////////////// //
+// BOILERPLATE SECURITY VALIDATION CODE: // 
+// ------------------------------------- //
+// Ensure this is run before including   //
+// any files from the module. If you're  //
+// including a file IN the module, check //
+// to see if the class exists...         //
+// ///////////////////////////////////// //
+
+// Now we've passed the first checks, we can load the fake (root-owned-file) FreePBX and GPG objects
+require '/usr/lib/sysadmin/includes.php';
+$g = new \Sysadmin\GPG();
+$sigfile = \Sysadmin\FreePBX::Config()->get('AMPWEBROOT')."/admin/modules/firewall/module.sig";
+$sig = $g->checkSig($sigfile);
+if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
+	throw new \Exception("Invalid sig file.. Hash is not sha256 - check $sigfile");
+}
+
+// Check the hash of the validator, before we include it
+if (empty($sig['hashes']['hooks/validator.php'])) {
+	throw new \Exception("Validator not part of module.sig");
+}
+
+$vhash = hash_file('sha256', __DIR__."/validator.php");
+if ($vhash !== $sig['hashes']['hooks/validator.php']) {
+	throw new \Exception("Validator tampered");
+} else {
+	include __DIR__."/validator.php";
+}
+
+// Yay! We insantiate it now so that the Driver loader
+// knows we're running as root, and we have our hashes
+// preloaded.
+$v = new \FreePBX\modules\Firewall\Validator($sig);
+
+foreach ($settings as $n) {
+	// Is this an IP address?
+	if (strpos($n, "/") !== false) {
+		list($ip, $subnet) = explode("/", $n);
+	} else {
+		$ip = $n;
+		$subnet = 32;
+	}
+
+	// Make sure this is a valid address
+	if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
+		throw new \Exception("$ip is not a valid IPv4 network");
+	}
+
+	// Check subnet.. 
+	$realsubnet = (int) $subnet;
+	if ($realsubnet < 8 || $realsubnet > 32) {
+		throw new \Exception("Invalid subnet $realsubnet");
+	}
+
+	print "I want to add $ip with $subnet\n";
+
+}
+
+
+
