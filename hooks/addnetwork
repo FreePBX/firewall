@@ -14,7 +14,6 @@ if (empty($argv[1])) {
 $b = str_replace('_', '/', $argv[1]);
 $settings = @json_decode(gzuncompress(@base64_decode($b)), true);
 
-$settings = array("trusted" => array("10.2.3.0/24", "1.2.3.0/24"));
 if (!is_array($settings)) {
 	throw new \Exception("Invalid param");
 }
@@ -86,7 +85,8 @@ foreach ($settings as $zonename => $zone) {
 			throw new \Exception("Invalid subnet $realsubnet");
 		}
 
-		print "I want to add $ip with $subnet to $zonename\n";
+		print "I want to add $ip with $realsubnet to $zonename\n";
+		// Note zonename is validated by the driver
 		$driver->addNetworkToZone($zonename, $ip, $realsubnet);
 		$needsreload = true;
 	}

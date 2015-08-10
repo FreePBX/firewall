@@ -14,7 +14,7 @@
     </ul>
     <div class="tab-content display">
       <div role="tabpanel" id="networks" class="tab-pane active">
-	<p><?php echo _("Individual networks may be specified to override the default rule for an interface. For example, if interface eth0 is configured to use the 'Block' zone, you could add a source network to the 'Trusted' zone, whilst all traffic NOT originating from that network is Blocked."); ?></p>
+	<p><?php echo _("Individual networks may be specified to override the default rule for an interface. For example, if interface eth0 is assigned to the 'Reject' zone (meaning everything is rejected by default), you could add a specific source network to the 'Trusted' zone. This will override the default rule for that interface, so traffic from that network will be treated as 'Trusted',  whilst all traffic NOT originating from that network is Rejected."); ?></p>
         <p><?php echo _("Note that several common settings are available in the 'Preconfigured' tab."); ?></p>
 <?php
 $nets = $fw->getZoneNetworks();
@@ -37,6 +37,12 @@ foreach ($nets as $net => $currentzone) {
 <?php
 	// Display the buttons
 	foreach ($z as $zn => $zone) {
+		if ($zn == "reject") {
+			// Don't show 'reject', as it's not intuitive. It adds a network to an
+			// interface that's defined as reject, so that'll be PERMITTED, and..
+			// yeah. Let's just avoid that.
+			continue;
+		}
 		if ($zn === $currentzone) {
 			$active = "active";
 			$checked = "checked";
@@ -52,9 +58,10 @@ foreach ($nets as $net => $currentzone) {
 	// Add the 'remove' X if the net isn't empty
 	if (trim($net)) {
 		print "<button type='button' class='btn x-btn x-btn-danger'><span class='glyphicon glyphicon-remove'></span></button>";
+		print "<button type='button' class='btn x-btn x-btn-warning'><span class='glyphicon glyphicon-pencil'></span></button>";
 	} else {
 		// Or a '+' add if it is.
-		print "<button type='button' class='btn x-btn x-btn-success'><span class='glyphicon glyphicon-plus'></span></button>";
+		print "<button type='button' class='btn btn-success x-btn x-btn-success'><span class='glyphicon glyphicon-plus'></span></button>";
 	}
 ?>
     </div>
