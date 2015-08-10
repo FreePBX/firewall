@@ -14,7 +14,7 @@ if (empty($argv[1])) {
 $b = str_replace('_', '/', $argv[1]);
 $settings = @json_decode(gzuncompress(@base64_decode($b)), true);
 
-$settings = array("10.2.3.0/24", "1.2.3.0/24");
+$settings = array("trusted" => array("10.2.3.0/24", "1.2.3.0/24"));
 if (!is_array($settings)) {
 	throw new \Exception("Invalid param");
 }
@@ -49,34 +49,54 @@ if ($vhash !== $sig['hashes']['hooks/validator.php']) {
 	include __DIR__."/validator.php";
 }
 
-// Yay! We insantiate it now so that the Driver loader
+// Yay! We instantiate it now so that the Driver loader
 // knows we're running as root, and we have our hashes
 // preloaded.
 $v = new \FreePBX\modules\Firewall\Validator($sig);
 
-foreach ($settings as $n) {
-	// Is this an IP address?
-	if (strpos($n, "/") !== false) {
-		list($ip, $subnet) = explode("/", $n);
-	} else {
-		$ip = $n;
-		$subnet = 32;
+// /////////////////////////////////// //
+// END BOILERPLATE SECURITY VALIDATION //
+// /////////////////////////////////// //
+
+$v->secureInclude('Zones.class.php');
+$v->secureInclude('Driver.class.php');
+$d = new \FreePBX\modules\Firewall\Driver;
+$driver = $d->getDriver();
+
+$needsreload = false;
+
+foreach ($settings as $zonename => $zone) {
+	foreach ($zone as $n) {
+		// Is this an IP address?
+		if (strpos($n, "/") !== false) {
+			list($ip, $subnet) = explode("/", $n);
+		} else {
+			$ip = $n;
+			$subnet = 32;
+		}
+
+		// Make sure this is a valid address
+		if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
+			throw new \Exception("$ip is not a valid IPv4 network");
+		}
+
+		// Check subnet.. 
+		$realsubnet = (int) $subnet;
+		if ($realsubnet < 8 || $realsubnet > 32) {
+			throw new \Exception("Invalid subnet $realsubnet");
+		}
+
+		print "I want to add $ip with $subnet to $zonename\n";
+		$driver->addNetworkToZone($zonename, $ip, $realsubnet);
+		$needsreload = true;
 	}
-
-	// Make sure this is a valid address
-	if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
-		throw new \Exception("$ip is not a valid IPv4 network");
-	}
-
-	// Check subnet.. 
-	$realsubnet = (int) $subnet;
-	if ($realsubnet < 8 || $realsubnet > 32) {
-		throw new \Exception("Invalid subnet $realsubnet");
-	}
-
-	print "I want to add $ip with $subnet\n";
-
 }
+
+
+if ($needsreload) {
+	$driver->commit();
+}
+
 
 
 

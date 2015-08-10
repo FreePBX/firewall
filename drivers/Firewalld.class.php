@@ -73,7 +73,30 @@ class Firewalld {
 		}
 		return $retarr;
 	}
+
+	// Root process
+	public function addNetworkToZone($zone = false, $network = false, $cidr = false) {
+		$z = new \FreePBX\modules\Firewall\Zones();
+		$knownzones = $z->getZones();
+		if (!isset($knownzones[$zone])) {
+			throw new \Exception("Unknone zone $zone");
+		}
+		$cmd = "firewall-cmd --permanent --zone=$zone --add-source $network/$cidr";
+		exec($cmd, $out, $ret);
+		if ($ret) {
+			throw new \Exception("Error: $ret - ".json_encode($out));
+		}
+		return true;
+	}
+
+	// Root process
+	public function commit() {
+		$cmd = "firewall-cmd --reload";
+		exec($cmd, $out, $ret);
+		if ($ret) {
+			throw new \Exception("Error: $ret - ".json_encode($out));
+		}
+		return true;
+	}
 }
-
-
 

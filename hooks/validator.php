@@ -18,7 +18,7 @@ class Validator {
 			}
 			self::$sig = $sig;
 		}
-		$this->modroot = \Sysadmin\FreePBX::Config()->get('AMPWEBROOT')."/modules/firewall";
+		$this->modroot = \Sysadmin\FreePBX::Config()->get('AMPWEBROOT')."/admin/modules/firewall";
 	}
 
 	public function checkFile($filename = false) {
