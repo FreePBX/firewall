@@ -40,7 +40,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 
 		// So this is the hook I want to run
-		$filename = "$basedir/sysadmin.$hookname";
+		$filename = "$basedir/firewall.$hookname";
 
 		// Do I have any params?
 		if ($params) {
@@ -102,6 +102,23 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 
 		return load_view($view, array("fw" => $this));
+	}
+
+	// Ajax calls
+	public function ajaxRequest($req, &$settings) {
+		return true;
+	}
+
+	public function ajaxHandler() {
+		switch ($_REQUEST['command']) {
+		case "removenetwork":
+			if (!isset($_REQUEST['net'])) {
+				throw new \Exception("No net");
+			}
+			return $this->removeNetwork($_REQUEST['net']);
+		default:
+			throw new \Exception("Sad Panda");
+		}
 	}
 
 	// Now comes the real code. Let's catch the POST and see if there's an action
@@ -210,5 +227,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function detectHost() {
 		return "1.1.1.1/32";
+	}
+
+	// Ajax Code
+	public function removeNetwork($net = false) {
+		$nets = $this->getZoneNetworks();
+		// Is this network part of a zone?
+		if (!isset($nets[$net])) {
+			throw new \Exception("Unknown zone");
+		}
+		return $this->runHook("removenetwork", array("network" => $net, "zone" => $nets[$net]));
 	}
 }

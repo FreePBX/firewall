@@ -8,7 +8,7 @@ class Firewalld {
 	public function getKnownZones() {
 		// Caching
 		static $out = false;
-		if (!$out) {
+		if ($out === false) {
 			// This takes a surprisingly long time.
 			exec("/usr/bin/firewall-cmd --list-all-zones", $out, $ret);
 		}
@@ -20,7 +20,10 @@ class Firewalld {
 
 		// Run through the list...
 		$currentzone = false;
-		foreach ($out as $line) {
+		foreach ($out as $id => $line) {
+			if (!isset($line[0])) {
+				continue;
+			}
 			if ($line[0] !== " ") {
 				// It's a definition
 				$def = explode(" ", $line);
@@ -75,11 +78,21 @@ class Firewalld {
 	}
 
 	// Root process
+	public function commit() {
+		$cmd = "firewall-cmd --reload";
+		exec($cmd, $out, $ret);
+		if ($ret) {
+			throw new \Exception("Error: $ret - ".json_encode($out));
+		}
+		return true;
+	}
+
+	// Root process
 	public function addNetworkToZone($zone = false, $network = false, $cidr = false) {
 		$z = new \FreePBX\modules\Firewall\Zones();
 		$knownzones = $z->getZones();
 		if (!isset($knownzones[$zone])) {
-			throw new \Exception("Unknone zone $zone");
+			throw new \Exception("Unknown zone $zone");
 		}
 		$cmd = "firewall-cmd --permanent --zone=$zone --add-source $network/$cidr";
 		exec($cmd, $out, $ret);
@@ -90,12 +103,13 @@ class Firewalld {
 	}
 
 	// Root process
-	public function commit() {
-		$cmd = "firewall-cmd --reload";
+	public function removeNetworkFromZone($zone = false, $network = false) {
+		$cmd = "firewall-cmd --permanent --zone=$zone --remove-source $network";
 		exec($cmd, $out, $ret);
 		if ($ret) {
 			throw new \Exception("Error: $ret - ".json_encode($out));
 		}
+		$this->commit();
 		return true;
 	}
 }

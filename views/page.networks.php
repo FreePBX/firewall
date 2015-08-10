@@ -1,3 +1,4 @@
+<script type='text/javascript' src='modules/firewall/assets/js/views/networks.js'></script>
 <form method='post'>
 <div class="display no-border">
   <div class="nav-container">
@@ -26,11 +27,16 @@ $z = $fw->getZones();
 // Now, loop through our networks and display them.
 $counter = 1;
 foreach ($nets as $net => $currentzone) {
+	if (trim($net)) {
+		$ro = "readonly disabled";
+	} else {
+		$ro = "";
+	}
 ?>
-<div class='element-container'>
+<div class='element-container' id='element-<?php echo $counter; ?>'>
   <div class='row'>
     <div class='col-sm-4 col-md-3'>
-      <input type='text' name='netname[<?php echo $counter; ?>]' value='<?php echo $net; ?>'>
+      <input type='text' name='netname[<?php echo $counter; ?>]' value='<?php echo $net; ?>' <?php echo $ro; ?>>
     </div>
     <div class='col-sm-8 col-md-9'>
       <span class='radioset'>
@@ -57,11 +63,11 @@ foreach ($nets as $net => $currentzone) {
 <?php
 	// Add the 'remove' X if the net isn't empty
 	if (trim($net)) {
-		print "<button type='button' class='btn x-btn x-btn-danger'><span class='glyphicon glyphicon-remove'></span></button>";
-		print "<button type='button' class='btn x-btn x-btn-warning'><span class='glyphicon glyphicon-pencil'></span></button>";
+		print "<button type='button' class='btn x-btn x-btn-danger fwbutton' data-counter='$counter' data-action='remove'><span class='glyphicon glyphicon-remove'></span></button>";
+		print "<button type='button' class='btn x-btn x-btn-warning fwbutton' data-counter='$counter' data-action='update'><span class='glyphicon glyphicon-pencil'></span></button>";
 	} else {
 		// Or a '+' add if it is.
-		print "<button type='button' class='btn btn-success x-btn x-btn-success'><span class='glyphicon glyphicon-plus'></span></button>";
+		print "<button type='button' class='btn btn-success x-btn x-btn-success fwbutton' data-counter='$counter' data-action='create'><span class='glyphicon glyphicon-plus'></span></button>";
 	}
 ?>
     </div>
