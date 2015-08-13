@@ -1,20 +1,42 @@
-<script type='text/javascript' src='modules/firewall/assets/js/views/networks.js'></script>
+<?php
+if (!isset($_REQUEST['tab'])) {
+	$tab = "zonedocs";
+} else {
+	$tab = $_REQUEST['tab'];
+}
+
+$docs = "active";
+$net = $int = "";
+
+switch ($tab) {
+case 'intsettings':
+	$docs = "";
+	$int = "active";
+	break;
+case 'netsettings':
+	$docs = "";
+	$net = "active";
+	break;
+}
+?>
+
+<script type='text/javascript' src='modules/firewall/assets/js/views/zones.js?1'></script>
 <form method='post'>
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
-      <li role="presentation" data-name="zonedocs" class="active">
+    <li role="presentation" data-name="zonedocs" class="<?php echo $docs; ?>">
         <a href="#zonedocs" aria-controls="zonedocs" role="tab" data-toggle="tab"><?php echo _("Zone Information")?> </a>
       </li>
-      <li role="presentation" data-name="intsettings">
+      <li role="presentation" data-name="intsettings" class="<?php echo $int; ?>">
         <a href="#intsettings" aria-controls="intsettings" role="tab" data-toggle="tab"><?php echo _("Interfaces")?> </a>
       </li>
-      <li role="presentation" data-name="netsettings">
+      <li role="presentation" data-name="netsettings"  class="<?php echo $net; ?>">
         <a href="#netsettings" aria-controls="netsettings" role="tab" data-toggle="tab"><?php echo _("Networks")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
-      <div role="tabpanel" id="zonedocs" class="tab-pane active">
+    <div role="tabpanel" id="zonedocs" class="tab-pane <?php echo $docs; ?>">
         <h3><?php echo _("About Zones"); ?></h3>
 <?php
 echo "<p>"._("Each network interface on your machine must be mapped to a Zone. Note that, by default, all interfaces are mapped to trusted (Trusted networks are not filtered at all, so this disables the firewall for any traffic coming in from that interface). The zones you can use are:")."</p>";
@@ -27,7 +49,7 @@ echo "</ul>";
 ?>
 
       </div>
-      <div role="tabpanel" id="intsettings" class="tab-pane">
+      <div role="tabpanel" id="intsettings" class="tab-pane <?php echo $int; ?>">
         <p><?php echo _("All interfaces must be assigned to a default zone. Any traffic entering this interface (that does not originate from a network in the Networks tab) is firewalled to the rules of that zone. Note that 'Trusted' means that <strong>no filtering</strong> will be applied to this interface. 'Reject' means <strong>no inbound connections will be permitted</strong> to that interface."); ?></p>
 <?php
 $ints = $fw->getInterfaces();
@@ -80,7 +102,7 @@ foreach ($ints as $i => $conf) {
 ?>
       </div>
 
-      <div role="tabpanel" id="netsettings" class="tab-pane">
+      <div role="tabpanel" id="netsettings" class="tab-pane <?php echo $net; ?>">
 	<p><?php echo _("Individual networks may be specified to override the default rule for an interface. For example, if interface eth0 is assigned to the 'External' zone, you can add a specific <strong>source</strong> network to the 'Trusted' zone. This will override the default rule for that interface, so traffic from that network will be treated as 'Trusted',  whilst all traffic NOT originating from that network is Filtered by the default rules."); ?></p>
         <p><?php echo _("Note that several common settings are available on the 'Advanced' page."); ?></p>
 <?php
