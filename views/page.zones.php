@@ -20,7 +20,7 @@ case 'netsettings':
 }
 ?>
 
-<script type='text/javascript' src='modules/firewall/assets/js/views/zones.js?1'></script>
+<script type='text/javascript' src='modules/firewall/assets/js/views/zones.js'></script>
 <form method='post'>
 <div class="display no-border">
   <div class="nav-container">

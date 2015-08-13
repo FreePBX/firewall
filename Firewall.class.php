@@ -136,6 +136,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				throw new \Exception("No Zone");
 			}
 			return $this->changeNetworksZone($_REQUEST['net'], $_REQUEST['zone']);
+		case "addrfc":
+			return $this->addRfcNetworks();
 		default:
 			throw new \Exception("Sad Panda");
 		}
@@ -292,4 +294,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 		return $this->runHook("changenetwork", array("network" => $net, "newzone" => $zone));
 	}
+
+	// Add RFC1918 addresses to the trusted zone
+	public function addRfcNetworks() {
+		return $this->runHook("addrfcnetworks");
+	}
 }
+
+

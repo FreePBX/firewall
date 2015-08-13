@@ -1,3 +1,4 @@
+<script type='text/javascript' src='modules/firewall/assets/js/views/advanced.js'></script>
 <form method='post'>
 <div class="display no-border">
   <div class="nav-container">
@@ -47,7 +48,7 @@ $thishost = $fw->detectHost();
 	      <p><?php echo $rfc[1]; ?></p>
             </div>
             <div class='panel-footer clearfix'>
-	      <button type='button' class='btn btn-default pull-right'><?php echo $rfc[2]; ?></button>
+	      <button type='button' class='btn btn-default pull-right' id='addrfc'><?php echo $rfc[2]; ?></button>
             </div>
           </div>
           <div class='panel panel-default'>
