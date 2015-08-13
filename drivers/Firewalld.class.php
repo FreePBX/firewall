@@ -56,6 +56,12 @@ class Firewalld {
 			$zones[$currentzone][$settings[0]] = $settings[1];
 		}
 
+		// Rename 'public' to 'other', if 'other' doesn't exist.
+		if (!isset($zones['other'])) {
+			$zones['other'] = $zones['public'];
+			unset($zones['public']);
+		}
+
 		return $zones;
 	}
 
@@ -94,6 +100,12 @@ class Firewalld {
 		if (!isset($knownzones[$zone])) {
 			throw new \Exception("Unknown zone $zone");
 		}
+
+		// We are using 'public' for 'other'
+		if ($zone === "other") {
+			$zone = "public";
+		}
+
 		$cmd = "firewall-cmd --permanent --zone=$zone --add-source $network/$cidr";
 		exec($cmd, $out, $ret);
 		if ($ret) {
@@ -104,6 +116,11 @@ class Firewalld {
 
 	// Root process
 	public function removeNetworkFromZone($zone = false, $network = false) {
+		// We are using 'public' for 'other'
+		if ($zone === "other") {
+			$zone = "public";
+		}
+
 		$cmd = "firewall-cmd --permanent --zone=$zone --remove-source $network";
 		exec($cmd, $out, $ret);
 		if ($ret) {

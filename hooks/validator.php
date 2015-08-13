@@ -44,7 +44,7 @@ class Validator {
 		}
 
 		// Phew!
-		return true;
+		return $fullpath;
 	}
 
 	public function secureInclude($filename = false) {
@@ -52,9 +52,9 @@ class Validator {
 			throw new \Exception("File $filename isn't signed");
 		}
 
-		if ($this->checkFile($filename)) {
-			return include $filename;
-		} // else, an exception was thrown
+		// checkFile throws an exception if something's wrong
+		$f = $this->checkFile($filename);
+		return include $f;
 	}
 }
 

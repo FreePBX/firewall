@@ -116,6 +116,18 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				throw new \Exception("No net");
 			}
 			return $this->removeNetwork($_REQUEST['net']);
+		case "addnetworktozone":
+			if (!isset($_REQUEST['net'])) {
+				throw new \Exception("No net");
+			}
+			if (!isset($_REQUEST['zone'])) {
+				throw new \Exception("No Zone");
+			}
+			$zones = $this->getZones();
+			if (!isset($zones[$_REQUEST['zone']])) {
+				throw new \Exception("Invalid zone $zone");
+			}
+			return $this->addNetworkToZone($_REQUEST['net'], $_REQUEST['zone']);
 		default:
 			throw new \Exception("Sad Panda");
 		}
@@ -237,5 +249,30 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			throw new \Exception("Unknown zone");
 		}
 		return $this->runHook("removenetwork", array("network" => $net, "zone" => $nets[$net]));
+	}
+
+	public function addNetworkToZone($net = false, $zone = false) {
+		// Is this an IP address?
+		if (strpos($net, "/") !== false) {
+			list($ip, $subnet) = explode("/", $net);
+		} else {
+			$ip = $net;
+			$subnet = 32;
+		}
+
+		// Make sure this is a valid address
+		$ip = trim($ip);
+		if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
+			throw new \Exception("$ip is not a valid IPv4 network");
+		}
+
+		// Check subnet.. 
+		$subnet = (int) $subnet;
+		if ($subnet < 8 || $subnet > 32) {
+			throw new \Exception("Invalid subnet $realsubnet");
+		}
+
+		$params = array($zone => array("$ip/$subnet"));
+		return $this->runHook("addnetwork", $params);
 	}
 }

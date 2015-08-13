@@ -50,7 +50,7 @@ class Services {
 		// TODO: Check /etc/ssh/sshd_config
 		$retarr = array(
 			"name" => _("SSH"),
-			"defzones" => array("external", "internal"),
+			"defzones" => array("internal"),
 			"descr" => _("SSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>strongly recommend</strong> using a strong password and SSH keys."),
 			"fw" => array("protocol" => "tcp", "port" => 22),
 			"noreject" => true,
@@ -72,7 +72,7 @@ class Services {
 	private function getSvc_https() {
 		$retarr = array(
 			"name" => _("Web Management (Secure)"),
-			"defzones" => array("public", "external", "internal"),
+			"defzones" => array("external", "internal"),
 			"descr" => _("Web management interface for FreePBX. This is the https interface."),
 			"fw" => array("protocol" => "tcp", "port" => 443),
 		);
@@ -82,7 +82,7 @@ class Services {
 	private function getSvc_ucp() {
 		$retarr = array(
 			"name" => _("UCP"),
-			"defzones" => array("public", "external", "internal"),
+			"defzones" => array("external", "other", "internal"),
 			"descr" => _("UCP - User Control Panel - is the main user interface to FreePBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
 			"fw" => array("protocol" => "tcp", "port" => 81),
 		);
@@ -104,7 +104,7 @@ class Services {
 	private function getSvc_pjsip() {
 		$retarr = array(
 			"name" => _("SIP Protocol"),
-			"defzones" => array("external", "internal"),
+			"defzones" => array("other", "internal"),
 			"descr" => _("This is the SIP driver (pjsip). Most devices use SIP."),
 			"fw" => array(
 				array("protocol" => "udp", "port" => 5060),
@@ -117,7 +117,7 @@ class Services {
 	private function getSvc_chansip() {
 		$retarr = array(
 			"name" => _("CHAN_SIP Protocol"),
-			"defzones" => array("external", "internal"),
+			"defzones" => array("internal"),
 			"descr" => _("This is the legacy chan_sip driver."),
 			"fw" => array(
 				array("protocol" => "udp", "port" => 5061),
@@ -140,7 +140,7 @@ class Services {
 	private function getSvc_provis() {
 		$retarr = array(
 			"name" => _("HTTP Provisioning"),
-			"defzones" => array("external", "internal"),
+			"defzones" => array("other", "internal"),
 			"descr" => _("Text for HTTP Provisioning not done..."),
 			"fw" => array("protocol" => "tcp", "port" => 84),
 		); 
@@ -160,7 +160,7 @@ class Services {
 	private function getSvc_xmpp() {
 		$retarr = array(
 			"name" => _("XMPP"),
-			"defzones" => array("external", "internal"),
+			"defzones" => array("public", "other", "internal"),
 			"descr" => _("Text for XMPP not done..."),
 			"fw" => array("protocol" => "tcp", "port" => 5222),
 		); 
