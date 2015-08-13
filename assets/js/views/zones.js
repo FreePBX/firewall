@@ -69,7 +69,16 @@ function removeNetwork(c) {
 }
 
 function updateNetwork(c) {
+	var net, zone;
 	console.log("Updating network "+c);
+	net = $("input[type=text]", "#element-"+c).val()
+	zone = $("input[type=radio]:checked", "#element-"+c).val()
+	$.ajax({
+		url: window.ajaxurl,
+		data: { command: 'updatenetwork', module: 'firewall', net: net, zone: zone },
+		complete: function(data) { window.location.href = window.location.href; },
+	});
+
 	opaqueRow(c);
 }
 
@@ -77,13 +86,13 @@ function createNetwork(c) {
 	var net, zone;
 
 	console.log("Creating network "+c);
-	//	opaqueRow(c);
+	opaqueRow(c);
 	net = $("input[type=text]", "#element-"+c).val()
 	zone = $("input[type=radio]:checked", "#element-"+c).val()
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'addnetworktozone', module: 'firewall', net: net, zone: zone },
-		// complete: function(data) { window.location.href = window.location.href; },
+		complete: function(data) { window.location.href = window.location.href; },
 	});
 }
 

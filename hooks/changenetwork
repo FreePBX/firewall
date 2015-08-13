@@ -2,8 +2,7 @@
 <?php
 // vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
 
-// This adds a network, or networks, to the trusted zone.
-// Used by 'preconfigured'
+// This updates the zone of a specified network. Will not create a new one.
 
 // Make sure we have a param
 if (empty($argv[1])) {
@@ -17,6 +16,8 @@ $settings = @json_decode(gzuncompress(@base64_decode($b)), true);
 if (!is_array($settings)) {
 	throw new \Exception("Invalid param");
 }
+
+print_r($settings);
 
 // ///////////////////////////////////// //
 // BOILERPLATE SECURITY VALIDATION CODE: // 
@@ -61,12 +62,12 @@ if (!isset($settings['network'])) {
 	throw new \Exception("No network");
 }
 
-if (!isset($settings['zone'])) {
+if (!isset($settings['newzone'])) {
 	throw new \Exception("No zone");
 }
 
 $network = $settings['network'];
-$zone = $settings['zone'];
+$newzone = $settings['newzone'];
 
 $v->secureInclude('Zones.class.php');
 $v->secureInclude('Driver.class.php');
@@ -79,11 +80,6 @@ if (!isset($knownnets[$network])) {
 	throw new \Exception("Unknown Network $network");
 }
 
-if ($knownnets[$network] !== $zone) {
-	throw new \Exception("$network is not in $zone");
-}
-
-$driver->removeNetworkFromZone($zone, $network);
+$driver->changeNetworksZone($newzone, $network);
 $driver->commit();
-
 

@@ -128,6 +128,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				throw new \Exception("Invalid zone $zone");
 			}
 			return $this->addNetworkToZone($_REQUEST['net'], $_REQUEST['zone']);
+		case "updatenetwork":
+			if (!isset($_REQUEST['net'])) {
+				throw new \Exception("No net");
+			}
+			if (!isset($_REQUEST['zone'])) {
+				throw new \Exception("No Zone");
+			}
+			return $this->changeNetworksZone($_REQUEST['net'], $_REQUEST['zone']);
 		default:
 			throw new \Exception("Sad Panda");
 		}
@@ -274,5 +282,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		$params = array($zone => array("$ip/$subnet"));
 		return $this->runHook("addnetwork", $params);
+	}
+
+	public function changeNetworksZone($net, $zone) {
+		$nets = $this->getZoneNetworks();
+		// Is this network part of a zone?
+		if (!isset($nets[$net])) {
+			throw new \Exception("Unknown network");
+		}
+		return $this->runHook("changenetwork", array("network" => $net, "newzone" => $zone));
 	}
 }

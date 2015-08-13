@@ -107,6 +107,7 @@ class Firewalld {
 		}
 
 		$cmd = "firewall-cmd --permanent --zone=$zone --add-source $network/$cidr";
+		print "Doing '$cmd'\n";
 		exec($cmd, $out, $ret);
 		if ($ret) {
 			throw new \Exception("Error: $ret - ".json_encode($out));
@@ -122,11 +123,27 @@ class Firewalld {
 		}
 
 		$cmd = "firewall-cmd --permanent --zone=$zone --remove-source $network";
+		print "Doing '$cmd'\n";
 		exec($cmd, $out, $ret);
 		if ($ret) {
 			throw new \Exception("Error: $ret - ".json_encode($out));
 		}
-		$this->commit();
+		return true;
+	}
+
+	// Root process
+	public function changeNetworksZone($newzone = false, $network = false) {
+		// We are using 'public' for 'other'
+		if ($newzone === "other") {
+			$newzone = "public";
+		}
+
+		$cmd = "firewall-cmd --permanent --zone=$newzone --change-source $network";
+		print "Doing '$cmd'\n";
+		exec($cmd, $out, $ret);
+		if ($ret) {
+			throw new \Exception("Error: $ret - ".json_encode($out));
+		}
 		return true;
 	}
 }
