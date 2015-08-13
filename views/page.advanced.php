@@ -5,16 +5,19 @@
       <li role="presentation" data-name="advanced" class="active">
         <a href="#advanced" aria-controls="advanced" role="tab" data-toggle="tab"><?php echo _("Advanced")?> </a>
       </li>
+      <li role="presentation" data-name="smart">
+        <a href="#smart" aria-controls="smart" role="tab" data-toggle="tab"><?php echo _("Smart Firewall")?> </a>
+      </li>
       <li role="presentation" data-name="shortcuts">
         <a href="#shortcuts" aria-controls="shortcuts" role="tab" data-toggle="tab"><?php echo _("Preconfigured")?> </a>
       </li>
-      <li role="presentation" data-name="overrides">
-        <a href="#overrides" aria-controls="overrides" role="tab" data-toggle="tab"><?php echo _("Smart Overrides")?> </a>
-      </li>
     </ul>
     <div class="tab-content display">
-      <div role="tabpanel" id="networks" class="tab-pane active">
-        <p>Text for advanved goes here...</p>
+      <div role="tabpanel" id="advanced" class="tab-pane active">
+        <p>Text for advanced goes here...</p>
+      </div>
+      <div role="tabpanel" id="smart" class="tab-pane">
+        <p>Smart</p>
       </div>
 <?php
 // Text for Shortcuts is here
@@ -58,9 +61,6 @@ $thishost = $fw->detectHost();
             </div>
           </div>
         </div>
-      </div>
-      <div role="tabpanel" id="overrides" class="tab-pane">
-        <p>Stuff about overrides here...</p>
       </div>
     </div>
   </div>

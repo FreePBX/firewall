@@ -2,42 +2,6 @@ label.btn {
 	margin: 0;
 }
 
-.x-btn-danger,.x-btn-danger:active,.x-btn-danger:focus {
-	color: #fff;
-	background-color: #d9534f;
-	border-color: #d43f3a;
-}
-
-.x-btn-danger:hover {
-	color: #fff;
-	background-color: #c9302c;
-	border-color: #ac2925;
-}
-
-.x-btn-success,.x-btn-success:active,.x-btn-success:focus {
-	color: #fff;
-	background-color: #5cb85c;
-	border-color: #4cae4c;
-}
-
-.x-btn-success:hover {
-	color: #fff;
-	background-color: #449d44;
-	border-color: #398439;
-}
-
-.x-btn-warning,.x-btn-warning:active,.x-btn-warning:focus {
-	color: #fff;
-	background-color: #f0ad4e;
-	border-color: #eea236;
-}
-
-.x-btn-warning:hover {
-	color: #fff;
-	background-color: #ec971f;
-	border-color: #d58512;
-}
-
 .x-btn {
 	padding: 5px 12px;
 	min-width: 40px;

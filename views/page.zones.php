@@ -151,11 +151,11 @@ foreach ($nets as $net => $currentzone) {
 <?php
 	// Add the 'remove' X if the net isn't empty
 	if (trim($net)) {
-		print "<button type='button' class='btn x-btn x-btn-danger fwbutton' data-counter='$counter' data-action='remove'><span class='glyphicon glyphicon-remove'></span></button>";
-		print "<button type='button' class='btn x-btn x-btn-warning fwbutton' data-counter='$counter' data-action='update'><span class='glyphicon glyphicon-pencil'></span></button>";
+		print "<button type='button' class='btn x-btn btn-danger fwbutton' data-counter='$counter' data-action='remove'><span class='glyphicon glyphicon-remove'></span></button>";
+		print "<button type='button' class='btn x-btn btn-warning fwbutton' data-counter='$counter' data-action='update'><span class='glyphicon glyphicon-pencil'></span></button>";
 	} else {
 		// Or a '+' add if it is.
-		print "<button type='button' class='btn btn-success x-btn x-btn-success fwbutton' data-counter='$counter' data-action='create'><span class='glyphicon glyphicon-plus'></span></button>";
+		print "<button type='button' class='btn btn-success x-btn btn-success fwbutton' data-counter='$counter' data-action='create'><span class='glyphicon glyphicon-plus'></span></button>";
 	}
 ?>
             </div>
