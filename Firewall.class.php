@@ -251,7 +251,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return "1.1.1.1/32";
 	}
 
-	// Ajax Code
+	// /////////////// //
+	// Ajax Code below //
+	// /////////////// //
 	public function removeNetwork($net = false) {
 		$nets = $this->getZoneNetworks();
 		// Is this network part of a zone?
@@ -298,6 +300,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	// Add RFC1918 addresses to the trusted zone
 	public function addRfcNetworks() {
 		return $this->runHook("addrfcnetworks");
+	}
+
+	// Get all FreePBX services, as they are currently set
+	// Note that this is **also** used by bin/getservices
+	public function getSmartPorts() {
+		if (!class_exists('\FreePBX\modules\Firewall\Smart')) {
+			include __DIR__."/Smart.class.php";
+		}
+		$smart = new Firewall\Smart($this->Database());
+		return $smart->getAllPorts();
 	}
 }
 

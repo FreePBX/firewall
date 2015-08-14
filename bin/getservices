@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+
+// Development:  Make sure we're not running as root.  This would be
+// a vulnerability if it is, as we're not doing integrity checks on
+// files here (we don't need to!)
+
+if (posix_geteuid() === 0) {
+//	throw new \Exception("I was run as root");
+}
+
+// Fast BMO instantiation
+$bootstrap_settings['freepbx_auth'] = false;
+$bootstrap_settings['skip_astman'] = true;
+// $bootstrap_settings['whoops_handler'] = 'JsonResponseHandler';
+$restrict_mods = true;
+include '/etc/freepbx.conf';
+
+// Ask for the services
+$services = \FreePBX::Firewall()->getSmartPorts();
+
+print_r($services);
+
+
