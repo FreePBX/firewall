@@ -9,10 +9,12 @@ class Validator {
 
 	public function __construct($sig = false) {
 		// We may have already been instantated, which means we already have a sig
-		if (!self::$sig) {
-			if (!$sig) {
-				throw new \Exception("Need signature file...");
+		if (!$sig) {
+			if (!self::$sig) {
+				throw new \Exception("Need signature file the first time I'm run!");
 			}
+		} else {
+			// We've been given a sig. Check it...
 			if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
 				throw new \Exception("Invalid sig file.. Hash is not sha256 - check sigfile");
 			}
