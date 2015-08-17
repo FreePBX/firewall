@@ -311,6 +311,21 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$smart = new Firewall\Smart($this->Database());
 		return $smart->getAllPorts();
 	}
+
+	public function canRevert() {
+		$ftok = ftok("/dev/shm/ipc_firewall", "a");
+		$segment = shm_attach($ftok, 1048576, 0666); // Create/attach to 10k shared memory segment
+		if (!shm_has_var($segment, 0)) { // Hasn't been used
+			return false;
+		}
+
+		$settings = shm_get_var($segment, 0);
+		if (isset($settings['timestamp']) && !isset($settings['confirmed'])) {
+			return $settings['timestamp'];
+		}
+
+		return false;
+	}
 }
 
 

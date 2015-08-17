@@ -16,11 +16,29 @@ if (posix_geteuid() !== 0) {
 	throw new \Exception("I must be run as root.");
 }
 
+// Turns out that this is unreliable. Which is why we use sigSleep below.
+pcntl_signal(SIGHUP, "sigHupHandler");
+
 // Update every 60 seconds.
 $period = 60;
 
-$lastfin = time() - $period;
+$lastfin = time() - $period - 10;
 while(true) {
+	checkPhar();
+	if ($lastfin + $period < time()) {
+		// We finished more than $period ago. We can run again.
+		updateFirewallRules();
+		$lastfin = time();
+		continue;
+	} else {
+		// Sleep until we're ready to go again.
+		sigSleep($period/10);
+	}
+}
+
+function checkPhar() {
+	global $thissvc;
+
 	// Check to see if we should restart
 	if (pharChanged()) {
 		// Something changed.
@@ -32,7 +50,8 @@ while(true) {
 		$sig = $g->checkSig($sigfile);
 		if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
 			fwLog("Invalid sig file.. Hash is not sha256 - check $sigfile");
-			sleep(10);
+			// We don't use SLEEP as PHP is easily confused.
+			sigSleep(10);
 			continue;
 		}
 
@@ -43,21 +62,12 @@ while(true) {
 			Lock::unLock($thissvc);
 			// Wait 1/2 a second to give incron a chance to catch up
 			usleep(500000);
+			// Restart me.
 			touch("/var/spool/asterisk/incron/firewall.firewall");
 			exit;
 		} catch(\Exception $e) {
 			fwLog("Firewall tampered.  Not restarting!");
 		}
-	}
-
-	if ($lastfin + $period < time()) {
-		// We finished more than $period ago. We can run again.
-		updateFirewallRules();
-		$lastfin = time();
-		continue;
-	} else {
-		// Sleep until we're ready to go again.
-		sleep($period/10);
 	}
 }
 
@@ -75,6 +85,27 @@ function updateFirewallRules() {
 	}
 
 	exec("/usr/bin/su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
-	print_r($out);
+	$services = @json_decode($out[0], true);
+	if (!is_array($services) || !isset($services['smartports'])) {
+		fwLog("Unparseable output from getservices - ".$out[0]." - returned $ret");
+		return;
+	}
+	print_r($services);
 }
 
+function sigSleep($secs = 10) {
+	// Uses pcntl_sigtimedwait instead of sleep, so we can be sure we catch sighup
+	// signals from the OS. This may seem counterproductive, as sleep(3) will wake
+	// on *any* signal, but php does all sorts of crazy things to make this
+	// unreliable.
+	pcntl_sigtimedwait(array(SIGHUP), $sig, $secs);
+	if ($sig['signo'] === SIGHUP) {
+		sigHupHandler(1);
+	}
+}
+
+function sigHupHandler($signo) {
+	// Sigh.
+	checkPhar();
+	updateFirewallRules();
+}
