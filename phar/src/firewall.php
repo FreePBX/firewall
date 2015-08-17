@@ -22,8 +22,31 @@ $lastfin = time() - $period;
 while(true) {
 	// Check to see if we should restart
 	if (pharChanged()) {
-		print "It changed!\n";
-		exit;
+		// Something changed.
+		print "Change detected.\n";
+
+		// Generic boilerplate security code.
+		$g = new \Sysadmin\GPG();
+		$sigfile = \Sysadmin\FreePBX::Config()->get('AMPWEBROOT')."/admin/modules/firewall/module.sig";
+		$sig = $g->checkSig($sigfile);
+		if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
+			print "Invalid sig file.. Hash is not sha256 - check $sigfile\n";
+			sleep(10);
+			continue;
+		}
+
+		$v = new \FreePBX\modules\Firewall\Validator($sig);
+		try {
+			$v->checkFile("hooks/firewall");
+			print "Valid update! Restarting...\n";
+			Lock::unLock($thissvc);
+			// Wait 1/2 a second to give incron a chance to catch up
+			usleep(500000);
+			touch("/var/spool/asterisk/incron/firewall.startfirewall");
+			exit;
+		} catch(\Exception $e) {
+			print "Firewall tampered.  Not restarting!\n";
+		}
 	}
 
 	if ($lastfin + $period < time()) {

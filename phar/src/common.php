@@ -35,12 +35,15 @@ $v->secureInclude('Driver.class.php');
 $d = new \FreePBX\modules\Firewall\Driver;
 $driver = $d->getDriver();
 
-// 'Check myself' function
+// End of 'common' functions. We can now return to the caller.
+return;
 
-// This make sure that I haven't been upgraded and replaced. If something HAS changed,
-// then return true. Otherwise return false.
+
+// 'Check myself' function
+// This makes sure that I haven't been upgraded and replaced. If something HAS changed,
+// then return true. Otherwise return false. Crash if crazy.
 function pharChanged() {
-	global $v, $startup;
+	global $startup;
 	if (!isset($startup['mtime'])) {
 		throw new \Exception("startup global corrupted");
 	}
@@ -57,17 +60,10 @@ function pharChanged() {
 
 	$s = stat($thisphar);
 	if ($s['mtime'] !== $startup['mtime']) {
-		// Something's changed. Is it the same file?
-		$current = hash_file('sha256', $thisphar);
-		if ($startup['starthash'] !== $current) {
-			// Yep. It's changed.
-			return true;
-		} else {
-			throw new \Exception("mtime changed, file didn't"); // TODO - Remove? When would this happen?
-		}
+		// Something's changed.
+		return true;
 	} else {
 		return false;
-
 	}
 }
 
