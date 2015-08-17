@@ -16,6 +16,7 @@ foreach ($apps as $app => $files) {
 	print "Building $outfile ... ";
 	@unlink($outfile);
 	$phar = new Phar($outfile, 0, "$app.phar");
+	$phar->convertToExecutable(Phar::TAR);
 	$phar->startBuffering();
 	foreach ($files as $f) {
 		if (is_array($f)) {
@@ -31,6 +32,7 @@ foreach ($apps as $app => $files) {
 	// Note that ? and > are broken apart to stop syntax highlighting from getting confused.
 	$stub = "#!/usr/bin/env php\n<?php\n\$s='$start';Phar::interceptFileFuncs();set_include_path('phar://'.__FILE__.PATH_SEPARATOR.get_include_path());Phar::webPhar(null, \$s);include 'phar://'.__FILE__.'/'.\$s;__HALT_COMPILER(); ?".">\n";
 	$phar->setStub($stub);
+	$phar->compressFiles(Phar::BZ2);
 	$phar->stopBuffering();
 	unset($phar);
 	chmod($outfile, 0755);
