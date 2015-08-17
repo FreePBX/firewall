@@ -17,8 +17,20 @@ $bootstrap_settings['skip_astman'] = true;
 $restrict_mods = true;
 include '/etc/freepbx.conf';
 
-// Ask for the services
-$services = \FreePBX::Firewall()->getSmartPorts();
+// Start with our known information from FreePBX
+$services = array ("smartports" => \FreePBX::Firewall()->getSmartPorts());
+
+// Figure out where all the services we're caring about are.
+$knownsvcs = \FreePBX::Firewall()->getServices();
+foreach ($knownsvcs as $section) {
+	foreach ($section as $k) {
+		$s = \FreePBX::Firewall()->getService($k);
+		if (isset($s['fw'])) {
+			$services[$k] = $s['fw'];
+		}
+	}
+}
+
 print json_encode($services)."\n";
 
 
