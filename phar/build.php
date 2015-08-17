@@ -6,5 +6,42 @@
 // 'Corresponding Source' of the Firewall module, as it is required to build the
 // service.
 
+$apps = array(
+	"firewall" => array("firewall.php", "common.php", array(__DIR__."/../hooks/validator.php", "validator.php")),
+);
+
+$dst = __DIR__."/../hooks/";
+foreach ($apps as $app => $files) {
+	$outfile = "$app.phar";
+	print "Building $outfile ... ";
+	@unlink($outfile);
+	$phar = new Phar($outfile, 0, "$app.phar");
+	$phar->startBuffering();
+	foreach ($files as $f) {
+		if (is_array($f)) {
+			$src = $f[0];
+			$dest = $f[1];
+		} else {
+			$src = "src/$f";
+			$dest = $f;
+		}
+		$phar->addFile($src, $dest);
+	}
+	$start = $files[0];
+	// Note that ? and > are broken apart to stop syntax highlighting from getting confused.
+	$stub = "#!/usr/bin/env php\n<?php\n\$s='$start';Phar::interceptFileFuncs();set_include_path('phar://'.__FILE__.PATH_SEPARATOR.get_include_path());Phar::webPhar(null, \$s);include 'phar://'.__FILE__.'/'.\$s;__HALT_COMPILER(); ?".">\n";
+	$phar->setStub($stub);
+	$phar->stopBuffering();
+	unset($phar);
+	chmod($outfile, 0755);
+	print "Done! Moving into place... ";
+	$dst = __DIR__."/../hooks/$app";
+	@unlink($dst);
+	rename($outfile, $dst);
+	print "../hooks/$app\n";
+}
+
+
+
 
 
