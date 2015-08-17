@@ -7,7 +7,7 @@
 // service.
 
 $apps = array(
-	"firewall" => array("firewall.php", "common.php", array(__DIR__."/../hooks/validator.php", "validator.php")),
+	"firewall" => array("firewall.php", "common.php", array(__DIR__."/../hooks/validator.php", "validator.php"), array(__DIR__."/../Lock.class.php", "lock.php")),
 );
 
 $dst = __DIR__."/../hooks/";

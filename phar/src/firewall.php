@@ -1,5 +1,14 @@
 <?php
 
+$thissvc = "firewall";
+include 'lock.php';
+use \FreePBX\modules\Firewall\Lock;
+
+if (!Lock::canLock($thissvc)) {
+	print "Already running, not restarting...";
+	exit;
+}
+
 require 'common.php';
 
 if (posix_geteuid() !== 0) {

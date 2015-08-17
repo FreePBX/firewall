@@ -30,6 +30,10 @@ if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
 require 'validator.php';
 $v = new \FreePBX\modules\Firewall\Validator($sig); // Global
 
+// Grab the driver for this machine
+$v->secureInclude('Driver.class.php');
+$d = new \FreePBX\modules\Firewall\Driver;
+$driver = $d->getDriver();
 
 // 'Check myself' function
 
