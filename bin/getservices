@@ -7,7 +7,7 @@
 // files here (we don't need to!)
 
 if (posix_geteuid() === 0) {
-//	throw new \Exception("I was run as root");
+	throw new \Exception("I was run as root");
 }
 
 // Fast BMO instantiation
@@ -19,7 +19,6 @@ include '/etc/freepbx.conf';
 
 // Ask for the services
 $services = \FreePBX::Firewall()->getSmartPorts();
-
-print_r($services);
+print json_encode($services)."\n";
 
 
