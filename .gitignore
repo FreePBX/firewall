@@ -1,1 +1,3 @@
 module.sig
+# Remove before release
+hooks/firewall

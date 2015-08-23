@@ -17,9 +17,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$files = array(
 			array('type' => 'execdir',
 			'path' => __DIR__."/hooks",
+			'perms' => 0755),
+			array('type' => 'execdir',
+			'path' => __DIR__."/phar",
 			'perms' => 0755)
 		);
 		return $files;
+	}
+
+	public function dashboardService() {
+		return array();
 	}
 
 	// Run a sysadmin-managed root hook.
