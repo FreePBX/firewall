@@ -251,11 +251,24 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function detectNetwork() {
-		return "1.1.1.0/24";
+		$client = $_SERVER['REMOTE_ADDR'];
+		// If this is an IPv4 address, treat it as a class C
+		if (filter_var($client, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+			$ip = ip2long($client) & ip2long('255.255.255.0');
+			return long2ip($ip)."/24";
+		} elseif (filter_var($client, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+			// Grab the first 8 bytes, add zeros
+			$prefix = unpack("H16", inet_pton($client));
+			$map = $prefix[1]."0000000000000000";
+			// Put it back into IPv6 format and give it back
+			return inet_ntop(pack("H32", $map))."/64";
+		} else {
+			throw new \Exception("Unkown client $client");
+		}
 	}
 
 	public function detectHost() {
-		return "1.1.1.1/32";
+		return $_SERVER['REMOTE_ADDR'];
 	}
 
 	// /////////////// //

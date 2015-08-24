@@ -23,14 +23,14 @@
 <?php
 // Text for Shortcuts is here
 $rfc = array(
-	_("RFC1918"),
-	_("RFC1918 is the RFC that defineds the reserved, internal, network address space to be used when you're not directly connected to the internet. This adds 192.168.0.0/16, 172.16.0.0/12, and 10.0.0.0/8 to the 'Trusted' zone, and excludes it from all firewalls. Be warned that if you are in a hosted environment (for example, AWS), and you enable this, you may be inadvertently allowing other hosted clients unrestricted access to your machine."),
+	_("RFC1918/RFC4193"),
+	_("RFC1918 and RFC4193 is the RFCs that define the reserved, internal, network address space to be used when you're not directly connected to the internet, or do not want your address space routable. This adds the IPv4 networks 192.168.0.0/16, 172.16.0.0/12, and 10.0.0.0/8 and IPv6 networks fc00::/8 and fd00::/8 to the 'Trusted' zone, and excludes it from all firewalls. Be warned that if you are in a hosted environment (for example, AWS), and you enable this, you may be inadvertently allowing other hosted clients unrestricted access to your machine."),
 	_("Add to Trusted"),
 );
 
 $ym = array(
 	_("Your Client"),
-	_("This explicitly grants permission to the machine that is managing the firewall service now. If you select 'Add Network', it will add the entire Class C that the server sees you coming from (%s), or if you select 'Add Host' it will only add the individual IP address (%s). When starting to configure your firewall, it is wise to enable this to ensure you don't lock yourself out of your machine."),
+	_("This explicitly grants permission to the machine that is managing the firewall service now. If you select 'Add Network', it will add the entire network that the server sees you coming from (%s), or if you select 'Add Host' it will only add the individual IP address (%s). When starting to configure your firewall, it is wise to enable this to ensure you don't lock yourself out of your machine. If you are coming from an IPv6 Network, it is unwise to add just your Host, as MAC address changes of your client will change your IP address."),
 	_("Add Network"),
 	_("Add Host"),
 );
