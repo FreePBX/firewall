@@ -15,10 +15,14 @@
     </ul>
     <div class="tab-content display">
       <div role="tabpanel" id="advanced" class="tab-pane active">
-        <p>Text for advanced goes here...</p>
+        <div class='container-fluid'>
+          <?php echo load_view(__DIR__."/view.advanced.php"); ?>
+        </div>
       </div>
       <div role="tabpanel" id="smart" class="tab-pane">
-        <p>Smart</p>
+        <div class='container-fluid'>
+          <?php echo load_view(__DIR__."/view.smart.php", array("smart" => $fw->getSmartSettings())); ?>
+        </div>
       </div>
 <?php
 // Text for Shortcuts is here

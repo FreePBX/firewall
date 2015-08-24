@@ -322,14 +322,28 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $this->runHook("addrfcnetworks");
 	}
 
+	private function getSmartObj() {
+		static $sm = false;
+		if (!$sm) {
+			if (!class_exists('\FreePBX\modules\Firewall\Smart')) {
+				include __DIR__."/Smart.class.php";
+			}
+			$sm = new Firewall\Smart($this->Database());
+		}
+		return $sm;
+	}
+
 	// Get all FreePBX services, as they are currently set
 	// Note that this is **also** used by bin/getservices
 	public function getSmartPorts() {
-		if (!class_exists('\FreePBX\modules\Firewall\Smart')) {
-			include __DIR__."/Smart.class.php";
-		}
-		$smart = new Firewall\Smart($this->Database());
+		$smart = $this->getSmartObj();
 		return $smart->getAllPorts();
+	}
+
+	// Get Smart Firewall settings
+	public function getSmartSettings() {
+		$smart = $this->getSmartObj();
+		return $smart->getSettings();
 	}
 
 	public function canRevert() {

@@ -35,6 +35,10 @@ class Smart {
 		$this->iax = $this->usesIax();
 	}
 
+	public function getSettings() {
+		return array("ssf" => true, "period" => 60, "tempreg" => false, "tempregto" => 6);
+	}
+
 	private function usesIax() {
 		// Does this machine have any IAX devices?
 		$sql = "SELECT `id` FROM `iax` LIMIT 1";
