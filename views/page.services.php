@@ -1,3 +1,6 @@
+<script type='text/javascript' src='modules/firewall/assets/js/views/services.js'></script>
+<form class="fpbx-submit" name="saveServices" method="post">
+<input type='hidden' name='action' value='updateservices'>
 <?php
 $services = $fw->getServices();
 $z = $fw->getZones();
@@ -5,8 +8,6 @@ $z = $fw->getZones();
 $coresvc = $services['core'];
 $extrasvc = $services['extra'];
 ?>
-
-<form method='post'>
 
 <div class="display no-border">
   <div class="nav-container">
@@ -101,3 +102,4 @@ function displayService($sn, $svc, $z, $currentzones) {
 	// /row and /element-container
 	print "</div></div>\n";
 }
+

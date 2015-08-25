@@ -163,6 +163,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case 'enablefw':
 			$this->setConfig("status", true);
 			return;
+		case 'updateservices':
+			if (!isset($_REQUEST['svc'])) {
+				throw new \Exception("No services to update");
+			}
+			return $this->updateServices($_REQUEST['svc']);
 		default:
 			throw new \Exception("Unknown action $action");
 		}
@@ -172,8 +177,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function getActionBar($request) {
 		if (isset($request['page']) && $request['page'] == "services") {
 			return array(
+				"defaults" => array('name' => 'defaults', 'id' => 'btndefaults', 'value' => _("Defaults")),
 				"reset" => array('name' => 'reset', 'id' => 'btnreset', 'value' => _("Reset")),
-				"save" => array('name' => 'save', 'id' => 'btnsave', 'value' => _("Save")),
+				"submit" => array('name' => 'submit', 'id' => 'btnsave', 'value' => _("Save")),
 			);
 		}
 	}
@@ -186,6 +192,36 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		$retarr = array("core" => self::$services->getCoreServices(), "extra" => self::$services->getExtraServices());
 		return $retarr;
+	}
+
+	// Update services.
+	public function updateServices($svc) {
+
+		$allsvcs = $this->getServices();
+		$zones = $this->getZones();
+		foreach ($allsvcs as $k => $arr) {
+			foreach ($arr as $s) {
+				// Known service is $s - We were told about it in the post?
+				if (!isset($svc[$s]) || !is_array($svc[$s])) {
+					// Turned off!
+					$this->setConfig($s, array(), "servicesettings");
+					continue;
+				}
+
+				// Right, we have been told about this service. 
+				$svcsetting = array();
+				// Loop through the zones and see if they're enabled
+				foreach ($zones as $z => $null) {
+					if (isset($svc[$s][$z])) {
+						$svcsetting[] = $z;
+					}
+				}
+
+				// Now we can save that setting!
+				$this->setConfig($s, $svcsetting, "servicesettings");
+			}
+		}
+		return true;
 	}
 
 	public function getService($svc = false) {
