@@ -61,8 +61,8 @@ $thishost = $fw->detectHost();
 	      <p><?php printf($ym[1], $thisnet, $thishost); ?></p>
             </div>
             <div class='panel-footer clearfix'>
-	      <button type='button' class='btn btn-default pull-right'><?php echo $ym[2]; ?></button>
-	      <button type='button' class='btn btn-default pull-right'><?php echo $ym[3]; ?></button>
+	      <button type='button' class='btn btn-default pull-right' id='addnetwork'><?php echo $ym[2]; ?></button>
+	      <button type='button' class='btn btn-default pull-right' id='addhost'><?php echo $ym[3]; ?></button>
             </div>
           </div>
         </div>

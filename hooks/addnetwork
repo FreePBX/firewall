@@ -68,26 +68,44 @@ foreach ($settings as $zonename => $zone) {
 	foreach ($zone as $n) {
 		// Is this an IP address?
 		if (strpos($n, "/") !== false) {
-			list($ip, $subnet) = explode("/", $n);
+			list($addr, $subnet) = explode("/", $n);
 		} else {
-			$ip = $n;
-			$subnet = 32;
+			$addr = $n;
+			$subnet = false;
 		}
 
 		// Make sure this is a valid address
-		if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
-			throw new \Exception("$ip is not a valid IPv4 network");
+		if (filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+			if (!$subnet) {
+				$subnet = 32;
+			}
+			$ip = 4;
+		} elseif (filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+			// Note: I hate this. You can't really determine the IP address of
+			// an IPv6 host..
+			if (!$subnet) {
+				$subnet = 128;
+			}
+			$ip = 6;
+		} else {
+			throw new \Exception("$ip is not a valid IP address");
 		}
 
 		// Check subnet.. 
 		$realsubnet = (int) $subnet;
-		if ($realsubnet < 8 || $realsubnet > 32) {
-			throw new \Exception("Invalid subnet $realsubnet");
+		if ($ip == 4) {
+			if ($realsubnet < 8 || $realsubnet > 32) {
+				throw new \Exception("Invalid IPv4 subnet $realsubnet");
+			}
+		} else {
+			if ($realsubnet < 8 || $realsubnet > 128) {
+				throw new \Exception("Invalid IPv6 subnet $realsubnet");
+			}
 		}
 
-		print "I want to add $ip with $realsubnet to $zonename\n";
+		print "I want to add $addr with $realsubnet to $zonename\n";
 		// Note zonename is validated by the driver
-		$driver->addNetworkToZone($zonename, $ip, $realsubnet);
+		$driver->addNetworkToZone($zonename, $addr, $realsubnet);
 		$needsreload = true;
 	}
 }

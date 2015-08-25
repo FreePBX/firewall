@@ -145,6 +145,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $this->changeNetworksZone($_REQUEST['net'], $_REQUEST['zone']);
 		case "addrfc":
 			return $this->addRfcNetworks();
+		case "addthishost":
+			return $this->runHook('addnetwork', array('trusted' => array($this->detectHost())));
+		case "addthisnetwork":
+			return $this->runHook('addnetwork', array('trusted' => array($this->detectNetwork())));
 		default:
 			throw new \Exception("Sad Panda");
 		}
@@ -285,26 +289,43 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function addNetworkToZone($net = false, $zone = false) {
 		// Is this an IP address?
-		if (strpos($net, "/") !== false) {
-			list($ip, $subnet) = explode("/", $net);
+		if (strpos($n, "/") !== false) {
+			list($addr, $subnet) = explode("/", $n);
 		} else {
-			$ip = $net;
-			$subnet = 32;
+			$addr = $n;
+			$subnet = false;
 		}
 
 		// Make sure this is a valid address
-		$ip = trim($ip);
-		if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) === false) {
-			throw new \Exception("$ip is not a valid IPv4 network");
+		if (filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+			if (!$subnet) {
+				$subnet = 32;
+			}
+			$addr = 4;
+		} elseif (filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+			// Note: I hate this. You can't really determine the IP address of
+			// an IPv6 host..
+			if (!$subnet) {
+				$subnet = 128;
+			}
+			$ip = 6;
+		} else {
+			throw new \Exception("$addr is not a valid IP address");
 		}
 
 		// Check subnet.. 
-		$subnet = (int) $subnet;
-		if ($subnet < 8 || $subnet > 32) {
-			throw new \Exception("Invalid subnet $realsubnet");
+		$realsubnet = (int) $subnet;
+		if ($ip == 4) {
+			if ($realsubnet < 8 || $realsubnet > 32) {
+				throw new \Exception("Invalid IPv4 subnet $realsubnet");
+			}
+		} else {
+			if ($realsubnet < 8 || $realsubnet > 128) {
+				throw new \Exception("Invalid IPv6 subnet $realsubnet");
+			}
 		}
 
-		$params = array($zone => array("$ip/$subnet"));
+		$params = array($zone => array("$addr/$subnet"));
 		return $this->runHook("addnetwork", $params);
 	}
 
