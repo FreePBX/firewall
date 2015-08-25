@@ -168,6 +168,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
+	// We want a button on the 'services' page
+	public function getActionBar($request) {
+		if (isset($request['page']) && $request['page'] == "services") {
+			return array(
+				"reset" => array('name' => 'reset', 'id' => 'btnreset', 'value' => _("Reset")),
+				"save" => array('name' => 'save', 'id' => 'btnsave', 'value' => _("Save")),
+			);
+		}
+	}
+
 	public function getServices() {
 		if (!self::$services) {
 			include 'Services.class.php';
@@ -187,7 +197,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			self::$services = new Firewall\Services;
 		}
 
-		return self::$services->getService($svc);
+		$s = self::$services->getService($svc);
+		$current = $this->getConfig($svc, "servicesettings");
+
+		if ($current === false) {
+			$current = $s['defzones'];
+		}
+		$s['zones'] = $current;
+		return $s;
 	}
 
 	public function getZones() {

@@ -63,7 +63,7 @@ function checkPhar() {
 			// Wait 1/2 a second to give incron a chance to catch up
 			usleep(500000);
 			// Restart me.
-			touch("/var/spool/asterisk/incron/firewall.firewall");
+			fclose(fopen("/var/spool/asterisk/incron/firewall.firewall"));
 			exit;
 		} catch(\Exception $e) {
 			fwLog("Firewall tampered.  Not restarting!");

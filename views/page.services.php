@@ -29,9 +29,6 @@ $extrasvc = $services['extra'];
 foreach ($coresvc as $s) {
 	$currentzones = array();
 	$svc = $fw->getService($s);
-	if (!is_array($svc['zones'])) {
-		$svc['zones'] = $svc['defzones'];
-	}
 	foreach ($svc['zones'] as $zone) {
 		$currentzones[$zone] = true;
 	}
