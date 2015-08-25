@@ -67,6 +67,16 @@ if (!isset($known['10.0.0.0/8'])) {
 	$needsreload = true;
 }
 
+if (!isset($known['fc00::/8'])) {
+	$driver->addNetworkToZone("trusted", "fc00::", 8);
+	$needsreload = true;
+}
+
+if (!isset($known['fd00::/8'])) {
+	$driver->addNetworkToZone("trusted", "fd00::", 8);
+	$needsreload = true;
+}
+
 if ($needsreload) {
 	$driver->commit();
 }

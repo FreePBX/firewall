@@ -12,7 +12,7 @@ class Firewalld {
 			// This takes a surprisingly long time.
 			exec("/usr/bin/firewall-cmd --list-all-zones", $out, $ret);
 		}
-		if ($ret) {
+		if (isset($ret) && $ret) {
 			throw new \Exception("Error: $ret - ".json_encode($out));
 		}
 
@@ -48,7 +48,7 @@ class Firewalld {
 				throw new \Exception("Somehow got a setting before a zone! ".json_encode($out));
 			}
 
-			$settings = explode(":", trim($line));
+			$settings = explode(":", trim($line), 2);
 
 			if (!isset($settings[1])) {
 				$settings[1] = "";

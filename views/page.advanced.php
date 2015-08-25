@@ -28,7 +28,7 @@
 // Text for Shortcuts is here
 $rfc = array(
 	_("RFC1918/RFC4193"),
-	_("RFC1918 and RFC4193 is the RFCs that define the reserved, internal, network address space to be used when you're not directly connected to the internet, or do not want your address space routable. This adds the IPv4 networks 192.168.0.0/16, 172.16.0.0/12, and 10.0.0.0/8 and IPv6 networks fc00::/8 and fd00::/8 to the 'Trusted' zone, and excludes it from all firewalls. Be warned that if you are in a hosted environment (for example, AWS), and you enable this, you may be inadvertently allowing other hosted clients unrestricted access to your machine."),
+	_("RFC1918 and RFC4193 are the RFCs that define the reserved, internal, network address space to be used when you're not directly connected to the internet, or do not want your address space routable. This adds the IPv4 networks 192.168.0.0/16, 172.16.0.0/12, and 10.0.0.0/8 and IPv6 networks fc00::/8 and fd00::/8 to the 'Trusted' zone, and excludes it from all firewalls. Be warned that if you are in a hosted environment (for example, AWS), and you enable this, you may be inadvertently allowing other hosted clients unrestricted access to your machine."),
 	_("Add to Trusted"),
 );
 
