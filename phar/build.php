@@ -23,7 +23,7 @@ foreach ($apps as $app => $files) {
 			$src = $f[0];
 			$dest = $f[1];
 		} else {
-			$src = "src/$f";
+			$src = __DIR__."/src/$f";
 			$dest = $f;
 		}
 		$phar->addFile($src, $dest);

@@ -52,7 +52,7 @@ class Services {
 			"name" => _("SSH"),
 			"defzones" => array("internal"),
 			"descr" => _("SSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>strongly recommend</strong> using a strong password and SSH keys."),
-			"fw" => array("protocol" => "tcp", "port" => 22),
+			"fw" => array(array("protocol" => "tcp", "port" => 22)),
 			"noreject" => true,
 		);
 		return $retarr;
@@ -64,7 +64,7 @@ class Services {
 			"name" => _("Web Management"),
 			"defzones" => array("internal"),
 			"descr" => _("Web management interface for FreePBX. This is the http, not https (secure) interface."),
-			"fw" => array("protocol" => "tcp", "port" => 80),
+			"fw" => array(array("protocol" => "tcp", "port" => 80)),
 		);
 		return $retarr;
 	}
@@ -74,7 +74,7 @@ class Services {
 			"name" => _("Web Management (Secure)"),
 			"defzones" => array("external", "internal"),
 			"descr" => _("Web management interface for FreePBX. This is the https interface."),
-			"fw" => array("protocol" => "tcp", "port" => 443),
+			"fw" => array(array("protocol" => "tcp", "port" => 443)),
 		);
 		return $retarr;
 	}
@@ -84,7 +84,7 @@ class Services {
 			"name" => _("UCP"),
 			"defzones" => array("external", "other", "internal"),
 			"descr" => _("UCP - User Control Panel - is the main user interface to FreePBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
-			"fw" => array("protocol" => "tcp", "port" => 81),
+			"fw" => array(array("protocol" => "tcp", "port" => 81)),
 		);
 		return $retarr;
 	}
@@ -94,7 +94,7 @@ class Services {
 			"name" => _("WebRTC"),
 			"defzones" => array("reject"),
 			"descr" => _("WebRTC is used by UCP (and other services) to enable calls to be made via a web browser."),
-			"fw" => array("protocol" => "tcp", "port" => 8088),
+			"fw" => array(array("protocol" => "tcp", "port" => 8088)),
 		);
 
 		// TODO: Check httpd.conf and chan_sip.conf to make sure that it's enabled.
@@ -132,7 +132,7 @@ class Services {
 			"name" => _("IAX Protocol"),
 			"defzones" => array("internal"),
 			"descr" => _("IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than SIP, but few providers support it."),
-			"fw" => array("protocol" => "udp", "port" => 4569),
+			"fw" => array(array("protocol" => "udp", "port" => 4569)),
 		);
 		return $retarr;
 	}
@@ -142,7 +142,7 @@ class Services {
 			"name" => _("HTTP Provisioning"),
 			"defzones" => array("other", "internal"),
 			"descr" => _("Text for HTTP Provisioning not done..."),
-			"fw" => array("protocol" => "tcp", "port" => 84),
+			"fw" => array(array("protocol" => "tcp", "port" => 84)),
 		); 
 		return $retarr;
 	}
@@ -152,7 +152,7 @@ class Services {
 			"name" => _("REST Apps"),
 			"defzones" => array("internal"),
 			"descr" => _("Text for REST Apps not done..."),
-			"fw" => array("protocol" => "tcp", "port" => 85),
+			"fw" => array(array("protocol" => "tcp", "port" => 85)),
 		); 
 		return $retarr;
 	}
@@ -160,9 +160,9 @@ class Services {
 	private function getSvc_xmpp() {
 		$retarr = array(
 			"name" => _("XMPP"),
-			"defzones" => array("public", "other", "internal"),
+			"defzones" => array("external", "other", "internal"),
 			"descr" => _("Text for XMPP not done..."),
-			"fw" => array("protocol" => "tcp", "port" => 5222),
+			"fw" => array(array("protocol" => "tcp", "port" => 5222)),
 		); 
 		return $retarr;
 	}
@@ -172,7 +172,7 @@ class Services {
 			"name" => _("FTP"),
 			"defzones" => array("internal"),
 			"descr" => _("FTP is used by things to do stuff. Redo this text."),
-			"fw" => array("protocol" => "tcp", "port" => 21),
+			"fw" => array(array("protocol" => "tcp", "port" => 21)),
 		); 
 		return $retarr;
 	}
@@ -182,7 +182,7 @@ class Services {
 			"name" => _("TFTP"),
 			"defzones" => array("internal"),
 			"descr" => _("TFTP is used normally for provisioning and upgrading of devices."),
-			"fw" => array("protocol" => "udp", "port" => 69),
+			"fw" => array(array("protocol" => "udp", "port" => 69)),
 		); 
 		return $retarr;
 	}
@@ -212,8 +212,8 @@ class Services {
 			return array();
 		}
 		$retarr= array(
-			array('protocol' => 'udp', 'dport' => '2049'),
-			array('protocol' => 'tcp', 'dport' => '2049'),
+			array('protocol' => 'udp', 'port' => '2049'),
+			array('protocol' => 'tcp', 'port' => '2049'),
 		);
 
 		$mountd = 892;
@@ -236,12 +236,12 @@ class Services {
 		if (isset($nfsconf['LOCKD_UDPPORT'])) {
 			$lockdudp = $nfsconf['LOCKD_UDPPORT'];
 		}
-		$retarr[] = array('protocol' => 'udp', 'dport' => $mountd);
-		$retarr[] = array('protocol' => 'udp', 'dport' => $statd);
-		$retarr[] = array('protocol' => 'udp', 'dport' => $lockdudp);
-		$retarr[] = array('protocol' => 'tcp', 'dport' => $mountd);
-		$retarr[] = array('protocol' => 'tcp', 'dport' => $statd);
-		$retarr[] = array('protocol' => 'tcp', 'dport' => $lockdtcp);
+		$retarr[] = array('protocol' => 'udp', 'port' => $mountd);
+		$retarr[] = array('protocol' => 'udp', 'port' => $statd);
+		$retarr[] = array('protocol' => 'udp', 'port' => $lockdudp);
+		$retarr[] = array('protocol' => 'tcp', 'port' => $mountd);
+		$retarr[] = array('protocol' => 'tcp', 'port' => $statd);
+		$retarr[] = array('protocol' => 'tcp', 'port' => $lockdtcp);
 
 		return $retarr;
 	}
@@ -252,10 +252,10 @@ class Services {
 			"defzones" => array("reject"),
 			"descr" => _("SMB/CIFS is used to access files on this machine from Windows or Mac systems."),
 			"fw" => array(
-				array('protocol' => 'udp', 'dport' => '137'),
-				array('protocol' => 'udp', 'dport' => '138'),
-				array('protocol' => 'tcp', 'dport' => '139'),
-				array('protocol' => 'tcp', 'dport' => '445'),
+				array('protocol' => 'udp', 'port' => '137'),
+				array('protocol' => 'udp', 'port' => '138'),
+				array('protocol' => 'tcp', 'port' => '139'),
+				array('protocol' => 'tcp', 'port' => '445'),
 			),
 		); 
 		return $retarr;

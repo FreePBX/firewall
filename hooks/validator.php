@@ -42,7 +42,7 @@ class Validator {
 		$currenthash = hash_file('sha256', $fullpath);
 
 		if ($currenthash !== $shouldbe) {
-			throw new \Exception("Hashes don't match (Sig = $shouldbe, file = $currenthash)");
+			throw new \Exception("Hashes of $filename don't match (Sig = $shouldbe, file = $currenthash)");
 		}
 
 		// Phew!

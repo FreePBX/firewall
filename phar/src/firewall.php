@@ -16,6 +16,11 @@ if (posix_geteuid() !== 0) {
 	throw new \Exception("I must be run as root.");
 }
 
+$v = new \FreePBX\modules\Firewall\Validator($sig);
+$v->checkFile("Services.class.php");
+
+require 'Services.class.php';
+
 // Turns out that this is unreliable. Which is why we use sigSleep below.
 pcntl_signal(SIGHUP, "sigHupHandler");
 
@@ -37,7 +42,7 @@ while(true) {
 }
 
 function checkPhar() {
-	global $thissvc;
+	global $thissvc, $v;
 
 	// Check to see if we should restart
 	if (pharChanged()) {
@@ -55,7 +60,6 @@ function checkPhar() {
 			continue;
 		}
 
-		$v = new \FreePBX\modules\Firewall\Validator($sig);
 		try {
 			$v->checkFile("hooks/firewall");
 			fwLog("Valid update! Restarting...");
@@ -72,8 +76,8 @@ function checkPhar() {
 }
 
 function updateFirewallRules() {
-	// Signature validation
-	global $v;
+	// Signature validation and firewall driver
+	global $v, $driver;
 
 	// Asterisk user
 	$astuser = "asterisk";
@@ -90,7 +94,32 @@ function updateFirewallRules() {
 		fwLog("Unparseable output from getservices - ".$out[0]." - returned $ret");
 		return;
 	}
-	print_r($services);
+
+	$zones = array("reject" => "reject", "external" => "external", "other" => "other",
+		"internal" => "internal", "trusted" => "trusted");
+
+	foreach ($services['services'] as $s => $settings) {
+		print "Doing $s\n";
+		// Make sure the service is configured correctly
+		if (isset($settings['fw'])) {
+			$driver->updateService($s, $settings['fw']);
+		} else {
+			$driver->updateService($s, false);
+		}
+
+		// Assign the service to the required zones
+		$myzones = array("addto" => array(), "removefrom" => $zones);
+		if (is_array($settings['zones'])) {
+			foreach ($settings['zones'] as $z) {
+				unset($myzones['removefrom'][$z]);
+				$myzones['addto'][$z] = $z;
+			}
+		}
+		$driver->updateServiceZones($s, $myzones);
+
+	}
+
+	print "Done\n"; exit;
 }
 
 function sigSleep($secs = 10) {

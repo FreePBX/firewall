@@ -101,9 +101,9 @@ class Firewalld {
 			throw new \Exception("Unknown zone $zone");
 		}
 
-		// We are using 'public' for 'other'
+		// We are using 'work' for 'other'
 		if ($zone === "other") {
-			$zone = "public";
+			$zone = "work";
 		}
 
 		$cmd = "firewall-cmd --permanent --zone=$zone --add-source $network/$cidr";
@@ -117,9 +117,9 @@ class Firewalld {
 
 	// Root process
 	public function removeNetworkFromZone($zone = false, $network = false) {
-		// We are using 'public' for 'other'
+		// We are using 'work' for 'other'
 		if ($zone === "other") {
-			$zone = "public";
+			$zone = "work";
 		}
 
 		$cmd = "firewall-cmd --permanent --zone=$zone --remove-source $network";
@@ -133,9 +133,9 @@ class Firewalld {
 
 	// Root process
 	public function changeNetworksZone($newzone = false, $network = false) {
-		// We are using 'public' for 'other'
+		// We are using 'work' for 'other'
 		if ($newzone === "other") {
-			$newzone = "public";
+			$newzone = "work";
 		}
 
 		$cmd = "firewall-cmd --permanent --zone=$newzone --change-source $network";
@@ -146,5 +146,87 @@ class Firewalld {
 		}
 		return true;
 	}
+
+	// Root process
+	public function updateService($service = false, $ports = false) {
+		$servicefile = "/etc/firewalld/services/fpbx-$service.xml";
+		if (strpos($servicefile, "..") !== false) {
+			throw new \Exception("Invalid service filename $servicefile");
+		}
+
+		if ($ports === false) {
+			// Delete the service
+			$cmd = "firewall-cmd --permanent --delete-service fpbx-$service";
+			print "Doing '$cmd'\n";
+			exec($cmd, $out, $ret);
+
+			if (file_exists($servicefile)) {
+				unlink($servicefile);
+			}
+			return;
+		} elseif (!$ports) {
+			return;
+		} else {
+			// We're creating/updating a service file.
+			// No-one's trying to be nasty are they? That would never happen...
+			if (is_link($servicefile)) {
+				throw new \Exception("$servicefile is a symbolic link. Can't continue.");
+			}
+
+			// Note ? and > are split apart to avoid syntax highlighting getting confused.
+			$xml = "<?xml version='1.0' encoding='utf-8'?".">\n<service name='fpbx-$service' version='1.0'>\n";
+			$xml .= "  <short>fpbx-$service</short>\n";
+			foreach ($ports as $arr) {
+				$xml .= "  <port protocol='".$arr['protocol']."' port='".$arr['port']."' />\n";
+			}
+			$xml .= "</service>\n";
+			$newservice = false;
+
+			if (!file_exists($servicefile)) {
+				$newservice = true;
+			}
+
+			file_put_contents($servicefile, $xml);
+
+			if ($newservice) {
+				// Tell firewalld about the service
+				$cmd = "firewall-cmd --permanent --new-service=fpbx-service";
+				print "Doing '$cmd'\n";
+				exec($cmd, $out, $ret);
+			}
+		}
+	}
+
+	// Root process
+	public function updateServiceZones($service = false, $zones = false) {
+		if (!is_array($zones)) {
+			throw new \Exception("zones invalid");
+		}
+
+		$servicefile = "/etc/firewalld/services/fpbx-$service.xml";
+		if (strpos($servicefile, "..") !== false) {
+			throw new \Exception("Invalid service filename $servicefile");
+		}
+
+		if (!file_exists($servicefile)) {
+			// Has already been deleted
+			return;
+		}
+
+		// Remove service from zones it shouldn't be in..
+		foreach ($zones['removefrom'] as $z) {
+			$cmd = "firewall-cmd --permanent --zone=$z --remove-service=fpbx-$service";
+			print "Doing '$cmd'\n";
+			exec($cmd, $out, $ret);
+		}
+
+		// Add it to the zones it should be
+		foreach ($zones['addto'] as $z) {
+			$cmd = "firewall-cmd --permanent --zone=$z --add-service=fpbx-$service";
+			print "Doing '$cmd'\n";
+			exec($cmd, $out, $ret);
+		}
+	}
+
 }
 
