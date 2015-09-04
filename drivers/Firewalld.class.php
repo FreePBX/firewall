@@ -56,10 +56,10 @@ class Firewalld {
 			$zones[$currentzone][$settings[0]] = $settings[1];
 		}
 
-		// Rename 'public' to 'other', if 'other' doesn't exist.
+		// Rename 'work' to 'other', if 'other' doesn't exist.
 		if (!isset($zones['other'])) {
-			$zones['other'] = $zones['public'];
-			unset($zones['public']);
+			$zones['other'] = $zones['work'];
+			unset($zones['other']);
 		}
 
 		return $zones;
@@ -215,6 +215,10 @@ class Firewalld {
 
 		// Remove service from zones it shouldn't be in..
 		foreach ($zones['removefrom'] as $z) {
+			// We are using 'work' for 'other'
+			if ($z === "other") {
+				$z = "work";
+			}
 			$cmd = "firewall-cmd --permanent --zone=$z --remove-service=fpbx-$service";
 			print "Doing '$cmd'\n";
 			exec($cmd, $out, $ret);
@@ -222,6 +226,10 @@ class Firewalld {
 
 		// Add it to the zones it should be
 		foreach ($zones['addto'] as $z) {
+			// We are using 'work' for 'other'
+			if ($z === "other") {
+				$z = "work";
+			}
 			$cmd = "firewall-cmd --permanent --zone=$z --add-service=fpbx-$service";
 			print "Doing '$cmd'\n";
 			exec($cmd, $out, $ret);
