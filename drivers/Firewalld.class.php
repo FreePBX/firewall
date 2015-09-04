@@ -248,6 +248,8 @@ class Firewalld {
 		}
 		$cmd = "firewall-cmd --zone=$newzone --change-interface=$iface";
 		exec($cmd, $out, $ret);
+		$cmd = "firewall-cmd  --permanent --zone=$newzone --change-interface=$iface";
+		exec($cmd, $out, $ret);
 
 		// SHMZ/CentOS/RHEL/etc - Update the zone in ifcfg-$iface
 		$centos = "/etc/sysconfig/network-scripts/ifcfg-$iface";
