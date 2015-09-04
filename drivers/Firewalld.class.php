@@ -248,6 +248,28 @@ class Firewalld {
 		}
 		$cmd = "firewall-cmd --zone=$newzone --change-interface=$iface";
 		exec($cmd, $out, $ret);
+
+		// SHMZ/CentOS/RHEL/etc - Update the zone in ifcfg-$iface
+		$centos = "/etc/sysconfig/network-scripts/ifcfg-$iface";
+		if (file_exists($centos)) {
+			if (is_link($centos)) {
+				throw new \Exception("Symlink?");
+			}
+
+			// Grab the contents of the file
+			$ifcfg = @parse_ini_file($centos, \INI_SCANNER_RAW);
+
+			// If it doesn't have a zone
+			if (!isset($ifcfg['ZONE'])) {
+				// Add it to the file
+				file_put_contents($centos, "\nZONE=$newzone\n", \FILE_APPEND);
+			} else {
+				// Replace whatever it was
+				$rawfile = file_get_contents($centos);
+				$newfile = preg_replace('/^ZONE.+$/m', "ZONE=$newzone", $rawfile);
+				file_put_contents($centos, $newfile);
+			}
+		}
 	}
 }
 
