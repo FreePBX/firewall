@@ -56,11 +56,9 @@ class Firewalld {
 			$zones[$currentzone][$settings[0]] = $settings[1];
 		}
 
-		// Rename 'work' to 'other', if 'other' doesn't exist.
-		if (!isset($zones['other'])) {
-			$zones['other'] = $zones['work'];
-			unset($zones['other']);
-		}
+		// Rename 'work' to 'other'
+		$zones['other'] = $zones['work'];
+		unset($zones['work']);
 
 		return $zones;
 	}
