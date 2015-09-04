@@ -2,6 +2,9 @@ $(document).ready(function() {
 	// Register buttons being clicked
 	$(".fwbutton").click(function(e) { e.preventDefault(); isClicked(this); });
 
+	// When someone changes a zone mapping
+	$(".intbutton").click(function(e) { e.preventDefault(); changeInt(this); });
+	$('input[name=int-ens160]:checked')
 	// Update address bar when someone changes tabs
 	$("a[data-toggle='tab']").on('shown.bs.tab', function(e) { 
 		// New target. Don't need jquery here...
@@ -9,6 +12,21 @@ $(document).ready(function() {
 		window.history.replaceState(null, document.title, newuri);
 	});
 });
+
+function changeInt(o) {
+
+	var iface = o.getAttribute('data-int');
+	// Grab the checked interface that was selected.
+	var checked = $('input[name=int-'+iface+']:checked').attr('value');
+
+	console.log("You want to set "+iface+" to "+checked);
+	$.ajax({
+		url: window.ajaxurl,
+		data: { command: 'updateinterface', module: 'firewall', iface: iface, zone: checked },
+		// complete: function(data) { window.location.href = window.location.href; },
+	});
+}
+
 
 function isClicked(o) {
 	var counter, action, j;

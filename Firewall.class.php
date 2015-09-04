@@ -149,6 +149,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $this->runHook('addnetwork', array('trusted' => array($this->detectHost())));
 		case "addthisnetwork":
 			return $this->runHook('addnetwork', array('trusted' => array($this->detectNetwork())));
+		case "updateinterface":
+			return $this->runHook('updateinterface', array('iface' => $_REQUEST['iface'], 'newzone' => $_REQUEST['zone']));
 		default:
 			throw new \Exception("Sad Panda");
 		}

@@ -236,5 +236,14 @@ class Firewalld {
 		}
 	}
 
+	// Root process
+	public function changeInterfaceZone($iface = false, $newzone = false) {
+		if ($newzone === "other") {
+			$newzone = "work";
+		}
+		$cmd = "firewall-cmd --zone=$newzone --change-interface=$iface";
+		print "Doing '$cmd'\n";
+		exec($cmd, $out, $ret);
+	}
 }
 

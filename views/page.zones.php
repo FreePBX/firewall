@@ -76,17 +76,23 @@ foreach ($ints as $i => $conf) {
 			$active = "";
 			$checked = "";
 		}
-		print "<input type='radio' name='int-$i' id='int-$i-$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
+		print "<input type='radio' name='int-$i' id='int-$i-$zn' value='$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
 	}
+	print "</span>\n";
+	print "<button type='button' class='btn x-btn btn-warning intbutton' data-int='$i' data-action='update'><span class='glyphicon glyphicon-pencil'></span></button>\n";
 ?>
-      </span>
+
     </div>
     <div class='col-md-9 col-md-offset-3'>
 <?php
 	if (empty($conf['addresses'])) {
 		print _("No IP Addresses assigned to this interface.");
 	} else {
-		print _("IP Address(es): ");
+		if (count($conf['addresses'] > 1)) {
+			print _("IP Addresses: ");
+		} else {
+			print _("IP Address: ");
+		}
 		$tmparr = array();
 		foreach ($conf['addresses'] as $ips) {
 			$tmparr[] = $ips[0]."/".$ips[2];
