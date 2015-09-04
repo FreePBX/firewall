@@ -5,7 +5,7 @@ namespace FreePBX\modules\Firewall\Drivers;
 // Iptables - Generic.
 class Iptables {
 
-	public function getKnownZones() {
+	public function getZonesDetails() {
 		// Returns array( "zonename" => array("interfaces" => .., "services" => .., "sources" => .. ), 
 		//   "zonename" => .. 
 		//   "zonename => ..
@@ -14,7 +14,7 @@ class Iptables {
 
 	public function getKnownNetworks() {
 		// Returns array that looks like ("network/cdr" => "zone", "network/cdr" => "zone")
-		$known = $this->getKnownZones();
+		$known = $this->getZonesDetails();
 		$retarr = array();
 		foreach ($known as $z => $settings) {
 			if (empty($settings['sources'])) {

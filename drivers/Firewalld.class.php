@@ -5,7 +5,7 @@ namespace FreePBX\modules\Firewall\Drivers;
 // Firewalld - RHEL7-ish.
 class Firewalld {
 
-	public function getKnownZones() {
+	public function getZonesDetails() {
 		// Caching
 		static $out = false;
 		if ($out === false) {
@@ -65,7 +65,7 @@ class Firewalld {
 
 	public function getKnownNetworks() {
 		// Returns array that looks like ("network/cdr" => "zone", "network/cdr" => "zone")
-		$known = $this->getKnownZones();
+		$known = $this->getZonesDetails();
 		$retarr = array();
 		foreach ($known as $z => $settings) {
 			if (empty($settings['sources'])) {
