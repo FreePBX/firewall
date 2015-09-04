@@ -18,8 +18,8 @@ class Network {
 			if ($vals[1] == "lo" || $vals[1] == "lo:") 
 				continue;
 
-			// We only care about ipv4 (inet) lines, or definition lines
-			if ($vals[2] != "inet" && $vals[3] != "mtu")
+			// We only care about ipv4 (inet) and ipv6 (inet6) lines, or definition lines
+			if ($vals[2] != "inet" && $vals[2] != "inet6" && $vals[3] != "mtu")
 				continue;
 
 			if (preg_match("/(.+?)(?:@.+)?:$/", $vals[1], $res)) { // Matches vlans, which are eth0.100@eth0
@@ -48,8 +48,12 @@ class Network {
 			}
 
 			// Strip netmask off the end of the IP address
-			$ret = preg_match("/(\d*+.\d*+.\d*+.\d*+)\/(\d*+)/", $vals[3], $ip);
+			$ret = preg_match("/(.+)\/(\d*+)/", $vals[3], $ip);
 
+			// Is this an IPv6 link-local address? Don't display it if it is.
+			if ($ip[1][0] == "f" && $ip[1][1] == "e") {
+				continue;
+			}
 			$interfaces[$intname]['addresses'][] = array($ip[1], $intname, $ip[2]);
 		}
 		// OK, now get the configuration for all the interfaces.
