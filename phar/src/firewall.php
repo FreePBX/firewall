@@ -116,7 +116,6 @@ function updateFirewallRules() {
 			}
 		}
 		$driver->updateServiceZones($s, $myzones);
-
 	}
 
 	print "Done\n"; exit;
