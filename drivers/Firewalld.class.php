@@ -83,6 +83,8 @@ class Firewalld {
 
 	// Root process
 	public function commit() {
+		print "I shouldn't need to be run\n";
+		return;
 		$cmd = "firewall-cmd --reload";
 		exec($cmd, $out, $ret);
 		if ($ret) {
@@ -104,12 +106,14 @@ class Firewalld {
 			$zone = "work";
 		}
 
-		$cmd = "firewall-cmd --permanent --zone=$zone --add-source $network/$cidr";
-		print "Doing '$cmd'\n";
+		// Add live rule
+		$cmd = "firewall-cmd --zone=$zone --add-source $network/$cidr";
 		exec($cmd, $out, $ret);
-		if ($ret) {
-			throw new \Exception("Error: $ret - ".json_encode($out));
-		}
+
+		// Set permanent rule
+		$cmd = "firewall-cmd --permanent --zone=$zone --add-source $network/$cidr";
+		exec($cmd, $out, $ret);
+
 		return true;
 	}
 
@@ -120,13 +124,11 @@ class Firewalld {
 			$zone = "work";
 		}
 
-		$cmd = "firewall-cmd --permanent --zone=$zone --remove-source $network";
-		print "Doing '$cmd'\n";
+		$cmd = "firewall-cmd --zone=$zone --remove-source $network";
 		exec($cmd, $out, $ret);
-		if ($ret) {
-			throw new \Exception("Error: $ret - ".json_encode($out));
-		}
-		return true;
+
+		$cmd = "firewall-cmd --permanent --zone=$zone --remove-source $network";
+		exec($cmd, $out, $ret);
 	}
 
 	// Root process
@@ -136,13 +138,11 @@ class Firewalld {
 			$newzone = "work";
 		}
 
-		$cmd = "firewall-cmd --permanent --zone=$newzone --change-source $network";
-		print "Doing '$cmd'\n";
+		$cmd = "firewall-cmd --zone=$newzone --change-source $network";
 		exec($cmd, $out, $ret);
-		if ($ret) {
-			throw new \Exception("Error: $ret - ".json_encode($out));
-		}
-		return true;
+
+		$cmd = "firewall-cmd --permanent --zone=$newzone --change-source $network";
+		exec($cmd, $out, $ret);
 	}
 
 	// Root process
@@ -154,8 +154,9 @@ class Firewalld {
 
 		if ($ports === false) {
 			// Delete the service
+			$cmd = "firewall-cmd --delete-service fpbx-$service";
+			exec($cmd, $out, $ret);
 			$cmd = "firewall-cmd --permanent --delete-service fpbx-$service";
-			print "Doing '$cmd'\n";
 			exec($cmd, $out, $ret);
 
 			if (file_exists($servicefile)) {
@@ -188,8 +189,10 @@ class Firewalld {
 
 			if ($newservice) {
 				// Tell firewalld about the service
+				$cmd = "firewall-cmd --new-service=fpbx-service";
+				exec($cmd, $out, $ret);
+
 				$cmd = "firewall-cmd --permanent --new-service=fpbx-service";
-				print "Doing '$cmd'\n";
 				exec($cmd, $out, $ret);
 			}
 		}
@@ -217,8 +220,10 @@ class Firewalld {
 			if ($z === "other") {
 				$z = "work";
 			}
+			$cmd = "firewall-cmd --zone=$z --remove-service=fpbx-$service";
+			exec($cmd, $out, $ret);
+
 			$cmd = "firewall-cmd --permanent --zone=$z --remove-service=fpbx-$service";
-			print "Doing '$cmd'\n";
 			exec($cmd, $out, $ret);
 		}
 
@@ -228,8 +233,10 @@ class Firewalld {
 			if ($z === "other") {
 				$z = "work";
 			}
+			$cmd = "firewall-cmd --zone=$z --add-service=fpbx-$service";
+			exec($cmd, $out, $ret);
+
 			$cmd = "firewall-cmd --permanent --zone=$z --add-service=fpbx-$service";
-			print "Doing '$cmd'\n";
 			exec($cmd, $out, $ret);
 		}
 	}
@@ -240,7 +247,6 @@ class Firewalld {
 			$newzone = "work";
 		}
 		$cmd = "firewall-cmd --zone=$newzone --change-interface=$iface";
-		print "Doing '$cmd'\n";
 		exec($cmd, $out, $ret);
 	}
 }
