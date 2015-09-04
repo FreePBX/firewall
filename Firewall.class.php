@@ -344,10 +344,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function addNetworkToZone($net = false, $zone = false) {
 		// Is this an IP address?
-		if (strpos($n, "/") !== false) {
-			list($addr, $subnet) = explode("/", $n);
+		if (strpos($net, "/") !== false) {
+			list($addr, $subnet) = explode("/", trim($net));
 		} else {
-			$addr = $n;
+			$addr = trim($net);
 			$subnet = false;
 		}
 
@@ -356,7 +356,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if (!$subnet) {
 				$subnet = 32;
 			}
-			$addr = 4;
+			$ip = 4;
 		} elseif (filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 			// Note: I hate this. You can't really determine the IP address of
 			// an IPv6 host..
