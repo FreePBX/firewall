@@ -8,11 +8,12 @@ class Driver {
 		static $driverObject = false;
 
 		if (!$driverObject) {
-			// For the moment, only C7.
-			if (!file_exists("/usr/bin/firewall-cmd")) {
-				throw new \Exception("Only C7 with firewalld");
+			// firewalld is really slow. REALLY slow.
+			if (file_exists("/usr/bin/firewall-cmd")) {
+				$driver = "Firewalld";
+			} else {
+				$driver = "Iptables";
 			}
-			$driver = "Firewalld";
 
 			$fn = __DIR__."/drivers/$driver.class.php";
 			if (!file_exists($fn)) {
