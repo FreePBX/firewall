@@ -59,5 +59,57 @@ class Iptables {
 	// Root process
 	public function changeInterfaceZone($iface = false, $newzone = false) {
 	}
+
+	// Driver Specific iptables stuff
+
+	// Root process
+	private function getCurrentIptables() {
+		// Parse iptables-save output
+		exec('/sbin/iptables-save 2>&1', $ipv4, $ret);
+		exec('/sbin/ip6tables-save 2>&1', $ipv6, $ret);
+		$retarr = array("ipv4" => $this->parseIptablesOutput($ipv4),
+			"ipv6" => $this->parseIptablesOutput($ipv6),
+		);
+
+		return $retarr;
+	}
+
+	private function parseIptablesOutput($iptsave) {
+		$table = "unknown";
+		foreach ($output as $line) {
+			if (empty($line)) {
+				continue;
+			}
+			$firstchar = $line[0];
+
+			if ($firstchar == "*") {
+				// It's a new table.
+				$table = substr($line, 1);
+				continue;
+			}
+
+			if ($firstchar == ":") {
+				// It's a chain definition
+				list($chain, $stuff) = explode(" ", $line);
+				$chain = substr($chain, 1);
+				$this->currentconf[$table][$chain] = array();
+				continue;
+			}
+
+			// Skip lines we don't care about..
+			if ($firstchar != "-") { // Everything we care about now starts with -A
+				continue;
+			}
+			$linearr = explode(" ", $line);
+			array_shift($linearr);
+			$chain = array_shift($linearr);
+			$this->currentconf[$table][$chain][] = join(" ", $linearr);
+		}
+
+		// Make sure we have SOMETHING there.
+		if (!isset($this->currentconf['filter'])) {
+			$this->currentconf['filter'] = array("INPUT" => array());
+		}
+	}
 }
 
