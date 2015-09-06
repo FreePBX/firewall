@@ -22,10 +22,13 @@ class Iptables {
 		// if it's broken for some reason, it may not be providing useful information.
 
 		if (!$this->isConfigured($current['ipv4'])) {
-			print "Not configured\n";
+			// Not Configured. Treat all our interfaces as 'Trusted'
+			$ints = \FreePBX::Firewall()->getInterfaces();
+			$zones['trusted']['interfaces'] = join(" ", array_keys($ints));
 			return $zones;
 		}
 
+		print "Is configured\n";
 		print_r($current);
 	}
 
@@ -44,12 +47,13 @@ class Iptables {
 				}
 			}
 		}
+		print "getting known\n";
 		return $retarr;
 	}
 
 	// Root process
 	public function commit() {
-		print "I shouldn't need to be run\n";
+		// TODO: run iptables-save here.
 		return;
 	}
 
@@ -100,14 +104,51 @@ class Iptables {
 	}
 
 	private function checkFpbxFirewall() {
-		throw new \Exception("OK, start here");
-
-		if (!$this->isConfigured()) {
+		$current = $this->getCurrentIptables();
+		if (!$this->isConfigured($current['ipv4'])) {
 			// Make sure we've cleaned up
 			$this->cleanOurRules();
 			// And add our defaults in
+			$this->loadDefaultRules();
 		}
+	}
 
+	private function cleanOurRules() {
+		// todo
+		return;
+	}
+
+	private function loadDefaultRules() {
+		$defaults = $this->getDefaultRules();
+		// We're here because our first rule isn't there. Insert it.
+		$this->insertRule('INPUT', array_shift($defaults['INPUT']));
+
+		// Remove any INPUT rules that may be hanging around, just in case
+		// someone adds stuff to 'INPUT' later, and doesn't read the damn
+		// code.
+                unset($defaults['INPUT']);
+
+                // Now, we need to create the chains for the rest of the rules
+                foreach ($defaults as $name => $val) {
+                        $this->checkTarget($name);
+                        if (!empty($val)) {
+                                foreach ($val as $entry) {
+                                        $this->addRule($name, $entry);
+                                }
+                        }
+                        unset ($rules[$name]);
+                }
+                return true;
+        }
+
+	private function getDefaultRules() {
+		$defaults = array();
+		$retarr['INPUT'][]= array("jump" => "fpbxfirewall");
+
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
+
+		return $retarr;
 	}
 
 	private function parseIptablesOutput($iptsave) {
@@ -211,6 +252,98 @@ class Iptables {
 
 		// Make sure nothing can escape from this.
 		return escapeshellcmd($str);
+	}
+
+	private function insertRule($chain = false, $arr = false) {
+		if (!$chain || !$arr) {
+			throw new \Exception("Error with $chain or $arr\n");
+		}
+
+		$this->checkTarget($arr['jump']);
+		$parsed = $this->parseFilter($arr);
+
+		// IPv4
+		$cmd = "/sbin/iptables -I $chain $parsed";
+		print "Doing $cmd\n";
+		exec($cmd, $output, $ret);
+		// Add it to our local array
+		array_unshift($this->currentconf['ipv4']['filter'][$chain], $parsed);
+
+		// IPv6
+		$cmd = "/sbin/ip6tables -I $chain $parsed";
+		print "Doing $cmd\n";
+		exec($cmd, $output, $ret);
+		// Add it to our local array
+		array_unshift($this->currentconf['ipv6']['filter'][$chain], $parsed);
+		return;
+	}
+
+        private function addRule($chain = false, $arr = false) {
+                if (!$chain || !$arr) {
+                        throw new \Exception("Error with $chain or $arr\n");
+                }
+
+                $this->checkTarget($arr['jump']);
+                $parsed = $this->parseFilter($arr);
+
+                $cmd = "/sbin/iptables -A $chain $parsed";
+                print "Doing $cmd\n";
+                exec($cmd, $output, $ret);
+
+		if ($ret === 0) {
+			$this->currentconf['ipv4']['filter'][$chain][] =  $parsed;
+		}
+
+                $cmd = "/sbin/ip6tables -A $chain $parsed";
+                print "Doing $cmd\n";
+                exec($cmd, $output, $ret);
+
+		if ($ret === 0) {
+			$this->currentconf['ipv6']['filter'][$chain][] =  $parsed;
+		}
+
+		return;
+	}
+
+	private function checkTarget($target = false) {
+		if (!$target) {
+			throw new \Exception("No Target");
+		}
+
+		switch ($target) {
+		case 'ACCEPT':
+		case 'REJECT':
+		case 'DROP':
+			return true;
+		default:
+			// If it's all upper case, we assume you know what you're doing.
+			if (ctype_upper($target)) {
+				return true;
+			}
+			// Does this chain target already exist?
+			if (isset($this->currentconf['ipv4']['filter'][$target]) && isset($this->currentconf['ipv6']['filter'][$target])) {
+				return true;
+			}
+		}
+
+		// It doesn't exist.
+
+		// IPv4
+		$cmd = "/sbin/iptables -N ".escapeshellcmd($target);
+		print "Doing $cmd\n";
+		exec($cmd, $output, $ret);
+		if ($ret == 0) {
+			$this->currentconf['ipv4']['filter'][$target] = array();
+		}
+
+		$output = null;
+		// IPv6
+		$cmd = "/sbin/ip6tables -N ".escapeshellcmd($target);
+		print "Doing $cmd\n";
+		exec($cmd, $output, $ret);
+		if ($ret == 0) {
+			$this->currentconf['ipv6']['filter'][$target] = array();
+		}
 	}
 }
 
