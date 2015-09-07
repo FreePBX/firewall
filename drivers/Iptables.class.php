@@ -215,6 +215,64 @@ class Iptables {
 	// Root process
 	public function updateService($service = false, $ports = false) {
 		$this->checkFpbxFirewall();
+
+		$name = "fpbxsvc-$service";
+		$this->checkTarget($name);
+
+		$current = &$this->getCurrentIptables();
+
+		// Create a service!
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		foreach ($ipvers as $ipv => $ipt) {
+			$changed = false;
+			// Service name is 'fpbxsvc-$service', with -j ACCEPTs
+			if (!isset($current[$ipv]['filter'][$name])) {
+				$changed = true;
+				$current[$ipv]['filter'][$name] = array();
+			} else {
+				// It exists, does it have the correct ports?
+				$flipped = array_flip($current[$ipv]['filter'][$name]);
+				foreach ($ports as $tmparr) {
+					$protocol = $tmparr['protocol'];
+					$port = $tmparr['port'];
+					$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+					if (isset($flipped[$param]) || $flipped[$param] === 0) {
+						unset($flipped[$param]);
+					} else {
+						print "Couldn't find '$param'\n";
+						$changed = true;
+						break;
+					}
+				}
+
+				if (!$changed) {
+					// Make sure there's nothing left
+					if (count($flipped) !== 0) {
+						$changed = true;
+					}
+				}
+			}
+
+			if ($changed) {
+				// Flush our old rules, add our new ones.
+				$current[$ipv]['filter'][$name] = array();
+				$cmd = "$ipt -F $name";
+				print "running '$cmd'\n";
+				exec($cmd, $output, $ret);
+
+				// Add the new ones
+				foreach ($ports as $arr) {
+					$protocol = $arr['protocol'];
+					$port = $arr['port'];
+					$param = "-p $protocol -m $protocol --dport=$port -j ACCEPT";
+					$current[$ipv]['filter'][$name][] = $param;
+					$cmd = "$ipt -A $name $param";
+					print "running '$cmd'\n";
+					exec($cmd, $output, $ret);
+				}
+			}
+
+		}
 	}
 
 	// Root process
