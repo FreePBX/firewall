@@ -220,12 +220,45 @@ class Iptables {
 
 	// Root process
 	public function changeInterfaceZone($iface = false, $newzone = false) {
+		print "changeInterfaceZone $iface $newzone\n";
 		$this->checkFpbxFirewall();
+		$this->checkTarget("zone-$newzone");
 
 		// Interfaces are checked AFTER networks, so that source networks
 		// can override default interface inputs.
-		//
-		// Start by checking that our interface is valid.
+		// First, see if we know about this interface, and delete it if we do.
+		$current = &$this->getCurrentIptables();
+
+		// This is the policy we want to remove
+		$p = "-i $iface -j zone-";
+
+		// Remove from both ipv4 and ipv6.
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		foreach ($ipvers as $ipv => $ipt) {
+			$interfaces = &$current[$ipv]['filter']['fpbxinterfaces'];
+			foreach ($interfaces as $i => $n) {
+				print "Looking for $p against $n\n";
+				if (strpos($n, $p) === 0) {
+					// Found it! Blow it away.
+					array_splice($interfaces, $i, 1);
+					// And remove it from real life
+					$i++;
+					$cmd = "$ipt -D fpbxinterfaces $i";
+					print "Running '$cmd'\n";
+					exec($cmd, $output, $ret);
+					// Break disabled, just to make sure that if there
+					// are multiple entries for the same interface, they're
+					// all gone.
+					// break;
+				}
+			}
+			// Now we can just add it.
+			$cmd = "$ipt -A fpbxinterfaces $p$newzone";
+			print "Running '$cmd'\n";
+			$output = null;
+			exec($cmd, $output, $ret);
+			$interfaces[] = "$p$newzone";
+		}
 	}
 
 	// Driver Specific iptables stuff
