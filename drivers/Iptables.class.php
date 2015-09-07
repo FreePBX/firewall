@@ -60,6 +60,60 @@ class Iptables {
 	// Root process
 	public function addNetworkToZone($zone = false, $network = false, $cidr = false) {
 		$this->checkFpbxFirewall();
+
+		// We want to add the smallest networks first, and then move up.
+		// So start by grabbing our existing nets (Note: Pass by Ref, to update
+		// later)
+		$current = &$this->getCurrentIptables();
+
+		// Are we IPv6 or IPv4? Note they're passed as ref, as we array_splice
+		// them later
+		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+			$ipt = "/sbin/ip6tables";
+			$nets = &$current['ipv6']['filter']['fpbxnets'];
+		} elseif (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+			$ipt = "/sbin/iptables";
+			$nets = &$current['ipv4']['filter']['fpbxnets'];
+		} else {
+			throw new \Exception("Not an IP address $network");
+		}
+
+		// This is what we're adding.
+		$p = "-s $network/$cidr -j zone-$zone";
+
+		// Find the first network with a netmask smaller than this, and
+		// insert it before that one.
+		$insert = false;
+		foreach ($nets as $i => $n) {
+			if ($n === $p) {
+				// Woah. It already exists?
+				return true;
+			}
+			if (preg_match("/-s (.+)\/(\d+) -j/", $n, $out)) {
+				// print "Found a source network ".$out[1]." - ".$out[2]."\n";
+				if ($out[2] < $cidr) {
+					// The one we found is smaller than this, so we want
+					// to catch it here first.
+					$insert = true;
+					break;
+				}
+			}
+		}
+
+		// If we're not inserting, just add it
+		if (!$insert) {
+			$nets[] = $p;
+			$cmd = "$ipt -A fpbxnets -s $network/$cidr -j zone-$zone";
+		} else {
+			// Splice it into the array
+			array_splice($nets, $i, 0, $p);
+			$i++;
+			$cmd = "$ipt -I fpbxnets $i -s $network/$cidr -j zone-$zone";
+		}
+		print "Running '$cmd'\n";
+		exec($cmd, $output, $ret);
+		print "After: \n"; print_r($nets);
+		return $ret;
 	}
 
 	// Root process
@@ -90,7 +144,7 @@ class Iptables {
 	// Driver Specific iptables stuff
 
 	// Root process
-	private function getCurrentIptables() {
+	private function &getCurrentIptables() {
 		if (!$this->currentconf) {
 			// Parse iptables-save output
 			exec('/sbin/iptables-save 2>&1', $ipv4, $ret);
@@ -100,6 +154,7 @@ class Iptables {
 				"ipv6" => $this->parseIptablesOutput($ipv6),
 			);
 		}
+		// Return as a ref, people may want to mangle it.
 		return $this->currentconf;
 	}
 
@@ -147,6 +202,7 @@ class Iptables {
 
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
+		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
 
 		return $retarr;
 	}
@@ -160,6 +216,7 @@ class Iptables {
 			if (empty($line)) {
 				continue;
 			}
+			print "Parsing '$line'\n";
 			$firstchar = $line[0];
 
 			if ($firstchar == "*") {
