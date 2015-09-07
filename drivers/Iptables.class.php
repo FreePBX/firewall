@@ -264,7 +264,7 @@ class Iptables {
 				foreach ($ports as $arr) {
 					$protocol = $arr['protocol'];
 					$port = $arr['port'];
-					$param = "-p $protocol -m $protocol --dport=$port -j ACCEPT";
+					$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
 					$current[$ipv]['filter'][$name][] = $param;
 					$cmd = "$ipt -A $name $param";
 					print "running '$cmd'\n";
