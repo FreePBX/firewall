@@ -115,7 +115,6 @@ class Iptables {
 		}
 		print "Running '$cmd'\n";
 		exec($cmd, $output, $ret);
-		print "After: \n"; print_r($nets);
 		return $ret;
 	}
 
@@ -222,6 +221,11 @@ class Iptables {
 	// Root process
 	public function changeInterfaceZone($iface = false, $newzone = false) {
 		$this->checkFpbxFirewall();
+
+		// Interfaces are checked AFTER networks, so that source networks
+		// can override default interface inputs.
+		//
+		// Start by checking that our interface is valid.
 	}
 
 	// Driver Specific iptables stuff
@@ -248,6 +252,7 @@ class Iptables {
 			$this->cleanOurRules();
 			// And add our defaults in
 			$this->loadDefaultRules();
+			exit;
 		}
 	}
 
@@ -264,27 +269,40 @@ class Iptables {
 		// Remove any INPUT rules that may be hanging around, just in case
 		// someone adds stuff to 'INPUT' later, and doesn't read the damn
 		// code.
-                unset($defaults['INPUT']);
+		unset($defaults['INPUT']);
 
-                // Now, we need to create the chains for the rest of the rules
-                foreach ($defaults as $name => $val) {
-                        $this->checkTarget($name);
-                        if (!empty($val)) {
-                                foreach ($val as $entry) {
-                                        $this->addRule($name, $entry);
-                                }
-                        }
-                        unset ($rules[$name]);
-                }
-                return true;
-        }
+		// Now, we need to create the chains for the rest of the rules
+		foreach ($defaults as $name => $val) {
+			$this->checkTarget($name);
+			if (!empty($val)) {
+				foreach ($val as $entry) {
+					$this->addRule($name, $entry);
+				}
+			}
+			// unset ($rules[$name]);
+		}
+		return true;
+	}
 
 	private function getDefaultRules() {
 		$defaults = array();
 		$retarr['INPUT'][]= array("jump" => "fpbxfirewall");
 
+		// Default sanity rules. 
+		// 1: Always allow all lo traffic, no matter what.
+		$retarr['fpbxfirewall'][]= array("int" => "lo", "jump" => "ACCEPT");
+		// 2: Allow related/established
+		$retarr['fpbxfirewall'][]= array("other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
+		// 3: Always allow ICMP (no, really, you always want to allow ICMP, stop thinking blocking
+		// it is a good idea)
+		$retarr['fpbxfirewall'][]= array("ipvers" => 4, "proto" => "icmp", "jump" => "ACCEPT");
+		$retarr['fpbxfirewall'][]= array("ipvers" => 6, "proto" => "ipv6-icmp", "jump" => "ACCEPT");
+
+		// Now we can do our actual filtering.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
+
+		// Our 'trusted' zone is always allow everything.
 		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
 
 		return $retarr;
@@ -418,30 +436,37 @@ class Iptables {
 		return;
 	}
 
-        private function addRule($chain = false, $arr = false) {
-                if (!$chain || !$arr) {
-                        throw new \Exception("Error with $chain or $arr\n");
-                }
-
-                $this->checkTarget($arr['jump']);
-                $parsed = $this->parseFilter($arr);
-
-                $cmd = "/sbin/iptables -A $chain $parsed";
-                print "Doing $cmd\n";
-                exec($cmd, $output, $ret);
-
-		if ($ret === 0) {
-			$this->currentconf['ipv4']['filter'][$chain][] =  $parsed;
+	private function addRule($chain = false, $arr = false) {
+		if (!$chain || !$arr) {
+			throw new \Exception("Error with $chain or $arr\n");
 		}
 
-                $cmd = "/sbin/ip6tables -A $chain $parsed";
-                print "Doing $cmd\n";
-                exec($cmd, $output, $ret);
+		$this->checkTarget($arr['jump']);
 
-		if ($ret === 0) {
-			$this->currentconf['ipv6']['filter'][$chain][] =  $parsed;
+		if (!isset($arr['ipvers'])) {
+			$arr['ipvers'] = "both";
 		}
 
+		$parsed = $this->parseFilter($arr);
+
+		print "I have '$parsed' from ".json_encode($arr)."\n";
+
+		if ($arr['ipvers'] == 6 || $arr['ipvers'] == "both") {
+			$cmd = "/sbin/ip6tables -A $chain $parsed";
+			print "Doing $cmd\n";
+			exec($cmd, $output, $ret);
+			if ($ret === 0) {
+				$this->currentconf['ipv6']['filter'][$chain][] =  $parsed;
+			}
+		}
+		if ($arr['ipvers'] == 4 || $arr['ipvers'] == "both") {
+			$cmd = "/sbin/iptables -A $chain $parsed";
+			print "Doing $cmd\n";
+			exec($cmd, $output, $ret);
+			if ($ret === 0) {
+				$this->currentconf['ipv4']['filter'][$chain][] =  $parsed;
+			}
+		}
 		return;
 	}
 
