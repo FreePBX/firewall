@@ -225,29 +225,41 @@ class Iptables {
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
 		foreach ($ipvers as $ipv => $ipt) {
 			$changed = false;
-			// Service name is 'fpbxsvc-$service', with -j ACCEPTs
+			// Service name is 'fpbxsvc-$service'
 			if (!isset($current[$ipv]['filter'][$name])) {
 				$changed = true;
 				$current[$ipv]['filter'][$name] = array();
 			} else {
 				// It exists, does it have the correct ports?
 				$flipped = array_flip($current[$ipv]['filter'][$name]);
-				foreach ($ports as $tmparr) {
-					$protocol = $tmparr['protocol'];
-					$port = $tmparr['port'];
-					$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
-					if (isset($flipped[$param]) || $flipped[$param] === 0) {
-						unset($flipped[$param]);
+
+				// Are we deleting/ignoring this?
+				if ($ports === false) {
+					if (isset($flipped['-j RETURN'])) {
+						unset($flipped['-j RETURN']);
 					} else {
-						print "Couldn't find '$param'\n";
+						print "Can't find it\n";
 						$changed = true;
-						break;
+					}
+				} else {
+					foreach ($ports as $tmparr) {
+						$protocol = $tmparr['protocol'];
+						$port = $tmparr['port'];
+						$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+						if (isset($flipped[$param])) {
+							unset($flipped[$param]);
+						} else {
+							print "Couldn't find '$param'\n";
+							$changed = true;
+							break;
+						}
 					}
 				}
 
 				if (!$changed) {
 					// Make sure there's nothing left
 					if (count($flipped) !== 0) {
+						print "Count wrong\n";
 						$changed = true;
 					}
 				}
@@ -261,23 +273,51 @@ class Iptables {
 				exec($cmd, $output, $ret);
 
 				// Add the new ones
-				foreach ($ports as $arr) {
-					$protocol = $arr['protocol'];
-					$port = $arr['port'];
-					$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+				if ($ports === false) {
+					// Just return
+					$param = "-j RETURN";
 					$current[$ipv]['filter'][$name][] = $param;
 					$cmd = "$ipt -A $name $param";
 					print "running '$cmd'\n";
 					exec($cmd, $output, $ret);
+				} else {
+					foreach ($ports as $arr) {
+						$protocol = $arr['protocol'];
+						$port = $arr['port'];
+						$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+						$current[$ipv]['filter'][$name][] = $param;
+						$cmd = "$ipt -A $name $param";
+						print "running '$cmd'\n";
+						exec($cmd, $output, $ret);
+					}
 				}
 			}
-
 		}
 	}
 
 	// Root process
 	public function updateServiceZones($service = false, $zones = false) {
 		$this->checkFpbxFirewall();
+		$current = &$this->getCurrentIptables();
+
+		$name = "fpbxsvc-$service";
+
+		// Check to make sure we know about this service.
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		foreach ($ipvers as $ipv => $ipt) {
+			if (!isset($current[$ipv]['filter'][$name])) {
+				throw new \Exception("Can't add a $ipv service for $name, it doesn't exist");
+			}
+			// Remove service from zones it shouldn't be in..
+			foreach ($zones['removefrom'] as $z) {
+				print "Want to remove $z\n";
+			}
+
+			// Add it to the zones it should be
+			foreach ($zones['addto'] as $z) {
+				print "Want to add $z\n";
+			}
+		}
 	}
 
 	// Root process

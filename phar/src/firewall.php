@@ -88,7 +88,7 @@ function updateFirewallRules() {
 		return false;
 	}
 
-	exec("/usr/bin/su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
+	exec("su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
 	$services = @json_decode($out[0], true);
 	if (!is_array($services) || !isset($services['smartports'])) {
 		fwLog("Unparseable output from getservices - ".$out[0]." - returned $ret");
