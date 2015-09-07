@@ -121,6 +121,11 @@ class Iptables {
 	// Root process
 	public function removeNetworkFromZone($zone = false, $network = false, $cidr = false) {
 		print "removeNetworkFromZone $zone, $network, $cidr\n";
+
+		// Check to see if we have a cidr or not.
+		if (strpos($network, "/") !== false) {
+			list($network, $cidr) = explode("/", $network);
+		}
 		$this->checkFpbxFirewall();
 		$current = &$this->getCurrentIptables();
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
