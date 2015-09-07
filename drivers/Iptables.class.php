@@ -61,6 +61,9 @@ class Iptables {
 	public function addNetworkToZone($zone = false, $network = false, $cidr = false) {
 		$this->checkFpbxFirewall();
 
+		// Make sure this zone exists
+		$this->checkTarget("zone-$zone");
+
 		// We want to add the smallest networks first, and then move up.
 		// So start by grabbing our existing nets (Note: Pass by Ref, to update
 		// later)
@@ -118,6 +121,7 @@ class Iptables {
 
 	// Root process
 	public function removeNetworkFromZone($zone = false, $network = false, $cidr = false) {
+		print "removeNetworkFromZone $zone, $network, $cidr\n";
 		$this->checkFpbxFirewall();
 		$current = &$this->getCurrentIptables();
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
@@ -132,7 +136,7 @@ class Iptables {
 			throw new \Exception("Not an IP address $network");
 		}
 
-		// OK, so, let's see if it existts.
+		// OK, so, let's see if it exists.
 		if ($cidr) {
 			$p = "-s $network/$cidr -j zone-$zone";
 		} else {
@@ -155,8 +159,54 @@ class Iptables {
 	}
 
 	// Root process
-	public function changeNetworksZone($newzone = false, $network = false) {
+	public function changeNetworksZone($newzone = false, $network = false, $cidr = false) {
+		print "changeNetworksZone $newzone, $network, $cidr\n";
 		$this->checkFpbxFirewall();
+
+		$current = &$this->getCurrentIptables();
+		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
+		// them later
+		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+			$ipt = "/sbin/ip6tables";
+			$nets = &$current['ipv6']['filter']['fpbxnets'];
+			// Fake CIDR to add later, if we don't have one.
+			$fcidr = "/64";
+		} elseif (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+			$ipt = "/sbin/iptables";
+			$nets = &$current['ipv4']['filter']['fpbxnets'];
+			$fcidr = "/32";
+		} else {
+			throw new \Exception("Not an IP address $network");
+		}
+
+		// OK, so, let's see if it already exists. It may not, so don't
+		// stress too much if it doesn't.
+		// Need to check to see if it has a netmask?
+		if (strpos($network, "/") === false)  {
+			if (!$cidr) {
+				$cidr = $fcidr;
+			}
+		} else {
+			list($network, $cidr) = explode($network, "/");
+		}
+
+		$p = "-s $network/$cidr -j zone-";
+
+		foreach ($nets as $i => $n) {
+			if (strpos($n, $p) === 0) {
+				// Found it! Blow it away.
+				array_splice($nets, $i, 1);
+				// And remove it from real life
+				$i++;
+				$cmd = "$ipt -D fpbxnets $i";
+				print "Running '$cmd'\n";
+				exec($cmd, $output, $ret);
+				break;
+			}
+		}
+
+		// Now we can just add it, as we know it's gone.
+		return $this->addNetworkToZone($newzone, $network, $cidr);
 	}
 
 	// Root process
