@@ -309,13 +309,45 @@ class Iptables {
 				throw new \Exception("Can't add a $ipv service for $name, it doesn't exist");
 			}
 			// Remove service from zones it shouldn't be in..
+			$live = &$current[$ipv]['filter'];
 			foreach ($zones['removefrom'] as $z) {
 				print "Want to remove $z\n";
+				$this->checkTarget("zone-$z");
+				// Loop through, make sure it's not in this zone
+				foreach ($live["zone-$z"] as $i => $lzone) {
+					print "Looking at '$lzone'\n";
+					if ($lzone == "-j $name") {
+						print "Found it!\n";
+						unset($live["zone-$z"][$i]);
+						$i++;
+						$cmd = "$ipt -D zone-$z $i";
+						print "Running $cmd\n";
+						exec($cmd, $output, $ret);
+					}
+				}
 			}
 
 			// Add it to the zones it should be
 			foreach ($zones['addto'] as $z) {
 				print "Want to add $z\n";
+				$this->checkTarget("zone-$z");
+				// Loop through, add it if it's not here.
+				$found = false;
+				foreach ($live["zone-$z"] as $i => $lzone) {
+					print "Looking at '$lzone'\n";
+					if ($lzone == "-j $name") {
+						print "Found it!\n";
+						$found = true;
+					}
+				}
+
+				if (!$found) {
+					// Need to add it.
+					$live["zone-$z"][] = "-j $name";
+					$cmd = "$ipt -A zone-$z -j $name";
+					print "Running $cmd\n";
+					exec($cmd, $output, $ret);
+				}
 			}
 		}
 	}
