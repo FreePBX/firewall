@@ -29,25 +29,25 @@ class Iptables {
 		}
 
 		print "Is configured\n";
-		print_r($current);
+		return $current;
 	}
 
 	public function getKnownNetworks() {
 		// Returns array that looks like ("network/cdr" => "zone", "network/cdr" => "zone")
-		$known = $this->getZonesDetails();
+		$known = $this->getCurrentIptables();
 		$retarr = array();
-		foreach ($known as $z => $settings) {
-			if (empty($settings['sources'])) {
+		$ipvers = array("ipv6", "ipv4");
+		foreach ($ipvers as $i) {
+			if (!isset($known[$i]['filter']['fpbxnets'])) {
+				// Odd.
 				continue;
 			}
-			$sources = explode(" ", $settings['sources']);
-			foreach ($sources as $source) {
-				if (!empty($source)) {
-					$retarr[$source] = $z;
+			foreach ($known[$i]['filter']['fpbxnets'] as $z => $settings) {
+				if (preg_match("/-s (.+) -j zone-(.+)/", $settings, $out)) {
+					$retarr[$out[1]] = $out[2];
 				}
 			}
 		}
-		print "getting known\n";
 		return $retarr;
 	}
 
@@ -200,7 +200,6 @@ class Iptables {
 				$cmd = "$ipt -D fpbxnets $i";
 				print "Running '$cmd'\n";
 				exec($cmd, $output, $ret);
-				break;
 			}
 		}
 
@@ -266,13 +265,43 @@ class Iptables {
 	// Root process
 	private function &getCurrentIptables() {
 		if (!$this->currentconf) {
-			// Parse iptables-save output
-			exec('/sbin/iptables-save 2>&1', $ipv4, $ret);
-			exec('/sbin/ip6tables-save 2>&1', $ipv6, $ret);
-			$this->currentconf = array(
-				"ipv4" => $this->parseIptablesOutput($ipv4),
-				"ipv6" => $this->parseIptablesOutput($ipv6),
-			);
+			// Am I root?
+			if (posix_getuid() === 0) {
+				// Parse iptables-save output
+				exec('/sbin/iptables-save 2>&1', $ipv4, $ret);
+				exec('/sbin/ip6tables-save 2>&1', $ipv6, $ret);
+				$this->currentconf = array(
+					"ipv4" => $this->parseIptablesOutput($ipv4),
+					"ipv6" => $this->parseIptablesOutput($ipv6),
+				);
+			} else {
+				// Not root, need to run a hook.
+				@unlink("/tmp/iptables.out");
+				\FreePBX::Firewall()->runHook("getiptables");
+				// Wait for up to 5 seconds for the output.
+				$crashafter = time() + 5;
+				while (!file_exists("/tmp/iptables.out")) {
+					if ($crashafter > time()) {
+						throw new \Exception("/tmp/iptables.out wasn't created");
+					}
+					usleep(200000);
+				}
+
+				// OK, it exists. We should be able to parse it as json
+				while (true) {
+					$json = file_get_contents("/tmp/iptables.out");
+					$res = json_decode($json, true);
+					if (!is_array($res)) {
+						 if ($crashafter > time()) {
+							throw new \Exception("/tmp/iptables.out wasn't valid json");
+						 }
+						 usleep(200000);
+					} else {
+						$this->currentconf = $res;
+						break;
+					}
+				}
+			}
 		}
 		// Return as a ref, people may want to mangle it.
 		return $this->currentconf;
@@ -285,7 +314,6 @@ class Iptables {
 			$this->cleanOurRules();
 			// And add our defaults in
 			$this->loadDefaultRules();
-			exit;
 		}
 	}
 
