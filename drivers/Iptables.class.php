@@ -66,7 +66,7 @@ class Iptables {
 		// later)
 		$current = &$this->getCurrentIptables();
 
-		// Are we IPv6 or IPv4? Note they're passed as ref, as we array_splice
+		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
 		// them later
 		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
 			$ipt = "/sbin/ip6tables";
@@ -117,8 +117,41 @@ class Iptables {
 	}
 
 	// Root process
-	public function removeNetworkFromZone($zone = false, $network = false) {
+	public function removeNetworkFromZone($zone = false, $network = false, $cidr = false) {
 		$this->checkFpbxFirewall();
+		$current = &$this->getCurrentIptables();
+		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
+		// them later
+		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+			$ipt = "/sbin/ip6tables";
+			$nets = &$current['ipv6']['filter']['fpbxnets'];
+		} elseif (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+			$ipt = "/sbin/iptables";
+			$nets = &$current['ipv4']['filter']['fpbxnets'];
+		} else {
+			throw new \Exception("Not an IP address $network");
+		}
+
+		// OK, so, let's see if it existts.
+		if ($cidr) {
+			$p = "-s $network/$cidr -j zone-$zone";
+		} else {
+			$p = "-s $network -j zone-$zone";
+		}
+		foreach ($nets as $i => $n) {
+			if ($n === $p) {
+				// Found it, yay. Remove it from our cache
+				array_splice($nets, $i, 1);
+				// And remove it from real life
+				$i++;
+				$cmd = "$ipt -D fpbxnets $i";
+				print "Running '$cmd'\n";
+				exec($cmd, $output, $ret);
+				return $ret;
+			}
+		}
+		print "Didn't find it. Boo\n";
+		return false;
 	}
 
 	// Root process
