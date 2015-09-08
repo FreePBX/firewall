@@ -1,4 +1,6 @@
 <?php
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+//
 // TODO: Split this into an interface.
 namespace FreePBX\modules\Firewall\Drivers;
 
@@ -427,10 +429,10 @@ class Iptables {
 					$json = file_get_contents("/tmp/iptables.out");
 					$res = json_decode($json, true);
 					if (!is_array($res)) {
-						 if ($crashafter > time()) {
+						if ($crashafter > time()) {
 							throw new \Exception("/tmp/iptables.out wasn't valid json");
-						 }
-						 usleep(200000);
+						}
+						usleep(200000);
 					} else {
 						$this->currentconf = $res;
 						break;
