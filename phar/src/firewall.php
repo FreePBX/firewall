@@ -118,6 +118,12 @@ function updateFirewallRules() {
 		$driver->updateServiceZones($s, $myzones);
 	}
 
+	// Update RTP rules
+	$rtp = $services['smartports']['rtp'];
+	$driver->setRtpPorts($rtp);
+
+	//
+
 	print "Done\n"; exit;
 }
 

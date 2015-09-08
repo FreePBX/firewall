@@ -1,5 +1,5 @@
 <?php
-// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent:
+// vim: :set filetype=php tabstop=4 shiftwidth=4:
 //
 // TODO: Split this into an interface.
 namespace FreePBX\modules\Firewall\Drivers;
@@ -395,6 +395,53 @@ class Iptables {
 			exec($cmd, $output, $ret);
 			$interfaces[] = "$p$newzone";
 		}
+	}
+
+	public function setRtpPorts($rtp = false) {
+		if (!is_array($rtp)) {
+			throw new \Exception("rtp neesds to be an array");
+		}
+
+		// Our protocol string
+		$proto = "-p udp -m udp --dport ".$rtp['start'].":".$rtp['end'];
+		print "I want to add '$proto'\n";
+		// We add this _before_ fbxnets in iptables
+		$current = &$this->getCurrentIptables();
+		
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		foreach ($ipvers as $ipv => $ipt) {
+			$me = &$current[$ipv]['filter']['fpbxfirewall'];
+			$pos = false;
+			foreach ($me as $i => $line) {
+				if (strpos($line, "-p udp -m udp --dport") !== false) {
+					// It's already there. Does it need updating?
+					if ($line === $proto) {
+						print "No need to update rtp\n";
+						break;
+					} else {
+						// It needs to be updated.
+						$me[$i] = $proto;
+						$i++;
+						$cmd = "$ipt -R fpbxfirewall $i $proto";
+						print "Running '$cmd'\n";
+						exec($cmd, $output, $ret);
+						break;
+					}
+				}
+				if (strpos($line, "-j fpbxnets") !== false) {
+					// We made it to the fpbxnets check, but we didn't find the rtp
+					// entry.  Insert it.
+					array_splice($me, $i, 0, $proto);
+					$i++;
+					$cmd = "$ipt -I fpbxfirewall $i $proto";
+					print "Running '$cmd'\n";
+					exec($cmd, $output, $ret);
+					break;
+				}
+			}
+		}
+		print "Finished\n";
+		return true;
 	}
 
 	// Driver Specific iptables stuff
