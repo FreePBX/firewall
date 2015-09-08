@@ -1,5 +1,5 @@
 <?php
-// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent:
 //
 // TODO: Split this into an interface.
 namespace FreePBX\modules\Firewall\Drivers;
@@ -560,6 +560,14 @@ class Iptables {
 		if ($ipt['filter']['INPUT'][0] === "-j fpbxfirewall") {
 			return true;
 		} else {
+			// Has something else been smart and tried to inject itself before us?
+			foreach ($ipt['filter']['INPUT'] as $i => $r) {
+				if ($r === "-j fpbxfirewall") {
+					// Yes. Yes they have. 
+					// TODO: Move it back to the first spot.
+					return true;
+				}
+			}
 			return false;
 		}
 	}
