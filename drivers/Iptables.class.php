@@ -411,7 +411,6 @@ class Iptables {
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
 		foreach ($ipvers as $ipv => $ipt) {
 			$me = &$current[$ipv]['filter']['fpbxfirewall'];
-			$pos = false;
 			foreach ($me as $i => $line) {
 				if (strpos($line, "-p udp -m udp --dport") !== false) {
 					// It's already there. Does it need updating?
@@ -442,6 +441,36 @@ class Iptables {
 		}
 		print "Finished\n";
 		return true;
+	}
+
+	public function updateTargets($rules) {
+		// Create fpbxsmarthosts targets
+		$this->checkTarget("fpbxtargets");
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		foreach ($ipvers as $ipv => $ipt) {
+			$me = &$current[$ipv]['filter']['fpbxtargets'];
+			if (!is_array($me)) {
+				$me = array();
+			}
+			$exists = array_flip($me);
+			foreach ($rules as $proto => $r) {
+				foreach ($r as $rule) {
+					$rule['proto'] = $proto;
+					// parseFilter has a trailing space. Figure out why?
+					$p = trim($this->parseFilter($rule))." -j ACCEPT";
+					if (isset($exists[$p])) {
+						unset($exists[$p]);
+						continue;
+					}
+
+					// Doesn't exist. Add it.
+					$me[] = $p;
+					$cmd = "$ipt -A fpbxtargets $p";
+					print "Running '$cmd'\n";
+					exec($cmd, $output, $ret);
+				}
+			}
+		}
 	}
 
 	// Driver Specific iptables stuff
@@ -544,6 +573,7 @@ class Iptables {
 		$retarr['fpbxfirewall'][]= array("ipvers" => 6, "proto" => "ipv6-icmp", "jump" => "ACCEPT");
 
 		// Now we can do our actual filtering.
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxsmarthosts");
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
 

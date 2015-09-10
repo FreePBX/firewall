@@ -122,7 +122,9 @@ function updateFirewallRules() {
 	$rtp = $services['smartports']['rtp'];
 	$driver->setRtpPorts($rtp);
 
-	//
+	$targets = $services['smartports']['signaling'];
+	// Update our knownhosts targets
+	$driver->updateTargets($targets);
 
 	print "Done\n"; exit;
 }
