@@ -75,6 +75,7 @@ class Services {
 			"defzones" => array("external", "internal"),
 			"descr" => _("Web management interface for FreePBX. This is the https interface."),
 			"fw" => array(array("protocol" => "tcp", "port" => 443)),
+			"noreject" => true,
 		);
 		return $retarr;
 	}

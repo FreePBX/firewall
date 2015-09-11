@@ -446,6 +446,7 @@ class Iptables {
 	public function updateTargets($rules) {
 		// Create fpbxsmarthosts targets
 		$this->checkTarget("fpbxtargets");
+		$current = &$this->getCurrentIptables();
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
 		foreach ($ipvers as $ipv => $ipt) {
 			$me = &$current[$ipv]['filter']['fpbxtargets'];
