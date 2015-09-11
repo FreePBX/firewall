@@ -405,7 +405,7 @@ class Iptables {
 		// Our protocol string
 		$proto = "-p udp -m udp --dport ".$rtp['start'].":".$rtp['end'];
 		print "I want to add '$proto'\n";
-		// We add this _before_ fbxnets in iptables
+		// We add this _before_ fpbxsmarthosts in iptables
 		$current = &$this->getCurrentIptables();
 		
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
@@ -427,7 +427,7 @@ class Iptables {
 						break;
 					}
 				}
-				if (strpos($line, "-j fpbxnets") !== false) {
+				if (strpos($line, "-j fpbxsmarthosts") !== false) {
 					// We made it to the fpbxnets check, but we didn't find the rtp
 					// entry.  Insert it.
 					array_splice($me, $i, 0, $proto);
@@ -444,8 +444,13 @@ class Iptables {
 	}
 
 	public function updateTargets($rules) {
-		// Create fpbxsmarthosts targets
+		// Create fpbxsmarthosts targets. These are machines that are known 'good' and have
+		// access to our VoIP signalling.
+		//
+		// Start by creating our known signalling ports. These are where known hosts
+		// are sent to, so they will get accepted straight away.
 		$this->checkTarget("fpbxtargets");
+		$ports = $rules['signalling'];
 		$current = &$this->getCurrentIptables();
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
 		foreach ($ipvers as $ipv => $ipt) {
@@ -454,7 +459,7 @@ class Iptables {
 				$me = array();
 			}
 			$exists = array_flip($me);
-			foreach ($rules as $proto => $r) {
+			foreach ($ports as $proto => $r) {
 				foreach ($r as $rule) {
 					$rule['proto'] = $proto;
 					// parseFilter has a trailing space. Figure out why?
@@ -471,7 +476,97 @@ class Iptables {
 					exec($cmd, $output, $ret);
 				}
 			}
+
+			// If there are any left in exists, we need to remove them.
+			$delids = array();
+
+			foreach ($exists as $rule => $i) {
+				// We delete the rule from iptables first...
+				$cmd = "$ipt -D fpbxtargets $rule";
+				print "Running '$cmd'\n";
+				exec($cmd, $output, $ret);
+
+				// And then grab the ID, so we can remove the entries in *reverse* order,
+				// so we don't lose our place.
+				$delids[] = $i;
+			}
+
+			// Now if there were any to be deleted, we delete them from the end backwards, 
+			// so our cache doesn't get out of whack.
+			arsort($delids);
+			foreach ($delids as $i) {
+				// NOW we can remove it from our cache
+				array_splice($me, $i, 1);
+			}
 		}
+
+		// Now create the entries in fpbxsmarthosts
+		$hosts = $rules['known'];
+		$me = &$current[$ipv]['filter']['fpbxsmarthosts'];
+		if (!is_array($me)) {
+			$me = array();
+		}
+
+		// Run through the hosts and add them to what we WANT our chains to be
+		$wanted = array("4" => array(), "6" => array());
+		foreach ($hosts as $addr) {
+			if (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+				$wanted[6][] = $addr;
+			} elseif (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+				$wanted[4][] = $addr;
+			} else {
+				throw new \Exception("Unknown host address $addr");
+			}
+		}
+
+		// And now add or remove them as neccesary. We do a bit of
+		// array mangling so I can avoid code duplication.
+
+		$smarthosts = array("ipv6" => array("ipt" => "/sbin/ip6tables", "targets" => $wanted[6], "prefix" => "128"),
+			"ipv4" => array("ipt" => "/sbin/iptables", "targets" => $wanted[4], "prefix" => "32"),
+		);
+
+		foreach ($smarthosts as $ipv => $tmparr) {
+			$me = &$current[$ipv]['filter']['fpbxsmarthosts'];
+			$exists = array_flip($me);
+			$process = $tmparr['targets'];
+			foreach ($process as $addr) {
+				$p = "-s $addr/".$tmparr['prefix']." -j fpbxtargets";
+				if (isset($exists[$p])) {
+					// It's already there, no need to change
+					unset($exists[$p]);
+					continue;
+				}
+				// It doesn't exist. We need to add it.
+				$me[] = $p;
+				$cmd = $tmparr['ipt']." -A fpbxsmarthosts $p";
+				print "Running '$cmd'\n";
+				exec($cmd, $output, $ret);
+			}
+
+			// Are any left over? They can be removed.
+			$delids = array();
+
+			foreach ($exists as $rule => $i) {
+				// We delete the rule from iptables first...
+				$cmd = "$ipt -D fpbxsmarthosts $rule";
+				print "Running '$cmd'\n";
+				exec($cmd, $output, $ret);
+
+				// And then grab the ID, so we can remove the entries in *reverse* order,
+				// so we don't lose our place.
+				$delids[] = $i;
+			}
+
+			// Now if there were any to be deleted, we delete them from the end backwards, 
+			// so our cache doesn't get out of whack.
+			arsort($delids);
+			foreach ($delids as $i) {
+				// NOW we can remove it from our cache
+				array_splice($me, $i, 1);
+			}
+		}
+		print "Phew!\n";
 	}
 
 	// Driver Specific iptables stuff

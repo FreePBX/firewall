@@ -50,7 +50,7 @@ class Smart {
 	public function getAllPorts() {
 		// Returns ALL ports.
 		$retarr = array(
-			'signaling' => $this->getVoipPorts(),
+			'signalling' => $this->getVoipPorts(),
 			'rtp' => $this->getRtpPorts(),
 			'known' => $this->getKnown(),
 		);
