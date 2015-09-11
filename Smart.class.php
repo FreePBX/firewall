@@ -53,6 +53,7 @@ class Smart {
 			'signalling' => $this->getVoipPorts(),
 			'rtp' => $this->getRtpPorts(),
 			'known' => $this->getKnown(),
+			'registrations' => $this->getRegistrations(),
 		);
 		return $retarr;
 	}
@@ -329,4 +330,81 @@ class Smart {
 			return $keys;
 		}
 	}
+
+	public function getRegistrations() {
+		// Get all registered devices
+		$astman = \FreePBX::create()->astman;
+		// This gives us an array
+		$contacts = $this->getPjsipContacts($astman);
+		// Pass by ref to the rest to remove dupes
+		$this->getChansipContacts($astman, $contacts);
+		$this->getIaxContacts($astman, $contacts);
+		return array_keys($contacts);
+	}
+
+	private function getPjsipContacts($astman) {
+
+		$response = $astman->send_request('Command',array('Command'=>"pjsip show contacts"));
+		// This is an amazingly awful format to parse.
+		$lines = explode("\n", $response['data']);
+		$inheader = true;
+		$istrunk = $isendpoint = false;
+		$contacts = array();
+		foreach ($lines as $l) {
+			if ($inheader) {
+				if (isset($l[1]) && $l[1] == "=") {
+					// Last line of the header.
+					$inheader = false;
+				}
+				continue;
+			}
+
+			$l = trim($l);
+			if (!$l) {
+				continue;
+			}
+
+			// If we have a line starting with 'Contact:' then we found one!
+			// This will be along the lines of '400/sip:400@192.168.15.38:5061          Avail     10.121'
+			if (strpos($l, "Contact:") === 0) {
+				if (preg_match("/Contact:\s+(.+)@(.+?)\s/", $l, $out)) {
+					// Ok, we have a contact. This should be an IP address. Is it?
+					if (preg_match("/(?:\[?)([0-9a-f:\.]+)(?:\]?):(.+)/", $out[2], $ipaddr)) {
+						$contacts[$ipaddr[1]] = true;
+					} else {
+						// It's a hostname, likely to be a trunk. Don't resolve,
+						// as we've already done that as part of the registration
+						print "Unknown host ".$out[2].", trunk?\n";
+						continue;
+					}
+				}
+			}
+		}
+		return $contacts;
+	}
+
+	private function getChansipContacts($astman, &$contacts) {
+		$response = $astman->send_request('Command',array('Command'=>"sip show peers"));
+		$lines = explode("\n", $response['data']);
+		foreach ($lines as $l) {
+			$tmparr = preg_split("/\s+/", $l);
+			if (filter_var($tmparr[1], FILTER_VALIDATE_IP)) {
+				$contacts[$tmparr[1]] = true;
+			}
+		}
+	}
+
+	private function getIaxContacts($astman, &$contacts) {
+		$response = $astman->send_request('Command',array('Command'=>"iax2 show peers"));
+		$lines = explode("\n", $response['data']);
+		foreach ($lines as $l) {
+			$tmparr = preg_split("/\s+/", $l);
+			if (filter_var($tmparr[1], FILTER_VALIDATE_IP)) {
+				$contacts[$tmparr[1]] = true;
+			}
+		}
+	}
+
+
+
 }

@@ -12,7 +12,7 @@ if (posix_geteuid() === 0) {
 
 // Fast BMO instantiation
 $bootstrap_settings['freepbx_auth'] = false;
-$bootstrap_settings['skip_astman'] = true;
+$bootstrap_settings['skip_astman'] = false;
 // $bootstrap_settings['whoops_handler'] = 'JsonResponseHandler';
 $restrict_mods = true;
 include '/etc/freepbx.conf';
