@@ -374,7 +374,7 @@ class Smart {
 					} else {
 						// It's a hostname, likely to be a trunk. Don't resolve,
 						// as we've already done that as part of the registration
-						print "Unknown host ".$out[2].", trunk?\n";
+						// print "Unknown host ".$out[2].", trunk?\n";
 						continue;
 					}
 				}

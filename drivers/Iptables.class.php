@@ -317,7 +317,6 @@ class Iptables {
 				$this->checkTarget("zone-$z");
 				// Loop through, make sure it's not in this zone
 				foreach ($live["zone-$z"] as $i => $lzone) {
-					print "Looking at '$lzone'\n";
 					if ($lzone == "-j $name") {
 						print "Found it!\n";
 						unset($live["zone-$z"][$i]);
@@ -336,7 +335,6 @@ class Iptables {
 				// Loop through, add it if it's not here.
 				$found = false;
 				foreach ($live["zone-$z"] as $i => $lzone) {
-					print "Looking at '$lzone'\n";
 					if ($lzone == "-j $name") {
 						print "Found it!\n";
 						$found = true;
@@ -373,7 +371,6 @@ class Iptables {
 		foreach ($ipvers as $ipv => $ipt) {
 			$interfaces = &$current[$ipv]['filter']['fpbxinterfaces'];
 			foreach ($interfaces as $i => $n) {
-				print "Looking for $p against $n\n";
 				if (strpos($n, $p) === 0) {
 					// Found it! Blow it away.
 					array_splice($interfaces, $i, 1);

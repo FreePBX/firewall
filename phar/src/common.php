@@ -68,6 +68,7 @@ function pharChanged() {
 }
 
 function fwLog($str) {
+	print "$str\n";
 	syslog(LOG_WARNING|LOG_LOCAL0, $str);
 }
 
