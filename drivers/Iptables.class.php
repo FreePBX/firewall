@@ -400,9 +400,9 @@ class Iptables {
 		}
 
 		// Our protocol string
-		$proto = "-p udp -m udp --dport ".$rtp['start'].":".$rtp['end'];
+		$proto = "-p udp -m udp --dport ".$rtp['start'].":".$rtp['end']." -j ACCEPT";
 		print "I want to add '$proto'\n";
-		// We add this _before_ fpbxsmarthosts in iptables
+		// We add this _before_ fpbxsignalling in iptables
 		$current = &$this->getCurrentIptables();
 		
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
@@ -424,7 +424,7 @@ class Iptables {
 						break;
 					}
 				}
-				if (strpos($line, "-j fpbxsmarthosts") !== false) {
+				if (strpos($line, "-j fpbxsignalling") !== false) {
 					// We made it to the fpbxnets check, but we didn't find the rtp
 					// entry.  Insert it.
 					array_splice($me, $i, 0, $proto);
@@ -441,17 +441,15 @@ class Iptables {
 	}
 
 	public function updateTargets($rules) {
-		// Create fpbxsmarthosts targets. These are machines that are known 'good' and have
-		// access to our VoIP signalling.
+		// Create fpbxsmarthosts targets and signalling targets
 		//
-		// Start by creating our known signalling ports. These are where known hosts
-		// are sent to, so they will get accepted straight away.
-		$this->checkTarget("fpbxtargets");
+		// 1: Signalling targets
+		$this->checkTarget("fpbxsignalling");
 		$ports = $rules['signalling'];
 		$current = &$this->getCurrentIptables();
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
 		foreach ($ipvers as $ipv => $ipt) {
-			$me = &$current[$ipv]['filter']['fpbxtargets'];
+			$me = &$current[$ipv]['filter']['fpbxsignalling'];
 			if (!is_array($me)) {
 				$me = array();
 			}
@@ -460,7 +458,7 @@ class Iptables {
 				foreach ($r as $rule) {
 					$rule['proto'] = $proto;
 					// parseFilter has a trailing space. Figure out why?
-					$p = trim($this->parseFilter($rule))." -j ACCEPT";
+					$p = trim($this->parseFilter($rule))." -j MARK --set-xmark 0x1/0x0";
 					if (isset($exists[$p])) {
 						unset($exists[$p]);
 						continue;
@@ -468,7 +466,7 @@ class Iptables {
 
 					// Doesn't exist. Add it.
 					$me[] = $p;
-					$cmd = "$ipt -A fpbxtargets $p";
+					$cmd = "$ipt -A fpbxsignalling $p";
 					print "Running '$cmd'\n";
 					exec($cmd, $output, $ret);
 				}
@@ -479,7 +477,7 @@ class Iptables {
 
 			foreach ($exists as $rule => $i) {
 				// We delete the rule from iptables first...
-				$cmd = "$ipt -D fpbxtargets $rule";
+				$cmd = "$ipt -D fpbxsignalling $rule";
 				print "Running '$cmd'\n";
 				exec($cmd, $output, $ret);
 
@@ -528,7 +526,7 @@ class Iptables {
 			$exists = array_flip($me);
 			$process = $tmparr['targets'];
 			foreach ($process as $addr) {
-				$p = "-s $addr/".$tmparr['prefix']." -j fpbxtargets";
+				$p = "-s $addr/".$tmparr['prefix']." -m mark --mark 0x1 -j ACCEPT";
 				if (isset($exists[$p])) {
 					// It's already there, no need to change
 					unset($exists[$p]);
@@ -666,8 +664,14 @@ class Iptables {
 		$retarr['fpbxfirewall'][]= array("ipvers" => 6, "proto" => "ipv6-icmp", "jump" => "ACCEPT");
 
 		// Now we can do our actual filtering.
+		// This marks VoIP Signalling packets
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxsignalling");
+		// This allows packets marked as signalling through if they're
+		// from known hosts.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxsmarthosts");
+		// This allows known networks
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
+		// And known interfaces.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
 
 		// Our 'trusted' zone is always allow everything.

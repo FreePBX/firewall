@@ -126,7 +126,8 @@ function updateFirewallRules() {
 	// Update our knownhosts targets
 	$driver->updateTargets($targets);
 
-	print "Done\n"; exit;
+	print "Done\n";
+	exit;
 }
 
 function sigSleep($secs = 10) {
