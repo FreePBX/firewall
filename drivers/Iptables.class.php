@@ -544,7 +544,7 @@ class Iptables {
 
 			foreach ($exists as $rule => $i) {
 				// We delete the rule from iptables first...
-				$cmd = "$ipt -D fpbxsmarthosts $rule";
+				$cmd = $tmparr['ipt']." -D fpbxsmarthosts $rule";
 				print "Running '$cmd'\n";
 				exec($cmd, $output, $ret);
 
@@ -564,8 +564,74 @@ class Iptables {
 		print "Phew!\n";
 	}
 
-	// Driver Specific iptables stuff
+	public function updateRegistrations($hosts) {
+		// Allow registered hosts through without hitting the rate limits
+		$this->checkTarget("fpbxregistrations");
+		// Run through the hosts and add them to what we WANT our chains to be
+		$wanted = array("4" => array(), "6" => array());
+		foreach ($hosts as $addr) {
+			if (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+				$wanted[6][] = $addr;
+			} elseif (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+				$wanted[4][] = $addr;
+			} else {
+				throw new \Exception("Unknown host address $addr");
+			}
+		}
 
+		// And now add or remove them as neccesary. We do a bit of
+		// array mangling so I can avoid code duplication.
+		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables", "targets" => $wanted[6], "prefix" => "128"),
+			"ipv4" => array("ipt" => "/sbin/iptables", "targets" => $wanted[4], "prefix" => "32"),
+		);
+
+		$current = &$this->getCurrentIptables();
+		foreach ($ipvers as $ipv => $tmparr) {
+			if (!$tmparr) {
+				continue;
+			}
+			$me = &$current[$ipv]['filter']['fpbxregistrations'];
+			$exists = array_flip($me);
+			$process = $tmparr['targets'];
+			foreach ($process as $addr) {
+				$p = "-s $addr/".$tmparr['prefix']." -j fpbxknownreg";
+				if (isset($exists[$p])) {
+					// It's already there, no need to change
+					unset($exists[$p]);
+					continue;
+				}
+				// It doesn't exist. We need to add it.
+				$me[] = $p;
+				$cmd = $tmparr['ipt']." -A fpbxregistrations $p";
+				print "Running '$cmd'\n";
+				exec($cmd, $output, $ret);
+			}
+
+			// Are any left over? They can be removed.
+
+			$delids = array();
+			foreach ($exists as $rule => $i) {
+				// We delete the rule from iptables first...
+				$cmd = $tmparr['ipt']." -D fpbxregistrations $rule";
+				print "Running '$cmd'\n";
+				exec($cmd, $output, $ret);
+
+				// And then grab the ID, so we can remove the entries in *reverse* order,
+				// so we don't lose our place.
+				$delids[] = $i;
+			}
+
+			// Now if there were any to be deleted, we delete them from the end backwards, 
+			// so our cache doesn't get out of whack.
+			arsort($delids);
+			foreach ($delids as $i) {
+				// NOW we can remove it from our cache
+				array_splice($me, $i, 1);
+			}
+		}
+	}
+
+	// Driver Specific iptables stuff
 	// Root process
 	private function &getCurrentIptables() {
 		if (!$this->currentconf) {
@@ -706,6 +772,10 @@ class Iptables {
 		// Log dropped packets. This should be visible in the GUI at some point.
 		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'Would drop: '");
 		// $retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
+
+		// Known Registrations are allowed to access signalling and UCP
+		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1", "jump" => "ACCEPT");
+		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 
 		return $retarr;
 	}

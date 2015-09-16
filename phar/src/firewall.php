@@ -131,6 +131,9 @@ function updateFirewallRules() {
 	// Update our knownhosts targets
 	$driver->updateTargets($targets);
 
+	// And permit our registrations through
+	$driver->updateRegistrations($services['smartports']['registrations']);
+
 	print "Done\n";
 	exit;
 }
