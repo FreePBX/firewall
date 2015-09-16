@@ -700,10 +700,11 @@ class Iptables {
 		$retarr['fpbxunknown'][] = array("other" => "-m recent --set --name UNKNOWN --rsource");
 		$retarr['fpbxunknown'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name UNKNOWN --rsource", "jump" => "fpbxlogdrop");
 		// OK, hasn't exceeded any rate limiting, good to go now.
+		$retarr['fpbxunknown'][] = array("jump" => "LOG", "append" => " --log-prefix 'Not rate limited: '");
 		$retarr['fpbxunknown'][] = array("jump" => "ACCEPT");
 
 		// Log dropped packets. This should be visible in the GUI at some point.
-		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'Would drop:'");
+		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'Would drop: '");
 		// $retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
 		return $retarr;
