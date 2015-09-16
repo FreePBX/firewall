@@ -16,6 +16,11 @@ if (posix_geteuid() !== 0) {
 	throw new \Exception("I must be run as root.");
 }
 
+// Make sure our conntrac module is configured correctly
+include 'modprobe.php';
+$m = new \FreePBX\Firewall\Modprobe;
+$m->checkModules();
+
 $v = new \FreePBX\modules\Firewall\Validator($sig);
 $v->checkFile("Services.class.php");
 

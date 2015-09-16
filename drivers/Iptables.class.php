@@ -656,8 +656,8 @@ class Iptables {
 		// Default sanity rules. 
 		// 1: Always allow all lo traffic, no matter what.
 		$retarr['fpbxfirewall'][]= array("int" => "lo", "jump" => "ACCEPT");
-		// 2: Allow related/established
-		$retarr['fpbxfirewall'][]= array("other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
+		// 2: Allow related/established - TCP ONLY!
+		$retarr['fpbxfirewall'][]= array("proto" => "tcp", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
 		// 3: Always allow ICMP (no, really, you always want to allow ICMP, stop thinking blocking
 		// it is a good idea)
 		$retarr['fpbxfirewall'][]= array("ipvers" => 4, "proto" => "icmp", "jump" => "ACCEPT");
@@ -673,9 +673,38 @@ class Iptables {
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
 		// And known interfaces.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
+		// If this is a VoIP Signalling packet from an unknown host, care about it.
+		$retarr['fpbxfirewall'][] = array("other" => "-m mark --mark 0x1", "jump" => "fpbxunknown");
 
 		// Our 'trusted' zone is always allow everything.
 		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
+
+		// VoIP Rate limiting happens here. If they've made it here, they're an unknown host
+		// sending VoIP *signalling* here. We want to give them a bit of slack, to make sure
+		// it's not a dynamic IP address of a known good client.
+		//
+		// Hardcoded defaults for unknown clients is up to 10 packets in 60 seconds,
+		// before they get clamped.
+		$retarr['fpbxunknown'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxlogdrop");
+		// Note, this is *deliberately* after the check. Otherwise it'll never time out.
+		$retarr['fpbxunknown'][] = array("other" => "-m recent --set --name SIGNALLING --rsource");
+		//
+		// However, we're a lot less forgiving over the longer term. Maximum of 100 unknown signalling
+		// requests per day.  (This is actually MORE than 100, as this is only hit for packets that
+		// haven't been filtered by our other rate limiting. I'm happy with these defaults, but,
+		// I'm also willing to be told I'm wrong, and I suck. Grab me on #freepbx (X-Rob) and tell me
+		// why I suck.)
+		//
+		// This is *deliberately* above the check, to ensure that once they've been caught by this
+		// filter, the only way out is to leave us alone.
+		$retarr['fpbxunknown'][] = array("other" => "-m recent --set --name UNKNOWN --rsource");
+		$retarr['fpbxunknown'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name UNKNOWN --rsource", "jump" => "fpbxlogdrop");
+		// OK, hasn't exceeded any rate limiting, good to go now.
+		$retarr['fpbxunknown'][] = array("jump" => "ACCEPT");
+
+		// Log dropped packets. This should be visible in the GUI at some point.
+		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'Would drop:'");
+		// $retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
 		return $retarr;
 	}
@@ -788,6 +817,10 @@ class Iptables {
 			throw new \Exception("Wat. Nothing? ".json_encode($arr));
 		}
 
+		if (isset($arr['append'])) {
+			$str .= $arr['append'];
+		}
+
 		// Make sure nothing can escape from this.
 		return escapeshellcmd($str);
 	}
@@ -821,7 +854,9 @@ class Iptables {
 			throw new \Exception("Error with $chain or $arr\n");
 		}
 
-		$this->checkTarget($arr['jump']);
+		if (isset($arr['jump'])) {
+			$this->checkTarget($arr['jump']);
+		}
 
 		if (!isset($arr['ipvers'])) {
 			$arr['ipvers'] = "both";
