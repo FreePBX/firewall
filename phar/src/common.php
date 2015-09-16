@@ -72,3 +72,18 @@ function fwLog($str) {
 	syslog(LOG_WARNING|LOG_LOCAL0, $str);
 }
 
+
+function isValidZone($zone = false) {
+	switch ($zone) {
+		case "trusted":
+		case "internal":
+		case "external":
+		case "other":
+		case "reject":
+			return true;
+	}
+	return false;
+}
+
+
+

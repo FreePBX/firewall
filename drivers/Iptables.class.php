@@ -392,6 +392,9 @@ class Iptables {
 			exec($cmd, $output, $ret);
 			$interfaces[] = "$p$newzone";
 		}
+
+		$net = new \FreePBX\modules\Firewall\Network;
+		$net->updateInterfaceZone($i, $newzone);
 	}
 
 	public function setRtpPorts($rtp = false) {
@@ -789,7 +792,7 @@ class Iptables {
 			if (empty($line)) {
 				continue;
 			}
-			print "Parsing '$line'\n";
+			// print "Parsing '$line'\n";
 			$firstchar = $line[0];
 
 			if ($firstchar == "*") {

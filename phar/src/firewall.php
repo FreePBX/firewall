@@ -16,7 +16,7 @@ if (posix_geteuid() !== 0) {
 	throw new \Exception("I must be run as root.");
 }
 
-// Make sure our conntrac module is configured correctly
+// Make sure our conntrack module is configured correctly
 include 'modprobe.php';
 $m = new \FreePBX\Firewall\Modprobe;
 $m->checkModules();
@@ -25,6 +25,17 @@ $v = new \FreePBX\modules\Firewall\Validator($sig);
 $v->checkFile("Services.class.php");
 
 require 'Services.class.php';
+
+// Now, what about our interfaces? They're configured, right?
+$v->checkFile("Network.class.php");
+require 'Network.class.php';
+$nets = new \FreePBX\modules\Firewall\Network;
+$known = $nets->discoverInterfaces();
+foreach ($known as $int => $conf) {
+	if (!isset($conf['config']['ZONE']) || !isValidZone($conf['config']['ZONE'])) {
+		$nets->updateInterfaceZone($int, "trusted");
+	}
+}
 
 // Turns out that this is unreliable. Which is why we use sigSleep below.
 pcntl_signal(SIGHUP, "sigHupHandler");
