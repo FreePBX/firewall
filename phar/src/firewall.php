@@ -16,20 +16,39 @@ if (posix_geteuid() !== 0) {
 	throw new \Exception("I must be run as root.");
 }
 
-// Make sure our conntrack module is configured correctly
+// Grab what our database connection settings are
+$f = file_get_contents("/etc/freepbx.conf");
+
+preg_match_all("/amp_conf\[['\"](.+)['\"]\]\s?=\s?['\"](.+)['\"];/m", $f, $out);
+$mysettings = array();
+
+foreach($out[1] as $id => $val) {
+	$mysettings[$val] = $out[2][$id];
+}
+
+$fwconf = getSettings($mysettings);
+
+if (!$fwconf['active']) {
+	fwLog("Not active. Shutting down");
+	shutdown();
+}
+
+// Make sure our conntrack kernel module is configured correctly
 include 'modprobe.php';
 $m = new \FreePBX\Firewall\Modprobe;
 $m->checkModules();
+unset($m);
 
 $v = new \FreePBX\modules\Firewall\Validator($sig);
 $path = $v->checkFile("Services.class.php");
 include $path;
 
-// Now, what about our interfaces? They're configured, right?
+// Now, start by grabbing our interfaces, and making sure
+// they are configured correctly.
 $path = $v->checkFile("Network.class.php");
 include $path;
-
 $nets = new \FreePBX\modules\Firewall\Network;
+
 $known = $nets->discoverInterfaces();
 foreach ($known as $int => $conf) {
 	if (!isset($conf['config']['ZONE']) || !isValidZone($conf['config']['ZONE'])) {
@@ -41,19 +60,10 @@ foreach ($known as $int => $conf) {
 	$driver->changeInterfaceZone($int, $zone);
 }
 
-// Grab what our database connection settings are
-$f = file_get_contents("/etc/freepbx.conf");
-preg_match_all("/amp_conf\[['\"](.+)['\"]\]\s?=\s?['\"](.+)['\"];/m", $f, $out);
-$mysettings = array();
-foreach($out[1] as $id => $val) {
-	$mysettings[$val] = $out[2][$id];
-}
-
-// Now we can ask for known networks.
-$conf = getSettings($mysettings);
+// Same for our known networks
 $nets = array();
-if (!empty($conf['networkmaps'])) {
-	$nets = @json_decode($conf['networkmaps'], true);
+if (!empty($fwconf['networkmaps'])) {
+	$nets = @json_decode($fwconf['networkmaps'], true);
 }
 if ($nets && is_array($nets)) {
 	foreach ($nets as $n => $zone) {
@@ -70,13 +80,13 @@ $lastfin = 1;
 
 while(true) {
 	fwLog("Looping");
-	$conf = getSettings($mysettings);
-	if (!$conf['active']) {
+	$fwconf = getSettings($mysettings);
+	if (!$fwconf['active']) {
 		fwLog("Not active. Shutting down");
 		shutdown();
 	}
 	checkPhar();
-	$runafter = $lastfin + $conf['period'];
+	$runafter = $lastfin + $fwconf['period'];
 	if ($runafter < time()) {
 		// We finished more than $period ago. We can run again.
 		updateFirewallRules();
@@ -84,7 +94,7 @@ while(true) {
 		continue;
 	} else {
 		// Sleep until we're ready to go again.
-		sigSleep($conf['period']/10);
+		sigSleep($fwconf['period']/10);
 	}
 }
 
