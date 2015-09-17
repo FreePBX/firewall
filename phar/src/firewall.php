@@ -51,9 +51,10 @@ foreach($out[1] as $id => $val) {
 $lastfin = 1;
 
 while(true) {
+	fwLog("Looping");
 	$conf = getSettings($mysettings);
 	if (!$conf['active']) {
-		print "Not active. Shutting down\n";
+		fwLog("Not active. Shutting down");
 		shutdown();
 	}
 	checkPhar();
@@ -184,6 +185,8 @@ function updateFirewallRules() {
 	// Asterisk user
 	$astuser = "asterisk";
 
+	fwLog("Starting update");
+
 	// We want to switch to the asterisk user and ask for the port mappings.
 	if (!$v->checkFile("bin/getservices")) {
 		fwLog("Can't validate bin/getservices");
@@ -201,7 +204,6 @@ function updateFirewallRules() {
 		"internal" => "internal", "trusted" => "trusted");
 
 	foreach ($services['services'] as $s => $settings) {
-		print "Doing $s\n";
 		// Make sure the service is configured correctly
 		if (isset($settings['fw'])) {
 			$driver->updateService($s, $settings['fw']);
@@ -230,8 +232,7 @@ function updateFirewallRules() {
 
 	// And permit our registrations through
 	$driver->updateRegistrations($services['smartports']['registrations']);
-
-	print "Done\n";
+	fwLog("Update complete.");
 }
 
 function sigSleep($secs = 10) {

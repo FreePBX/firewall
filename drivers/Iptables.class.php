@@ -9,6 +9,14 @@ class Iptables {
 
 	private $currentconf = false;
 
+	public function l($str) {
+		if (function_exists("fwLog")) {
+			fwLog($str);
+		} else {
+			print "LOG: $str\n";
+		}
+	}
+
 	public function getZonesDetails() {
 		// Returns array( "zonename" => array("interfaces" => .., "services" => .., "sources" => .. ), 
 		//   "zonename" => .. 
@@ -30,7 +38,6 @@ class Iptables {
 			return $zones;
 		}
 
-		print "Is configured\n";
 		return $current;
 	}
 
@@ -115,20 +122,20 @@ class Iptables {
 			$i++;
 			$cmd = "$ipt -I fpbxnets $i -s $network/$cidr -j zone-$zone";
 		}
-		print "Running '$cmd'\n";
+		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		return $ret;
 	}
 
 	// Root process
 	public function removeNetworkFromZone($zone = false, $network = false, $cidr = false) {
-		print "removeNetworkFromZone $zone, $network, $cidr\n";
+
+		$this->checkFpbxFirewall();
 
 		// Check to see if we have a cidr or not.
 		if (strpos($network, "/") !== false) {
 			list($network, $cidr) = explode("/", $network);
 		}
-		$this->checkFpbxFirewall();
 		$current = &$this->getCurrentIptables();
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
 		// them later
@@ -155,18 +162,16 @@ class Iptables {
 				// And remove it from real life
 				$i++;
 				$cmd = "$ipt -D fpbxnets $i";
-				print "Running '$cmd'\n";
+				$this->l($cmd);
 				exec($cmd, $output, $ret);
 				return $ret;
 			}
 		}
-		print "Didn't find it. Boo\n";
 		return false;
 	}
 
 	// Root process
 	public function changeNetworksZone($newzone = false, $network = false, $cidr = false) {
-		print "changeNetworksZone $newzone, $network, $cidr\n";
 		$this->checkFpbxFirewall();
 
 		$current = &$this->getCurrentIptables();
@@ -205,7 +210,7 @@ class Iptables {
 				// And remove it from real life
 				$i++;
 				$cmd = "$ipt -D fpbxnets $i";
-				print "Running '$cmd'\n";
+				$this->l($cmd);
 				exec($cmd, $output, $ret);
 			}
 		}
@@ -240,7 +245,6 @@ class Iptables {
 					if (isset($flipped['-j RETURN'])) {
 						unset($flipped['-j RETURN']);
 					} else {
-						print "Can't find it\n";
 						$changed = true;
 					}
 				} else {
@@ -251,7 +255,6 @@ class Iptables {
 						if (isset($flipped[$param])) {
 							unset($flipped[$param]);
 						} else {
-							print "Couldn't find '$param'\n";
 							$changed = true;
 							break;
 						}
@@ -261,7 +264,6 @@ class Iptables {
 				if (!$changed) {
 					// Make sure there's nothing left
 					if (count($flipped) !== 0) {
-						print "Count wrong\n";
 						$changed = true;
 					}
 				}
@@ -271,7 +273,7 @@ class Iptables {
 				// Flush our old rules, add our new ones.
 				$current[$ipv]['filter'][$name] = array();
 				$cmd = "$ipt -F $name";
-				print "running '$cmd'\n";
+				$this->l($cmd);
 				exec($cmd, $output, $ret);
 
 				// Add the new ones
@@ -280,7 +282,7 @@ class Iptables {
 					$param = "-j RETURN";
 					$current[$ipv]['filter'][$name][] = $param;
 					$cmd = "$ipt -A $name $param";
-					print "running '$cmd'\n";
+					$this->l($cmd);
 					exec($cmd, $output, $ret);
 				} else {
 					foreach ($ports as $arr) {
@@ -289,7 +291,7 @@ class Iptables {
 						$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
 						$current[$ipv]['filter'][$name][] = $param;
 						$cmd = "$ipt -A $name $param";
-						print "running '$cmd'\n";
+						$this->l($cmd);
 						exec($cmd, $output, $ret);
 					}
 				}
@@ -313,16 +315,14 @@ class Iptables {
 			// Remove service from zones it shouldn't be in..
 			$live = &$current[$ipv]['filter'];
 			foreach ($zones['removefrom'] as $z) {
-				print "Want to remove $z\n";
 				$this->checkTarget("zone-$z");
 				// Loop through, make sure it's not in this zone
 				foreach ($live["zone-$z"] as $i => $lzone) {
 					if ($lzone == "-j $name") {
-						print "Found it!\n";
 						unset($live["zone-$z"][$i]);
 						$i++;
 						$cmd = "$ipt -D zone-$z $i";
-						print "Running $cmd\n";
+						$this->l($cmd);
 						exec($cmd, $output, $ret);
 					}
 				}
@@ -330,13 +330,11 @@ class Iptables {
 
 			// Add it to the zones it should be
 			foreach ($zones['addto'] as $z) {
-				print "Want to add $z\n";
 				$this->checkTarget("zone-$z");
 				// Loop through, add it if it's not here.
 				$found = false;
 				foreach ($live["zone-$z"] as $i => $lzone) {
 					if ($lzone == "-j $name") {
-						print "Found it!\n";
 						$found = true;
 					}
 				}
@@ -345,7 +343,7 @@ class Iptables {
 					// Need to add it.
 					$live["zone-$z"][] = "-j $name";
 					$cmd = "$ipt -A zone-$z -j $name";
-					print "Running $cmd\n";
+					$this->l($cmd);
 					exec($cmd, $output, $ret);
 				}
 			}
@@ -354,7 +352,6 @@ class Iptables {
 
 	// Root process
 	public function changeInterfaceZone($iface = false, $newzone = false) {
-		print "changeInterfaceZone $iface $newzone\n";
 		$this->checkFpbxFirewall();
 		$this->checkTarget("zone-$newzone");
 
@@ -377,7 +374,7 @@ class Iptables {
 					// And remove it from real life
 					$i++;
 					$cmd = "$ipt -D fpbxinterfaces $i";
-					print "Running '$cmd'\n";
+					$this->l($cmd);
 					exec($cmd, $output, $ret);
 					// Break disabled, just to make sure that if there
 					// are multiple entries for the same interface, they're
@@ -387,7 +384,7 @@ class Iptables {
 			}
 			// Now we can just add it.
 			$cmd = "$ipt -A fpbxinterfaces $p$newzone";
-			print "Running '$cmd'\n";
+			$this->l($cmd);
 			$output = null;
 			exec($cmd, $output, $ret);
 			$interfaces[] = "$p$newzone";
@@ -404,7 +401,6 @@ class Iptables {
 
 		// Our protocol string
 		$proto = "-p udp -m udp --dport ".$rtp['start'].":".$rtp['end']." -j ACCEPT";
-		print "I want to add '$proto'\n";
 		// We add this _before_ fpbxsignalling in iptables
 		$current = &$this->getCurrentIptables();
 		
@@ -415,14 +411,13 @@ class Iptables {
 				if (strpos($line, "-p udp -m udp --dport") !== false) {
 					// It's already there. Does it need updating?
 					if ($line === $proto) {
-						print "No need to update rtp\n";
 						break;
 					} else {
 						// It needs to be updated.
 						$me[$i] = $proto;
 						$i++;
 						$cmd = "$ipt -R fpbxfirewall $i $proto";
-						print "Running '$cmd'\n";
+						$this->l($cmd);
 						exec($cmd, $output, $ret);
 						break;
 					}
@@ -433,13 +428,12 @@ class Iptables {
 					array_splice($me, $i, 0, $proto);
 					$i++;
 					$cmd = "$ipt -I fpbxfirewall $i $proto";
-					print "Running '$cmd'\n";
+					$this->l($cmd);
 					exec($cmd, $output, $ret);
 					break;
 				}
 			}
 		}
-		print "Finished\n";
 		return true;
 	}
 
@@ -470,7 +464,7 @@ class Iptables {
 					// Doesn't exist. Add it.
 					$me[] = $p;
 					$cmd = "$ipt -A fpbxsignalling $p";
-					print "Running '$cmd'\n";
+					$this->l($cmd);
 					exec($cmd, $output, $ret);
 				}
 			}
@@ -481,7 +475,7 @@ class Iptables {
 			foreach ($exists as $rule => $i) {
 				// We delete the rule from iptables first...
 				$cmd = "$ipt -D fpbxsignalling $rule";
-				print "Running '$cmd'\n";
+				$this->l($cmd);
 				exec($cmd, $output, $ret);
 
 				// And then grab the ID, so we can remove the entries in *reverse* order,
@@ -538,7 +532,7 @@ class Iptables {
 				// It doesn't exist. We need to add it.
 				$me[] = $p;
 				$cmd = $tmparr['ipt']." -A fpbxsmarthosts $p";
-				print "Running '$cmd'\n";
+				$this->l($cmd);
 				exec($cmd, $output, $ret);
 			}
 
@@ -548,7 +542,7 @@ class Iptables {
 			foreach ($exists as $rule => $i) {
 				// We delete the rule from iptables first...
 				$cmd = $tmparr['ipt']." -D fpbxsmarthosts $rule";
-				print "Running '$cmd'\n";
+				$this->l($cmd);
 				exec($cmd, $output, $ret);
 
 				// And then grab the ID, so we can remove the entries in *reverse* order,
@@ -564,7 +558,6 @@ class Iptables {
 				array_splice($me, $i, 1);
 			}
 		}
-		print "Phew!\n";
 	}
 
 	public function updateRegistrations($hosts) {
@@ -606,7 +599,7 @@ class Iptables {
 				// It doesn't exist. We need to add it.
 				$me[] = $p;
 				$cmd = $tmparr['ipt']." -A fpbxregistrations $p";
-				print "Running '$cmd'\n";
+				$this->l($cmd);
 				exec($cmd, $output, $ret);
 			}
 
@@ -616,7 +609,7 @@ class Iptables {
 			foreach ($exists as $rule => $i) {
 				// We delete the rule from iptables first...
 				$cmd = $tmparr['ipt']." -D fpbxregistrations $rule";
-				print "Running '$cmd'\n";
+				$this->l($cmd);
 				exec($cmd, $output, $ret);
 
 				// And then grab the ID, so we can remove the entries in *reverse* order,
@@ -909,14 +902,14 @@ class Iptables {
 
 		// IPv4
 		$cmd = "/sbin/iptables -I $chain $parsed";
-		print "Doing $cmd\n";
+		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		// Add it to our local array
 		array_unshift($this->currentconf['ipv4']['filter'][$chain], $parsed);
 
 		// IPv6
 		$cmd = "/sbin/ip6tables -I $chain $parsed";
-		print "Doing $cmd\n";
+		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		// Add it to our local array
 		array_unshift($this->currentconf['ipv6']['filter'][$chain], $parsed);
@@ -938,11 +931,9 @@ class Iptables {
 
 		$parsed = $this->parseFilter($arr);
 
-		print "I have '$parsed' from ".json_encode($arr)."\n";
-
 		if ($arr['ipvers'] == 6 || $arr['ipvers'] == "both") {
 			$cmd = "/sbin/ip6tables -A $chain $parsed";
-			print "Doing $cmd\n";
+			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			if ($ret === 0) {
 				$this->currentconf['ipv6']['filter'][$chain][] =  $parsed;
@@ -950,7 +941,7 @@ class Iptables {
 		}
 		if ($arr['ipvers'] == 4 || $arr['ipvers'] == "both") {
 			$cmd = "/sbin/iptables -A $chain $parsed";
-			print "Doing $cmd\n";
+			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			if ($ret === 0) {
 				$this->currentconf['ipv4']['filter'][$chain][] =  $parsed;
@@ -984,7 +975,7 @@ class Iptables {
 
 		// IPv4
 		$cmd = "/sbin/iptables -N ".escapeshellcmd($target);
-		print "Doing $cmd\n";
+		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		if ($ret == 0) {
 			$this->currentconf['ipv4']['filter'][$target] = array();
@@ -993,7 +984,7 @@ class Iptables {
 		$output = null;
 		// IPv6
 		$cmd = "/sbin/ip6tables -N ".escapeshellcmd($target);
-		print "Doing $cmd\n";
+		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		if ($ret == 0) {
 			$this->currentconf['ipv6']['filter'][$target] = array();
