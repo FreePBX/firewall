@@ -391,7 +391,7 @@ class Iptables {
 		}
 
 		$net = new \FreePBX\modules\Firewall\Network;
-		$net->updateInterfaceZone($i, $newzone);
+		$net->updateInterfaceZone($iface, $newzone);
 	}
 
 	public function setRtpPorts($rtp = false) {

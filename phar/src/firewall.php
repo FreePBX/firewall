@@ -34,7 +34,11 @@ $known = $nets->discoverInterfaces();
 foreach ($known as $int => $conf) {
 	if (!isset($conf['config']['ZONE']) || !isValidZone($conf['config']['ZONE'])) {
 		$nets->updateInterfaceZone($int, "trusted");
+		$zone = "trusted";
+	} else {
+		$zone = $conf['config']['ZONE'];
 	}
+	$driver->changeInterfaceZone($int, $zone);
 }
 
 // Turns out that this is unreliable. Which is why we use sigSleep below.

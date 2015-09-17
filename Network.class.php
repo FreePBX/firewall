@@ -146,7 +146,6 @@ class Network {
 				}
 			}
 		}
-		exit;
 	}
 }
 
