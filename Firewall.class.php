@@ -164,7 +164,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return;
 		case 'enablefw':
 			$this->setConfig("status", true);
+			$this->runHook("firewall");
 			return;
+		case 'disablefw':
+			$this->setConfig("status", false);
+			return;
+		case 'updateservices':
 		case 'updateservices':
 			if (!isset($_REQUEST['svc'])) {
 				throw new \Exception("No services to update");

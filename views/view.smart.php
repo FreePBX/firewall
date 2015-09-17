@@ -50,13 +50,13 @@ foreach ($periods as $name => $val) {
 </div>
 
 <div class='row'>
-<div class='form-horizontal clearfix'>
-  <div class='col-sm-4'>
-    <label class='control-label' for='ssf'><?php echo $ssf; ?></label>
+  <div class='form-horizontal clearfix'>
+    <div class='col-sm-4'>
+      <label class='control-label' for='ssf'><?php echo $ssf; ?></label>
+    </div>
+    <div class='col-sm-8'>
+      <button type='submit' name='action' value='disablefw' class='btn btn-default'><?php echo _("Disable"); ?></button>
+    </div>
   </div>
-  <div class='col-sm-8'>
-    <button type='button' class='btn btn-default'><?php echo _("Disable"); ?></button>
-  </div>
-</div>
 </div>
 

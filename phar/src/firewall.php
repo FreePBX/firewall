@@ -40,21 +40,107 @@ foreach ($known as $int => $conf) {
 // Turns out that this is unreliable. Which is why we use sigSleep below.
 pcntl_signal(SIGHUP, "sigHupHandler");
 
-// Update every 60 seconds.
-$period = 60;
+// Grab what our database connection settings are
+$f = file_get_contents("/etc/freepbx.conf");
+preg_match_all("/amp_conf\[['\"](.+)['\"]\]\s?=\s?['\"](.+)['\"];/m", $f, $out);
+$mysettings = array();
+foreach($out[1] as $id => $val) {
+	$mysettings[$val] = $out[2][$id];
+}
 
-$lastfin = time() - $period - 10;
+$lastfin = 1;
+
 while(true) {
+	$conf = getSettings($mysettings);
+	if (!$conf['active']) {
+		print "Not active. Shutting down\n";
+		shutdown();
+	}
 	checkPhar();
-	if ($lastfin + $period < time()) {
+	$runafter = $lastfin + $conf['period'];
+	if ($runafter < time()) {
 		// We finished more than $period ago. We can run again.
 		updateFirewallRules();
 		$lastfin = time();
 		continue;
 	} else {
 		// Sleep until we're ready to go again.
-		sigSleep($period/10);
+		sigSleep($conf['period']/10);
 	}
+}
+
+function getSettings($mysettings) {
+	$pdo = getDbHandle($mysettings);
+	$sth = $pdo->prepare('SELECT * FROM `kvstore` where `module`=? and id="noid"');
+	$sth->execute(array('FreePBX\modules\Firewall'));
+	$retarr = array();
+	$res = $sth->fetchAll();
+	foreach ($res as $row) {
+		$retarr[$row['key']] = $row['val'];
+	}
+
+	// Should we be running?
+	if (isset($retarr['status']) && $retarr['status']) {
+		$retarr['active'] = true;
+	} else {
+		$retarr['active'] = false;
+	}
+
+	if (!isset($retarr['refresh'])) {
+		$retarr['refresh'] = "normal";
+	}
+
+	if ($retarr['refresh'] == "fast") {
+		$period = 30;
+	} elseif ($retarr['refresh'] == "slow") {
+		$period = 120;
+	} else {
+		$period = 60;
+	}
+	$retarr['period'] = $period;
+
+	return $retarr;
+}
+
+function shutdown() {
+	global $thissvc;
+
+	Lock::unLock($thissvc);
+	exit;
+}
+
+function getDbHandle($mysettings) {
+	static $pdo = false;
+	// Make sure it hasn't gone away if it previously existed
+	if (is_object($pdo)) {
+		try {
+			$pdo->query("SHOW STATUS;")->execute();
+		} catch(\PDOException $e) {
+			if ($e->getCode() != 'HY000' || !stristr($e->getMessage(), 'server has gone away')) {
+				throw $e;
+			} else {
+				// Reconnect!
+				$pdo = false;
+			}
+		}
+	}
+
+	// Now, do we need to connect or reconnect?
+	if (!$pdo) {
+		if(empty($mysettings['AMPDBSOCK'])) {
+			if (empty($mysettings['AMPDBHOST'])) {
+				$conn = "host=localhost";
+			} else {
+				$conn = "host=".$mysettings['AMPDBHOST'];
+			}
+		} else {
+			$conn = "unix_socket=".$mysettings['AMPDBSOCK'];
+		}
+		$dsn = $mysettings['AMPDBENGINE'].":$conn;dbname=".$mysettings['AMPDBNAME'].";charset=utf8";
+		$pdo = new \PDO($dsn, $mysettings['AMPDBUSER'], $mysettings['AMPDBPASS'], array(\PDO::ATTR_PERSISTENT => true));
+		$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+	}
+	return $pdo;
 }
 
 function checkPhar() {
@@ -146,7 +232,6 @@ function updateFirewallRules() {
 	$driver->updateRegistrations($services['smartports']['registrations']);
 
 	print "Done\n";
-	exit;
 }
 
 function sigSleep($secs = 10) {
