@@ -41,9 +41,6 @@ foreach ($known as $int => $conf) {
 	$driver->changeInterfaceZone($int, $zone);
 }
 
-// Turns out that this is unreliable. Which is why we use sigSleep below.
-pcntl_signal(SIGHUP, "sigHupHandler");
-
 // Grab what our database connection settings are
 $f = file_get_contents("/etc/freepbx.conf");
 preg_match_all("/amp_conf\[['\"](.+)['\"]\]\s?=\s?['\"](.+)['\"];/m", $f, $out);
@@ -52,6 +49,23 @@ foreach($out[1] as $id => $val) {
 	$mysettings[$val] = $out[2][$id];
 }
 
+// Now we can ask for known networks.
+$conf = getSettings($mysettings);
+$nets = array();
+if (!empty($conf['networkmaps'])) {
+	$nets = @json_decode($conf['networkmaps'], true);
+}
+if ($nets && is_array($nets)) {
+	foreach ($nets as $n => $zone) {
+		list($network, $cidr) = explode("/", $n);
+		$driver->addNetworkToZone($zone, $network, $cidr);
+	}
+}
+
+// Turns out that this is unreliable. Which is why we use sigSleep below.
+pcntl_signal(SIGHUP, "sigHupHandler");
+
+// Always run the update the first time.
 $lastfin = 1;
 
 while(true) {

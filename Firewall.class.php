@@ -311,7 +311,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function getZoneNetworks() {
 		$d = $this->getDriver();
-		return $d->getKnownNetworks();
+		$nets = $d->getKnownNetworks();
+		$this->setConfig("networkmaps", $nets);
+		return $nets;
 	}
 
 	public function detectNetwork() {
