@@ -22,13 +22,13 @@ $m = new \FreePBX\Firewall\Modprobe;
 $m->checkModules();
 
 $v = new \FreePBX\modules\Firewall\Validator($sig);
-$v->checkFile("Services.class.php");
-
-require 'Services.class.php';
+$path = $v->checkFile("Services.class.php");
+include $path;
 
 // Now, what about our interfaces? They're configured, right?
-$v->checkFile("Network.class.php");
-require 'Network.class.php';
+$path = $v->checkFile("Network.class.php");
+include $path;
+
 $nets = new \FreePBX\modules\Firewall\Network;
 $known = $nets->discoverInterfaces();
 foreach ($known as $int => $conf) {
