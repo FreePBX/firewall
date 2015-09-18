@@ -783,13 +783,13 @@ class Iptables {
 		// This is *deliberately* above the check, to ensure that once they've been caught by this
 		// filter, the only way out is to leave us alone.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name UNKNOWN --rsource", "jump" => "fpbxlogdrop");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxlogdrop");
 
 		// OK, hasn't exceeded any rate limiting, good to go, for now.
 		$retarr['fpbxrfw'][] = array("jump" => "ACCEPT");
 
 		// Log dropped packets. This should be visible in the GUI at some point.
-		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => "'logdrop: '");
+		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'logdrop: '");
 		$retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
 		// Known Registrations are allowed to access signalling and UCP
