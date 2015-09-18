@@ -109,7 +109,8 @@ foreach ($ints as $i => $conf) {
       </div>
 
       <div role="tabpanel" id="netsettings" class="tab-pane <?php echo $net; ?>">
-	<p><?php echo _("Individual networks may be specified to override the default rule for an interface. For example, if interface eth0 is assigned to the 'External' zone, you can add a specific <strong>source</strong> network to the 'Trusted' zone. This will override the default rule for that interface, so traffic from that network will be treated as 'Trusted',  whilst all traffic NOT originating from that network is Filtered by the default rules."); ?></p>
+	<p><?php echo _("Individual networks may be specified here, that override the default rule for an interface."); ?></p>
+        <p><?php echo _("For example, if interface eth0 is assigned to the 'External' zone, here you can add a specific <strong>source</strong> network to the 'Trusted' zone. After you have done that, any connections <strong>originating</strong> from that network (and arriving on <i>any interface</i>) will be treated as 'Trusted'. All other traffic arriving at that interface is only allowed access to services available to the 'External' zone."); ?></p>
         <p><?php echo _("Note that several common settings are available on the 'Advanced' page."); ?></p>
 <?php
 $nets = $fw->getZoneNetworks();
