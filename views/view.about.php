@@ -10,24 +10,44 @@ $periods = array("normal" => _("Normal"), "fast" => _("Fast"), "slow" => _("Slow
 <?php
 $docs = array(
 	"$ssf "._("is a fully integrated and tightly coupled firewall that constantly monitors the remote clients allowed to connect to this machine, and automatically allows access from valid hosts."),
-	_("This is done by a small process that runs on your FreePBX server that automatically updates firewall rules based on the current trunk and extension configuration of FreePBX.")
+	_("This is done by a small process that runs on your FreePBX server that automatically updates firewall rules based on the current trunk and extension configuration of FreePBX."),
+	_("The 'Refresh Period' is how often the firewall updates its rules. You would set it to 'fast' if you have many endpoints that are constantly registering and de-registering, or 'slow' if you are on a low powered machine."),
 );
-
-if ($smart['responsive']) {
-	$docs[] = _("Responsive Firewall is <strong>enabled</strong>.");
-	$docs[] = _("There is no need to explicitly add exclusions for SIP or IAX peers, as they are automatically allowed through the firewall after successfully registering.");
-	$docs[] = _("After an endpoint is registered, an automatic firewall rule is additionally granted to allow that IP Address to access other services, as defined in the Smart Firewall tab");
-} else {
-	$docs[] = _("Responsive Firewall is <strong>not enabled</strong>.");
-	$docs[] = _("Responsive Firewall allows your machine to automatically block attacks to your machine, and additionally permit valid clients access to services.");
-}
-
-$docs[] = _("The 'Refresh Period' is how often the firewall updates its rules. You would set it to 'fast' if you have many endpoints that are constantly registering and de-registering, or 'slow' if you are on a low powered machine.");
 
 foreach ($docs as $p) {
 	print "<p>$p</p>\n";
 }
+if (!$smart['responsive']) {
+	print "<div class='alert alert-warning'>";
+	$docs = array(
+		_("<strong>Responsive Firewall is not enabled</strong>."),
+		_("Responsive Firewall allows your machine to automatically block attacks to your machine, while learning and automatically granting permission to authorized devices, without the need to manually configure them."),
+		_("You can enable Responsive Firewall in the 'Responsive Firewall' tab."),
+	);
+} else {
+	print "<div class='alert alert-success'>";
+	$docs = array(
+		_("Responsive Firewall is <strong>enabled</strong>."),
+		_("There is no need to explicitly add definitions for peers, as they are automatically allowed through the firewall after successfully registering."),
+		_("After an endpoint is registered, the source of that endpoint is <strong>automatically granted</strong> permission to use UCP, if UCP is enabled."),
+	);
+}
+foreach ($docs as $p) {
+	print "<p>$p</p>\n";
+}
+print "</div>";
 ?>
+
+<div class='row'>
+  <div class='form-horizontal clearfix'>
+    <div class='col-sm-4'>
+      <label class='control-label' for='ssf'><?php echo $ssf; ?></label>
+    </div>
+    <div class='col-sm-8'>
+      <button type='submit' name='action' value='disablefw' class='btn btn-default'><?php echo _("Disable"); ?></button>
+    </div>
+  </div>
+</div>
 
 <div class='row'>
   <div class='form-horizontal clearfix'>
@@ -57,14 +77,4 @@ foreach ($periods as $name => $val) {
   </div>
 </div>
 
-<div class='row'>
-  <div class='form-horizontal clearfix'>
-    <div class='col-sm-4'>
-      <label class='control-label' for='ssf'><?php echo $ssf; ?></label>
-    </div>
-    <div class='col-sm-8'>
-      <button type='submit' name='action' value='disablefw' class='btn btn-default'><?php echo _("Disable"); ?></button>
-    </div>
-  </div>
-</div>
 
