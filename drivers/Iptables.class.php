@@ -726,12 +726,18 @@ class Iptables {
 		// Default sanity rules. 
 		// 1: Always allow all lo traffic, no matter what.
 		$retarr['fpbxfirewall'][]= array("int" => "lo", "jump" => "ACCEPT");
-		// 2: Allow related/established - TCP ONLY!
+		// 2: Allow related/established - TCP all, but udp needs a bit more care.
 		$retarr['fpbxfirewall'][]= array("proto" => "tcp", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
+		$retarr['fpbxfirewall'][]= array("proto" => "udp", "sport" => "1:1024", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
 		// 3: Always allow ICMP (no, really, you always want to allow ICMP, stop thinking blocking
 		// it is a good idea)
 		$retarr['fpbxfirewall'][]= array("ipvers" => 4, "proto" => "icmp", "jump" => "ACCEPT");
 		$retarr['fpbxfirewall'][]= array("ipvers" => 6, "proto" => "ipv6-icmp", "jump" => "ACCEPT");
+		// 4: Other misc bits and pieces. DHCP, broadcast traffic, etc.
+		$retarr['fpbxfirewall'][]= array("ipvers" => 4, "dest" => "255.255.255.255/32", "jump" => "ACCEPT");
+		$retarr['fpbxfirewall'][]= array("other" => "-m pkttype --pkt-type multicast", "jump" => "ACCEPT");
+		// This ensures we can act as a DHCP server if we want to.
+		$retarr['fpbxfirewall'][]= array("proto" => "udp", "dport" => "67:68", "sport" => "67:68", "jump" => "ACCEPT");
 
 		// Now we can do our actual filtering.
 		// This marks VoIP Signalling packets
@@ -746,6 +752,8 @@ class Iptables {
 		// If this is a VoIP Signalling packet from an unknown host, and it's eligible for
 		// RFW, then send it off there.
 		$retarr['fpbxfirewall'][] = array("other" => "-m mark --mark 0x2/0x2", "jump" => "fpbxrfw");
+		// Otherwise, log and drop.
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxlogdrop");
 
 		// Our 'trusted' zone is always allow everything.
 		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
@@ -771,7 +779,6 @@ class Iptables {
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name UNKNOWN --rsource");
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name UNKNOWN --rsource", "jump" => "fpbxlogdrop");
 		// OK, hasn't exceeded any rate limiting, good to go now.
-		$retarr['fpbxrfw'][] = array("jump" => "LOG", "append" => " --log-prefix 'Not rate limited: '");
 		$retarr['fpbxrfw'][] = array("jump" => "ACCEPT");
 
 		// Log dropped packets. This should be visible in the GUI at some point.
@@ -876,8 +883,21 @@ class Iptables {
 			}
 			$str .= "-s $src ";
 		}
+		if (isset($arr['dest'])) {
+			// TODO: Check with ipv6
+			if ($arr['dest'] != "0.0.0.0") {
+				list($dest) = explode(":", $arr['dest']);
+				if (strpos($dest, "/") === false) {
+					$dest .= "/32";
+				}
+				$str .= "-d $dest ";
+			}
+		}
 		if (isset($arr['dport'])) {
 			$str .= "--dport ".$arr['dport']." ";
+		}
+		if (isset($arr['sport'])) {
+			$str .= "--sport ".$arr['sport']." ";
 		}
 		if (isset($arr['out'])) {
 			$str .= "-o ".$arr['out']." ";
