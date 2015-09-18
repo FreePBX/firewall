@@ -446,7 +446,7 @@ class Iptables {
 		//
 		// 1: Signalling targets
 		$this->checkTarget("fpbxsignalling");
-		$ports = $rules['signalling'];
+		$ports = $rules['smartports']['signalling'];
 		$current = &$this->getCurrentIptables();
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
 		foreach ($ipvers as $ipv => $ipt) {
@@ -458,8 +458,12 @@ class Iptables {
 			foreach ($ports as $proto => $r) {
 				foreach ($r as $rule) {
 					$rule['proto'] = $proto;
-					// parseFilter has a trailing space. Figure out why?
-					$p = trim($this->parseFilter($rule))." -j MARK --set-xmark 0x1/0x0";
+					// If we are allowing this protocol through to the rfw, tag it with the second bit, as well.
+					if ($rules['settings']['rprotocols'][$rule['name']]['state']) {
+						$p = trim($this->parseFilter($rule))." -j MARK --set-xmark 0x3/0x0";
+					} else {
+						$p = trim($this->parseFilter($rule))." -j MARK --set-xmark 0x1/0x0";
+					}
 					if (isset($exists[$p])) {
 						unset($exists[$p]);
 						continue;
@@ -497,7 +501,7 @@ class Iptables {
 		}
 
 		// Now create the entries in fpbxsmarthosts
-		$hosts = $rules['known'];
+		$hosts = $rules['smartports']['known'];
 		$me = &$current[$ipv]['filter']['fpbxsmarthosts'];
 		if (!is_array($me)) {
 			$me = array();
@@ -739,8 +743,9 @@ class Iptables {
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
 		// And known interfaces.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
-		// If this is a VoIP Signalling packet from an unknown host, care about it.
-		$retarr['fpbxfirewall'][] = array("other" => "-m mark --mark 0x1", "jump" => "fpbxunknown");
+		// If this is a VoIP Signalling packet from an unknown host, and it's eligible for
+		// RFW, then send it off there.
+		$retarr['fpbxfirewall'][] = array("other" => "-m mark --mark 0x2/0x2", "jump" => "fpbxrfw");
 
 		// Our 'trusted' zone is always allow everything.
 		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
@@ -751,9 +756,9 @@ class Iptables {
 		//
 		// Hardcoded defaults for unknown clients is up to 10 packets in 60 seconds,
 		// before they get clamped.
-		$retarr['fpbxunknown'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxlogdrop");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxlogdrop");
 		// Note, this is *deliberately* after the check. Otherwise it'll never time out.
-		$retarr['fpbxunknown'][] = array("other" => "-m recent --set --name SIGNALLING --rsource");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name SIGNALLING --rsource");
 		//
 		// However, we're a lot less forgiving over the longer term. Maximum of 100 unknown signalling
 		// requests per day.  (This is actually MORE than 100, as this is only hit for packets that
@@ -763,11 +768,11 @@ class Iptables {
 		//
 		// This is *deliberately* above the check, to ensure that once they've been caught by this
 		// filter, the only way out is to leave us alone.
-		$retarr['fpbxunknown'][] = array("other" => "-m recent --set --name UNKNOWN --rsource");
-		$retarr['fpbxunknown'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name UNKNOWN --rsource", "jump" => "fpbxlogdrop");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name UNKNOWN --rsource");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name UNKNOWN --rsource", "jump" => "fpbxlogdrop");
 		// OK, hasn't exceeded any rate limiting, good to go now.
-		$retarr['fpbxunknown'][] = array("jump" => "LOG", "append" => " --log-prefix 'Not rate limited: '");
-		$retarr['fpbxunknown'][] = array("jump" => "ACCEPT");
+		$retarr['fpbxrfw'][] = array("jump" => "LOG", "append" => " --log-prefix 'Not rate limited: '");
+		$retarr['fpbxrfw'][] = array("jump" => "ACCEPT");
 
 		// Log dropped packets. This should be visible in the GUI at some point.
 		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'Would drop: '");

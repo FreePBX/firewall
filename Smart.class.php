@@ -38,7 +38,7 @@ class Smart {
 	public function getSettings() {
 		$retarr = array("ssf" => true, "period" => 60, "responsive" => false);
 		$retarr['rprotocols'] = array(
-			"pjsip" => array("state" => true, "descr" => _("SIP Protocol")),
+			"pjsip" => array("state" => false, "descr" => _("SIP Protocol")),
 			"chansip" => array("state" => false, "descr" => _("Legacy chan_sip Protocol")),
 			"iax" => array("state" => false, "descr" => _("IAX Protocol")),
 		);
@@ -124,7 +124,7 @@ class Smart {
 				$bindaddr = $res['data'];
 			}
 		}
-		return array("dest" => $bindaddr, "dport" => $bindport);
+		return array("dest" => $bindaddr, "dport" => $bindport, "name" => "iax");
 	}
 
 	public function getSipPorts() {
@@ -149,7 +149,7 @@ class Smart {
 				$bindport = 5060;
 			}
 
-			$udp[] = array("dest" => "0.0.0.0", "dport" => $bindport);
+			$udp[] = array("dest" => "0.0.0.0", "dport" => $bindport, "name" => "chansip");
 
 			// TODO: chan_sip TCP.. Maybe
 		}
@@ -170,9 +170,9 @@ class Smart {
 						continue;
 					}
 					if ($type == "tcp" || $type == "ws") {
-						$tcp[] = array("dest" => $ipaddr, "dport" => $port);
+						$tcp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
 					} elseif ($type == "udp") {
-						$udp[] = array("dest" => $ipaddr, "dport" => $port);
+						$udp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
 					} else {
 						throw new \Exception("Unknown protocol $type");
 					}
