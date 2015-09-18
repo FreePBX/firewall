@@ -739,12 +739,17 @@ class Iptables {
 		// This ensures we can act as a DHCP server if we want to.
 		$retarr['fpbxfirewall'][]= array("proto" => "udp", "dport" => "67:68", "sport" => "67:68", "jump" => "ACCEPT");
 
+		// :: DEVELOPMENT FAILSAFE RULE ::
+		// ::   REMOVE BEFORE RELASE    ::
+		$retarr['fpbxfirewall'][] = array("proto" => "tcp", "dport" => "22", "jump" => "ACCEPT");
+
 		// Now we can do our actual filtering.
 		// This marks VoIP Signalling packets
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxsignalling");
-		// This allows packets marked as signalling through if they're
-		// from known hosts.
+		// This allows packets marked as signalling through if they're from known hosts.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxsmarthosts");
+		// And known registrations
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxregistrations");
 		// This allows known networks
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
 		// And known interfaces.
@@ -762,9 +767,10 @@ class Iptables {
 		// sending VoIP *signalling* here. We want to give them a bit of slack, to make sure
 		// it's not a dynamic IP address of a known good client.
 		//
-		// Hardcoded defaults for unknown clients is up to 10 packets in 60 seconds,
-		// before they get clamped.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxlogdrop");
+		// Hardcoded defaults for unknown clients is up to 11 packets in 60 seconds,
+		// before they get clamped. 11 packets is enough to establish and hang up two
+		// calls, or one with voicemail notification.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 11 --name SIGNALLING --rsource", "jump" => "fpbxlogdrop");
 		// Note, this is *deliberately* after the check. Otherwise it'll never time out.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name SIGNALLING --rsource");
 		//
@@ -776,9 +782,10 @@ class Iptables {
 		//
 		// This is *deliberately* above the check, to ensure that once they've been caught by this
 		// filter, the only way out is to leave us alone.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name UNKNOWN --rsource");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name UNKNOWN --rsource", "jump" => "fpbxlogdrop");
-		// OK, hasn't exceeded any rate limiting, good to go now.
+
+		// OK, hasn't exceeded any rate limiting, good to go, for now.
 		$retarr['fpbxrfw'][] = array("jump" => "ACCEPT");
 
 		// Log dropped packets. This should be visible in the GUI at some point.
@@ -786,7 +793,7 @@ class Iptables {
 		// $retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
 		// Known Registrations are allowed to access signalling and UCP
-		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1", "jump" => "ACCEPT");
+		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 
 		return $retarr;
