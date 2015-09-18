@@ -287,7 +287,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				if (!$zone['interfaces']) {
 					continue;
 				}
-				foreach (explode(" ", $zone['interfaces']) as $i) {
+				foreach ($zone['interfaces'] as $i) {
 					$myInt = trim($i);
 					if ($myInt) {
 						$ints[$myInt] = $name;

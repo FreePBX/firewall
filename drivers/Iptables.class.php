@@ -31,14 +31,29 @@ class Iptables {
 		// Check IPv4 for the interface and config settings. IPv6 should be identical. But,
 		// if it's broken for some reason, it may not be providing useful information.
 
+		$allints = \FreePBX::Firewall()->getInterfaces();
 		if (!$this->isConfigured($current['ipv4'])) {
 			// Not Configured. Treat all our interfaces as 'Trusted'
-			$ints = \FreePBX::Firewall()->getInterfaces();
-			$zones['trusted']['interfaces'] = join(" ", array_keys($ints));
+			$zones['trusted']['interfaces'] = array_keys($allints);
 			return $zones;
 		}
 
-		return $current;
+		$i = $current['ipv4']['filter'];
+		// Find interfaces
+		foreach ($i['fpbxinterfaces'] as $row) {
+			if (!preg_match('/-i (.+) -j zone-(.+)/', $row, $out)) {
+				throw new \Exception("Unknown entry in interfaces - $row");
+			}
+			$zones[$out[2]]['interfaces'][] = $out[1];
+			unset($allints[$out[1]]);
+		}
+
+		// If there are any left, add them to trusted.
+		foreach ($allints as $int => $null) {
+			$zones['trusted']['interfaces'][] = $out[1];
+		}
+
+		return $zones;
 	}
 
 	public function getKnownNetworks() {
