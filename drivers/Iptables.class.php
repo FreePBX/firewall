@@ -789,8 +789,8 @@ class Iptables {
 		$retarr['fpbxrfw'][] = array("jump" => "ACCEPT");
 
 		// Log dropped packets. This should be visible in the GUI at some point.
-		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'Would drop: '");
-		// $retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
+		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => "'logdrop: '");
+		$retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
 		// Known Registrations are allowed to access signalling and UCP
 		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
