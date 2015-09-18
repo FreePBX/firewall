@@ -546,7 +546,7 @@ class Iptables {
 			$exists = array_flip($me);
 			$process = $tmparr['targets'];
 			foreach ($process as $addr) {
-				$p = "-s $addr/".$tmparr['prefix']." -m mark --mark 0x1 -j ACCEPT";
+				$p = "-s $addr/".$tmparr['prefix']." -m mark --mark 0x1/0x1 -j ACCEPT";
 				if (isset($exists[$p])) {
 					// It's already there, no need to change
 					unset($exists[$p]);
