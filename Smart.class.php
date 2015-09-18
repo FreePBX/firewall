@@ -38,8 +38,8 @@ class Smart {
 	public function getSettings() {
 		$retarr = array("ssf" => true, "period" => 60, "responsive" => false);
 		$retarr['rprotocols'] = array(
-			"pjsip" => array("state" => false, "descr" => _("SIP Protocol")),
-			"chansip" => array("state" => false, "descr" => _("Legacy chan_sip Protocol")),
+			"pjsip" => array("state" => true, "descr" => _("SIP Protocol")),
+			"chansip" => array("state" => true, "descr" => _("Legacy chan_sip Protocol")),
 			"iax" => array("state" => false, "descr" => _("IAX Protocol")),
 		);
 		if (\FreePBX::Firewall()->getConfig("responsivefw")) {
