@@ -8,7 +8,27 @@ $(document).ready(function() {
 	// Add 'this network'
 	$("#addnetwork").click(function(e) { e.preventDefault(); advancedAdd('addthisnetwork', e.target); });
 
+	// Update address bar when someone changes tabs
+	$("a[data-toggle='tab']").on('shown.bs.tab', function(e) { 
+		// New target. Don't need jquery here...
+		var newuri = updateQuery("tab", e.target.getAttribute('aria-controls'));
+		window.history.replaceState(null, document.title, newuri);
+	});
+
+	$("input[type='radio']").click(function(e) { updateRfw(e.target) });
 });
+
+function updateRfw(target) {
+	var d = { command: 'updaterfw', module: 'firewall', proto: target.getAttribute('name'), value: target.getAttribute('value') };
+	$("input[name="+target.getAttribute('name')+"]").prop('disabled', true);
+	$.ajax({
+		url: window.ajaxurl,
+		data: d,
+		complete: function(data) { 
+			window.location.href = window.location.href;
+		}
+	});
+}
 
 function advancedAdd(cmd, target) {
 	var origtext = $(target).text();
@@ -20,5 +40,34 @@ function advancedAdd(cmd, target) {
 			$(target).text(origtext).prop('disabled', false);
 		}
 	});
+}
+
+function updateQuery(key, value) {
+	var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"), hash;
+	var url = window.location.href;
+
+	if (re.test(url)) {
+		if (typeof value !== 'undefined' && value !== null) {
+			return url.replace(re, '$1' + key + "=" + value + '$2$3');
+		} else {
+			hash = url.split('#');
+			url = hash[0].replace(re, '$1$3').replace(/(&|\?)$/, '');
+			if (typeof hash[1] !== 'undefined' && hash[1] !== null) {
+				url += '#' + hash[1];
+			}
+			return url;
+		}
+	} else {
+		if (typeof value !== 'undefined' && value !== null) {
+			var separator = url.indexOf('?') !== -1 ? '&' : '?';
+			hash = url.split('#');
+			url = hash[0] + separator + key + '=' + value;
+			if (typeof hash[1] !== 'undefined' && hash[1] !== null) 
+				url += '#' + hash[1];
+			return url;
+		} else {
+			return url;
+		}
+	}
 }
 

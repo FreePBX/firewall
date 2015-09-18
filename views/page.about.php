@@ -1,19 +1,51 @@
+<?php
+if (!isset($_REQUEST['tab'])) {
+	$tab = "about";
+} else {
+	$tab = $_REQUEST['tab'];
+}
+$about = "active";
+$smart = $shortcuts = "";
+
+switch ($tab) {
+case 'smart':
+	$about = "";
+	$smart = "active";
+	break;
+case 'shortcuts':
+	$about = "";
+	$shortcuts = "active";
+	break;
+}
+
+$ss = $fw->getSmartSettings();
+
+?>
+
 <script type='text/javascript' src='modules/firewall/assets/js/views/advanced.js'></script>
 <form method='post'>
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
-      <li role="presentation" data-name="smart" class="active">
-        <a href="#smart" aria-controls="smart" role="tab" data-toggle="tab"><?php echo _("Smart Firewall")?> </a>
+      <li role="presentation" data-name="about" class="<?php echo $about; ?>">
+        <a href="#about" aria-controls="about" role="tab" data-toggle="tab"><?php echo _("Settings")?> </a>
       </li>
-      <li role="presentation" data-name="shortcuts">
+      <li role="presentation" data-name="smart" class="<?php echo $smart; ?>">
+        <a href="#smart" aria-controls="smart" role="tab" data-toggle="tab"><?php echo _("Responsive Firewall")?> </a>
+      </li>
+      <li role="presentation" data-name="shortcuts" class="<?php echo $shortcuts; ?>">
         <a href="#shortcuts" aria-controls="shortcuts" role="tab" data-toggle="tab"><?php echo _("Preconfigured")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
-      <div role="tabpanel" id="smart" class="tab-pane active">
+      <div role="tabpanel" id="about" class="tab-pane <?php echo $about; ?>">
         <div class='container-fluid'>
-          <?php echo load_view(__DIR__."/view.smart.php", array("smart" => $fw->getSmartSettings())); ?>
+          <?php echo load_view(__DIR__."/view.about.php", array("smart" => $ss)); ?>
+        </div>
+      </div>
+      <div role="tabpanel" id="smart" class="tab-pane <?php echo $smart; ?>">
+        <div class='container-fluid'>
+          <?php echo load_view(__DIR__."/view.smart.php", array("smart" => $ss)); ?>
         </div>
       </div>
 <?php
@@ -37,7 +69,7 @@ $thisnet = $fw->detectNetwork();
 $thishost = $fw->detectHost();
 
 ?>
-      <div role="tabpanel" id="shortcuts" class="tab-pane">
+      <div role="tabpanel" id="shortcuts" class="tab-pane <?php echo $shortcuts; ?>">
         <div class='container-fluid'>
 	  <p><?php echo _("This allows you to simply add a pre-configured set of networks to your trusted zone. Once you have added your selections, you can fine-tune them, if required, <a href='?display=firewall&page=zones&tab=netsettings'>on the Networks tab.</a>"); ?></p>
           <div class='panel panel-default'>

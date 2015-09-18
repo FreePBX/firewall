@@ -36,7 +36,19 @@ class Smart {
 	}
 
 	public function getSettings() {
-		return array("ssf" => true, "period" => 60, "tempreg" => false, "tempregto" => 6);
+		$retarr = array("ssf" => true, "period" => 60, "responsive" => false);
+		$retarr['rprotocols'] = array(
+			"pjsip" => array("state" => true, "descr" => _("SIP Protocol")),
+			"chansip" => array("state" => false, "descr" => _("Legacy chan_sip Protocol")),
+			"iax" => array("state" => false, "descr" => _("IAX Protocol")),
+		);
+		if (\FreePBX::Firewall()->getConfig("responsivefw")) {
+			$retarr['responsive'] = true;
+			foreach ($retarr['rprotocols'] as $id => $null) {
+				$retarr['rprotocols'][$id]['state'] = \FreePBX::Firewall()->getConfig($id, "rfw");
+			}
+		};
+		return $retarr;
 	}
 
 	private function usesIax() {

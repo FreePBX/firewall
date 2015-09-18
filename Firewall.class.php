@@ -151,6 +151,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $this->runHook('addnetwork', array('trusted' => array($this->detectNetwork())));
 		case "updateinterface":
 			return $this->runHook('updateinterface', array('iface' => $_REQUEST['iface'], 'newzone' => $_REQUEST['zone']));
+		case "updaterfw":
+			return $this->setConfig($_REQUEST['proto'], ($_REQUEST['value'] == "true"), 'rfw');
 		default:
 			throw new \Exception("Sad Panda");
 		}
@@ -175,6 +177,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				throw new \Exception("No services to update");
 			}
 			return $this->updateServices($_REQUEST['svc']);
+		case 'enablerfw':
+			$this->setConfig('responsivefw', true);
+			return;
+		case 'disablerfw':
+			$this->setConfig('responsivefw', false);
+			return;
 		default:
 			throw new \Exception("Unknown action $action");
 		}

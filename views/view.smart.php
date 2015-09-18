@@ -1,62 +1,79 @@
 <?php
-$ssf = "Sangoma "._("Smart Firewall");
+$rf = _("Responsive Firewall");
 
-$period = _("Refresh Period");
-$periods = array("normal" => _("Normal"), "fast" => _("Fast"), "slow" => _("Slow"));
+$ena = _("Enabled");
+$dis = _("Disabled");
 
+if ($smart['responsive']) {
+	$rfwon = "checked";
+	$rfwoff = "";
+	$d = "";
+} else {
+	$rfwon = "";
+	$rfwoff = "checked";
+	$d = "disabled";
+}
+
+$protocols = $smart['rprotocols'];
 
 ?>
-<h3><?php echo $ssf; ?></h3>
+<h3>Sangoma <?php echo $rf; ?></h3>
+
 <?php
 $docs = array(
-	"$ssf "._("is a fully integrated and tightly coupled firewall that constantly monitors the remote clients allowed to connect to this machine, and automatically allows access from expected hosts."),
-	_("This is done by a small process that runs on your FreePBX server that automatically updates firewall rules based on the current trunk and extension configuration of FreePBX."),
-	_("There is no need to explicitly add exclusions for SIP or IAX peers, as they are automatically allowed through the firewall after successfully registering."),
-	_("After an endpoint is registered, an automatic firewall rule is additionally granted to allow that IP Address to access UCP, if UCP is enabled."),
-	_("The 'Refresh Period' is how often the firewall updates its rules. You would set it to 'fast' if you have many endpoints that are constantly registering and de-registering, or 'slow' if you are on a low powered machine."),
+	_("When this is enabled, any incoming VoIP connection attempts that match the 'Reject' or 'External' zones are <strong>not blocked</strong>, but are instead allowed a very limited amount of registration attempts."),
+	_("If the registration attempt is successful, the remote host is then added to a 'Known Good' zone, that has permission to use that protocol, and is additionally granted access to UCP, if UCP is enabled."),
+	_("If the incoming connection attempts are invalid, traffic from that machine will be dropped for a short period of time. If attempts to authenticate continue without success, the attacking host will be blocked for 24 hours."),
+	_("If fail2ban is enabled and configured on this machine, fail2ban will send you email alerts when this happens."),
+	_("Note that if you have explicitly granted 'External' connections access to a protocol, this filtering and rate limiting will not be used.  This is only used when an incoming connection <strong>would normally be blocked</strong>."),
 );
 
 foreach ($docs as $p) {
 	print "<p>$p</p>\n";
 }
 ?>
-
 <div class='row'>
   <div class='form-horizontal clearfix'>
     <div class='col-sm-4'>
-      <label class='control-label' for='period'><?php echo $period; ?></label>
+      <label class='control-label' for='rfwstat'><?php echo $rf; ?></label>
     </div>
     <div class='col-sm-8'>
-      <select class='form-control' id='period'>
-<?php
-$current = \FreePBX::Firewall()->getConfig('refreshperiod');
-if (!$current) {
-	$current = "normal";
-	\FreePBX::Firewall()->setConfig('refreshperiod', 'normal');
-}
-
-foreach ($periods as $name => $val) {
-	if ($current == $name) {
-		$selected = "selected";
-	} else {
-		$selected = "";
-	}
-	print "<option value='$name' $selected>$val</option>\n";
+<?php if ($smart['responsive']) {
+	echo "<button type='submit' class='btn btn-default' name='action' id='rfwstate' value='disablerfw'>"._("Disable")."</button>";
+} else {
+	echo "<button type='submit' class='btn btn-default' name='action' id='rfwstate' value='enablerfw'>"._("Enable")."</button>";
 }
 ?>
-      </select>
+      </span>
     </div>
   </div>
 </div>
 
+<?php
+foreach ($protocols as $id => $tmparr) {
+	$desc = $tmparr['descr'];
+	if ($tmparr['state']) {
+		$on = "checked";
+		$off = "";
+	} else {
+		$on = "";
+		$off = "checked";
+	}
+?>
 <div class='row'>
   <div class='form-horizontal clearfix'>
     <div class='col-sm-4'>
-      <label class='control-label' for='ssf'><?php echo $ssf; ?></label>
+      <label class='control-label' for='<?php echo $id; ?>'><?php echo $desc; ?></label>
     </div>
     <div class='col-sm-8'>
-      <button type='submit' name='action' value='disablefw' class='btn btn-default'><?php echo _("Disable"); ?></button>
+      <span class='radioset'>
+	<input type='radio' name='<?php echo $id; ?>' id='<?php echo $id; ?>1' value='true' <?php echo "$on $d"; ?>><label for='<?php echo $id; ?>1'><?php echo $ena; ?></label>
+	<input type='radio' name='<?php echo $id; ?>' id='<?php echo $id; ?>2' value='false' <?php echo "$off $d"; ?>><label for='<?php echo $id; ?>2'><?php echo $dis; ?></label>
+      </span>
     </div>
   </div>
 </div>
+<?php
+}
+?>
 
