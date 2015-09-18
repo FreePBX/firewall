@@ -17,8 +17,6 @@ if (!is_array($settings)) {
 	throw new \Exception("Invalid param");
 }
 
-print_r($settings);
-
 // ///////////////////////////////////// //
 // BOILERPLATE SECURITY VALIDATION CODE: // 
 // ------------------------------------- //
@@ -80,6 +78,7 @@ if (!isset($knownnets[$network])) {
 	throw new \Exception("Unknown Network $network");
 }
 
+print "Changing zone to $network for net $network\n";
 $driver->changeNetworksZone($newzone, $network);
 $driver->commit();
 

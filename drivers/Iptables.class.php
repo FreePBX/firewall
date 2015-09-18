@@ -174,6 +174,10 @@ class Iptables {
 	public function changeNetworksZone($newzone = false, $network = false, $cidr = false) {
 		$this->checkFpbxFirewall();
 
+		// Check to see if we have a cidr or not.
+		if ($cidr === false && strpos($network, "/") !== false) {
+			list($network, $cidr) = explode("/", $network);
+		}
 		$current = &$this->getCurrentIptables();
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
 		// them later
