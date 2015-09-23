@@ -1,5 +1,5 @@
 <?php
-$ssf = "Sangoma "._("Smart Firewall");
+$ssf = _("System Firewall");
 
 $period = _("Refresh Period");
 $periods = array("normal" => _("Normal"), "fast" => _("Fast"), "slow" => _("Slow"));
@@ -44,7 +44,7 @@ print "</div>";
       <label class='control-label' for='ssf'><?php echo $ssf; ?></label>
     </div>
     <div class='col-sm-8'>
-      <button type='submit' name='action' value='disablefw' class='btn btn-default'><?php echo _("Disable"); ?></button>
+      <button type='submit' name='action' value='disablefw' class='btn btn-default'><?php echo _("Disable Firewall"); ?></button>
     </div>
   </div>
 </div>
