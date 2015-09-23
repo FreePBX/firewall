@@ -83,7 +83,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function startFirewall() {
-		print "I would start the service now...\n";
+		$this->runHook("firewall");
 	}
 
 	public function isEnabled() {
