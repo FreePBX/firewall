@@ -33,7 +33,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function runHook($hookname,$params = false) {
 		// Runs a new style Syadmin hook
 		if (!file_exists("/etc/incron.d/sysadmin")) {
-			throw new \Exception("Sysadmin RPM not up to date");
+			throw new \Exception("Sysadmin RPM not up to date, or not a known OS. Can not start System Firewall. See http://bit.ly/fpbxfirewall");
 		}
 
 		$basedir = "/var/spool/asterisk/incron";
