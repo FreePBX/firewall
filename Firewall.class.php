@@ -466,6 +466,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$nets = $this->getConfig("networkmaps");
 		$thisnet = $this->detectNetwork();
 		$thishost = $this->detectHost();
+		if (!is_array($nets)) {
+			return false;
+		}
 		foreach ($nets as $n => $zone) {
 			if ($zone !== "trusted") {
 				continue;
