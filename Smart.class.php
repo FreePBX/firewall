@@ -26,7 +26,7 @@ class Smart {
 			$this->pjsip = true;
 			break;
 		case 'chan_sip':
-			$this->pjsip = true;
+			$this->chansip = true;
 			break;
 		default:
 			throw new \Exception("Crazy driver setting $driver");
