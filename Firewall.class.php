@@ -90,6 +90,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $this->getConfig("status");
 	}
 
+	public function showLockoutWarning() {
+		if (!$this->isTrusted()) {
+			$thishost = $this->detectHost();
+			print "<div class='alert alert-warning' id='lockoutwarning'>";
+			print "<p>".sprintf(_("The client machine you are using to manage this server (<tt>%s</tt>) is <strong>not</strong> a member of the Trusted zone. It is highly recommended to add this client to your Trusted Zone to avoid accidental lockouts."), $thishost)."</p>";
+			print "<p><a href='?display=firewall&page=about&tab=shortcuts'>"._("You can add the host automatically here.")."</a></p>";
+			print "</div>";
+		}
+	}
+
 	public function showDisabled() {
 		// Firewall functions disabled
 		return load_view(__DIR__."/views/disabled.php", array("fw" => $this));
@@ -451,6 +461,52 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		return false;
 	}
-}
 
+	public function isTrusted() {
+		$nets = $this->getConfig("networkmaps");
+		$thisnet = $this->detectNetwork();
+		$thishost = $this->detectHost();
+		foreach ($nets as $n => $zone) {
+			if ($zone !== "trusted") {
+				continue;
+			}
+			if ($n === $thisnet || $n === $thishost) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function rfcNetsAdded() {
+		// Check to see if ALL the RFC1918 networks are added.
+		$shouldbe = array ('192.168.0.0/16','172.16.0.0/12','10.0.0.0/8', 'fc00::/8', 'fd00::/8');
+		$nets = $this->getConfig("networkmaps");
+		foreach ($shouldbe as $n) {
+			if (!isset($nets[$n]) || $nets[$n] !== "trusted") {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public function thisHostAdded() {
+		$nets = $this->getConfig("networkmaps");
+		$thishost = $this->detectHost();
+		if (isset($nets[$thishost]) && $nets[$thishost] == "trusted") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function thisNetAdded() {
+		$nets = $this->getConfig("networkmaps");
+		$thisnet = $this->detectNetwork();
+		if (isset($nets[$thisnet]) && $nets[$thisnet] == "trusted") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
 

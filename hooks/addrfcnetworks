@@ -52,6 +52,8 @@ $needsreload = false;
 
 $known = $driver->getKnownNetworks();
 
+// Note: If you update this (.. why would you, though?), make sure you update
+// them in the Firewall class, too.
 if (!isset($known['192.168.0.0/16'])) {
 	$driver->addNetworkToZone("trusted", "192.168.0.0", 16);
 	$needsreload = true;

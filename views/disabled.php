@@ -2,13 +2,6 @@
 
 <div class='panel panel-default'>
   <div class='panel-body'>
-    <div class='alert alert-danger'>
-      <h3><?php echo _("THIS IS BETA SOFTWARE"); ?></h3>
-      <p><?php echo _("This software is under constant and active development. It is possible that you may lock yourself out of your system!"); ?></p>
-      <p><?php echo _("Note that during testing, port 22 - ssh - is <strong>explicitly excluded</strong> from the firewall, so you will always be able to log into the server directly and reset the firewall rules."); ?></p>
-      <p><?php echo _("To remove all firewall rules on this machine, run the following command as root, after ssh-ing into the server:"); ?></p>
-      <p><tt>/etc/init.d/iptables stop</tt></p>
-    </div>
     <div class='alert alert-warning'>
       <h3><?php echo _("Warning"); ?></h3>
       <p><?php echo _("The firewall module is not enabled!"); ?></p>

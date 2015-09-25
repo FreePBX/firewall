@@ -4,6 +4,11 @@ $fw = FreePBX::create()->Firewall;
 
 <div class='fpbx-container container-fluid'>
   <h1><?php echo _("Firewall"); ?></h1>
+    <div class='alert alert-danger'>
+      <h3><?php echo _("THIS IS BETA SOFTWARE"); ?></h3>
+      <p><?php echo _("During testing, port 22 (ssh) is <strong>explicitly excluded</strong> from the firewall, and <strong>all SSH connections to this machine are accepted.</strong>"); ?></p>
+      <p><a href='http://community.freepbx.org/t/31067/2' target=_new><?php echo _("This is the 'Current State' post in the forum thread discussing the development and testing of this module."); ?></a></p>
+    </div>
   <div class='row'>
 <?php
 if (!$fw->isEnabled()) {
@@ -13,6 +18,7 @@ if (!$fw->isEnabled()) {
 	print "</div>";
 } else {
     	print "<div class='col-sm-9'>";
+	$fw->showLockoutWarning();
 	if (!empty($_REQUEST['page'])) {
 		$page = $_REQUEST['page'];
 	} else {

@@ -79,7 +79,14 @@ $thishost = $fw->detectHost();
 	      <p><?php echo $rfc[2]; ?></p>
             </div>
             <div class='panel-footer clearfix'>
-	      <button type='button' class='btn btn-default pull-right' id='addrfc'><?php echo $rfc[3]; ?></button>
+<?php
+$e = _("Present");
+if ($fw->rfcNetsAdded()) {
+	echo "<button type='button' class='btn btn-default pull-right' disabled>$e</button>\n";
+} else {
+	echo "<button type='button' class='btn btn-default pull-right' id='addrfc'>$rfc[3]</button>\n";
+}
+?>
             </div>
           </div>
           <div class='panel panel-default'>
@@ -89,8 +96,18 @@ $thishost = $fw->detectHost();
 	      <p><?php echo $ym[2]; ?></p>
             </div>
             <div class='panel-footer clearfix'>
-	      <button type='button' class='btn btn-default pull-right' id='addnetwork'><?php echo $ym[3]; ?></button>
-	      <button type='button' class='btn btn-default pull-right' id='addhost'><?php echo $ym[4]; ?></button>
+<?php
+if ($fw->thisNetAdded()) {
+	echo "<button type='button' class='btn btn-default pull-right' disabled>$e</button>\n";
+} else {
+	echo "<button type='button' class='btn btn-default pull-right' id='addnetwork'>$ym[3]</button>\n";
+}
+if ($fw->thisHostAdded()) {
+	echo "<button type='button' class='btn btn-default pull-right' disabled>$e</button>\n";
+} else {
+	echo "<button type='button' class='btn btn-default pull-right' id='addhost'>$ym[4]</button>\n";
+}
+?>
             </div>
           </div>
         </div>

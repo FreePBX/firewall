@@ -110,11 +110,7 @@ foreach ($settings as $zonename => $zone) {
 	}
 }
 
-
 if ($needsreload) {
 	$driver->commit();
 }
-
-
-
 
