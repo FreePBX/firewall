@@ -86,9 +86,10 @@ function fwLog($str) {
 		}
 		print "Rotated Log\n";
 	}
-	print "$str\n";
-	$fh = fopen("/tmp/firewall.log", "a");
-	fwrite($fh, time().": $str\n");
+	print time().": $str\n";
+	// No need to write to the logfile, as we're sending it there already by the print
+	// $fh = fopen("/tmp/firewall.log", "a");
+	// fwrite($fh, time().": $str\n");
 	syslog(LOG_WARNING|LOG_LOCAL0, $str);
 }
 
