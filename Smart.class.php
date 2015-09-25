@@ -236,7 +236,9 @@ class Smart {
 			$q = $this->db->query($sql);
 			$pjsiptrunks = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($pjsiptrunks as $p) {
-				$discovered[$p['data']] = true;
+				if (!empty($p['data'])) {
+					$discovered[$p['data']] = true;
+				}
 			}
 			// PJSip extensions don't have allow/deny at the moment.
 		}
