@@ -11,6 +11,7 @@ if (!Lock::canLock($thissvc)) {
 }
 
 require 'common.php';
+print "Starting firewall service\n";
 fwLog("Starting firewall service");
 
 if (posix_geteuid() !== 0) {
@@ -30,9 +31,28 @@ foreach($out[1] as $id => $val) {
 $fwconf = getSettings($mysettings);
 
 if (!$fwconf['active']) {
+	print "Not active. Shutting down\n";
 	fwLog("Not active. Shutting down");
 	shutdown();
+} else {
+	print "Starting firewall. Logging to /tmp/firewall.log\n";
 }
+
+// Now we can fork and exit.
+fclose(STDIN);
+fclose(STDOUT);
+fclose(STDERR);
+if (pcntl_fork()) {
+	// I am the parent
+	exit;
+}
+// Apparently this works. This is because fd's 0, 1 and 2 don't exist
+// any more, so we're now re-creating them. This is undefined behaviour,
+// and really works only through luck, if it does at all. But, it's
+// amazingly handy. Don't do this.
+$STDIN = fopen('/dev/null', 'r');
+$STDOUT = fopen('/tmp/firewall.log', 'ab');
+$STDERR = fopen('/tmp/firewall.err', 'ab');
 
 // Make sure our conntrack kernel module is configured correctly
 include 'modprobe.php';
@@ -183,7 +203,12 @@ function checkPhar() {
 
 		// Generic boilerplate security code.
 		$g = new \Sysadmin\GPG();
-		$sigfile = \Sysadmin\FreePBX::Config()->get('AMPWEBROOT')."/admin/modules/firewall/module.sig";
+		$dir = dirname(\Phar::running(false));
+		if (!$dir) {
+			// This should never be run outside of a phar, but, who knows...
+			$dir == __DIR__;
+		}
+		$sigfile = $dir."/../module.sig";
 		$sig = $g->checkSig($sigfile);
 		if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
 			fwLog("Invalid sig file.. Hash is not sha256 - check $sigfile");
@@ -192,6 +217,7 @@ function checkPhar() {
 			continue;
 		}
 
+		$v->updateSig($sig);
 		try {
 			$v->checkFile("hooks/firewall");
 			fwLog("Valid update! Restarting...");
@@ -199,10 +225,10 @@ function checkPhar() {
 			// Wait 1/2 a second to give incron a chance to catch up
 			usleep(500000);
 			// Restart me.
-			fclose(fopen("/var/spool/asterisk/incron/firewall.firewall"));
+			fclose(fopen("/var/spool/asterisk/incron/firewall.firewall", "a"));
 			exit;
 		} catch(\Exception $e) {
-			fwLog("Firewall tampered.  Not restarting!");
+			fwLog("Firewall tampered.  Not restarting! ".$e->getMessage());
 		}
 	}
 }

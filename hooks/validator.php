@@ -20,7 +20,17 @@ class Validator {
 			}
 			self::$sig = $sig;
 		}
-		$this->modroot = \Sysadmin\FreePBX::Config()->get('AMPWEBROOT')."/admin/modules/firewall";
+		// If we're in a phar, use that.
+		if (\Phar::running()) {
+			$dir = dirname(\Phar::running(false));
+		} else {
+			$dir = __DIR__;
+		}
+		$this->modroot = $dir."/../";
+	}
+
+	public function updateSig($sig) {
+		self::$sig = $sig;
 	}
 
 	public function checkFile($filename = false) {

@@ -68,10 +68,29 @@ function pharChanged() {
 }
 
 function fwLog($str) {
+	global $STDIN, $STDOUT, $STDERR;
+
+	$lfstat = @stat("/tmp/firewall.log");
+	if (is_array($lfstat) && $lfstat['size'] > 1048576) {
+		// Logfile is over 1mb
+		@unlink("/tmp/firewall.log.old");
+		rename("/tmp/firewall.log", "/tmp/firewall.log.old");
+		// This is so hacky.
+		if (is_resource($STDIN)) {
+			fclose($STDIN);
+			fclose($STDOUT);
+			fclose($STDERR);
+			$STDIN = fopen('/dev/null', 'r');
+			$STDOUT = fopen('/tmp/firewall.log', 'ab');
+			$STDERR = fopen('/tmp/firewall.err', 'ab');
+		}
+		print "Rotated Log\n";
+	}
 	print "$str\n";
+	$fh = fopen("/tmp/firewall.log", "a");
+	fwrite($fh, time().": $str\n");
 	syslog(LOG_WARNING|LOG_LOCAL0, $str);
 }
-
 
 function isValidZone($zone = false) {
 	switch ($zone) {
