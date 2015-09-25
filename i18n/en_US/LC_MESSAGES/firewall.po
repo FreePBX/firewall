@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-23 13:04-0700\n"
+"POT-Creation-Date: 2015-09-24 21:49-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,7 +87,7 @@ msgstr ""
 msgid "Custom Services"
 msgstr ""
 
-#: Firewall.class.php:195
+#: Firewall.class.php:205
 msgid "Defaults"
 msgstr ""
 
@@ -101,6 +101,13 @@ msgstr ""
 
 #: views/view.smart.php:5
 msgid "Disabled"
+msgstr ""
+
+#: page.firewall.php:9
+msgid ""
+"During testing, port 22 (ssh) is <strong>explicitly excluded</strong> from "
+"the firewall, and <strong>all SSH connections to this machine are accepted.</"
+"strong>"
 msgstr ""
 
 #: views/page.zones.php:42
@@ -237,7 +244,7 @@ msgstr ""
 msgid "Internal"
 msgstr ""
 
-#: views/disabled.php:18
+#: views/disabled.php:11
 msgid ""
 "It continously monitors the configuration of your machine, automatically "
 "opening and closing ports to known trunks (eg, VoIP providers), and allows "
@@ -268,13 +275,6 @@ msgstr ""
 msgid "Normal"
 msgstr ""
 
-#: views/disabled.php:8
-msgid ""
-"Note that during testing, port 22 - ssh - is <strong>explicitly excluded</"
-"strong> from the firewall, so you will always be able to log into the server "
-"directly and reset the firewall rules."
-msgstr ""
-
 #: views/view.smart.php:28
 msgid ""
 "Note that if you have explicitly granted 'External' connections access to a "
@@ -299,12 +299,16 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: views/disabled.php:20
+#: views/disabled.php:13
 msgid "Please visit the FreePBX Wiki for more information on the firewall."
 msgstr ""
 
 #: views/page.about.php:37
 msgid "Preconfigured"
+msgstr ""
+
+#: views/page.about.php:83
+msgid "Present"
 msgstr ""
 
 #: Services.class.php:153
@@ -332,7 +336,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Firewall.class.php:196
+#: Firewall.class.php:206
 msgid "Reset"
 msgstr ""
 
@@ -375,7 +379,7 @@ msgid ""
 "strong password and SSH keys."
 msgstr ""
 
-#: Firewall.class.php:197
+#: Firewall.class.php:207
 msgid "Save"
 msgstr ""
 
@@ -409,7 +413,7 @@ msgstr ""
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
-#: views/disabled.php:6
+#: page.firewall.php:8
 msgid "THIS IS BETA SOFTWARE"
 msgstr ""
 
@@ -432,7 +436,15 @@ msgid ""
 "and de-registering, or 'slow' if you are on a low powered machine."
 msgstr ""
 
-#: views/disabled.php:14
+#: Firewall.class.php:97
+#, php-format
+msgid ""
+"The client machine you are using to manage this server (<tt>%s</tt>) is "
+"<strong>not</strong> a member of the Trusted zone. It is highly recommended "
+"to add this client to your Trusted Zone to avoid accidental lockouts."
+msgstr ""
+
+#: views/disabled.php:7
 msgid "The firewall module is not enabled!"
 msgstr ""
 
@@ -442,7 +454,7 @@ msgid ""
 "automatically allowed through the firewall after successfully registering."
 msgstr ""
 
-#: views/disabled.php:17
+#: views/disabled.php:10
 msgid ""
 "This Firewall module is a tightly integrated, system level firewall that "
 "continually monitors and blocks attacks on your system, while allowing valid "
@@ -483,24 +495,18 @@ msgid ""
 "extension configuration of FreePBX."
 msgstr ""
 
+#: page.firewall.php:10
+msgid ""
+"This is the 'Current State' post in the forum thread discussing the "
+"development and testing of this module."
+msgstr ""
+
 #: Services.class.php:109
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
 #: Services.class.php:122
 msgid "This is the legacy chan_sip driver."
-msgstr ""
-
-#: views/disabled.php:7
-msgid ""
-"This software is under constant and active development. It is possible that "
-"you may lock yourself out of your system!"
-msgstr ""
-
-#: views/disabled.php:9
-msgid ""
-"To remove all firewall rules on this machine, run the following command as "
-"root, after ssh-ing into the server:"
 msgstr ""
 
 #: Zones.class.php:13
@@ -519,7 +525,7 @@ msgid ""
 "the same zone(s)."
 msgstr ""
 
-#: views/disabled.php:13
+#: views/disabled.php:6
 msgid "Warning"
 msgstr ""
 
@@ -560,6 +566,10 @@ msgstr ""
 
 #: Services.class.php:163
 msgid "XMPP"
+msgstr ""
+
+#: Firewall.class.php:98
+msgid "You can add the host automatically here."
 msgstr ""
 
 #: views/view.about.php:25
