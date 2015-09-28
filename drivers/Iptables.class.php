@@ -862,6 +862,10 @@ class Iptables {
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxregistrations");
 		// This allows known networks
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
+		// If any hosts are blacklisted, reject them here. This ensures
+		// that you can override a large blacklist by a smaller network
+		// definition.
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxblacklist");
 		// And known interfaces.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
 		// If this is a VoIP Signalling packet from an unknown host, and it's eligible for
