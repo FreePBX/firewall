@@ -170,7 +170,7 @@ function changeBlacklist(o) {
 	$.ajax({
 		url: window.ajaxurl,
 		data: ajaxdata,
-		// complete: function(data) { window.location.href = window.location.href; },
+		complete: function(data) { window.location.href = window.location.href; },
 	});
 }
 
