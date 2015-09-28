@@ -11,7 +11,6 @@ if (!Lock::canLock($thissvc)) {
 }
 
 require 'common.php';
-print "Starting firewall service\n";
 fwLog("Starting firewall service");
 
 if (posix_geteuid() !== 0) {
@@ -31,28 +30,12 @@ foreach($out[1] as $id => $val) {
 $fwconf = getSettings($mysettings);
 
 if (!$fwconf['active']) {
-	print "Not active. Shutting down\n";
-	fwLog("Not active. Shutting down");
+	// Don't need to log this
+	// print "Not active. Shutting down\n";
 	shutdown();
 } else {
-	print "Starting firewall. Logging to /tmp/firewall.log\n";
+	print "Starting firewall.\n";
 }
-
-// Now we can fork and exit.
-fclose(STDIN);
-fclose(STDOUT);
-fclose(STDERR);
-if (pcntl_fork()) {
-	// I am the parent
-	exit;
-}
-// Apparently this works. This is because fd's 0, 1 and 2 don't exist
-// any more, so we're now re-creating them. This is undefined behaviour,
-// and really works only through luck, if it does at all. But, it's
-// amazingly handy. Don't do this.
-$STDIN = fopen('/dev/null', 'r');
-$STDOUT = fopen('/tmp/firewall.log', 'ab');
-$STDERR = fopen('/tmp/firewall.err', 'ab');
 
 // Make sure our conntrack kernel module is configured correctly
 include 'modprobe.php';

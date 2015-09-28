@@ -41,7 +41,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 
 		// We're meant to be running, check that the firewall service is.
-		exec("pgrep -f hooks/firewall", $out, $ret);
+		exec("pgrep -f hooks/voipfirewalld", $out, $ret);
 		// Clobber the $status if it's not running
 		if ($ret != 0) {
 			$status = array_merge($status, $this->Dashboard()->genStatusIcon('error', _("Firewall Service not running!")));
