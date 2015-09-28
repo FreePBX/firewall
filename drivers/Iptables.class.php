@@ -880,27 +880,36 @@ class Iptables {
 		// VoIP Rate limiting happens here. If they've made it here, they're an unknown host
 		// sending VoIP *signalling* here. We want to give them a bit of slack, to make sure
 		// it's not a dynamic IP address of a known good client.
-		//
-		// Hardcoded defaults for unknown clients is up to 11 packets in 60 seconds,
-		// before they get clamped. 11 packets is enough to establish and hang up two
-		// calls, or one with voicemail notification.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 11 --name SIGNALLING --rsource", "jump" => "fpbxlogdrop");
-		// Note, this is *deliberately* after the check. Otherwise it'll never time out.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name SIGNALLING --rsource");
-		//
-		// However, we're a lot less forgiving over the longer term. Maximum of 100 unknown signalling
-		// requests per day.  (This is actually MORE than 100, as this is only hit for packets that
-		// haven't been filtered by our other rate limiting. I'm happy with these defaults, but,
-		// I'm also willing to be told I'm wrong, and I suck. Grab me on #freepbx (X-Rob) and tell me
-		// why I suck.)
-		//
-		// This is *deliberately* above the check, to ensure that once they've been caught by this
-		// filter, the only way out is to leave us alone.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxlogdrop");
 
+		// To start with, we ensure that we keep track of ALL rfw attempts.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
+		// Has this IP already been detected as a persistent attacker? They're off to
+		// the bit bucket.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 1 --name ATTACKER --rsource", "jump" => "fpbxattacker");
+		// This is the 'short' block, which allows up to 10 packets in 60 seconds,
+		// before they get clamped. 10 packets is enough to establish and hang up two
+		// calls, or one with voicemail notification.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxlogdrop");
+		// Note, this is *deliberately* after the check. Otherwise it'll never time out. We
+		// want to let them actually attempt to connect, albeit slowly. If they're legitimate,
+		// their registration will be discovered, and they won't hit here any more. If they're
+		// an attacker, we want to encourage them to retry so they are blocked quicker.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name SIGNALLING --rsource");
+		// However, we're a lot less forgiving over the longer term.
+		//
+		// If this IP has sent more than 100 signalling requests without success in a 24 hour
+		// period, we're deeming them as bad guys, and we're not interested in talking to them
+		// any more.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
 		// OK, hasn't exceeded any rate limiting, good to go, for now.
 		$retarr['fpbxrfw'][] = array("jump" => "ACCEPT");
+
+		// This is where we mark (or continue to mark) them as an attacker, and drop their traffic.
+		// We drop rather than reject, as it slows attack scripts down, and they tend to give up quicker 
+		// after a bunch of timeouts than they do with an authoritative 'refused'.
+		$retarr['fpbxattacker'][] = array("other" => "-m recent --set --name ATTACKER --rsource");
+		$retarr['fpbxattacker'][] = array("jump" => "LOG", "append" => " --log-prefix 'attacker: '");
+		$retarr['fpbxattacker'][] = array("jump" => "DROP");
 
 		// Log dropped packets. This should be visible in the GUI at some point.
 		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'logdrop: '");
