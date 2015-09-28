@@ -6,7 +6,8 @@ $fw = FreePBX::create()->Firewall;
   <h1><?php echo _("Firewall"); ?></h1>
     <div class='alert alert-danger'>
       <h3><?php echo _("THIS IS BETA SOFTWARE"); ?></h3>
-      <p><?php echo _("During testing, port 22 (ssh) is <strong>explicitly excluded</strong> from the firewall, and <strong>all SSH connections to this machine are accepted.</strong>"); ?></p>
+      <p><?php echo _("<strong>THIS IS THE LAST RELEASE THAT EXPLICITLY PERMITS ACCESS TO PORT 22</strong>."); ?></p>
+      <p><?php echo _("We are confident that the firewall service is sufficiently stable, and does not require an emergency backdoor. If you have had issues with firewall and have not reported them in the forums, please do so!"); ?></p>
       <p><a href='http://community.freepbx.org/t/31067/2' target=_new><?php echo _("This is the 'Current State' post in the forum thread discussing the development and testing of this module."); ?></a></p>
     </div>
   <div class='row'>
