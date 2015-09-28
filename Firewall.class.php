@@ -235,6 +235,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "addthisnetwork":
 			return $this->runHook('addnetwork', array('trusted' => array($this->detectNetwork())));
 		case "updateinterface":
+			// Remove any notifications about invalid interface configurations
+			$this->Notifications()->delete('firewall', 'trustedint');
+
 			return $this->runHook('updateinterface', array('iface' => $_REQUEST['iface'], 'newzone' => $_REQUEST['zone']));
 		case "updaterfw":
 			return $this->setConfig($_REQUEST['proto'], ($_REQUEST['value'] == "true"), 'rfw');

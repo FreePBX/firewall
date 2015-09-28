@@ -51,6 +51,7 @@ echo "</ul>";
       </div>
       <div role="tabpanel" id="intsettings" class="tab-pane <?php echo $int; ?>">
         <p><?php echo _("All interfaces must be assigned to a default zone. Any traffic entering this interface (that does not originate from a network in the Networks tab) is firewalled to the rules of that zone. Note that 'Trusted' means that <strong>no filtering</strong> will be applied to this interface. 'Reject' means <strong>no inbound connections will be permitted</strong> to that interface."); ?></p>
+        <p><?php echo _("It is a misconfiguration to have a <strong>interface</strong> assigned to the Trusted zone. Only networks or hosts should be assigned to that zone. Newly detected interfaces are, by default, assigned to Trusted so they can be configured correctly without interfering with existing traffic."); ?></p>
 <?php
 $ints = $fw->getInterfaces();
 

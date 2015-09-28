@@ -18,12 +18,13 @@ function changeInt(o) {
 	var iface = o.getAttribute('data-int');
 	// Grab the checked interface that was selected.
 	var checked = $('input[name=int-'+iface+']:checked').attr('value');
+	// Show people we're doing stuff
+	$(o).prop('disabled', true);
 
-	console.log("You want to set "+iface+" to "+checked);
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'updateinterface', module: 'firewall', iface: iface, zone: checked },
-		// complete: function(data) { window.location.href = window.location.href; },
+		complete: function(data) { window.location.href = window.location.href; },
 	});
 }
 
