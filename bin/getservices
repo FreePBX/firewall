@@ -18,7 +18,12 @@ $restrict_mods = true;
 include '/etc/freepbx.conf';
 
 // Start with our known information from FreePBX
-$services = array ("smartports" => \FreePBX::Firewall()->getSmartPorts(), "settings" => \FreePBX::Firewall()->getSmartSettings(), "fw" => array(), "services" => array());
+$services = array (
+	"smartports" => \FreePBX::Firewall()->getSmartPorts(),
+	"settings" => \FreePBX::Firewall()->getSmartSettings(),
+	"blacklist" => \FreePBX::Firewall()->getBlacklist(),
+	"fw" => array(),
+	"services" => array());
 
 // Figure out where all the services we're caring about are.
 $knownsvcs = \FreePBX::Firewall()->getServices();

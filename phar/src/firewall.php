@@ -1,5 +1,7 @@
 <?php
 
+$debug = true;
+
 $thissvc = "firewall";
 include 'lock.php';
 use \FreePBX\modules\Firewall\Lock;
@@ -269,6 +271,10 @@ function updateFirewallRules() {
 
 	// And permit our registrations through
 	$driver->updateRegistrations($services['smartports']['registrations']);
+
+	// Update blacklist
+	$driver->updateBlacklist($services['blacklist']);
+
 	fwLog("Update complete.");
 }
 

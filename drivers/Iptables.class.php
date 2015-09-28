@@ -650,6 +650,101 @@ class Iptables {
 		}
 	}
 
+	public function updateBlacklist($blacklist) {
+		// Make sure our table exists
+		$this->checkTarget("fpbxblacklist");
+
+		$wanted = array("4" => array(), "6" => array());
+
+		// $blacklist is array("ip.range.here/cidr" => false, "hostname" => array("ip", "ip", "ip"), ...);
+		foreach ($blacklist as $entry => $val) {
+			if ($val === false) {
+				// It's a network.
+				$net = explode("/", $entry);
+				if (!isset($net[1])) {
+					// Well that's just crazy.
+					continue;
+				}
+				$addr = $net[0];
+				if (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+					$cidr = (int) $net[1];
+					if ($cidr < 8 || $cidr > 128) {
+						// Nope.
+						continue;
+					}
+					$wanted[6][] = "$addr/$cidr";
+				} elseif (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+					$cidr = (int) $net[1];
+					if ($cidr < 8 || $cidr > 32) {
+						// Nope.
+						continue;
+					}
+					$wanted[4][] = "$addr/$cidr";
+				}
+			} else {
+				// It's a host that's been resolved to something.
+				foreach ($val as $addr) {
+					if (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+						$wanted[6][] = "$addr/128";
+					} elseif (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+						$wanted[4][] = "$addr/32";
+					}
+				}
+			}
+		}
+
+		// And now add or remove them as neccesary. We do a bit of
+		// array mangling so I can avoid code duplication.
+		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables", "targets" => $wanted[6], "prefix" => "128"),
+			"ipv4" => array("ipt" => "/sbin/iptables", "targets" => $wanted[4], "prefix" => "32"),
+		);
+
+		$current = &$this->getCurrentIptables();
+		foreach ($ipvers as $ipv => $tmparr) {
+			if (!$tmparr) {
+				continue;
+			}
+			$me = &$current[$ipv]['filter']['fpbxblacklist'];
+			$exists = array_flip($me);
+			$process = $tmparr['targets'];
+			foreach ($process as $addr) {
+				$p = "-s $addr -j REJECT --reject-with icmp-port-unreachable";
+				if (isset($exists[$p])) {
+					// It's already there, no need to change
+					unset($exists[$p]);
+					continue;
+				}
+				// It doesn't exist. We need to add it.
+				$me[] = $p;
+				$cmd = $tmparr['ipt']." -A fpbxblacklist $p";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			}
+
+			// Are any left over? They can be removed.
+
+			$delids = array();
+			foreach ($exists as $rule => $i) {
+				// We delete the rule from iptables first...
+				$cmd = $tmparr['ipt']." -D fpbxblacklist $rule";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+
+				// And then grab the ID, so we can remove the entries in *reverse* order,
+				// so we don't lose our place.
+				$delids[] = $i;
+			}
+
+			// Now if there were any to be deleted, we delete them from the end backwards, 
+			// so our cache doesn't get out of whack.
+			arsort($delids);
+			foreach ($delids as $i) {
+				// NOW we can remove it from our cache
+				array_splice($me, $i, 1);
+			}
+		}
+	}
+
 	// Driver Specific iptables stuff
 	// Root process
 	private function &getCurrentIptables() {

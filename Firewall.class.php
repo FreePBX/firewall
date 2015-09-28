@@ -595,7 +595,21 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function getBlacklist() {
-		return array_keys($this->getAll("blacklist"));
+		$hosts = array_keys($this->getAll("blacklist"));
+		$smart = $this->getSmartObj();
+		$retarr = array();
+		foreach ($hosts as $h) {
+			// Is this an IP address?
+			list($test) = explode("/", $h);
+			if (filter_var($test, \FILTER_VALIDATE_IP)) {
+				$retarr[$h] = false;
+				continue;
+			} else {
+				// Try a DNS lookup
+				$retarr[$h] = $smart->lookup($h);
+			}
+		}
+		return $retarr;
 	}
 	public function addToBlacklist($host) {
 		$this->setConfig($host, true, "blacklist");
