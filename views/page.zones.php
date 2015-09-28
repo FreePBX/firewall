@@ -6,7 +6,7 @@ if (!isset($_REQUEST['tab'])) {
 }
 
 $docs = "active";
-$net = $int = "";
+$net = $int = $blacklist = "";
 
 switch ($tab) {
 case 'intsettings':
@@ -16,6 +16,10 @@ case 'intsettings':
 case 'netsettings':
 	$docs = "";
 	$net = "active";
+	break;
+case 'blacklist':
+	$docs = "";
+	$blacklist = "active";
 	break;
 }
 ?>
@@ -33,6 +37,9 @@ case 'netsettings':
       </li>
       <li role="presentation" data-name="netsettings"  class="<?php echo $net; ?>">
         <a href="#netsettings" aria-controls="netsettings" role="tab" data-toggle="tab"><?php echo _("Networks")?> </a>
+      </li>
+      <li role="presentation" data-name="blacklist"  class="<?php echo $blacklist; ?>">
+        <a href="#blacklist" aria-controls="blacklist" role="tab" data-toggle="tab"><?php echo _("Blacklists")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
@@ -173,6 +180,9 @@ foreach ($nets as $net => $currentzone) {
 	$counter++;
 } // foreach $nets
 ?>
+      </div>
+      <div role="tabpanel" id="blacklist" class="tab-pane <?php echo $blacklist; ?>">
+        <?php echo load_view(__DIR__."/view.blacklist.php", array("fw" => $fw)); ?>
       </div>
     </div>
   </div>

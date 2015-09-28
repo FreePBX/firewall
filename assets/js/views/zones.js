@@ -4,7 +4,10 @@ $(document).ready(function() {
 
 	// When someone changes a zone mapping
 	$(".intbutton").click(function(e) { e.preventDefault(); changeInt(this); });
-	$('input[name=int-ens160]:checked')
+
+	// When someone clicks on a blacklist button
+	$('.blbutton').click(function(e) { e.preventDefault(); changeBlacklist(this); });
+
 	// Update address bar when someone changes tabs
 	$("a[data-toggle='tab']").on('shown.bs.tab', function(e) { 
 		// New target. Don't need jquery here...
@@ -142,5 +145,32 @@ function updateQuery(key, value) {
 			return url;
 		}
 	}
+}
+
+function changeBlacklist(o) {
+
+	var a = o.getAttribute('data-action');
+
+	var ajaxdata = { module: 'firewall' };
+
+	// What are we being asked about?
+	var item = "bl-"+o.getAttribute('data-id');
+	ajaxdata.entry = $("input[name="+item+"]").val();
+	
+	// Are they adding a new one?
+	if (a == "create") {
+		ajaxdata.command = "addtoblacklist";
+	} else {
+		ajaxdata.command = "removefromblacklist";
+	}
+
+	// Show them we're doing something.
+	$(o).prop('disabled', true);
+
+	$.ajax({
+		url: window.ajaxurl,
+		data: ajaxdata,
+		// complete: function(data) { window.location.href = window.location.href; },
+	});
 }
 

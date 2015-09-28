@@ -241,6 +241,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $this->runHook('updateinterface', array('iface' => $_REQUEST['iface'], 'newzone' => $_REQUEST['zone']));
 		case "updaterfw":
 			return $this->setConfig($_REQUEST['proto'], ($_REQUEST['value'] == "true"), 'rfw');
+		case "addtoblacklist":
+			return $this->addToBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
+		case "removefromblacklist":
+			return $this->removeFromBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
 		default:
 			throw new \Exception("Sad Panda");
 		}
@@ -589,5 +593,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return false;
 		}
 	}
+
+	public function getBlacklist() {
+		return array_keys($this->getAll("blacklist"));
+	}
+	public function addToBlacklist($host) {
+		$this->setConfig($host, true, "blacklist");
+	}
+	public function removeFromBlacklist($host) {
+		$this->setConfig($host, false, "blacklist");
+	}
+
 }
 
