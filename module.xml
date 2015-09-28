@@ -30,9 +30,9 @@
 		<version>13.0</version>
 	</supported>
 	<hooks>
-		<xx-dashboard class="Overview" namespace="FreePBX\modules\Dashboard\Sections">
+		<dashboard class="Overview" namespace="FreePBX\modules\Dashboard\Sections">
 			<method callingMethod="getSummary" class="Firewall" namespace="FreePBX\modules">dashboardService</method>
-		</xx-dashboard>
+		</dashboard>
 		<framework class="Start" namespace="FreePBX\Console\Command">
 			<method callingMethod="preAsteriskHooks" class="Firewall" namespace="FreePBX\modules">startFirewall</method>
 		</framework>

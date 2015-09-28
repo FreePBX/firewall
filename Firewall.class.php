@@ -26,7 +26,82 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function dashboardService() {
-		return array();
+
+		// Check to see if Firewall is enabled. Warn if it's not.
+		$status = array(
+			'title' => _("System Firewall"),
+			'order' => 3,
+		);
+
+		if ($this->getConfig("status")) {
+			$status = array_merge($status, $this->Dashboard()->genStatusIcon('ok', _("Firewall Active")));
+		} else {
+			$status = array_merge($status, $this->Dashboard()->genStatusIcon('error', _("Firewall Disabled")));
+			return array($status);
+		}
+
+		// We're meant to be running, check that the firewall service is.
+		exec("pgrep -f hooks/firewall", $out, $ret);
+		// Clobber the $status if it's not running
+		if ($ret != 0) {
+			$status = array_merge($status, $this->Dashboard()->genStatusIcon('error', _("Firewall Service not running!")));
+			$status['order'] = 1;
+		}
+
+		// If there are any interfaces that are in 'Trusted', yell loudly about that, too
+		$trusted = array(
+			'title' => _("Firewall Configuration"),
+			'order' => 3
+		);
+
+		$foundtrustedint = false;
+		$ints = $this->getInterfaces();
+		foreach ($ints as $i => $null) {
+			if ($this->getZone($i) === "trusted") {
+				$foundtrustedint = $i;
+				break;
+			}
+		}
+
+		// If we've found a trusted interface, this is bad, yell.
+		if ($foundtrustedint) {
+			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('error', _("Trusted Interface Detected")));
+			$trusted['order'] = 1;
+			// Add core notification
+			$this->Notifications()->add_critical('firewall', 'trustedint', _("Trusted Interface Detected"),
+				sprintf(_("A network interface that is assigned to the 'Trusted' zone has been detected. This is a misconfiguration, possibly by the addition of a new Network Interface. To ensure your system is protected from attacks, please change the default zone of interface %s."), $i),
+				"?display=firewall&page=zones&tab=intsettings",
+				true, // Reset on update.
+				false); // Can delete
+			return array($status, $trusted);
+		}
+
+		// Now we need to validate that we DO have a trusted network or host. 
+		// If we dont', this should be a warning, not an error.
+		$nets = $this->getConfig("networkmaps");
+
+		$foundtrustednet = false;
+		foreach ($nets as $name => $zone) {
+			if ($zone === "trusted") {
+				$foundtrustednet = true;
+				break;
+			}
+		}
+
+		if ($foundtrustednet) {
+			// Yup, there's at least one!
+			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('ok', _("Trusted Management Network defined")));
+		} else {
+			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('warn', _("No Trusted Management Network")));
+			// Add core notification
+			$this->Notifications()->add_warning('firewall', 'trustednet', _("No Trusted Network or Host defined"),
+				_("No Trusted Network or Host has been defined. Every server should have a 'Trusted' host or network to ensure that in case of configuration error, the machine is still accessible."),
+				"?display=firewall&page=zones&tab=netsettings",
+				true, // Reset on update.
+				true); // Can delete
+		}
+
+		return array($status, $trusted);
 	}
 
 	// Run a sysadmin-managed root hook.
