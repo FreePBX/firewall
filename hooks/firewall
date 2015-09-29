@@ -31,4 +31,8 @@ if ($fhash !== $sig['hashes']['hooks/voipfirewalld']) {
 	throw new \Exception("Firewalld tampered");
 }
 
+// Move the previous logfile out of the way.
+@unlink("/tmp/firewall.log.previous");
+rename ("/tmp/firewall.log", "/tmp/firewall.log.previous");
+// Start the daemon
 exec("nohup $fd &>> /tmp/firewall.log &");
