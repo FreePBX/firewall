@@ -52,7 +52,7 @@ class Services {
 			"descr" => _("SSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>strongly recommend</strong> using a strong password and SSH keys. "),
 			"fw" => array(array("protocol" => "tcp", "port" => 22)),
 			"noreject" => true,
-			"guess" => _("Warning: Unable to read /etc/ssh/sshd_config. This is expected when viewing through the Web Interface. The correct port, as configured, will be exposed in the firewall service."),
+			"guess" => _("Warning: Unable to read /etc/ssh/sshd_config - this port may be incorrect. This is <strong>expected</strong> when viewing through the Web Interface. The correct port, as configured, will be used in the firewall service."),
 		);
 
 		// Is sshd_config anywhere else on other machines?
