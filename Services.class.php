@@ -24,7 +24,6 @@ class Services {
 		return $this->extraservices;
 	}
 
-
 	public function getService($svc = false) {
 		if (!$svc) {
 			throw new \Exception("Wasn't asked for a service");
@@ -47,14 +46,30 @@ class Services {
 	}
 
 	private function getSvc_ssh() {
-		// TODO: Check /etc/ssh/sshd_config
 		$retarr = array(
 			"name" => _("SSH"),
 			"defzones" => array("internal"),
-			"descr" => _("SSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>strongly recommend</strong> using a strong password and SSH keys."),
+			"descr" => _("SSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>strongly recommend</strong> using a strong password and SSH keys. "),
 			"fw" => array(array("protocol" => "tcp", "port" => 22)),
 			"noreject" => true,
+			"guess" => _("Warning: Unable to read /etc/ssh/sshd_config. This is expected when viewing through the Web Interface. The correct port, as configured, will be exposed in the firewall service."),
 		);
+
+		// Is sshd_config anywhere else on other machines?
+		$conf = "/etc/ssh/sshd_config";
+		
+		// Note: Only readable by root!
+		if (!file_exists($conf) || !is_readable($conf)) {
+			return $retarr;
+		} else {
+			$retarr['guess'] = false; // Woo, we can read it.
+		}
+
+		// Look for a line starting with Port and then a number.
+		$sshdconf = file_get_contents($conf);
+		if (preg_match("/^Port\s+(\d+)/m", $sshdconf, $out)) {
+			$retarr['fw'] = array(array("protocol" => "tcp", "port" => $out[1]));
+		}
 		return $retarr;
 	}
 
