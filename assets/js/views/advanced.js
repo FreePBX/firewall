@@ -1,12 +1,12 @@
 $(document).ready(function() { 
 	// Add RFC1918 addresses
-	$("#addrfc").click(function(e) { e.preventDefault(); advancedAdd('addrfc', e.target); });
+	$("#addrfc").click(function(e) { advancedAdd('addrfc', e.target); });
 
 	// Add 'this host'
-	$("#addhost").click(function(e) { e.preventDefault(); advancedAdd('addthishost', e.target); });
+	$("#addhost").click(function(e) { advancedAdd('addthishost', e.target); });
 
 	// Add 'this network'
-	$("#addnetwork").click(function(e) { e.preventDefault(); advancedAdd('addthisnetwork', e.target); });
+	$("#addnetwork").click(function(e) { advancedAdd('addthisnetwork', e.target); });
 
 	// Update address bar when someone changes tabs
 	$("a[data-toggle='tab']").on('shown.bs.tab', function(e) { 

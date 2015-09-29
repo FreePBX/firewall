@@ -32,3 +32,8 @@ if (!$fw->isEnabled()) {
 ?>
   </div> <!-- /row -->
 </div> <!-- /container-fluid -->
+
+<?php
+if (isset($page) && $page == "services") {
+	include 'views/modal.customsvc.php';
+}

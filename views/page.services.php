@@ -2,6 +2,25 @@
 <form class="fpbx-submit" name="saveServices" method="post">
 <input type='hidden' name='action' value='updateservices'>
 <?php
+if (!isset($_REQUEST['tab'])) {
+	$tab = "services";
+} else {
+	$tab = $_REQUEST['tab'];
+}
+$svcs = "active";
+$extraservices = $customsvc = "";
+
+switch ($tab) {
+case 'extraservices':
+	$svcs = "";
+	$extraservices = "active";
+	break;
+case 'customsvc':
+	$svcs = "";
+	$customsvc = "active";
+	break;
+}
+
 $services = $fw->getServices();
 $z = $fw->getZones();
 
@@ -12,18 +31,18 @@ $extrasvc = $services['extra'];
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
-      <li role="presentation" data-name="services" class="active">
+      <li role="presentation" data-name="services" class="<?php echo $svcs; ?>">
         <a href="#services" aria-controls="services" role="tab" data-toggle="tab"><?php echo _("Services")?></a>
       </li>
-      <li role="presentation" data-name="extraservices">
+      <li role="presentation" data-name="extraservices" class="<?php echo $extraservices; ?>">
         <a href="#extraservices" aria-controls="extraservices" role="tab" data-toggle="tab"><?php echo _("Extra Services")?></a>
       </li>
-      <li role="presentation" data-name="customsvc">
+      <li role="presentation" data-name="customsvc" class="<?php echo $customsvc; ?>">
         <a href="#customsvc" aria-controls="customsvc" role="tab" data-toggle="tab"><?php echo _("Custom Services")?></a>
       </li>
     </ul>
     <div class="tab-content display">
-      <div role="tabpanel" id="services" class="tab-pane active">
+      <div role="tabpanel" id="services" class="tab-pane <?php echo $svcs; ?>">
 	<p><?php echo _("Services that are assigned to zones <strong>are accessible</strong> to connections matching the zones."); ?></p>
         <p><?php echo _("Note that the 'Reject' setting explicitly blocks that service totally, and can not be overridden. This does <strong>not</strong> allow access to the service from connections that match the 'Reject' zone. This is usually equivalent to turning off access from all zones, which is more intuitive, and can be overridden."); ?></p>
 <?php
@@ -37,7 +56,7 @@ foreach ($coresvc as $s) {
 	displayService($s, $svc, $z, $currentzones);
 } ?>
       </div>
-      <div role="tabpanel" id="extraservices" class="tab-pane">
+      <div role="tabpanel" id="extraservices" class="tab-pane <?php echo $extraservices; ?>">
 <?php
 foreach ($extrasvc as $s) {
 	$currentzones = array();
@@ -51,14 +70,15 @@ foreach ($extrasvc as $s) {
 	displayService($s, $svc, $z, $currentzones);
 } ?>
       </div>
-      <div role="tabpanel" id="customsvc" class="tab-pane">
-	<p>Define custom services here...</p>
+      <div role="tabpanel" id="customsvc" class="tab-pane <?php echo $customsvc; ?>">
+        <?php echo load_view(__DIR__."/view.customsvc.php", array("fw" => $fw)); ?>
       </div>
     </div>
   </div>
 </div>
 
 </form>
+
 
 <?php
 
