@@ -48,6 +48,7 @@ unset($m);
 $v = new \FreePBX\modules\Firewall\Validator($sig);
 $path = $v->checkFile("Services.class.php");
 include $path;
+$services = new \FreePBX\modules\Firewall\Services;
 
 // Now, start by grabbing our interfaces, and making sure
 // they are configured correctly.
@@ -220,7 +221,7 @@ function checkPhar() {
 
 function updateFirewallRules() {
 	// Signature validation and firewall driver
-	global $v, $driver;
+	global $v, $driver, $services;
 
 	// Asterisk user
 	$astuser = "asterisk";
@@ -234,16 +235,24 @@ function updateFirewallRules() {
 	}
 
 	exec("su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
-	$services = @json_decode($out[0], true);
-	if (!is_array($services) || !isset($services['smartports'])) {
+	$getservices = @json_decode($out[0], true);
+	if (!is_array($getservices) || !isset($getservices['smartports'])) {
 		fwLog("Unparseable output from getservices - ".$out[0]." - returned $ret");
 		return;
 	}
 
+	// Root-only updates:
+	//   SSH is only readable by root
+	$ssh = $services->getService("ssh");
+	if ($ssh['guess'] == true) {
+		throw new \Exception("Root user unable to retrieve sshd port! This is a bug!");
+	}
+	$getservices['services']['ssh'] = $ssh;
+
 	$zones = array("reject" => "reject", "external" => "external", "other" => "other",
 		"internal" => "internal", "trusted" => "trusted");
 
-	foreach ($services['services'] as $s => $settings) {
+	foreach ($getservices['services'] as $s => $settings) {
 		// Make sure the service is configured correctly
 		if (isset($settings['fw'])) {
 			$driver->updateService($s, $settings['fw']);
@@ -263,17 +272,17 @@ function updateFirewallRules() {
 	}
 
 	// Update RTP rules
-	$rtp = $services['smartports']['rtp'];
+	$rtp = $getservices['smartports']['rtp'];
 	$driver->setRtpPorts($rtp);
 
 	// Update our knownhosts targets
-	$driver->updateTargets($services);
+	$driver->updateTargets($getservices);
 
 	// And permit our registrations through
-	$driver->updateRegistrations($services['smartports']['registrations']);
+	$driver->updateRegistrations($getservices['smartports']['registrations']);
 
 	// Update blacklist
-	$driver->updateBlacklist($services['blacklist']);
+	$driver->updateBlacklist($getservices['blacklist']);
 
 	fwLog("Update complete.");
 }
