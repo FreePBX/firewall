@@ -5,7 +5,7 @@ if (!isset($_REQUEST['tab'])) {
 	$tab = $_REQUEST['tab'];
 }
 $about = "active";
-$smart = $shortcuts = "";
+$smart = $shortcuts = $services = "";
 
 switch ($tab) {
 case 'smart':
@@ -15,6 +15,10 @@ case 'smart':
 case 'shortcuts':
 	$about = "";
 	$shortcuts = "active";
+	break;
+case 'services':
+	$about = "";
+	$services = "active";
 	break;
 }
 
@@ -35,6 +39,9 @@ $ss = $fw->getSmartSettings();
       </li>
       <li role="presentation" data-name="shortcuts" class="<?php echo $shortcuts; ?>">
         <a href="#shortcuts" aria-controls="shortcuts" role="tab" data-toggle="tab"><?php echo _("Preconfigured")?> </a>
+      </li>
+      <li role="presentation" data-name="services" class="<?php echo $services; ?>">
+        <a href="#services" aria-controls="services" role="tab" data-toggle="tab"><?php echo _("Port/Service Maps")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
@@ -110,6 +117,11 @@ if ($fw->thisHostAdded()) {
 ?>
             </div>
           </div>
+        </div>
+      </div>
+      <div role="tabpanel" id="services" class="tab-pane <?php echo $services; ?>">
+        <div class='container-fluid'>
+          <?php echo load_view(__DIR__."/view.portmaps.php", array("fw" => $fw)); ?>
         </div>
       </div>
     </div>
