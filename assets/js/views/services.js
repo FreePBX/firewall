@@ -20,18 +20,50 @@ $(document).ready(function() {
 
 	// Custom Services
 	$(".csbutton").click(function(e) {
-		console.log("CS button pushed", e);
-		window.zzz = e;
 		var a = $(e.target).data('action');
 		var id = $(e.target).data('svcid');
+		console.log(a);
 		if (a == "edit") {
 			// Load the modal with the correct info.
 			console.log("Editing svcid ",id);
+			var o = $("#csvc-"+id);
+			$("#mheader").text("Edit Service");
+			$("#custmodal").data("action", "edit");
+			$("#custmodal").data("editid", id);
+			$("#cportname").val(o.data("name"));
+			$("#cportrange").val(o.data("port"));
+			$("#cprotocol").val(o.data("protocol"));
+			$("#cssave").text("Save").prop("disabled", false);
+			$("#custmodal").modal("show");
 		} else if (a == "save") {
+			// Does not need a reload
 			console.log("Submitting changes");
+			$("."+id).prop("disabled", true);
+			var d = { module: "firewall", command: "updatecustomzones", id: id, zones: [] };
+			$.each($("."+id+":checked"), function(i, z) {
+				d.zones.push($(z).data('zone'));
+			});
+			$.ajax({
+				url: window.ajaxurl,
+				data: d,
+				complete: function(data) { $("."+id).prop("disabled", false); },
+			});
 		} else if (a == "delete") {
-			console.log("Delete modal?");
+			// TODO: Show a delete modal?
+			$("."+id).prop("disabled", true);
+			$.ajax({
+				url: window.ajaxurl,
+				data: { module: "firewall", command: "deletecustomrule", id: id, },
+				complete: function(data) { 
+					window.location.href = window.location.href;
+				}
+			});
 		}
+	});
+
+	// When they click 'Save' on the modal..
+	$("#cssave").click(function() {
+		saveCust();
 	});
 
 	// Update address bar when someone changes tabs
@@ -42,27 +74,20 @@ $(document).ready(function() {
 	});
 
 	// Focus on an input when we show the modal
-	$('#custmodal').on('show.bs.modal', function () { console.log("Show"); });
-	$('#custmodal').on('shown.bs.modal', function () { console.log("Shown"); });
-
-	// Strange stuff is happening.
-	var x = document.getElementById("custmodal");
-	x.addEventListener("transitionend", function() { console.log("Hit"); }, false);
-	// Focus on an input when we show the modal
-	/* $('#custmodal').on('shown.bs.modal', function () {
-		console.log("Shown");
+	$('#custmodal').on('shown.bs.modal', function () {
 		$(".autofocus", "#custmodal").focus();
-	}); */
+	});
 	
 	// Create new service
 	$("#newcust").click(function() {
 		// Reset the modal
 		$("#mheader").text("Create New Service");
+		$("#custmodal").data("action", "create");
 		$("#cportname,#cportrange").val("");
 		$("#cprotocol").val('both');
+		$("#cssave").text("Save").prop("disabled", false);
 		// And show it
 		$("#custmodal").modal('show');
-		$("#cportname").focus();
 	});
 
 
@@ -95,4 +120,29 @@ function updateQuery(key, value) {
 			return url;
 		}
 	}
+}
+
+function saveCust() {
+	var d = { module: 'firewall',
+		name: $("#cportname").val(),
+		proto: $("#cprotocol").val(),
+		port: $("#cportrange").val(),
+	};
+	// What am I doing?
+	if ($("#custmodal").data("action") === "edit") {
+		d.id = $("#custmodal").data('editid');
+		d.command = "editcustomrule";
+	} else {
+		// Adding a new one.
+		d.command = "addcustomrule";
+	}
+	console.log("Saving");
+	$("#cssave").text("Saving...").prop("disabled", true);
+	$.ajax({
+		url: window.ajaxurl,
+		data: d,
+		complete: function(data) { 
+			window.location.href = window.location.href;
+		}
+	});
 }

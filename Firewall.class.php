@@ -237,7 +237,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "updateinterface":
 			// Remove any notifications about invalid interface configurations
 			$this->Notifications()->delete('firewall', 'trustedint');
-
 			return $this->runHook('updateinterface', array('iface' => $_REQUEST['iface'], 'newzone' => $_REQUEST['zone']));
 		case "updaterfw":
 			return $this->setConfig($_REQUEST['proto'], ($_REQUEST['value'] == "true"), 'rfw');
@@ -245,6 +244,18 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $this->addToBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
 		case "removefromblacklist":
 			return $this->removeFromBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
+
+		// Custom firewall rules.
+		case "addcustomrule":
+			return $this->addCustomService(htmlentities($_REQUEST['name'], \ENT_QUOTES, 'UTF-8', false), $_REQUEST['proto'], $_REQUEST['port']);
+		case "editcustomrule":
+			return $this->editCustomService($_REQUEST['id'], htmlentities($_REQUEST['name'], \ENT_QUOTES, 'UTF-8', false), $_REQUEST['proto'], $_REQUEST['port']);
+		case "deletecustomrule":
+			return $this->deleteCustomService($_REQUEST['id']);
+		case "updatecustomzones":
+			return $this->setCustomServiceZones($_REQUEST['id'], $_REQUEST['zones']);
+
+
 		default:
 			throw new \Exception("Sad Panda");
 		}
@@ -297,8 +308,77 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			self::$services = new Firewall\Services;
 		}
 
-		$retarr = array("core" => self::$services->getCoreServices(), "extra" => self::$services->getExtraServices(), "custom" => array());
+		$retarr = array("core" => self::$services->getCoreServices(), "extra" => self::$services->getExtraServices(), "custom" => $this->getAllCustomServices());
 		return $retarr;
+	}
+
+	public function getAllCustomServices() {
+		return $this->getAll("customservices");
+	}
+
+	public function addCustomService($name, $proto, $ports) {
+		// Generate a new id
+		$id = $this->genUUID();
+		// Make our custom service array
+		$svc = array(
+		   	"name" => $name,
+			"defzones" => array("internal"),
+			"descr" => "Custom Service",
+			"custfw" => array("protocol" => $proto, "port" => $ports),
+			"custid" => $id,
+			"noreject" => true,
+		);
+
+		// And save it!
+		$this->setConfig($id, $svc, "customservices");
+		$this->setCustomServiceZones($id, array("internal"));
+	}
+
+	public function deleteCustomService($id) {
+		$this->setConfig($id, false, "customservices");
+		$this->setConfig($id, false, "servicesettings");
+	}
+
+	public function editCustomService($id, $name = false, $proto = false, $ports = false) {
+		$svc = $this->getConfig($id, "customservices");
+
+		if (!$svc) {
+			throw new \Exception("Unknown custom service id $id");
+		}
+
+		// Update the rules with the new ones..
+		if ($name) {
+			$svc['name'] = $name;
+		}
+
+		if ($proto) {
+			$svc['custfw']['protocol'] = $proto;
+		}
+
+		if ($ports) {
+			$svc['custfw']['port'] = $ports;
+		}
+
+		// And save it.
+		$this->setConfig($id, $svc, "customservices");
+	}
+
+	public function getCustomServiceZones($id) {
+		$zones = $this->getConfig($id, "servicesettings");
+		$retarr = array();
+		if (is_array($zones)) {
+			foreach ($zones as $zone) {
+				$retarr[$zone] = $zone;
+			}
+		}
+		return $retarr;
+	}
+
+	public function setCustomServiceZones($id, $zones = array()) {
+		if (!is_array($zones)) {
+			throw new \Exception("Don't know what I was given");
+		}
+		return $this->setConfig($id, $zones, "servicesettings");
 	}
 
 	// Update services.
@@ -618,5 +698,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->setConfig($host, false, "blacklist");
 	}
 
-}
+	public function genUUID() {
+		// This generates a v4 GUID
+
+		// Be cryptographically secure.
+		$data = openssl_random_pseudo_bytes(16);
+
+		$data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0100
+		$data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
+
+		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+	}
 

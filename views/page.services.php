@@ -23,7 +23,6 @@ case 'customsvc':
 
 $services = $fw->getServices();
 $z = $fw->getZones();
-
 $coresvc = $services['core'];
 $extrasvc = $services['extra'];
 ?>
@@ -71,7 +70,7 @@ foreach ($extrasvc as $s) {
 } ?>
       </div>
       <div role="tabpanel" id="customsvc" class="tab-pane <?php echo $customsvc; ?>">
-        <?php echo load_view(__DIR__."/view.customsvc.php", array("fw" => $fw)); ?>
+        <?php echo load_view(__DIR__."/view.customsvc.php", array("services" => $services, "z" => $z, "fw" => $fw)); ?>
       </div>
     </div>
   </div>

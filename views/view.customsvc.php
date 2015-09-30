@@ -4,29 +4,19 @@
 <div class='clearfix'></div>
 <h2><?php echo _("Custom Services"); ?></h2>
 <?php
-$z = $fw->getZones();
+
+// We never want to show reject on this page.
 unset($z['reject']);
-$cs = $fw->getServices();
-$cs['custom'] = array(
-	"1" => array(
-		"name" => _("XSSH"),
-		"defzones" => array("internal"),
-		"descr" => _("SXSH is the most commonly used system administration tool. It is also a common target for hackers. We <strong>strongly recommend</strong> using a strong password and SSH keys."),
-		"custfw" => array("protocol" => "tcp", "port" => 22),
-		"noreject" => true,
-	),
-);
-if (empty($cs['custom'])) {
+
+if (empty($services['custom'])) {
 	echo "<p>"._("No custom services currently defined.")."</p>";
 } else {
-	foreach ($cs['custom'] as $sid => $service) {
-		displayCustomService($service, $sid, $z,  array("trusted" => "trusted"));
+	foreach ($services['custom'] as $sid => $service) {
+		$currentzones = $fw->getCustomServiceZones($sid);
+		displayCustomService($service, $sid, $z, $currentzones);
 	}
 }
-?>
-</div>
-
-<?php
+print  "</div>\n";
 
 function displayCustomService($svc, $svcid, $zones, $currentzones) {
 	print "<div class='element-container'><div class='row'><div class='col-sm-3'><label class='control-label' for='csvc-$svcid'>";
@@ -45,16 +35,16 @@ function displayCustomService($svc, $svcid, $zones, $currentzones) {
 		}
 
 		$disabled = "";
-		$data = "data-svc='$svcid'";
+		$data = "data-zone='$zn'";
 		$class = "csbutton";
 
-		print "<input type='checkbox' class='$class' name='csvc-$svcid' id='csvc-$svcid-$zn' $data $checked $disabled><label for='csvc-$svcid-$zn'>".$zone['name']."</label>\n";
+		print "<input type='checkbox' class='$class $svcid' name='csvc-$svcid-$zn' id='csvc-$svcid-$zn' $data $checked $disabled><label for='csvc-$svcid-$zn'>".$zone['name']."</label>\n";
 
 	}
 	print "</span>\n";
-	print "<button type='button' class='btn x-btn btn-success csbutton' data-action='save' data-svcid='$svcid' title='"._("Save")."'><span data-action='save' data-svcid='$svcid' class='glyphicon glyphicon-ok'></span></button>";
-	print "<button type='button' class='btn x-btn btn-warning csbutton' data-action='edit' data-svcid='$svcid' title='"._("Edit")."'><span data-action='edit' data-svcid='$svcid' class='glyphicon glyphicon-pencil'></span></button>";
-	print "<button type='button' class='btn x-btn btn-danger csbutton' data-action='remove' data-svcid='$svcid' title='"._("Delete")."'><span data-action='remove' data-svcid='$svcid' class='glyphicon glyphicon-remove'></span></button>";
+	print "<button type='button' class='btn x-btn btn-success csbutton $svcid' data-action='save' data-svcid='$svcid' title='"._("Save")."'><span data-action='save' data-svcid='$svcid' class='glyphicon glyphicon-ok'></span></button>";
+	print "<button type='button' class='btn x-btn btn-warning csbutton $svcid' data-action='edit' data-svcid='$svcid' title='"._("Edit")."'><span data-action='edit' data-svcid='$svcid' class='glyphicon glyphicon-pencil'></span></button>";
+	print "<button type='button' class='btn x-btn btn-danger csbutton $svcid' data-action='delete' data-svcid='$svcid' title='"._("Delete")."'><span data-action='delete' data-svcid='$svcid' class='glyphicon glyphicon-remove'></span></button>";
 	print "</div>\n";
 	
 	// What does this service do?
@@ -68,16 +58,19 @@ function displayCustomService($svc, $svcid, $zones, $currentzones) {
 	}
 
 	// Port range?
-	if (substr(":", $c['port']) !== false) {
+	if (strpos($c['port'], ":") !== false) {
 		$port = sprintf(_("Port Range: %s"), $c['port']);
-	} elseif (substr(",", $c['port']) !== false) {
-		$port = sprintf(_("Selected Ports: %s"), $c['port']);
+	} elseif (strpos($c['port'], ",") !== false) {
+		$port = sprintf(_("Multiple Ports: %s"), $c['port']);
 	} else {
 		// Single port!
 		$port = sprintf(_("Single Port: %s"), (int) $c['port']);
 	}
 
 	print "<div class='hidden-xs col-sm-11 col-sm-offset-1 col-md-10 col-md-offset-2'><span class='help-block'>$protocol</br>$port</span></div>\n";
+
+	// Used when editing
+	print "<input type='hidden' id='csvc-$svcid' data-protocol='".$c['protocol']."' data-port='".$c['port']."' data-name='".htmlentities($svc['name'], \ENT_QUOTES, "UTF-8", false)."'>\n";
 
 	// /row and /element-container
 	print "</div></div>\n";
