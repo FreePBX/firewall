@@ -229,7 +229,12 @@ function updateFirewallRules() {
 	fwLog("Starting update");
 
 	// We want to switch to the asterisk user and ask for the port mappings.
-	if (!$v->checkFile("bin/getservices")) {
+	try {
+		if (!$v->checkFile("bin/getservices")) {
+			// That should ALREADY throw...
+			throw new \Exception("Failed");
+		}
+	} catch (\Exception $e) {
 		fwLog("Can't validate bin/getservices");
 		return false;
 	}
