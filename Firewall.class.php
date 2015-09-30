@@ -255,6 +255,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "updatecustomzones":
 			return $this->setCustomServiceZones($_REQUEST['id'], $_REQUEST['zones']);
 
+		// Attackers page
+		case "getattackers":
+			include __DIR__."/Attacks.class.php";
+			$a = new Firewall\Attacks;
+			$smart = $this->getSmartObj();
+			return $a->getAllAttacks($smart->getRegistrations());
 
 		default:
 			throw new \Exception("Sad Panda");
@@ -709,5 +715,5 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 	}
-	}
+}
 

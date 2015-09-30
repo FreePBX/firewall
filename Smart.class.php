@@ -401,6 +401,9 @@ class Smart {
 		$response = $astman->send_request('Command',array('Command'=>"sip show peers"));
 		$lines = explode("\n", $response['data']);
 		foreach ($lines as $l) {
+			if (!$l) {
+				continue;
+			}
 			$tmparr = preg_split("/\s+/", $l);
 			if (filter_var($tmparr[1], FILTER_VALIDATE_IP)) {
 				$contacts[$tmparr[1]] = true;
@@ -412,6 +415,9 @@ class Smart {
 		$response = $astman->send_request('Command',array('Command'=>"iax2 show peers"));
 		$lines = explode("\n", $response['data']);
 		foreach ($lines as $l) {
+			if (!$l) {
+				continue;
+			}
 			$tmparr = preg_split("/\s+/", $l);
 			if (filter_var($tmparr[1], FILTER_VALIDATE_IP)) {
 				$contacts[$tmparr[1]] = true;

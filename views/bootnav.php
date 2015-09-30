@@ -3,6 +3,9 @@
 // I18n page names
 $names = array(
 	"about" => _("About"),
+	"services" => _("Services"),
+	"zones" => _("Zones"),
+	"status" => _("Status"),
 );
 // Get our list of pages
 $pages = glob(__DIR__."/page.*.php");
