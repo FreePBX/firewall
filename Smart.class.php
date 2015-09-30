@@ -64,6 +64,7 @@ class Smart {
 		$retarr = array(
 			'signalling' => $this->getVoipPorts(),
 			'rtp' => $this->getRtpPorts(),
+			'udptl' => array("start" => 4000, "end" => 4999), // This is not configurable.
 			'known' => $this->getKnown(),
 			'registrations' => $this->getRegistrations(),
 		);

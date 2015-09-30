@@ -284,7 +284,9 @@ function updateFirewallRules() {
 
 	// Update RTP rules
 	$rtp = $getservices['smartports']['rtp'];
-	$driver->setRtpPorts($rtp);
+	// UDPTL is T38.
+	$udptl = $getservices['smartports']['udptl'];
+	$driver->setRtpPorts($rtp, $udptl);
 
 	// Update our knownhosts targets
 	$driver->updateTargets($getservices);

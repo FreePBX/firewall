@@ -470,44 +470,61 @@ class Iptables {
 		$net->updateInterfaceZone($iface, $newzone);
 	}
 
-	public function setRtpPorts($rtp = false) {
+	public function setRtpPorts($rtp = false, $udptl = false) {
 		if (!is_array($rtp)) {
 			throw new \Exception("rtp neesds to be an array");
 		}
+		if (!is_array($udptl)) {
+			$udptl = array("start" => 4000, "end" => 4999);
+		}
 
-		// Our protocol string
-		$proto = "-p udp -m udp --dport ".$rtp['start'].":".$rtp['end']." -j ACCEPT";
-		// We add this _before_ fpbxsignalling in iptables
-		$current = &$this->getCurrentIptables();
+		// Our two protocol strings
+		$rtpports = "-p udp -m udp --dport ".$rtp['start'].":".$rtp['end']." -j ACCEPT";
+		$t38ports = "-p udp -m udp --dport ".$udptl['start'].":".$udptl['end']." -j ACCEPT";
+
+		$this->checkTarget("fpbx-rtp");
 		
+		$current = &$this->getCurrentIptables();
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
 		foreach ($ipvers as $ipv => $ipt) {
-			$me = &$current[$ipv]['filter']['fpbxfirewall'];
+			$me = &$current[$ipv]['filter']['fpbx-rtp'];
+			$foundrtp = false;
+			$foundt38 = false;
+			$unknown = array();
 			foreach ($me as $i => $line) {
-				if (strpos($line, "-p udp -m udp --dport") !== false) {
-					// It's already there. Does it need updating?
-					if ($line === $proto) {
-						break;
-					} else {
-						// It needs to be updated.
-						$me[$i] = $proto;
-						$i++;
-						$cmd = "$ipt -R fpbxfirewall $i $proto";
-						$this->l($cmd);
-						exec($cmd, $output, $ret);
-						break;
-					}
+				// Is this line the rtp or t38 line?
+				if ($line === $rtpports) {
+					$foundrtp = true;
+				} elseif ($line === $t38ports) {
+					$foundt38 = true;
+				} else {
+					$unknown[$line] = $i;
+					unset($me[$i]);
 				}
-				if (strpos($line, "-j fpbxsignalling") !== false) {
-					// We made it to the fpbxnets check, but we didn't find the rtp
-					// entry.  Insert it.
-					array_splice($me, $i, 0, $proto);
-					$i++;
-					$cmd = "$ipt -I fpbxfirewall $i $proto";
-					$this->l($cmd);
-					exec($cmd, $output, $ret);
-					break;
-				}
+			}
+
+			// If we didn't find the correct rtp line, add it.
+			if (!$foundrtp) {
+				$me[] = $rtpports;
+				$cmd = "$ipt -A fpbx-rtp $rtpports";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			}
+
+			// If we didn't find the correct t38 line, add it.
+			if (!$foundt38) {
+				$me[] = $t38ports;
+				$cmd = "$ipt -A fpbx-rtp $t38ports";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			}
+
+			// Now delete the original RTP lines, if there were
+			// any that were wrong.
+			foreach ($unknown as $line => $i) {
+				$cmd = "$ipt -D fpbx-rtp $line";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
 			}
 		}
 		return true;
@@ -905,6 +922,8 @@ class Iptables {
 		$retarr['fpbxfirewall'][]= array("other" => "-m pkttype --pkt-type multicast", "jump" => "ACCEPT");
 		// This ensures we can act as a DHCP server if we want to.
 		$retarr['fpbxfirewall'][]= array("proto" => "udp", "dport" => "67:68", "sport" => "67:68", "jump" => "ACCEPT");
+		// Check if this is RTP traffic. This is a high priority tag, so it's up the top.
+		$retarr['fpbxfirewall'][]= array("jump" => "fpbx-rtp");
 
 		// :: DEVELOPMENT FAILSAFE RULE ::
 		// ::   REMOVE BEFORE RELASE    ::
