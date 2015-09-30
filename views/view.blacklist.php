@@ -7,6 +7,7 @@
 
 $b = $fw->getBlacklist();
 $i = 0;
+$del = _("Delete");
 foreach ($b as $entry => $resolved) {
 	print "<div class='element-container' id='bl-$i'>\n";
 	print "  <div class='row'>\n";
@@ -21,7 +22,7 @@ foreach ($b as $entry => $resolved) {
 			print "      (".join(", ", $resolved).")\n";
 		}
 	}
-	print "      <button type='button' class='pull-right btn btn-danger blbutton' data-action='remove' data-id='$i'>\n";
+	print "      <button type='button' class='pull-right x-btn btn btn-danger blbutton' data-action='remove' data-id='$i' title='$del'>\n";
 	print "        <span class='glyphicon glyphicon-remove'></span>\n";
 	print "      </button>\n";
 	print "    </div>\n";
@@ -36,7 +37,7 @@ foreach ($b as $entry => $resolved) {
       <input type='text' name='bl-new'>
     </div>
     <div class='col-sm-8 col-md-9'>
-      <button type='button' class='pull-right btn btn-success blbutton' data-action='create' data-id='new'>
+      <button type='button' class='pull-right x-btn btn btn-success blbutton' data-action='create' data-id='new' title='<?php echo _("Add New"); ?>'>
         <span class='glyphicon glyphicon-plus'></span>
       </button>
     </div>

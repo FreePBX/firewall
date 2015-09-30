@@ -87,7 +87,7 @@ foreach ($ints as $i => $conf) {
 		print "<input type='radio' name='int-$i' id='int-$i-$zn' value='$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
 	}
 	print "</span>\n";
-	print "<button type='button' class='btn x-btn btn-warning intbutton' data-int='$i' data-action='update'><span class='glyphicon glyphicon-pencil'></span></button>\n";
+	print "<button type='button' class='btn x-btn btn-success intbutton' data-int='$i' data-action='update' title='"._("Save Changes")."'><span class='glyphicon glyphicon-ok' data-int='$i' data-action='update'></span></button>\n";
 ?>
 
     </div>
@@ -166,11 +166,11 @@ foreach ($nets as $net => $currentzone) {
 <?php
 	// Add the 'remove' X if the net isn't empty
 	if (trim($net)) {
-		print "<button type='button' class='btn x-btn btn-danger fwbutton' data-counter='$counter' data-action='remove'><span class='glyphicon glyphicon-remove'></span></button>";
-		print "<button type='button' class='btn x-btn btn-warning fwbutton' data-counter='$counter' data-action='update'><span class='glyphicon glyphicon-pencil'></span></button>";
+		print "<button type='button' class='btn x-btn btn-danger fwbutton' data-counter='$counter' data-action='remove' title='"._("Delete")."'><span data-counter='$counter' data-action='remove' class='glyphicon glyphicon-remove'></span></button>";
+		print "<button type='button' class='btn x-btn btn-success fwbutton' data-counter='$counter' data-action='update' title='"._("Save Changes")."'><span data-counter='$counter' data-action='update' class='glyphicon glyphicon-ok'></span></button>";
 	} else {
 		// Or a '+' add if it is.
-		print "<button type='button' class='btn btn-success x-btn btn-success fwbutton' data-counter='$counter' data-action='create'><span class='glyphicon glyphicon-plus'></span></button>";
+		print "<button type='button' class='btn btn-success x-btn btn-success fwbutton' data-counter='$counter' data-action='create' title='"._("Add New")."'><span data-counter='$counter' data-action='create' class='glyphicon glyphicon-plus'></span></button>";
 	}
 ?>
             </div>
