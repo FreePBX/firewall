@@ -23,13 +23,16 @@ $services = array (
 	"settings" => \FreePBX::Firewall()->getSmartSettings(),
 	"blacklist" => \FreePBX::Firewall()->getBlacklist(),
 	"fw" => array(),
-	"services" => array());
+	"services" => array(),
+	"custom" => array(),
+);
 
 // Figure out where all the services we're caring about are.
 $knownsvcs = \FreePBX::Firewall()->getServices();
 
 // We care about custom services differently
-$services['custom'] = $knownsvcs['custom'];
+$custom = $knownsvcs['custom'];
+
 unset($knownsvcs['custom']);
 
 foreach ($knownsvcs as $section) {
@@ -43,10 +46,13 @@ foreach ($knownsvcs as $section) {
 }
 
 // Now set the zones for custom services..
-foreach ($services['custom'] as $sid => &$tmparr) {
+foreach ($custom as $sid => $tmparr) {
+	// Trim the ID to be less than 16 chars, for iptables
+	$trimmed = substr(str_replace("-", "", $sid), 0, 16);
+	// Now add it to our custom zone
 	$tmparr['zones'] = \FreePBX::Firewall()->getCustomServiceZones($sid);
+	$services['custom'][$trimmed] = $tmparr;
 }
-
 
 // print_r($services); exit;
 print json_encode($services)."\n";

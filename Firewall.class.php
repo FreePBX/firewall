@@ -474,7 +474,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $ints[$int];
 	}
 
-	private function getDriver() {
+	public function getDriver() {
 
 		if (!class_exists('\FreePBX\modules\Firewall\Driver')) {
 			include __DIR__."/Driver.class.php";

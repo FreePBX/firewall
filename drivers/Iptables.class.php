@@ -242,8 +242,10 @@ class Iptables {
 	public function updateService($service = false, $ports = false) {
 		$this->checkFpbxFirewall();
 
-		// Ensure it's not too long
-		$name = substr("fpbxsvc-$service", 0, 25);
+		if (strlen($service) > 16) {
+			throw new \Exception("Service name too long. Bug");
+		}
+		$name = "fpbxsvc-$service";
 		$this->checkTarget($name);
 
 		$current = &$this->getCurrentIptables();
@@ -320,11 +322,59 @@ class Iptables {
 	}
 
 	// Root process
+	public function getActiveServices() {
+		$services = array();
+
+		$current = &$this->getCurrentIptables();
+		foreach ($current['ipv4']['filter'] as $id => $tmp) {
+			if (strpos($id, "fpbxsvc-") !== false) {
+				$rawname = substr($id, 8);
+				$services[$rawname] = $rawname;
+			}
+		}
+		return $services;
+	}
+
+	// Root process
+	public function removeService($service) {
+
+		if (strlen($service) > 16) {
+			throw new \Exception("Service name too long. Bug");
+		}
+
+		// Firstly, remove it from all zones
+		$zones = array("reject", "external", "other", "internal", "trusted");
+		$this->updateServiceZones($service, array("removefrom" => $zones, "addto" => array()));
+
+		// Now flush it completely from iptables, as well
+		$current = &$this->getCurrentIptables();
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+
+		$svc = "fpbxsvc-$service";
+
+		foreach ($ipvers as $ipv => $ipt) {
+			$cmd = "$ipt -F $svc";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			$cmd = "$ipt -X $svc";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			if ($ret !== 0) {
+				throw new \Exception("Tried to delete a service, but, couldn't! - $cmd - ".json_encode($output));
+			}
+			unset($current[$ipv]['filter'][$svc]);
+		}
+	}
+
+	// Root process
 	public function updateServiceZones($service = false, $zones = false) {
 		$this->checkFpbxFirewall();
 		$current = &$this->getCurrentIptables();
 
-		$name = substr("fpbxsvc-$service", 0, 25);
+		if (strlen($service) > 16) {
+			throw new \Exception("Service name too long. Bug");
+		}
+		$name = "fpbxsvc-$service";
 
 		// Check to make sure we know about this service.
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
@@ -335,6 +385,12 @@ class Iptables {
 			// Remove service from zones it shouldn't be in..
 			$live = &$current[$ipv]['filter'];
 			foreach ($zones['removefrom'] as $z) {
+
+				if (!isset($live["zone-$z"])) {
+					// This zone doesn't exist. Easy
+					continue;
+				}
+
 				$this->checkTarget("zone-$z");
 				// Loop through, make sure it's not in this zone
 				foreach ($live["zone-$z"] as $i => $lzone) {

@@ -131,7 +131,7 @@ function getSettings($mysettings) {
 	} elseif ($retarr['refresh'] == "slow") {
 		$period = 120;
 	} else {
-		$period = 60;
+		$period = 6;
 	}
 	$retarr['period'] = $period;
 
@@ -252,7 +252,13 @@ function updateFirewallRules() {
 	$zones = array("reject" => "reject", "external" => "external", "other" => "other",
 		"internal" => "internal", "trusted" => "trusted");
 
+	// This is the list of services we should have.
+	$validservices = array();
 	foreach ($getservices['services'] as $s => $settings) {
+
+		// Keep this service for later
+		$validservices[$s] = $s;
+
 		// Make sure the service is configured correctly
 		if (isset($settings['fw'])) {
 			$driver->updateService($s, $settings['fw']);
@@ -287,6 +293,10 @@ function updateFirewallRules() {
 	// Update our custom ports
 	$custrules = $getservices['custom'];
 	foreach ($custrules as $id => $rule) {
+
+		// Keep this service for later
+		$validservices[$id] = $id;
+
 		$c = $rule['custfw'];
 
 		// If it has a comma, it's multiple ports.
@@ -320,6 +330,15 @@ function updateFirewallRules() {
 		$driver->updateServiceZones($id, $myzones);
 	}
 
+	// Now, purge any services that no longer exist
+	$active = $driver->getActiveServices();
+	foreach ($active as $as) {
+		if (!isset($validservices[$as])) {
+			// This should be removed
+			$driver->removeService($as);
+		}
+	}
+
 	fwLog("Update complete.");
 }
 
@@ -328,6 +347,9 @@ function sigSleep($secs = 10) {
 	// signals from the OS. This may seem counterproductive, as sleep(3) will wake
 	// on *any* signal, but php does all sorts of crazy things to make this
 	// unreliable.
+	if ($secs < 5) {
+		$secs = 5;
+	}
 	pcntl_sigtimedwait(array(SIGHUP), $sig, $secs);
 	if ($sig['signo'] === SIGHUP) {
 		sigHupHandler(1);
