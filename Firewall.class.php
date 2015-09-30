@@ -277,6 +277,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$currentjiffies = $this->getConfig("currentjiffies");
 		if (!$currentjiffies || $currentjiffies < 100) {
 			$currentjiffies = $j->calcJiffies();
+			$this->setConfig("currentjiffies", $currentjiffies);
 		}
 		$j->setKnownJiffies($currentjiffies);
 		return $j;
