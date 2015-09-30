@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-29 20:38-0700\n"
+"POT-Creation-Date: 2015-09-29 20:56-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -165,8 +165,8 @@ msgstr ""
 msgid ""
 "Each network interface on your machine must be mapped to a Zone. Note that, "
 "by default, all interfaces are mapped to trusted (Trusted networks are not "
-"filtered at all, so this disables the firewall for any traffic coming in "
-"from that interface). The zones you can use are:"
+"filtered at all, so this disables the firewall for any traffic arriving at "
+"that interface). The zones you can use are:"
 msgstr ""
 
 #: views/view.customsvc.php:46
@@ -211,10 +211,6 @@ msgstr ""
 
 #: Firewall.class.php:53
 msgid "Firewall Configuration"
-msgstr ""
-
-#: install.php:10
-msgid "Firewall Configuration has moved!"
 msgstr ""
 
 #: Firewall.class.php:39
@@ -618,10 +614,6 @@ msgid ""
 "The 'Refresh Period' is how often the firewall updates its rules. You would "
 "set it to 'fast' if you have many endpoints that are constantly registering "
 "and de-registering, or 'slow' if you are on a low powered machine."
-msgstr ""
-
-#: install.php:11
-msgid "The Firewall configuration menu option has moved to 'Connectivity'"
 msgstr ""
 
 #: Firewall.class.php:172
