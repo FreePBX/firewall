@@ -5,6 +5,7 @@
 $h = array(
 	_("This page gives you a summary of the status of the Responsive Firewall."),
 	_("If you are not using the Responsive Firewall, there will be no useful information available here."),
+	_("This page (and all tabs) automatically update every 15 seconds."),
 );
 
 foreach ($h as $p) {
@@ -20,18 +21,18 @@ $blocked = _("Total number of Attackers detected:");
 ?>
 
 <div class='row'>
-  <div class='col-sm-4'><?php echo $rgd; ?></div>
-  <div class='col-sm-8 loading' id='rgd' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
+  <div class='col-sm-8 col-md-5'><?php echo $rgd; ?></div>
+  <div class='col-sm-4 col-md-7 loading' id='rgd' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
 </div>
 
 <div class='row'>
-  <div class='col-sm-4'><?php echo $slowed; ?></div>
-  <div class='col-sm-8 loading' id='slowed' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
+  <div class='col-sm-8 col-md-5'><?php echo $slowed; ?></div>
+  <div class='col-sm-4 col-md-7 loading' id='slowed' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
 </div>
 
 <div class='row'>
-  <div class='col-sm-4'><?php echo $blocked; ?></div>
-  <div class='col-sm-8 loading' id='blocked' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
+  <div class='col-sm-8 col-md-5'><?php echo $blocked; ?></div>
+  <div class='col-sm-4 col-md-7 loading' id='blocked' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
 </div>
 
 </div>
