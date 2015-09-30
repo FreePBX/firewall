@@ -127,11 +127,11 @@ function getSettings($mysettings) {
 	}
 
 	if ($retarr['refresh'] == "fast") {
-		$period = 30;
+		$period = 15;
 	} elseif ($retarr['refresh'] == "slow") {
 		$period = 120;
 	} else {
-		$period = 6;
+		$period = 30;
 	}
 	$retarr['period'] = $period;
 
