@@ -262,7 +262,7 @@ function updateFirewallRules() {
 
 		// Assign the service to the required zones
 		$myzones = array("addto" => array(), "removefrom" => $zones);
-		if (is_array($settings['zones'])) {
+		if (!empty($settings['zones']) && is_array($settings['zones'])) {
 			foreach ($settings['zones'] as $z) {
 				unset($myzones['removefrom'][$z]);
 				$myzones['addto'][$z] = $z;
@@ -283,6 +283,42 @@ function updateFirewallRules() {
 
 	// Update blacklist
 	$driver->updateBlacklist($getservices['blacklist']);
+
+	// Update our custom ports
+	$custrules = $getservices['custom'];
+	foreach ($custrules as $id => $rule) {
+		$c = $rule['custfw'];
+
+		// If it has a comma, it's multiple ports.
+		$requestedports = explode(",", $c['port']);
+
+		// Create our '$ports' array for the driver.
+		$ports = array();
+		if ($c['protocol'] == "both" || $c['protocol'] == "tcp") {
+			foreach ($requestedports as $p) {
+				if ($p > 65535 || $p < 0) {
+					continue;
+				}
+				$ports[] = array("protocol" => "tcp", "port" => $p);
+			}
+		}
+		if ($rule['custfw']['protocol'] == "both" || $rule['custfw']['protocol'] == "udp") {
+			foreach ($requestedports as $p) {
+				if ($p > 65535 || $p < 0) {
+					continue;
+				}
+				$ports[] = array("protocol" => "udp", "port" => $p);
+			}
+		}
+		$driver->updateService($id, $ports);
+		// Assign the service to the required zones
+		$myzones = array("addto" => array(), "removefrom" => $zones);
+		foreach ($rule['zones'] as $z) {
+			unset($myzones['removefrom'][$z]);
+			$myzones['addto'][$z] = $z;
+		}
+		$driver->updateServiceZones($id, $myzones);
+	}
 
 	fwLog("Update complete.");
 }

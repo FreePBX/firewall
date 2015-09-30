@@ -242,7 +242,8 @@ class Iptables {
 	public function updateService($service = false, $ports = false) {
 		$this->checkFpbxFirewall();
 
-		$name = "fpbxsvc-$service";
+		// Ensure it's not too long
+		$name = substr("fpbxsvc-$service", 0, 25);
 		$this->checkTarget($name);
 
 		$current = &$this->getCurrentIptables();
@@ -323,7 +324,7 @@ class Iptables {
 		$this->checkFpbxFirewall();
 		$current = &$this->getCurrentIptables();
 
-		$name = "fpbxsvc-$service";
+		$name = substr("fpbxsvc-$service", 0, 25);
 
 		// Check to make sure we know about this service.
 		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");

@@ -27,6 +27,11 @@ $services = array (
 
 // Figure out where all the services we're caring about are.
 $knownsvcs = \FreePBX::Firewall()->getServices();
+
+// We care about custom services differently
+$services['custom'] = $knownsvcs['custom'];
+unset($knownsvcs['custom']);
+
 foreach ($knownsvcs as $section) {
 	foreach ($section as $k) {
 		$s = \FreePBX::Firewall()->getService($k);
@@ -36,6 +41,12 @@ foreach ($knownsvcs as $section) {
 		$services['services'][$k] = $s;
 	}
 }
+
+// Now set the zones for custom services..
+foreach ($services['custom'] as $sid => &$tmparr) {
+	$tmparr['zones'] = \FreePBX::Firewall()->getCustomServiceZones($sid);
+}
+
 
 // print_r($services); exit;
 print json_encode($services)."\n";
