@@ -258,13 +258,28 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Attackers page
 		case "getattackers":
 			include __DIR__."/Attacks.class.php";
-			$a = new Firewall\Attacks;
+			$a = new Firewall\Attacks($this->getJiffies());
 			$smart = $this->getSmartObj();
 			return $a->getAllAttacks($smart->getRegistrations());
 
 		default:
 			throw new \Exception("Sad Panda");
 		}
+	}
+
+	// Manage Jiffies, for xt_recent
+	public function getJiffies() {
+		static $j = false;
+		if (!$j) {
+			include __DIR__."/Jiffies.class.php";
+			$j = new Firewall\Jiffies;
+		}
+		$currentjiffies = $this->getConfig("currentjiffies");
+		if (!$currentjiffies || $currentjiffies < 100) {
+			$currentjiffies = $j->calcJiffies();
+		}
+		$j->setKnownJiffies($currentjiffies);
+		return $j;
 	}
 
 	// Now comes the real code. Let's catch the POST and see if there's an action

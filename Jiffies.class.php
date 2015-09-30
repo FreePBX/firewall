@@ -4,15 +4,17 @@ namespace FreePBX\modules\Firewall;
 
 class Jiffies {
 
+	private $knownjiffies = false;
+
 	// Calculate the number of jiffies per second.
 	public function calcJiffies($seconds = 5) {
-		$first = $this->getJiffies();
+		$first = $this->getCurrentJiffie();
 		sleep(1);
 		$seconds--;
 		$jiffies = array();
 		// Run for however many seconds..
 		while ($seconds--)  {
-			$jiffies[] = $this->getJiffies();
+			$jiffies[] = $this->getCurrentJiffie();
 			sleep(1);
 		}
 		// Now, loop through them, and make sure they look sane.
@@ -55,13 +57,27 @@ class Jiffies {
 		return round($realavg, -1);
 	}
 
-	public function getUtimeFromJiffies($jiffies, $hz) {
-		$now = $this->getJiffies();
-		$seconds = ($now - $jiffies)/$hz;
+	public function getUtimeFromJiffies($jiffies) {
+		$now = $this->getCurrentJiffie();
+		$seconds = ($now - $jiffies)/$this->getKnownJiffies();
 		return time() - $seconds;
 	}
 
-	private function getJiffies() {
+	public function setKnownJiffies($j = false) {
+		if (!$j || (int) $j < 100) {
+			return false;
+		}
+		$this->knownjiffies = (int) $j;
+	}
+
+	public function getKnownJiffies() {
+		if (!$this->knownjiffies) {
+			$this->knownjiffies = $this->calcJiffies();
+		}
+		return $this->knownjiffies;
+	}
+
+	public function getCurrentJiffie() {
 		$jf = file("/proc/timer_list", \FILE_IGNORE_NEW_LINES);
 		// Find the first entry that is 'jiffies: ' and return it
 		foreach ($jf as $l) {

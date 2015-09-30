@@ -6,8 +6,9 @@ class Attacks {
 
 	private $tags;
 	private $module;
+	private $jiffies;
 
-	public function __construct() {
+	public function __construct($jiffies) {
 		if (file_exists("/proc/net/xt_recent/ATTACKER")) {
 			$this->module = "/proc/net/xt_recent/";
 		} elseif (file_exists("/proc/net/ipt_recent/ATTACKER")) {
@@ -17,6 +18,7 @@ class Attacks {
 		}
 
 		$this->tags = array("ATTACKER", "REPEAT", "SIGNALLING");
+		$this->jiffies = $jiffies;
 	}
 
 	public function getAllAttacks($registrations) {
@@ -42,6 +44,7 @@ class Attacks {
 		foreach ($tmparr as $line) {
 			// Looks like this: 
 			// src=192.168.15.11 ttl: 61 last_seen: 5317769715 oldest_pkt: 30 5316922978, 5316929714, 5316982978, 5316989717, 5317042978, ...
+			// Note the number is actually kernel jiffies.
 			if (!preg_match('/^src=([a-f0-9\.:]+)\s.+\slast_seen: (\d+) oldest_pkt: (\d+) (.+)/', $line, $out)) {
 				throw new \Exception("Don't understand line $line");
 			}
@@ -52,8 +55,9 @@ class Attacks {
 
 	private function generateSummary($tags, $registrations) {
 
-		// Attackers are only valid if packets are LESS than a day old.
-		$expire = time() - 86400;
+		// Attackers are only valid if packets are LESS than a day old. Note
+		// that these are JIFFIES that are reported.
+		$expire = $this->jiffies->getCurrentJiffie() - (86400 * $this->jiffies->getKnownJiffies());
 		$attackers = array();
 		foreach ($tags['ATTACKER'] as $ip => $tmparr) {
 			// Run through the list of packets and remove any that are too old.
@@ -72,7 +76,7 @@ class Attacks {
 
 		// How many hosts are rate limited?
 		// We care about the last 60 seconds for CURRENTLY rate limited hosts.
-		$expire = time() - 60;
+		$expire = $this->jiffies->getCurrentJiffie() - (60 * $this->jiffies->getKnownJiffies());
 		$reged = array();
 		$clamped = array();
 		foreach ($tags['REPEAT'] as $ip => $tmparr) {
