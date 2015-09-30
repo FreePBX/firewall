@@ -908,7 +908,8 @@ class Iptables {
 
 		// :: DEVELOPMENT FAILSAFE RULE ::
 		// ::   REMOVE BEFORE RELASE    ::
-		$retarr['fpbxfirewall'][] = array("proto" => "tcp", "dport" => "22", "jump" => "ACCEPT");
+		// $retarr['fpbxfirewall'][] = array("proto" => "tcp", "dport" => "22", "jump" => "ACCEPT");
+		// Removed. Let's see how much breaks
 
 		// Now we can do our actual filtering.
 		// This marks VoIP Signalling packets
