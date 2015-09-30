@@ -82,7 +82,7 @@ class Jiffies {
 		// Find the first entry that is 'jiffies: ' and return it
 		foreach ($jf as $l) {
 			if (strpos($l, "jiffies: ") === 0) {
-				$j =  substr($l, 10);
+				$j =  substr($l, 9);
 				return $j;
 			}
 		}
