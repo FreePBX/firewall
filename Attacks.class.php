@@ -17,7 +17,7 @@ class Attacks {
 			throw new \Exception("Don't know which module to check");
 		}
 
-		$this->tags = array("ATTACKER", "REPEAT", "SIGNALLING");
+		$this->tags = array("ATTACKER", "REPEAT", "SIGNALLING", "CLAMPED");
 		$this->jiffies = $jiffies;
 	}
 
@@ -54,7 +54,6 @@ class Attacks {
 	}
 
 	private function generateSummary($tags, $registrations) {
-
 		// Attackers are only valid if packets are LESS than a day old. Note
 		// that these are JIFFIES that are reported.
 		$expire = $this->jiffies->getCurrentJiffie() - (86400 * $this->jiffies->getKnownJiffies());
@@ -77,27 +76,74 @@ class Attacks {
 		// How many hosts are rate limited?
 		// We care about the last 60 seconds for CURRENTLY rate limited hosts.
 		$expire = $this->jiffies->getCurrentJiffie() - (60 * $this->jiffies->getKnownJiffies());
-		$reged = array();
 		$clamped = array();
-		foreach ($tags['REPEAT'] as $ip => $tmparr) {
-			// Is this device registered?
-			if (in_array($ip, $registrations)) {
-				$reged[] = $ip;
-			}
+		foreach ($tags['SIGNALLING'] as $ip => $tmparr) {
 			foreach ($tmparr['previous'] as $id => $timestamp) {
 				if ($timestamp < $expire) {
-					unset($tags['REPEAT'][$ip]['previous'][$id]);
+					unset($tags['SIGNALLING'][$ip]['previous'][$id]);
 				}
 			}
-			// Now, if there aren't any left, no rate limiting is currently being
-			// applied
-			if (!$tags['REPEAT'][$ip]['previous']) {
+			// Now, if there are less than 10 left, no rate limiting is being  applied
+			if (count($tags['SIGNALLING'][$ip]['previous']) < 10) {
 				continue;
 			}
-			$clamped[$ip] = $tags['REPEAT'][$ip]['previous'];
+			$clamped[$ip] = $tags['SIGNALLING'][$ip]['previous'];
 		}
 
-		return array("reged" => $reged, "attackers" => $attackers, "clamped" => $clamped);
+		// Grab a simple list of hosts that were EVER clamped, with the utime of when
+		// they were (not jiffy)
+		$everclamped = array();
+		foreach ($tags['CLAMPED'] as $ip => $tmparr) {
+			$utimes = array();
+			foreach ($tmparr['previous'] as $jiffy) {
+				$utimes[] = $this->jiffies->getUtimeFromJiffy($jiffy);
+			}
+			$everclamped[$ip] = $utimes;
+		}
+
+		$reged = array();
+		$others = array();
+		// Now we go through all the hosts that have hit RFW at all, and
+		// report them, removing ones we already have mentioned.
+		foreach ($tags['REPEAT'] as $ip => $tmparr) {
+			// Was this one that registered? Yay!
+			if (in_array($ip, $registrations)) {
+				$reged[$ip] = $ip;
+				continue;
+			}
+
+			// Banned?
+			if (isset($attackers[$ip])) {
+				continue;
+			}
+
+			// Currently clamped?
+			if (isset($clamped[$ip])) {
+				continue;
+			}
+
+			// Well, it's something new, or old, then. Seperate them into ages
+			$history = array("day" => array(), "week" => array(), "month" => array(), "older" => array());
+			$day = time() - 86400; // 60*60*24
+			$week = time() - 604800; // 86400 * 7
+			$month = time() - 2592000; // 86400 * 30
+
+			$others[$ip] = $tmparr;
+			foreach ($tmparr['previous'] as $jiffy) {
+				$utime = $this->jiffies->getUtimeFromJiffy($jiffy);
+				if ($utime < $month) {
+					$history['older'][] = $utime;
+				} elseif ($utime < $week) {
+					$history['month'][] = $utime;
+				} elseif ($utime < $day) {
+					$history['week'][] = $utime;
+				} else {
+					$history['day'][] = $utime;
+				}
+			}
+			$others[$ip]= $history;
+		}
+		return array("reged" => $reged, "attackers" => $attackers, "clamped" => $clamped, "everclamped" => $everclamped, "other" => $others);
 	}
 }
 
