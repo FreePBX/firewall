@@ -966,13 +966,13 @@ class Iptables {
 		// This is the 'short' block, which allows up to 10 packets in 60 seconds,
 		// before they get clamped. 10 packets is enough to establish and hang up two
 		// calls, or one with voicemail notification.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxlogdrop");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxshortblock");
 		// Note, this is *deliberately* after the check. Otherwise it'll never time out. We
 		// want to let them actually attempt to connect, albeit slowly. If they're legitimate,
 		// their registration will be discovered, and they won't hit here any more. If they're
 		// an attacker, we want to encourage them to retry so they are blocked quicker.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name SIGNALLING --rsource");
-		// However, we're a lot less forgiving over the longer term.
+		// We're a lot less forgiving over the longer term.
 		//
 		// If this IP has sent more than 100 signalling requests without success in a 24 hour
 		// period, we're deeming them as bad guys, and we're not interested in talking to them
@@ -987,6 +987,12 @@ class Iptables {
 		$retarr['fpbxattacker'][] = array("other" => "-m recent --set --name ATTACKER --rsource");
 		$retarr['fpbxattacker'][] = array("jump" => "LOG", "append" => " --log-prefix 'attacker: '");
 		$retarr['fpbxattacker'][] = array("jump" => "DROP");
+
+		// We tag this IP so that monitoring knows that they were previously blocked. Reject, rather
+		// than drop, for phones.
+		$retarr['fpbxshortblock'][] = array("other" => "-m recent --set --name CLAMPED --rsource");
+		$retarr['fpbxshortblock'][] = array("jump" => "LOG", "append" => " --log-prefix 'clamped: '");
+		$retarr['fpbxshortblock'][] = array("jump" => "REJECT");
 
 		// Log dropped packets. This should be visible in the GUI at some point.
 		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'logdrop: '");
