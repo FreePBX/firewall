@@ -86,7 +86,6 @@ pcntl_signal(SIGHUP, "sigHupHandler");
 $lastfin = 1;
 
 while(true) {
-	fwLog("Looping");
 	$fwconf = getSettings($mysettings);
 	if (!$fwconf['active']) {
 		fwLog("Not active. Shutting down");
