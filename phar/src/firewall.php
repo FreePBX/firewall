@@ -225,8 +225,6 @@ function updateFirewallRules() {
 	// Asterisk user
 	$astuser = "asterisk";
 
-	fwLog("Starting update");
-
 	// We want to switch to the asterisk user and ask for the port mappings.
 	try {
 		if (!$v->checkFile("bin/getservices")) {
@@ -344,8 +342,6 @@ function updateFirewallRules() {
 			$driver->removeService($as);
 		}
 	}
-
-	fwLog("Update complete.");
 }
 
 function sigSleep($secs = 10) {
