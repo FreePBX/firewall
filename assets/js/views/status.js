@@ -40,26 +40,29 @@ function updateQuery(key, value) {
 }
 
 function updateStatusPage() {
-
-	$.each($(".loading"), function(i, v) {
-		var o = $(v);
-		o.html(o.data('loading'));
-	});
-
+	$(".notloading").hide();
+	$(".loading").show();
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'getattackers', module: 'firewall' },
-		success: function(data) { processStatusUpdate(data); },
+		success: function(data) { 
+			$(".notloading").text("").show();
+			$(".loading").hide();
+			processStatusUpdate(data); 
+		},
 	});
 }
 
 
 function processStatusUpdate(d) {
 	// Summary page.
+	window.zzz = d;
 	$("#blocked").text(Object.keys(d.ATTACKER).length);
+	$("#curblocked").text(d.summary.attackers.length);
 	$("#rgd").text(d.summary.reged.length);
 	$("#slowed").text(Object.keys(d.summary.clamped).length);
-	window.zzz = d;
+	$("#curslowed").text(d.summary.clamped.length);
+	$("#totalremotes").text(d.summary.totalremotes);
 	console.log(d);
 }
 	

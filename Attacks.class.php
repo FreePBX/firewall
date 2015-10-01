@@ -70,7 +70,7 @@ class Attacks {
 				continue;
 			}
 			// OK, it is.
-			$attackers[$ip] = $tags['ATTACKER'][$ip]['previous'];
+			$attackers[] = $ip;
 		}
 
 		// How many hosts are rate limited?
@@ -143,7 +143,10 @@ class Attacks {
 			}
 			$others[$ip]= $history;
 		}
-		return array("reged" => $reged, "attackers" => $attackers, "clamped" => $clamped, "everclamped" => $everclamped, "other" => $others);
+		return array(
+			"reged" => $reged, "attackers" => $attackers, "clamped" => $clamped,
+			"everclamped" => $everclamped, "other" => $others, "totalremotes" => count($tags['REPEAT']),
+		);
 	}
 }
 

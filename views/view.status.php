@@ -14,25 +14,42 @@ foreach ($h as $p) {
 
 $loading = _("Loading...");
 
-$rgd = _("Total number of Registered Hosts:");
-$slowed = _("Total number of Rate-Limited Hosts:");
+$rgd = _("Total number of Registered Clients:");
+$slowed = _("Total number of Rate-Limited Client:");
+$curslowed = _("Number of Currently Rate-Limited Clients:");
 $blocked = _("Total number of Attackers detected:");
-
+$curblocked = _("Number of currently blocked Attackers:");
+$total = _("Cumulative Total of remote clients:");
 ?>
 
 <div class='row'>
-  <div class='col-sm-8 col-md-5'><?php echo $rgd; ?></div>
-  <div class='col-sm-4 col-md-7 loading' id='rgd' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
+  <div class='col-sm-8 col-md-6'><?php echo $rgd; ?></div>
+  <div class='col-sm-4 col-md-6'><span class='loading'><?php echo $loading; ?></span><span class='notloading' id='rgd'></span></div>
 </div>
 
 <div class='row'>
-  <div class='col-sm-8 col-md-5'><?php echo $slowed; ?></div>
-  <div class='col-sm-4 col-md-7 loading' id='slowed' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
+  <div class='col-sm-8 col-md-6'><?php echo $slowed; ?></div>
+  <div class='col-sm-4 col-md-6'><span class='loading'><?php echo $loading; ?></span><span class='notloading' id='slowed'></span></div>
 </div>
 
 <div class='row'>
-  <div class='col-sm-8 col-md-5'><?php echo $blocked; ?></div>
-  <div class='col-sm-4 col-md-7 loading' id='blocked' data-loading='<?php echo $loading; ?>'><?php echo $loading; ?></div>
+  <div class='col-sm-8 col-md-6'><?php echo $curslowed; ?></div>
+  <div class='col-sm-4 col-md-6'><span class='loading'><?php echo $loading; ?></span><span class='notloading' id='curslowed'></span></div>
+</div>
+
+<div class='row'>
+  <div class='col-sm-8 col-md-6'><?php echo $blocked; ?></div>
+  <div class='col-sm-4 col-md-6'><span class='loading'><?php echo $loading; ?></span><span class='notloading' id='blocked'></span></div>
+</div>
+
+<div class='row'>
+  <div class='col-sm-8 col-md-6'><?php echo $curblocked; ?></div>
+  <div class='col-sm-4 col-md-6'><span class='loading'><?php echo $loading; ?></span><span class='notloading' id='curblocked'></span></div>
+</div>
+
+<div class='row'>
+  <div class='col-sm-8 col-md-6'><?php echo $total; ?></div>
+  <div class='col-sm-4 col-md-6'><span class='loading'><?php echo $loading; ?></span><span class='notloading' id='totalremotes'></span></div>
 </div>
 
 </div>
