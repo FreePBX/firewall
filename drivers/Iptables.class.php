@@ -960,6 +960,11 @@ class Iptables {
 
 		// To start with, we ensure that we keep track of ALL rfw attempts.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
+		// Testing against various attack tools suggests that they tend to spam packets,
+		// even when they are rejected.  So, as a simple 'we know you're doing bad things'
+		// check, if they've sent more than 50 packets in 10 seconds, they're baddies.
+		// We're just going to block them, and be done with it.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 10 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxattacker");
 		// Has this IP already been detected as a persistent attacker? They're off to
 		// the bit bucket.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 1 --name ATTACKER --rsource", "jump" => "fpbxattacker");
