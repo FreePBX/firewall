@@ -87,7 +87,7 @@ class Attacks {
 			if (count($tags['SIGNALLING'][$ip]['previous']) < 10) {
 				continue;
 			}
-			$clamped[$ip] = $tags['SIGNALLING'][$ip]['previous'];
+			$clamped[] = $ip;
 		}
 
 		// Grab a simple list of hosts that were EVER clamped, with the utime of when
@@ -101,24 +101,41 @@ class Attacks {
 			$everclamped[$ip] = $utimes;
 		}
 
+		$all = array();
 		$reged = array();
 		$others = array();
 		// Now we go through all the hosts that have hit RFW at all, and
 		// report them, removing ones we already have mentioned.
 		foreach ($tags['REPEAT'] as $ip => $tmparr) {
+
 			// Was this one that registered? Yay!
 			if (in_array($ip, $registrations)) {
 				$reged[] = $ip;
 				continue;
 			}
 
+			// Otherwise, we want it for history. Grab the last 5 packets and utime them
+			$counter = 1;
+			$allutimes = array();
+			$sorted = $tmparr['previous'];
+			arsort($sorted);
+			foreach ($sorted as $jiffy) {
+				if ($counter++ > 5) {
+					break;
+				}
+				$utime = $this->jiffies->getUtimeFromJiffy($jiffy);
+				$ago = time() - $utime;
+				$allutimes[] = array("timestamp" => $utime, "ago" => $ago);
+			}
+			$all[$ip] = $allutimes;
+
 			// Banned?
-			if (isset($attackers[$ip])) {
+			if (in_array($ip, $attackers)) {
 				continue;
 			}
 
 			// Currently clamped?
-			if (isset($clamped[$ip])) {
+			if (in_array($ip, $clamped)) {
 				continue;
 			}
 
@@ -146,6 +163,7 @@ class Attacks {
 		return array(
 			"reged" => $reged, "attackers" => $attackers, "clamped" => $clamped,
 			"everclamped" => $everclamped, "other" => $others, "totalremotes" => count($tags['REPEAT']),
+			"history" => $all,
 		);
 	}
 }

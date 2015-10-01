@@ -6,6 +6,18 @@ $(document).ready(function() {
 		window.history.replaceState(null, document.title, newuri);
 	});
 
+	// Grab del button clicks
+	$("#attackersdiv").on("click", ".delbutton", function(e) {
+		var t = $(e.target).data("ip");
+		$.ajax({
+			url: window.ajaxurl,
+			data: { command: 'delattacker', module: 'firewall', target: t },
+			success: function(data) { 
+				updateStatusPage();
+			},
+		});
+	});
+
 	updateStatusPage();
 
 });
@@ -56,7 +68,6 @@ function updateStatusPage() {
 
 function processStatusUpdate(d) {
 	// Summary page.
-	window.zzz = d;
 	$("#blocked").text(Object.keys(d.ATTACKER).length);
 	$("#curblocked").text(d.summary.attackers.length);
 	$("#rgd").text(d.summary.reged.length);
@@ -64,6 +75,8 @@ function processStatusUpdate(d) {
 	$("#curslowed").text(d.summary.clamped.length);
 	$("#totalremotes").text(d.summary.totalremotes);
 	genRegHtml(d.summary.reged);
+	genClampedHtml(d.summary.clamped);
+	genBlockedHtml(d.summary.attackers, d);
 	console.log(d);
 }
 
@@ -79,4 +92,63 @@ function genRegHtml(registered) {
 	});
 	h += "</ul>";
 	$("#regul").html(h);
+}
+
+function genClampedHtml(clamped) {
+	if (clamped.length == 0) {
+		$("#noclamped").show();
+		return;
+	}
+	$("#noclamped").hide();
+	var h = "<ul>";
+	$.each(clamped, function (i, v) {
+		h += "<li>"+v+"</li>";
+	});
+	h += "</ul>";
+	$("#clampeddiv").html(h);
+}
+
+function genBlockedHtml(attackers, d) {
+	if (attackers.length == 0) {
+		$("#noattackers").show();
+		return;
+	}
+	$("#noattackers").hide();
+	var h = "";
+	$.each(attackers, function (i, v) {
+		h += "<div class='element-container'><div class='row'><div class='col-sm-3'><h4>"+v+"</h4></div>";
+		h += "<div class='col-sm-7'>Last 5 packets:<ul>"+formatTimestamps(v, d)+"</ul></div>";
+		h += "<div class='col-sm-1'>";
+		h += "<button type='button' class='btn x-btn btn-danger delbutton' data-ip='"+v+"' title='Unblock'><span data-ip='"+v+"' class='glyphicon glyphicon-remove'></span></button>"
+		h += "</div></div>";
+	});
+	$("#attackersdiv").html(h);
+}
+
+
+function formatTimestamps(ip, data) {
+	// data.summary.history.$ip contains a list of utimes.
+	var resp = "";
+	$.each(data.summary.history[ip], function(i, ut) {
+		var d = new Date(ut.timestamp * 1000);
+		resp += "<li>"+strDate(d)+" ("+ut.ago+"s ago)</li>\n";
+	});
+	return resp;
+}
+
+// This should probably override the Date object.. something like
+// Date.prototype.getSaneDate = function () {
+function strDate(d) {
+	// Pad everything properly
+	function pad(n){return n<10 ? '0'+n : n}
+	var hh = pad(d.getHours());
+	var mm = pad(d.getMinutes());
+	var ss = pad(d.getSeconds());
+
+	var dd = pad(d.getDate());
+	var MM = pad(d.getMonth());
+	var yyyy = d.getFullYear();
+	
+	var ret = yyyy+"-"+MM+"-"+dd+" "+hh+":"+mm+":"+ss;
+	return ret;
 }
