@@ -63,6 +63,20 @@ function processStatusUpdate(d) {
 	$("#slowed").text(Object.keys(d.summary.clamped).length);
 	$("#curslowed").text(d.summary.clamped.length);
 	$("#totalremotes").text(d.summary.totalremotes);
+	genRegHtml(d.summary.reged);
 	console.log(d);
 }
-	
+
+function genRegHtml(registered) {
+	if (registered.length == 0) {
+		$("#noreged").show();
+		return;
+	}
+	$("#noreged").hide();
+	var h = "<ul>";
+	$.each(registered, function (i, v) {
+		h += "<li>"+v+"</li>";
+	});
+	h += "</ul>";
+	$("#regul").html(h);
+}

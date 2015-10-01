@@ -108,7 +108,7 @@ class Attacks {
 		foreach ($tags['REPEAT'] as $ip => $tmparr) {
 			// Was this one that registered? Yay!
 			if (in_array($ip, $registrations)) {
-				$reged[$ip] = $ip;
+				$reged[] = $ip;
 				continue;
 			}
 

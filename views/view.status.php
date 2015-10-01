@@ -15,7 +15,7 @@ foreach ($h as $p) {
 $loading = _("Loading...");
 
 $rgd = _("Total number of Registered Clients:");
-$slowed = _("Total number of Rate-Limited Client:");
+$slowed = _("Total number of Rate-Limited Clients:");
 $curslowed = _("Number of Currently Rate-Limited Clients:");
 $blocked = _("Total number of Attackers detected:");
 $curblocked = _("Number of currently blocked Attackers:");

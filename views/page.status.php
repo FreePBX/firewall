@@ -6,16 +6,16 @@ if (!isset($_REQUEST['tab'])) {
 }
 
 $status = "active";
-$registered = $blocked = "";
+$registered = $blockedtab = "";
 
 switch ($tab) {
 case 'registered':
 	$status = "";
 	$registered = "active";
 	break;
-case 'blocked':
+case 'blockedtab':
 	$status = "";
-	$blocked = "active";
+	$blockedtab = "active";
 	break;
 }
 ?>
@@ -30,8 +30,8 @@ case 'blocked':
       <li role="presentation" data-name="registered" class="<?php echo $registered; ?>">
         <a href="#registered" aria-controls="registered" role="tab" data-toggle="tab"><?php echo _("Registered Endpoints")?> </a>
       </li>
-      <li role="presentation" data-name="blocked"  class="<?php echo $blocked; ?>">
-        <a href="#blocked" aria-controls="blocked" role="tab" data-toggle="tab"><?php echo _("Blocked Hosts")?> </a>
+      <li role="presentation" data-name="blockedtab"  class="<?php echo $blockedtab; ?>">
+        <a href="#blockedtab" aria-controls="blockedtab" role="tab" data-toggle="tab"><?php echo _("Blocked Hosts")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
@@ -41,7 +41,7 @@ case 'blocked':
       <div role="tabpanel" id="registered" class="tab-pane <?php echo $registered; ?>">
         <?php echo load_view(__DIR__."/view.registered.php"); ?>
       </div>
-      <div role="tabpanel" id="blocked" class="tab-pane <?php echo $blocked; ?>">
+      <div role="tabpanel" id="blockedtab" class="tab-pane <?php echo $blockedtab; ?>">
         <?php echo load_view(__DIR__."/view.blocked.php"); ?>
       </div>
     </div>
