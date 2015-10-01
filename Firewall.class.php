@@ -261,6 +261,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$a = new Firewall\Attacks($this->getJiffies());
 			$smart = $this->getSmartObj();
 			return $a->getAllAttacks($smart->getRegistrations());
+		case "delattacker":
+			return $this->runHook("removeallblocks", array("unblock" => $_REQUEST['target']));
 
 		default:
 			throw new \Exception("Sad Panda");

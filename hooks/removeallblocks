@@ -1,0 +1,30 @@
+#!/usr/bin/env php
+<?php
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+
+// Make sure we have a param
+if (empty($argv[1])) {
+	throw new \Exception("Needs a param");
+}
+
+// Underp the base64 that the param is using.
+$b = str_replace('_', '/', $argv[1]);
+$settings = @json_decode(gzuncompress(@base64_decode($b)), true);
+
+if (!is_array($settings)) {
+	throw new \Exception("Invalid param");
+}
+
+// Make sure our host is an IP address
+if (!filter_var($settings['unblock'], \FILTER_VALIDATE_IP)) {
+	throw new \Exception("Not an IP address");
+}
+
+// Now remove it from all recent chains
+$recent = array ("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING");
+foreach ($recent as $chain) {
+	$fh = fopen("/proc/net/xt_recent/$chain", "w");
+	fwrite($fh, "-".$settings['unblock']."\n");
+	fclose($fh);
+}
+
