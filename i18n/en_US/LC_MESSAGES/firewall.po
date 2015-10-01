@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-29 20:56-0700\n"
+"POT-Creation-Date: 2015-09-30 20:33-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgid "<strong>Responsive Firewall is not enabled</strong>."
 msgstr ""
 
 #: page.firewall.php:9
-msgid "<strong>THERE IS NO LONGER UNFLITERED ACCESS TO PORT 22</strong>."
+msgid "<strong>THERE IS NO LONGER UNFILTERED ACCESS TO PORT 22</strong>."
 msgstr ""
 
 #: Firewall.class.php:72
@@ -89,6 +89,19 @@ msgid ""
 "interface."
 msgstr ""
 
+#: views/view.blocked.php:17
+msgid ""
+"Any hosts in this section have been classified as an attacker. All traffic "
+"from them will be ignored until they cease attempting to contact the server "
+"for more than 24 hours."
+msgstr ""
+
+#: views/view.blocked.php:7
+msgid ""
+"Any hosts in this section have been rate limited, because they have sent too "
+"much data to this machine without successfully registering."
+msgstr ""
+
 #: Zones.class.php:9
 msgid ""
 "Any incoming network packets are rejected. Note that this zone still accepts "
@@ -100,8 +113,22 @@ msgstr ""
 msgid "Any name"
 msgstr ""
 
+#: views/view.registered.php:6
+msgid ""
+"Below is a list of clients that have successfully registered and been "
+"validated by Responsive Firewall."
+msgstr ""
+
 #: views/page.zones.php:42
 msgid "Blacklists"
+msgstr ""
+
+#: views/view.blocked.php:16
+msgid "Blocked Attackers"
+msgstr ""
+
+#: views/page.status.php:34
+msgid "Blocked Hosts"
 msgstr ""
 
 #: views/modal.customsvc.php:20
@@ -124,6 +151,10 @@ msgstr ""
 msgid "Create new Service"
 msgstr ""
 
+#: views/view.status.php:22
+msgid "Cumulative Total of remote clients:"
+msgstr ""
+
 #: views/page.services.php:40 views/view.customsvc.php:5
 #: views/view.portmaps.php:23
 msgid "Custom Services"
@@ -136,7 +167,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:298
+#: Firewall.class.php:322
 msgid "Defaults"
 msgstr ""
 
@@ -221,10 +252,6 @@ msgstr ""
 msgid "Firewall Service not running!"
 msgstr ""
 
-#: page.firewall.php:10
-msgid "Firewall rules are now honoured for SSH access to this machine."
-msgstr ""
-
 #: views/page.zones.php:121
 msgid ""
 "For example, if interface eth0 is assigned to the 'External' zone, here you "
@@ -305,6 +332,19 @@ msgid ""
 "you add the complete network."
 msgstr ""
 
+#: views/view.status.php:7
+msgid ""
+"If you are not using the Responsive Firewall, there will be no useful "
+"information available here."
+msgstr ""
+
+#: views/view.blocked.php:18
+msgid ""
+"If you believe one of the hosts has been added in error, you can click the "
+"red 'X' to remove the block. If the host continues to send invalid data, it "
+"will be automatically re-added."
+msgstr ""
+
 #: views/page.zones.php:120
 msgid ""
 "Individual networks may be specified here, that override the default rule "
@@ -338,6 +378,11 @@ msgstr ""
 msgid "Legacy chan_sip Protocol"
 msgstr ""
 
+#: views/view.blocked.php:2 views/view.registered.php:15
+#: views/view.status.php:15
+msgid "Loading..."
+msgstr ""
+
 #: views/view.customsvc.php:64
 #, php-format
 msgid "Multiple Ports: %s"
@@ -357,6 +402,10 @@ msgstr ""
 
 #: views/view.portmaps.php:26
 msgid "No Custom services defined."
+msgstr ""
+
+#: views/view.registered.php:16
+msgid "No Endpoints have been allowed through the Responsive Firewall"
 msgstr ""
 
 #: views/page.zones.php:97
@@ -380,6 +429,10 @@ msgstr ""
 
 #: views/view.customsvc.php:12
 msgid "No custom services currently defined."
+msgstr ""
+
+#: views/view.blocked.php:10 views/view.blocked.php:20
+msgid "No hosts!"
 msgstr ""
 
 #: views/view.about.php:5
@@ -408,6 +461,14 @@ msgid ""
 "service from connections that match the 'Reject' zone. This is usually "
 "equivalent to turning off access from all zones, which is more intuitive, "
 "and can be overridden."
+msgstr ""
+
+#: views/view.status.php:19
+msgid "Number of Currently Rate-Limited Clients:"
+msgstr ""
+
+#: views/view.status.php:21
+msgid "Number of currently blocked Attackers:"
 msgstr ""
 
 #: Zones.class.php:11
@@ -478,15 +539,23 @@ msgstr ""
 msgid "RFC1918/RFC4193"
 msgstr ""
 
+#: views/view.blocked.php:6
+msgid "Rate Limited Hosts"
+msgstr ""
+
 #: views/view.about.php:4
 msgid "Refresh Period"
+msgstr ""
+
+#: views/page.status.php:31
+msgid "Registered Endpoints"
 msgstr ""
 
 #: Zones.class.php:9
 msgid "Reject"
 msgstr ""
 
-#: Firewall.class.php:299
+#: Firewall.class.php:323
 msgid "Reset"
 msgstr ""
 
@@ -529,7 +598,7 @@ msgid ""
 "strong password and SSH keys. "
 msgstr ""
 
-#: Firewall.class.php:300 views/modal.customsvc.php:37
+#: Firewall.class.php:324 views/modal.customsvc.php:37
 #: views/view.customsvc.php:45
 msgid "Save"
 msgstr ""
@@ -546,7 +615,7 @@ msgstr ""
 msgid "Service unavailable"
 msgstr ""
 
-#: views/page.services.php:34
+#: views/bootnav.php:6 views/page.services.php:34
 msgid "Services"
 msgstr ""
 
@@ -567,6 +636,22 @@ msgstr ""
 
 #: views/view.about.php:5
 msgid "Slow"
+msgstr ""
+
+#: views/bootnav.php:8
+msgid "Status"
+msgstr ""
+
+#: views/page.status.php:28
+msgid "Status Overview"
+msgstr ""
+
+#: views/view.registered.php:3
+msgid "Successfully Registered Endpoints"
+msgstr ""
+
+#: views/view.status.php:3
+msgid "Summary"
 msgstr ""
 
 #: Firewall.class.php:32 views/view.about.php:2
@@ -628,10 +713,25 @@ msgstr ""
 msgid "The firewall module is not enabled!"
 msgstr ""
 
+#: views/view.blocked.php:11
+msgid "There are no hosts that are currently being rate limited."
+msgstr ""
+
+#: views/view.blocked.php:21
+msgid "There are no hosts that have been detected as attacking this server."
+msgstr ""
+
 #: views/view.about.php:31
 msgid ""
 "There is no need to explicitly add definitions for peers, as they are "
 "automatically allowed through the firewall after successfully registering."
+msgstr ""
+
+#: views/view.blocked.php:8
+msgid ""
+"There is no need to manually remove entries from this section, as their rate "
+"limiting will be completely removed in 60 seconds. If they continue to send "
+"invalid data, they will be classified as an Attacker."
 msgstr ""
 
 #: views/disabled.php:10
@@ -655,6 +755,15 @@ msgid ""
 "trusted zone. Once you have added your selections, you can fine-tune them, "
 "if required, <a href='?display=firewall&page=zones&tab=netsettings'>on the "
 "Networks tab.</a>"
+msgstr ""
+
+#: views/view.registered.php:7
+msgid ""
+"This does <strong>not</strong> include Endpoints that are already assigned "
+"to a Zone, or, Endpoints that were <strong>already registered</strong> when "
+"the firewall restarted, as they are automatically granted access. This is "
+"only for previously unknown hosts who have been authorized by Asterisk and "
+"granted access by the firewall."
 msgstr ""
 
 #: views/page.about.php:69
@@ -682,7 +791,7 @@ msgid ""
 "extension configuration of FreePBX."
 msgstr ""
 
-#: page.firewall.php:12
+#: page.firewall.php:10
 msgid ""
 "This is the 'Current State' post in the forum thread discussing the "
 "development and testing of this module."
@@ -696,9 +805,17 @@ msgstr ""
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
+#: views/view.registered.php:8 views/view.status.php:8
+msgid "This page (and all tabs) automatically update every 15 seconds."
+msgstr ""
+
 #: views/view.portmaps.php:10
 msgid ""
 "This page displays the detected ports and port ranges for all known services."
+msgstr ""
+
+#: views/view.status.php:6
+msgid "This page gives you a summary of the status of the Responsive Firewall."
 msgstr ""
 
 #: views/view.blacklist.php:2
@@ -706,6 +823,18 @@ msgid ""
 "To alleviate any potential attacks, you can add any number of hosts or "
 "networks here and any traffic from these entries will be silently ignored. "
 "They will NOT be permitted to access the Responsive Firewall service."
+msgstr ""
+
+#: views/view.status.php:20
+msgid "Total number of Attackers detected:"
+msgstr ""
+
+#: views/view.status.php:18
+msgid "Total number of Rate-Limited Clients:"
+msgstr ""
+
+#: views/view.status.php:17
+msgid "Total number of Registered Clients:"
 msgstr ""
 
 #: Zones.class.php:13
@@ -757,13 +886,6 @@ msgstr ""
 
 #: views/view.blacklist.php:20
 msgid "Warning: Unable to resolve this entry!"
-msgstr ""
-
-#: page.firewall.php:11
-msgid ""
-"We are confident that the firewall service is sufficiently stable, and does "
-"not require an emergency backdoor. If you have had issues with firewall and "
-"have not reported them in the forums, please do so!"
 msgstr ""
 
 #: Services.class.php:79
@@ -825,6 +947,10 @@ msgstr ""
 
 #: views/page.zones.php:33
 msgid "Zone Information"
+msgstr ""
+
+#: views/bootnav.php:7
+msgid "Zones"
 msgstr ""
 
 #: views/view.about.php:12
