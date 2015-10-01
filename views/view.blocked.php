@@ -10,8 +10,8 @@ $loading = _("Loading...");
   <h4><?php echo _("No hosts!"); ?></h4>
   <p><?php echo _("There are no hosts that are currently being rate limited."); ?></p>
 </div>
-<div class='loading'><p><?php echo $loading; ?></p></div>
-<div class='notloading' id='clampeddiv'></div>
+<div class='loading onlyonce'><p><?php echo $loading; ?></p></div>
+<div class='notloading onlyonce' id='clampeddiv'></div>
 
 <h3><?php echo _("Blocked Attackers"); ?></h3>
 <p><?php echo _("Any hosts in this section have been classified as an attacker. All traffic from them will be ignored until they cease attempting to contact the server for more than 24 hours."); ?></p>
@@ -20,8 +20,8 @@ $loading = _("Loading...");
   <h4><?php echo _("No hosts!"); ?></h4>
   <p><?php echo _("There are no hosts that have been detected as attacking this server."); ?></p>
 </div>
-<div class='loading'><p><?php echo $loading; ?></p></div>
-<div class='notloading' id='attackersdiv'></div>
+<div class='loading onlyonce'><p><?php echo $loading; ?></p></div>
+<div class='notloading onlyonce' id='attackersdiv'></div>
 
 </div>
 

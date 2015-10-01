@@ -13,14 +13,20 @@ $(document).ready(function() {
 			url: window.ajaxurl,
 			data: { command: 'delattacker', module: 'firewall', target: t },
 			success: function(data) { 
-				updateStatusPage();
+				triggerPageUpdate();
 			},
 		});
 	});
-
-	updateStatusPage();
-
+	triggerPageUpdate();
 });
+
+function triggerPageUpdate() {
+	if (typeof window.updatetrigger !== "undefined") {
+		window.clearTimeout(window.updatetrigger);
+	}
+	updateStatusPage();
+	window.updatetrigger = window.setTimeout(function() { triggerPageUpdate(); }, 15000);
+}
 
 function updateQuery(key, value) {
 	var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"), hash;
@@ -77,7 +83,9 @@ function processStatusUpdate(d) {
 	genRegHtml(d.summary.reged);
 	genClampedHtml(d.summary.clamped);
 	genBlockedHtml(d.summary.attackers, d);
-	console.log(d);
+
+	// Blocked only wants loading shown once.
+	$(".onlyonce").removeClass("loading").removeClass("notloading");
 }
 
 function genRegHtml(registered) {
