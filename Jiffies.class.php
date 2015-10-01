@@ -57,10 +57,11 @@ class Jiffies {
 		return round($realavg, -1);
 	}
 
-	public function getUtimeFromJiffies($jiffies) {
+	public function getUtimeFromJiffy($jiffies) {
 		$now = $this->getCurrentJiffie();
 		$seconds = ($now - $jiffies)/$this->getKnownJiffies();
-		return time() - $seconds;
+		$utime = time() - $seconds;
+		return (int) $utime;
 	}
 
 	public function setKnownJiffies($j = false) {
