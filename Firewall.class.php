@@ -607,7 +607,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $this->runHook("addrfcnetworks");
 	}
 
-	private function getSmartObj() {
+	public function getSmartObj() {
 		static $sm = false;
 		if (!$sm) {
 			if (!class_exists('\FreePBX\modules\Firewall\Smart')) {
