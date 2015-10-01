@@ -393,14 +393,24 @@ class Iptables {
 
 				$this->checkTarget("zone-$z");
 				// Loop through, make sure it's not in this zone
+				$delids = array();
 				foreach ($live["zone-$z"] as $i => $lzone) {
 					if ($lzone == "-j $name") {
-						unset($live["zone-$z"][$i]);
+						// It's in a zone it shouldn't be in.
+						$delids[] = $i;
 						$i++;
 						$cmd = "$ipt -D zone-$z $i";
 						$this->l($cmd);
 						exec($cmd, $output, $ret);
+						if ($ret !== 0) {
+							throw new \Exception("Error removing zone $i");
+						}
 					}
+				}
+				arsort($delids);
+				foreach ($delids as $i) {
+					// NOW we can remove it from our cache
+					array_splice($live["zone-$z"], $i, 1);
 				}
 			}
 
