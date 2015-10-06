@@ -44,6 +44,7 @@ case 'blacklist':
     </ul>
     <div class="tab-content display">
     <div role="tabpanel" id="zonedocs" class="tab-pane <?php echo $docs; ?>">
+      <div class='container-fluid'>
         <h3><?php echo _("About Zones"); ?></h3>
 <?php
 echo "<p>"._("Each network interface on your machine must be mapped to a Zone. Note that, by default, all interfaces are mapped to trusted (Trusted networks are not filtered at all, so this disables the firewall for any traffic arriving at that interface). The zones you can use are:")."</p>";
@@ -56,7 +57,9 @@ echo "</ul>";
 ?>
 
       </div>
-      <div role="tabpanel" id="intsettings" class="tab-pane <?php echo $int; ?>">
+    </div>
+    <div role="tabpanel" id="intsettings" class="tab-pane <?php echo $int; ?>">
+      <div class='container-fluid'>
         <p><?php echo _("All interfaces must be assigned to a default zone. Any traffic entering this interface (that does not originate from a network in the Networks tab) is firewalled to the rules of that zone. Note that 'Trusted' means that <strong>no filtering</strong> will be applied to this interface. 'Reject' means <strong>no inbound connections will be permitted</strong> to that interface."); ?></p>
         <p><?php echo _("It is a misconfiguration to have a <strong>interface</strong> assigned to the Trusted zone. Only networks or hosts should be assigned to that zone. Newly detected interfaces are, by default, assigned to Trusted so they can be configured correctly without interfering with existing traffic."); ?></p>
 <?php
@@ -115,8 +118,9 @@ foreach ($ints as $i => $conf) {
 }
 ?>
       </div>
-
-      <div role="tabpanel" id="netsettings" class="tab-pane <?php echo $net; ?>">
+    </div>
+    <div role="tabpanel" id="netsettings" class="tab-pane <?php echo $net; ?>">
+      <div class='container-fluid'>
 	<p><?php echo _("Individual networks may be specified here, that override the default rule for an interface."); ?></p>
         <p><?php echo _("For example, if interface eth0 is assigned to the 'External' zone, here you can add a specific <strong>source</strong> network to the 'Trusted' zone. After you have done that, any connections <strong>originating</strong> from that network (and arriving on <i>any interface</i>) will be treated as 'Trusted'. All other traffic arriving at that interface is only allowed access to services available to the 'External' zone."); ?></p>
         <p><?php echo _("Note that several common settings are available on the 'Advanced' page."); ?></p>
@@ -180,9 +184,12 @@ foreach ($nets as $net => $currentzone) {
 	$counter++;
 } // foreach $nets
 ?>
+        </div>
       </div>
       <div role="tabpanel" id="blacklist" class="tab-pane <?php echo $blacklist; ?>">
-        <?php echo load_view(__DIR__."/view.blacklist.php", array("fw" => $fw)); ?>
+        <div class='container-fluid'>
+          <?php echo load_view(__DIR__."/view.blacklist.php", array("fw" => $fw)); ?>
+        </div>
       </div>
     </div>
   </div>

@@ -42,8 +42,9 @@ $extrasvc = $services['extra'];
     </ul>
     <div class="tab-content display">
       <div role="tabpanel" id="services" class="tab-pane <?php echo $svcs; ?>">
-	<p><?php echo _("Services that are assigned to zones <strong>are accessible</strong> to connections matching the zones."); ?></p>
-        <p><?php echo _("Note that the 'Reject' setting explicitly blocks that service totally, and can not be overridden. This does <strong>not</strong> allow access to the service from connections that match the 'Reject' zone. This is usually equivalent to turning off access from all zones, which is more intuitive, and can be overridden."); ?></p>
+        <div class='container-fluid'>
+	  <p><?php echo _("Services that are assigned to zones <strong>are accessible</strong> to connections matching the zones."); ?></p>
+          <p><?php echo _("Note that the 'Reject' setting explicitly blocks that service totally, and can not be overridden. This does <strong>not</strong> allow access to the service from connections that match the 'Reject' zone. This is usually equivalent to turning off access from all zones, which is more intuitive, and can be overridden."); ?></p>
 <?php
 foreach ($coresvc as $s) {
 	$currentzones = array();
@@ -54,8 +55,10 @@ foreach ($coresvc as $s) {
 	// Display the buttons
 	displayService($s, $svc, $z, $currentzones);
 } ?>
+        </div>
       </div>
       <div role="tabpanel" id="extraservices" class="tab-pane <?php echo $extraservices; ?>">
+        <div class='container-fluid'>
 <?php
 foreach ($extrasvc as $s) {
 	$currentzones = array();
@@ -68,9 +71,12 @@ foreach ($extrasvc as $s) {
 	}
 	displayService($s, $svc, $z, $currentzones);
 } ?>
+        </div>
       </div>
       <div role="tabpanel" id="customsvc" class="tab-pane <?php echo $customsvc; ?>">
-        <?php echo load_view(__DIR__."/view.customsvc.php", array("services" => $services, "z" => $z, "fw" => $fw)); ?>
+        <div class='container-fluid'>
+          <?php echo load_view(__DIR__."/view.customsvc.php", array("services" => $services, "z" => $z, "fw" => $fw)); ?>
+        </div>
       </div>
     </div>
   </div>

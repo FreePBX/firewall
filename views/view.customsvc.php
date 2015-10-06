@@ -1,4 +1,3 @@
-<div class='container-fluid'>
 <p><?php echo _("Custom services can be defined on this page. Please check to make sure you don't accidentally expose an automatically configured service by using the same port and protocol."); ?></p>
 <button type='button' class='btn btn-default pull-right' id='newcust'><?php echo _("Create new Service"); ?></button>
 <div class='clearfix'></div>
@@ -16,7 +15,6 @@ if (empty($services['custom'])) {
 		displayCustomService($service, $sid, $z, $currentzones);
 	}
 }
-print  "</div>\n";
 
 function displayCustomService($svc, $svcid, $zones, $currentzones) {
 	print "<div class='element-container'><div class='row'><div class='col-sm-3'><label class='control-label' for='csvc-$svcid'>";
