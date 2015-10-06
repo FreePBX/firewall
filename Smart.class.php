@@ -306,7 +306,7 @@ class Smart {
 		return array();
 	}
 
-	public function lookup($host = false) {
+	public function lookup($host = false, $allowcache = true) {
 		static $cache;
 
 		if (!$host) {
@@ -316,6 +316,11 @@ class Smart {
 		// This is for PHP 5.4 and below
 		if (!is_array($cache)) {
 			$cache = array();
+		}
+
+		// Do we need to refresh this lookup?
+		if (!$allowcache) {
+			unset($cache[$host]);
 		}
 
 		// Have we looked this up previously?
