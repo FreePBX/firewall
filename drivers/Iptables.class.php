@@ -829,6 +829,75 @@ class Iptables {
 		}
 	}
 
+	public function updateHostZones($hosts) {
+		// Make sure our table exists
+		$this->checkTarget("fpbxhosts");
+
+		$wanted = array("4" => array(), "6" => array());
+
+		// $hosts are array( ip.add.re.ss => "zone", ip.add.re.ss => "zone", ... )
+		foreach ($hosts as $ipaddr => $zone) {
+			if (filter_var($ipaddr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+				$wanted[6]["$ipaddr/128"] = $zone;
+			} elseif (filter_var($ipaddr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+				$wanted[4]["$ipaddr/32"] = $zone;
+			} else {
+				// What do I do here? Throw?
+				continue;
+			}
+		}
+
+		// And now add or remove them as neccesary. We do a bit of
+		// array mangling so I can avoid code duplication.
+		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables", "targets" => $wanted[6], "prefix" => "128"),
+			"ipv4" => array("ipt" => "/sbin/iptables", "targets" => $wanted[4], "prefix" => "32"),
+		);
+
+		$current = &$this->getCurrentIptables();
+		foreach ($ipvers as $ipv => $tmparr) {
+			if (!$tmparr) {
+				continue;
+			}
+			$me = &$current[$ipv]['filter']['fpbxhosts'];
+			$exists = array_flip($me);
+			foreach ($tmparr['targets'] as $addr => $zone) {
+				$p = "-s $addr -j zone-$zone";
+				if (isset($exists[$p])) {
+					// It's already there, no need to change
+					unset($exists[$p]);
+					continue;
+				}
+				// It doesn't exist. We need to add it.
+				$me[] = $p;
+				$cmd = $tmparr['ipt']." -A fpbxhosts $p";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			}
+
+			// Are any left over? They can be removed.
+
+			$delids = array();
+			foreach ($exists as $rule => $i) {
+				// We delete the rule from iptables first...
+				$cmd = $tmparr['ipt']." -D fpbxhosts $rule";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+
+				// And then grab the ID, so we can remove the entries in *reverse* order,
+				// so we don't lose our place.
+				$delids[] = $i;
+			}
+
+			// Now if there were any to be deleted, we delete them from the end backwards, 
+			// so our cache doesn't get out of whack.
+			arsort($delids);
+			foreach ($delids as $i) {
+				// NOW we can remove it from our cache
+				array_splice($me, $i, 1);
+			}
+		}
+	}
+
 	// Driver Specific iptables stuff
 	// Root process
 	private function &getCurrentIptables() {
@@ -949,6 +1018,8 @@ class Iptables {
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxregistrations");
 		// This allows known networks
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
+		// This allows known hosts
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxhosts");
 		// If any hosts are blacklisted, reject them here. This ensures
 		// that you can override a large blacklist by a smaller network
 		// definition.

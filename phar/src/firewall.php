@@ -74,7 +74,7 @@ if (!empty($fwconf['networkmaps'])) {
 }
 if ($nets && is_array($nets)) {
 	foreach ($nets as $n => $zone) {
-		if (strpos($n, "/") === 0) {
+		if (strpos($n, "/") === false) {
 			// No /, it's a host. Skip, we'll pick it up later
 			continue;
 		}
@@ -337,6 +337,9 @@ function updateFirewallRules() {
 		}
 		$driver->updateServiceZones($id, $myzones);
 	}
+
+	// Update the Host DDNS entries.
+	$driver->updateHostZones($getservices['hostmaps']);
 
 	// Now, purge any services that no longer exist
 	$active = $driver->getActiveServices();

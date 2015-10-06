@@ -566,10 +566,19 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	// Ajax Code below //
 	// /////////////// //
 	public function removeNetwork($net = false) {
+		// Is it a host? We care about them differently.
+		$hostmap = $this->getConfig("hostmaps");
+		if (!empty($hostmap[$net])) {
+			// It's a host, not a network
+			unset($hostmap[$net]);
+			$this->setConfig("hostmaps", $hostmap);
+		}
+
+		// Now, grab what our zones should be...
 		$nets = $this->getZoneNetworks();
 		// Is this network part of a zone?
 		if (!isset($nets[$net])) {
-			throw new \Exception("Unknown zone");
+			return false;
 		}
 		return $this->runHook("removenetwork", array("network" => $net, "zone" => $nets[$net]));
 	}
