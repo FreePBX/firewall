@@ -342,8 +342,9 @@ class Smart {
 
 			$keys = array_keys($retarr);
 			$cache[$host] = $keys;
-			return $keys;
 		}
+		$ret = $cache[$host];
+		return $ret;
 	}
 
 	public function getRegistrations() {
