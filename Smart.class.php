@@ -330,7 +330,7 @@ class Smart {
 			// Let's do some DNS-ing
 			// TODO: See how this goes. It might be better to use something like http://www.purplepixie.org/phpdns/
 			//
-			$dns = dns_get_record($host);
+			$dns = dns_get_record($host, \DNS_A|\DNS_AAAA);
 			$retarr = array();
 
 			// TODO: IPv6
