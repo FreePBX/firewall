@@ -79,6 +79,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Now we need to validate that we DO have a trusted network or host. 
 		// If we dont', this should be a warning, not an error.
 		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			$nets = array();
+		}
 
 		$foundtrustednet = false;
 		foreach ($nets as $name => $zone) {
@@ -231,9 +234,23 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "addrfc":
 			return $this->addRfcNetworks();
 		case "addthishost":
-			return $this->runHook('addnetwork', array('trusted' => array($this->detectHost())));
+			$thishost = $this->detectHost();
+			$nets = $this->getConfig("networkmaps");
+			if (!is_array($nets)) {
+				$nets = array();
+			}
+			$nets[$thishost] = "trusted";
+			$this->setConfig("networkmaps", $nets);
+			return $this->runHook('addnetwork', array('trusted' => array($thishost)));
 		case "addthisnetwork":
-			return $this->runHook('addnetwork', array('trusted' => array($this->detectNetwork())));
+			$thisnet = $this->detectNetwork();
+			$nets = $this->getConfig("networkmaps");
+			if (!is_array($nets)) {
+				$nets = array();
+			}
+			$nets[$thisnet] = "trusted";
+			$this->setConfig("networkmaps", $nets);
+			return $this->runHook('addnetwork', array('trusted' => array($thisnet)));
 		case "updateinterface":
 			// Remove any notifications about invalid interface configurations
 			$this->Notifications()->delete('firewall', 'trustedint');
@@ -576,7 +593,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 			$ip = 6;
 		} else {
-			throw new \Exception("$addr is not a valid IP address");
+			// It's probably a host. Add it to our host maps to care about later
+			return $this->addHostToZone($net, $zone);
 		}
 
 		// Check subnet.. 
@@ -591,6 +609,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 		}
 
+		// Update the local cache
+		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			$nets = array();
+		}
+		$nets["$addr/$subnet"] = $zone;
+		$this->setConfig("networkmaps", $nets);
+
 		$params = array($zone => array("$addr/$subnet"));
 		return $this->runHook("addnetwork", $params);
 	}
@@ -601,6 +627,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (!isset($nets[$net])) {
 			throw new \Exception("Unknown network");
 		}
+
+		// Update the local cache
+		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			$nets = array();
+		}
+		$nets[$net] = $zone;
+		$this->setConfig("networkmaps", $nets);
+
 		return $this->runHook("changenetwork", array("network" => $net, "newzone" => $zone));
 	}
 
@@ -650,11 +685,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function isTrusted() {
 		$nets = $this->getConfig("networkmaps");
-		$thisnet = $this->detectNetwork();
-		$thishost = $this->detectHost();
 		if (!is_array($nets)) {
 			return false;
 		}
+		$thisnet = $this->detectNetwork();
+		$thishost = $this->detectHost();
 		foreach ($nets as $n => $zone) {
 			if ($zone !== "trusted") {
 				continue;
@@ -670,6 +705,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Check to see if ALL the RFC1918 networks are added.
 		$shouldbe = array ('192.168.0.0/16','172.16.0.0/12','10.0.0.0/8', 'fc00::/8', 'fd00::/8');
 		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			return false;
+		}
 		foreach ($shouldbe as $n) {
 			if (!isset($nets[$n]) || $nets[$n] !== "trusted") {
 				return false;
@@ -680,6 +718,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function thisHostAdded() {
 		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			return false;
+		}
 		$thishost = $this->detectHost();
 		if (isset($nets[$thishost]) && $nets[$thishost] == "trusted") {
 			return true;
@@ -690,6 +731,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function thisNetAdded() {
 		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			return false;
+		}
 		$thisnet = $this->detectNetwork();
 		if (isset($nets[$thisnet]) && $nets[$thisnet] == "trusted") {
 			return true;
