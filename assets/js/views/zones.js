@@ -27,7 +27,7 @@ function changeInt(o) {
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'updateinterface', module: 'firewall', iface: iface, zone: checked },
-		complete: function(data) { window.location.href = window.location.href; },
+		success: function(data) { window.location.href = window.location.href; },
 	});
 }
 
@@ -85,7 +85,7 @@ function removeNetwork(c) {
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'removenetwork', module: 'firewall', net: net },
-		complete: function(data) { window.location.href = window.location.href; },
+		success: function(data) { window.location.href = window.location.href; },
 	});
 
 }
@@ -98,7 +98,7 @@ function updateNetwork(c) {
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'updatenetwork', module: 'firewall', net: net, zone: zone },
-		complete: function(data) { window.location.href = window.location.href; },
+		success: function(data) { window.location.href = window.location.href; },
 	});
 
 	opaqueRow(c);
@@ -114,7 +114,7 @@ function createNetwork(c) {
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'addnetworktozone', module: 'firewall', net: net, zone: zone },
-		complete: function(data) { window.location.href = window.location.href; },
+		success: function(data) { window.location.href = window.location.href; },
 	});
 }
 
@@ -170,7 +170,7 @@ function changeBlacklist(o) {
 	$.ajax({
 		url: window.ajaxurl,
 		data: ajaxdata,
-		complete: function(data) { window.location.href = window.location.href; },
+		success: function(data) { window.location.href = window.location.href; },
 	});
 }
 
