@@ -54,6 +54,21 @@ foreach ($custom as $sid => $tmparr) {
 	$services['custom'][$trimmed] = $tmparr;
 }
 
+// Grab any hostnames that should be allowed through
+$hostmaps = \FreePBX::Firewall()->getConfig("hostmaps");
+if (!$hostmaps) {
+	$hostmaps = array();
+}
+$smart = \FreePBX::Firewall()->getSmartObj();
+$harr = array();
+foreach ($hostmaps as $host => $zone) {
+	$lookup = $smart->lookup($host);
+	foreach ($lookup as $ipaddr) {
+		$harr[$ipaddr] = $zone;
+	}
+}
+$services['hostmaps'] = $harr;
+
 // print_r($services); exit;
 print json_encode($services)."\n";
 

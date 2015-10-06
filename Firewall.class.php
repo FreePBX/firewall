@@ -222,7 +222,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if (!isset($zones[$_REQUEST['zone']])) {
 				throw new \Exception("Invalid zone $zone");
 			}
-			return $this->addNetworkToZone($_REQUEST['net'], $_REQUEST['zone']);
+			return $this->addNetworkToZone(trim($_REQUEST['net']), $_REQUEST['zone']);
 		case "updatenetwork":
 			if (!isset($_REQUEST['net'])) {
 				throw new \Exception("No net");
@@ -230,7 +230,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if (!isset($_REQUEST['zone'])) {
 				throw new \Exception("No Zone");
 			}
-			return $this->changeNetworksZone($_REQUEST['net'], $_REQUEST['zone']);
+			return $this->changeNetworksZone(trim($_REQUEST['net']), $_REQUEST['zone']);
 		case "addrfc":
 			return $this->addRfcNetworks();
 		case "addthishost":
@@ -533,6 +533,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function getZoneNetworks() {
 		$d = $this->getDriver();
 		$nets = $d->getKnownNetworks();
+		$hosts = $this->getConfig("hostmaps");
+		if (is_array($hosts)) {
+			$nets = array_merge($nets, $hosts);
+		}
 		$this->setConfig("networkmaps", $nets);
 		return $nets;
 	}
@@ -571,6 +575,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function addNetworkToZone($net = false, $zone = false) {
+		$net = trim($net);
 		// Is this an IP address?
 		if (strpos($net, "/") !== false) {
 			list($addr, $subnet) = explode("/", trim($net));
@@ -621,11 +626,30 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $this->runHook("addnetwork", $params);
 	}
 
+	public function addHostToZone($host, $zone) {
+		$host = trim($host);
+		$hosts = $this->getConfig("hostmaps");
+		if (!is_array($hosts)) {
+			$hosts = array();
+		}
+		$hosts[$host] = $zone;
+		return $this->setConfig("hostmaps", $hosts);
+	}
+
 	public function changeNetworksZone($net, $zone) {
+		$net = trim($net);
 		$nets = $this->getZoneNetworks();
 		// Is this network part of a zone?
 		if (!isset($nets[$net])) {
 			throw new \Exception("Unknown network");
+		}
+
+		// Is it a host? We care about them differently.
+		$hostmap = $this->getConfig("hostmaps");
+		if (!empty($hostmap[$net])) {
+			// It's a host, not a network
+			$hostmap[$net] = $zone;
+			$this->setConfig("hostmaps", $hostmap);
 		}
 
 		// Update the local cache

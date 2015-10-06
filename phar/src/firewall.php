@@ -74,6 +74,10 @@ if (!empty($fwconf['networkmaps'])) {
 }
 if ($nets && is_array($nets)) {
 	foreach ($nets as $n => $zone) {
+		if (strpos($n, "/") === 0) {
+			// No /, it's a host. Skip, we'll pick it up later
+			continue;
+		}
 		list($network, $cidr) = explode("/", $n);
 		$driver->addNetworkToZone($zone, $network, $cidr);
 	}
