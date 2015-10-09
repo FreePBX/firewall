@@ -1,0 +1,953 @@
+# This file is part of FreePBX.
+#
+# For licensing information, please see the file named LICENSE located in the module directory
+#
+# FreePBX language template for firewall
+# Copyright (C) 2008-2015 Sangoma, Inc.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-05 22:48-0700\n"
+"PO-Revision-Date: 2015-10-05 22:48-0700\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: views/page.about.php:63
+msgid ""
+"<strong>Important Warning!</strong> If you are in a hosted environment (for "
+"example, AWS) and you enable this, you may be inadvertently allowing other "
+"hosted clients unrestricted access to your machine! Please use common sense "
+"to make sure that you are only allowing known trusted networks."
+msgstr ""
+
+#: views/view.about.php:23
+msgid "<strong>Responsive Firewall is not enabled</strong>."
+msgstr ""
+
+#: Firewall.class.php:72
+#, php-format
+msgid ""
+"A network interface that is assigned to the 'Trusted' zone has been "
+"detected. This is a misconfiguration, possibly by the addition of a new "
+"Network Interface. To ensure your system is protected from attacks, please "
+"change the default zone of interface %s."
+msgstr ""
+
+#: views/bootnav.php:5
+msgid "About"
+msgstr ""
+
+#: views/page.zones.php:48
+msgid "About Zones"
+msgstr ""
+
+#: views/page.about.php:72
+msgid "Add Host"
+msgstr ""
+
+#: views/page.about.php:71
+msgid "Add Network"
+msgstr ""
+
+#: views/page.zones.php:178 views/view.blacklist.php:40
+msgid "Add New"
+msgstr ""
+
+#: views/page.about.php:64
+msgid "Add to Trusted"
+msgstr ""
+
+#: views/view.about.php:32
+msgid ""
+"After an endpoint is registered, the source of that endpoint is "
+"<strong>automatically granted</strong> permission to use UCP, if UCP is "
+"enabled."
+msgstr ""
+
+#: views/page.zones.php:63
+msgid ""
+"All interfaces must be assigned to a default zone. Any traffic entering this "
+"interface (that does not originate from a network in the Networks tab) is "
+"firewalled to the rules of that zone. Note that 'Trusted' means that "
+"<strong>no filtering</strong> will be applied to this interface. 'Reject' "
+"means <strong>no inbound connections will be permitted</strong> to that "
+"interface."
+msgstr ""
+
+#: Zones.class.php:13
+msgid ""
+"All network connections are accepted. No firewalling is done on this "
+"interface."
+msgstr ""
+
+#: views/view.blocked.php:17
+msgid ""
+"Any hosts in this section have been classified as an attacker. All traffic "
+"from them will be ignored until they cease attempting to contact the server "
+"for more than 24 hours."
+msgstr ""
+
+#: views/view.blocked.php:7
+msgid ""
+"Any hosts in this section have been rate limited, because they have sent too "
+"much data to this machine without successfully registering."
+msgstr ""
+
+#: Zones.class.php:9
+msgid ""
+"Any incoming network packets are rejected. Note that this zone still accepts "
+"RTP traffic, but no other ports are listening by default. You rarely want to "
+"use this."
+msgstr ""
+
+#: views/modal.customsvc.php:13
+msgid "Any name"
+msgstr ""
+
+#: views/view.registered.php:6
+msgid ""
+"Below is a list of clients that have successfully registered and been "
+"validated by Responsive Firewall."
+msgstr ""
+
+#: views/page.zones.php:42
+msgid "Blacklists"
+msgstr ""
+
+#: views/view.blocked.php:16
+msgid "Blocked Attackers"
+msgstr ""
+
+#: views/page.status.php:34
+msgid "Blocked Hosts"
+msgstr ""
+
+#: views/modal.customsvc.php:20
+msgid "Both (TCP and UDP)"
+msgstr ""
+
+#: Services.class.php:135
+msgid "CHAN_SIP Protocol"
+msgstr ""
+
+#: views/modal.customsvc.php:36
+msgid "Cancel"
+msgstr ""
+
+#: views/view.portmaps.php:11
+msgid "Core Services"
+msgstr ""
+
+#: views/view.customsvc.php:2
+msgid "Create new Service"
+msgstr ""
+
+#: views/view.status.php:22
+msgid "Cumulative Total of remote clients:"
+msgstr ""
+
+#: views/page.services.php:40 views/view.customsvc.php:4
+#: views/view.portmaps.php:23
+msgid "Custom Services"
+msgstr ""
+
+#: views/view.customsvc.php:1
+msgid ""
+"Custom services can be defined on this page. Please check to make sure you "
+"don't accidentally expose an automatically configured service by using the "
+"same port and protocol."
+msgstr ""
+
+#: Firewall.class.php:339
+msgid "Defaults"
+msgstr ""
+
+#: views/page.zones.php:174 views/view.blacklist.php:10
+#: views/view.customsvc.php:45
+msgid "Delete"
+msgstr ""
+
+#: views/modal.customsvc.php:11
+msgid "Description"
+msgstr ""
+
+#: views/view.smart.php:42
+msgid "Disable"
+msgstr ""
+
+#: views/view.about.php:47
+msgid "Disable Firewall"
+msgstr ""
+
+#: views/view.smart.php:5
+msgid "Disabled"
+msgstr ""
+
+#: views/page.zones.php:50
+msgid ""
+"Each network interface on your machine must be mapped to a Zone. Note that, "
+"by default, all interfaces are mapped to trusted (Trusted networks are not "
+"filtered at all, so this disables the firewall for any traffic arriving at "
+"that interface). The zones you can use are:"
+msgstr ""
+
+#: views/view.customsvc.php:44
+msgid "Edit"
+msgstr ""
+
+#: views/view.smart.php:44
+msgid "Enable"
+msgstr ""
+
+#: views/view.smart.php:4
+msgid "Enabled"
+msgstr ""
+
+#: Zones.class.php:10
+msgid "External"
+msgstr ""
+
+#: views/page.services.php:37 views/view.portmaps.php:17
+msgid "Extra Services"
+msgstr ""
+
+#: Services.class.php:188
+msgid "FTP"
+msgstr ""
+
+#: Services.class.php:190
+msgid "FTP is used by things to do stuff. Redo this text."
+msgstr ""
+
+#: views/view.about.php:5
+msgid "Fast"
+msgstr ""
+
+#: page.firewall.php:6
+msgid "Firewall"
+msgstr ""
+
+#: Firewall.class.php:37
+msgid "Firewall Active"
+msgstr ""
+
+#: Firewall.class.php:53
+msgid "Firewall Configuration"
+msgstr ""
+
+#: Firewall.class.php:39
+msgid "Firewall Disabled"
+msgstr ""
+
+#: Firewall.class.php:47
+msgid "Firewall Service not running!"
+msgstr ""
+
+#: views/page.zones.php:125
+msgid ""
+"For example, if interface eth0 is assigned to the 'External' zone, here you "
+"can add a specific <strong>source</strong> network to the 'Trusted' zone. "
+"After you have done that, any connections <strong>originating</strong> from "
+"that network (and arriving on <i>any interface</i>) will be treated as "
+"'Trusted'. All other traffic arriving at that interface is only allowed "
+"access to services available to the 'External' zone."
+msgstr ""
+
+#: Zones.class.php:10
+msgid ""
+"For interfaces connected to the internet. You do not trust the other "
+"computers on networks to not harm your computer. Only selected incoming "
+"connections are accepted."
+msgstr ""
+
+#: Zones.class.php:12
+msgid ""
+"For use on internal networks. You mostly trust the other computers on the "
+"networks to not harm your computer."
+msgstr ""
+
+#: Zones.class.php:11
+msgid ""
+"For use on trusted external networks, or other well known networks (such as "
+"a DMZ, or OpenVPN network). You mostly trust the other computers on the "
+"networks to not harm your computer."
+msgstr ""
+
+#: Services.class.php:158
+msgid "HTTP Provisioning"
+msgstr ""
+
+#: Services.class.php:148 Smart.class.php:43
+msgid "IAX Protocol"
+msgstr ""
+
+#: Services.class.php:150
+msgid ""
+"IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
+"SIP, but few providers support it."
+msgstr ""
+
+#: views/page.zones.php:105
+msgid "IP Address: "
+msgstr ""
+
+#: views/page.zones.php:103
+msgid "IP Addresses: "
+msgstr ""
+
+#: views/view.smart.php:27
+msgid ""
+"If fail2ban is enabled and configured on this machine, fail2ban will send "
+"you email alerts when this happens."
+msgstr ""
+
+#: views/view.smart.php:26
+msgid ""
+"If the incoming connection attempts are invalid, traffic from that machine "
+"will be dropped for a short period of time. If attempts to authenticate "
+"continue without success, the attacking host will be blocked for 24 hours."
+msgstr ""
+
+#: views/view.smart.php:25
+msgid ""
+"If the registration attempt is successful, the remote host is then added to "
+"a 'Known Good' zone, that has permission to use that protocol, and is "
+"additionally granted access to UCP, if UCP is enabled."
+msgstr ""
+
+#: views/page.about.php:70
+msgid ""
+"If you are coming from an IPv6 Network, it <strong>not recommended</strong> "
+"to only add your 'Host', as MAC address changes, or IPv6 Security "
+"Extensions, will randomly and unexpectedly change your IP address. Ensure "
+"you add the complete network."
+msgstr ""
+
+#: views/view.status.php:7
+msgid ""
+"If you are not using the Responsive Firewall, there will be no useful "
+"information available here."
+msgstr ""
+
+#: views/view.blocked.php:18
+msgid ""
+"If you believe one of the hosts has been added in error, you can click the "
+"red 'X' to remove the block. If the host continues to send invalid data, it "
+"will be automatically re-added."
+msgstr ""
+
+#: views/page.zones.php:124
+msgid ""
+"Individual hosts and networks are specified here, that override the default "
+"rule for an interface."
+msgstr ""
+
+#: views/page.zones.php:36
+msgid "Interfaces"
+msgstr ""
+
+#: Zones.class.php:12
+msgid "Internal"
+msgstr ""
+
+#: views/disabled.php:11
+msgid ""
+"It continously monitors the configuration of your machine, automatically "
+"opening and closing ports to known trunks (eg, VoIP providers), and allows "
+"you to limit the services this machine provides to clients."
+msgstr ""
+
+#: views/page.zones.php:64
+msgid ""
+"It is a misconfiguration to have a <strong>interface</strong> assigned to "
+"the Trusted zone. Only networks or hosts should be assigned to that zone. "
+"Newly detected interfaces are, by default, assigned to Trusted so they can "
+"be configured correctly without interfering with existing traffic."
+msgstr ""
+
+#: Smart.class.php:42
+msgid "Legacy chan_sip Protocol"
+msgstr ""
+
+#: views/view.blocked.php:2 views/view.registered.php:15
+#: views/view.status.php:15
+msgid "Loading..."
+msgstr ""
+
+#: views/view.customsvc.php:62
+#, php-format
+msgid "Multiple Ports: %s"
+msgstr ""
+
+#: Services.class.php:211
+msgid "NFS"
+msgstr ""
+
+#: Services.class.php:217
+msgid "NFS Services are not available on this machine"
+msgstr ""
+
+#: views/page.zones.php:39
+msgid "Networks"
+msgstr ""
+
+#: views/view.portmaps.php:26
+msgid "No Custom services defined."
+msgstr ""
+
+#: views/view.registered.php:16
+msgid "No Endpoints have been allowed through the Responsive Firewall"
+msgstr ""
+
+#: views/page.zones.php:100
+msgid "No IP Addresses assigned to this interface."
+msgstr ""
+
+#: Firewall.class.php:98
+msgid "No Trusted Management Network"
+msgstr ""
+
+#: Firewall.class.php:100
+msgid "No Trusted Network or Host defined"
+msgstr ""
+
+#: Firewall.class.php:101
+msgid ""
+"No Trusted Network or Host has been defined. Every server should have a "
+"'Trusted' host or network to ensure that in case of configuration error, the "
+"machine is still accessible."
+msgstr ""
+
+#: views/view.customsvc.php:11
+msgid "No custom services currently defined."
+msgstr ""
+
+#: views/view.blocked.php:10 views/view.blocked.php:20
+msgid "No hosts!"
+msgstr ""
+
+#: views/view.about.php:5
+msgid "Normal"
+msgstr ""
+
+#: views/view.blacklist.php:4
+msgid "Note that changes to the firewall are effective immediately."
+msgstr ""
+
+#: views/view.smart.php:28
+msgid ""
+"Note that if you have explicitly granted 'External' connections access to a "
+"protocol, this filtering and rate limiting will not be used.  This is only "
+"used when an incoming connection <strong>would normally be blocked</strong>."
+msgstr ""
+
+#: views/page.zones.php:126
+msgid "Note that several common settings are available on the 'Advanced' page."
+msgstr ""
+
+#: views/page.services.php:47
+msgid ""
+"Note that the 'Reject' setting explicitly blocks that service totally, and "
+"can not be overridden. This does <strong>not</strong> allow access to the "
+"service from connections that match the 'Reject' zone. This is usually "
+"equivalent to turning off access from all zones, which is more intuitive, "
+"and can be overridden."
+msgstr ""
+
+#: views/view.status.php:19
+msgid "Number of Currently Rate-Limited Clients:"
+msgstr ""
+
+#: views/view.status.php:21
+msgid "Number of currently blocked Attackers:"
+msgstr ""
+
+#: Zones.class.php:11
+msgid "Other"
+msgstr ""
+
+#: views/disabled.php:13
+msgid "Please visit the FreePBX Wiki for more information on the firewall."
+msgstr ""
+
+#: views/modal.customsvc.php:27
+msgid "Port Range"
+msgstr ""
+
+#: views/view.customsvc.php:60
+#, php-format
+msgid "Port Range: %s"
+msgstr ""
+
+#: views/modal.customsvc.php:32
+msgid ""
+"Port ranges may be either a single number (9898), a selection of numbers "
+"(9898,9777,862), or a range delimited by a colon (9000:9500)"
+msgstr ""
+
+#: views/page.about.php:44
+msgid "Port/Service Maps"
+msgstr ""
+
+#: views/page.about.php:41
+msgid "Preconfigured"
+msgstr ""
+
+#: views/page.about.php:90
+msgid "Present"
+msgstr ""
+
+#: views/modal.customsvc.php:17
+msgid "Protocol"
+msgstr ""
+
+#: views/view.customsvc.php:53
+msgid "Protocol: TCP"
+msgstr ""
+
+#: views/view.customsvc.php:51
+msgid "Protocol: TCP and UDP"
+msgstr ""
+
+#: views/view.customsvc.php:55
+msgid "Protocol: UDP"
+msgstr ""
+
+#: Services.class.php:168
+msgid "REST Apps"
+msgstr ""
+
+#: views/page.about.php:62
+msgid ""
+"RFC1918 and RFC4193 are the RFCs that define the reserved, internal, network "
+"address space to be used when you're not directly connected to the internet, "
+"or do not want your address space routable. This adds the IPv4 networks "
+"192.168.0.0/16, 172.16.0.0/12, and 10.0.0.0/8 and IPv6 networks fc00::/8 and "
+"fd00::/8 to the 'Trusted' zone, and excludes it from all firewalls."
+msgstr ""
+
+#: views/page.about.php:61
+msgid "RFC1918/RFC4193"
+msgstr ""
+
+#: views/view.blocked.php:6
+msgid "Rate Limited Hosts"
+msgstr ""
+
+#: views/view.about.php:4
+msgid "Refresh Period"
+msgstr ""
+
+#: views/page.status.php:31
+msgid "Registered Endpoints"
+msgstr ""
+
+#: Zones.class.php:9
+msgid "Reject"
+msgstr ""
+
+#: Firewall.class.php:340
+msgid "Reset"
+msgstr ""
+
+#: views/page.about.php:38 views/view.smart.php:2
+msgid "Responsive Firewall"
+msgstr ""
+
+#: views/view.about.php:24
+msgid ""
+"Responsive Firewall allows your machine to automatically block attacks to "
+"your machine, while learning and automatically granting permission to "
+"authorized devices, without the need to manually configure them."
+msgstr ""
+
+#: views/view.about.php:30
+msgid "Responsive Firewall is <strong>enabled</strong>."
+msgstr ""
+
+#: Services.class.php:122 Smart.class.php:41
+msgid "SIP Protocol"
+msgstr ""
+
+#: Services.class.php:267
+msgid "SMB/CIFS"
+msgstr ""
+
+#: Services.class.php:269
+msgid ""
+"SMB/CIFS is used to access files on this machine from Windows or Mac systems."
+msgstr ""
+
+#: Services.class.php:50
+msgid "SSH"
+msgstr ""
+
+#: Services.class.php:52
+msgid ""
+"SSH is the most commonly used system administration tool. It is also a "
+"common target for hackers. We <strong>strongly recommend</strong> using a "
+"strong password and SSH keys. "
+msgstr ""
+
+#: Firewall.class.php:341 views/modal.customsvc.php:37
+#: views/view.customsvc.php:43
+msgid "Save"
+msgstr ""
+
+#: views/page.zones.php:93 views/page.zones.php:175
+msgid "Save Changes"
+msgstr ""
+
+#: views/view.portmaps.php:36
+msgid "See Custom Service page"
+msgstr ""
+
+#: views/view.portmaps.php:39
+msgid "Service unavailable"
+msgstr ""
+
+#: views/bootnav.php:6 views/page.services.php:34
+msgid "Services"
+msgstr ""
+
+#: views/page.services.php:46
+msgid ""
+"Services that are assigned to zones <strong>are accessible</strong> to "
+"connections matching the zones."
+msgstr ""
+
+#: views/page.about.php:35
+msgid "Settings"
+msgstr ""
+
+#: views/view.customsvc.php:65
+#, php-format
+msgid "Single Port: %s"
+msgstr ""
+
+#: views/view.about.php:5
+msgid "Slow"
+msgstr ""
+
+#: views/bootnav.php:8
+msgid "Status"
+msgstr ""
+
+#: views/page.status.php:28
+msgid "Status Overview"
+msgstr ""
+
+#: views/view.registered.php:3
+msgid "Successfully Registered Endpoints"
+msgstr ""
+
+#: views/view.status.php:3
+msgid "Summary"
+msgstr ""
+
+#: Firewall.class.php:32 views/view.about.php:2
+msgid "System Firewall"
+msgstr ""
+
+#: views/modal.customsvc.php:21
+msgid "TCP"
+msgstr ""
+
+#: views/view.portmaps.php:65
+msgid "TCP Port:"
+msgstr ""
+
+#: views/view.portmaps.php:68
+msgid "TCP Ports:"
+msgstr ""
+
+#: Services.class.php:198
+msgid "TFTP"
+msgstr ""
+
+#: Services.class.php:200
+msgid "TFTP is used normally for provisioning and upgrading of devices."
+msgstr ""
+
+#: Services.class.php:160
+msgid "Text for HTTP Provisioning not done..."
+msgstr ""
+
+#: Services.class.php:170
+msgid "Text for REST Apps not done..."
+msgstr ""
+
+#: Services.class.php:180
+msgid "Text for XMPP not done..."
+msgstr ""
+
+#: views/view.about.php:14
+msgid ""
+"The 'Refresh Period' is how often the firewall updates its rules. You would "
+"set it to 'fast' if you have many endpoints that are constantly registering "
+"and de-registering, or 'slow' if you are on a low powered machine."
+msgstr ""
+
+#: Firewall.class.php:175
+#, php-format
+msgid ""
+"The client machine you are using to manage this server (<tt>%s</tt>) is "
+"<strong>not</strong> a member of the Trusted zone. It is highly recommended "
+"to add this client to your Trusted Zone to avoid accidental lockouts."
+msgstr ""
+
+#: views/disabled.php:7
+msgid "The firewall module is not enabled!"
+msgstr ""
+
+#: views/view.blocked.php:11
+msgid "There are no hosts that are currently being rate limited."
+msgstr ""
+
+#: views/view.blocked.php:21
+msgid "There are no hosts that have been detected as attacking this server."
+msgstr ""
+
+#: views/view.about.php:31
+msgid ""
+"There is no need to explicitly add definitions for peers, as they are "
+"automatically allowed through the firewall after successfully registering."
+msgstr ""
+
+#: views/view.blocked.php:8
+msgid ""
+"There is no need to manually remove entries from this section, as their rate "
+"limiting will be completely removed in 60 seconds. If they continue to send "
+"invalid data, they will be classified as an Attacker."
+msgstr ""
+
+#: views/disabled.php:10
+msgid ""
+"This Firewall module is a tightly integrated, system level firewall that "
+"continually monitors and blocks attacks on your system, while allowing valid "
+"traffic through."
+msgstr ""
+
+#: Services.class.php:220
+msgid ""
+"This allows this machine to be used as a NFS server. This can be useful when "
+"you want to easily access files on this machine (for example, to access call "
+"recordings). Note that this is <strong>not required</strong> to be enabled "
+"to act as a NFS client, and view the filesystem of other machines."
+msgstr ""
+
+#: views/page.about.php:81
+msgid ""
+"This allows you to simply add a pre-configured set of networks to your "
+"trusted zone. Once you have added your selections, you can fine-tune them, "
+"if required, <a href='?display=firewall&page=zones&tab=netsettings'>on the "
+"Networks tab.</a>"
+msgstr ""
+
+#: views/view.registered.php:7
+msgid ""
+"This does <strong>not</strong> include Endpoints that are already assigned "
+"to a Zone, or, Endpoints that were <strong>already registered</strong> when "
+"the firewall restarted, as they are automatically granted access. This is "
+"only for previously unknown hosts who have been authorized by Asterisk and "
+"granted access by the firewall."
+msgstr ""
+
+#: views/page.about.php:69
+#, php-format
+msgid ""
+"This explicitly grants permission to the machine that is managing the "
+"firewall service now. If you select 'Add Network', it will add the entire "
+"network that the server sees you coming from (%s), or if you select 'Add "
+"Host' it will only add the individual IP address (%s). When starting to "
+"configure your firewall, it is wise to enable this to ensure you don't lock "
+"yourself out of your machine."
+msgstr ""
+
+#: views/view.blacklist.php:1
+msgid ""
+"This firewall runs in a Deny-By-Default configuration. However, if you "
+"enable 'Responsive Firewall', your Signalling ports are exposed to the "
+"internet, and may be attackable."
+msgstr ""
+
+#: views/view.about.php:13
+msgid ""
+"This is done by a small process that runs on your FreePBX server that "
+"automatically updates firewall rules based on the current trunk and "
+"extension configuration of FreePBX."
+msgstr ""
+
+#: Services.class.php:124
+msgid "This is the SIP driver (pjsip). Most devices use SIP."
+msgstr ""
+
+#: Services.class.php:137
+msgid "This is the legacy chan_sip driver."
+msgstr ""
+
+#: views/view.registered.php:8 views/view.status.php:8
+msgid "This page (and all tabs) automatically update every 15 seconds."
+msgstr ""
+
+#: views/view.portmaps.php:10
+msgid ""
+"This page displays the detected ports and port ranges for all known services."
+msgstr ""
+
+#: views/view.status.php:6
+msgid "This page gives you a summary of the status of the Responsive Firewall."
+msgstr ""
+
+#: views/view.blacklist.php:2
+msgid ""
+"To alleviate any potential attacks, you can add any number of hosts or "
+"networks here and any traffic from these entries will be silently ignored. "
+"They will NOT be permitted to access the Responsive Firewall service."
+msgstr ""
+
+#: views/view.status.php:20
+msgid "Total number of Attackers detected:"
+msgstr ""
+
+#: views/view.status.php:18
+msgid "Total number of Rate-Limited Clients:"
+msgstr ""
+
+#: views/view.status.php:17
+msgid "Total number of Registered Clients:"
+msgstr ""
+
+#: Zones.class.php:13
+msgid "Trusted"
+msgstr ""
+
+#: Firewall.class.php:68 Firewall.class.php:71
+msgid "Trusted Interface Detected"
+msgstr ""
+
+#: Firewall.class.php:96
+msgid "Trusted Management Network defined"
+msgstr ""
+
+#: Services.class.php:100
+msgid "UCP"
+msgstr ""
+
+#: Services.class.php:102
+msgid ""
+"UCP - User Control Panel - is the main user interface to FreePBX, and allows "
+"people to control their phone. Note that if you want to allow users to use "
+"their web browsers to make calls through UCP you also need to add WebRTC to "
+"the same zone(s)."
+msgstr ""
+
+#: views/modal.customsvc.php:22
+msgid "UDP"
+msgstr ""
+
+#: views/view.portmaps.php:54
+msgid "UDP Port:"
+msgstr ""
+
+#: views/view.portmaps.php:57
+msgid "UDP Ports:"
+msgstr ""
+
+#: views/disabled.php:6
+msgid "Warning"
+msgstr ""
+
+#: Services.class.php:55
+msgid ""
+"Warning: Unable to read /etc/ssh/sshd_config - this port may be incorrect. "
+"This is <strong>expected</strong> when viewing through the Web Interface. "
+"The correct port, as configured, will be used in the firewall service."
+msgstr ""
+
+#: views/view.blacklist.php:20
+msgid "Warning: Unable to resolve this entry!"
+msgstr ""
+
+#: Services.class.php:79
+msgid "Web Management"
+msgstr ""
+
+#: Services.class.php:89
+msgid "Web Management (Secure)"
+msgstr ""
+
+#: Services.class.php:81
+msgid ""
+"Web management interface for FreePBX. This is the http, not https (secure) "
+"interface."
+msgstr ""
+
+#: Services.class.php:91
+msgid "Web management interface for FreePBX. This is the https interface."
+msgstr ""
+
+#: Services.class.php:110
+msgid "WebRTC"
+msgstr ""
+
+#: Services.class.php:112
+msgid ""
+"WebRTC is used by UCP (and other services) to enable calls to be made via a "
+"web browser."
+msgstr ""
+
+#: views/view.smart.php:24
+msgid ""
+"When this is enabled, any incoming VoIP connection attempts that match the "
+"'Reject' or 'External' zones are <strong>not blocked</strong>, but are "
+"instead allowed a very limited amount of registration attempts."
+msgstr ""
+
+#: Services.class.php:178
+msgid "XMPP"
+msgstr ""
+
+#: views/view.blacklist.php:3
+msgid ""
+"You can <strong>override</strong> the blacklist by assigning a network to a "
+"Zone. Please read the Wiki for more information."
+msgstr ""
+
+#: Firewall.class.php:176
+msgid "You can add the host automatically here."
+msgstr ""
+
+#: views/view.about.php:25
+msgid "You can enable Responsive Firewall in the 'Responsive Firewall' tab."
+msgstr ""
+
+#: views/page.zones.php:127
+msgid ""
+"You may also enter DDNS hostnames here, which will be automatically "
+"monitored and updated as required."
+msgstr ""
+
+#: views/page.about.php:68
+msgid "Your Client"
+msgstr ""
+
+#: views/page.zones.php:33
+msgid "Zone Information"
+msgstr ""
+
+#: views/bootnav.php:7
+msgid "Zones"
+msgstr ""
+
+#: views/view.about.php:12
+msgid ""
+"is a fully integrated and tightly coupled firewall that constantly monitors "
+"the remote clients allowed to connect to this machine, and automatically "
+"allows access from valid hosts."
+msgstr ""
