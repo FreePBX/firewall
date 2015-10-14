@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 22:48-0700\n"
-"PO-Revision-Date: 2015-10-08 21:10+0200\n"
+"PO-Revision-Date: 2015-10-14 14:50+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/zh_CN/>\n"
@@ -178,11 +178,11 @@ msgstr ""
 #: views/page.zones.php:174 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
-msgstr ""
+msgstr "删除"
 
 #: views/modal.customsvc.php:11
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #: views/view.smart.php:42
 msgid "Disable"
