@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 22:48-0700\n"
-"PO-Revision-Date: 2015-10-14 14:50+0200\n"
+"PO-Revision-Date: 2015-10-16 08:29+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/zh_CN/>\n"
@@ -561,7 +561,7 @@ msgstr ""
 
 #: Firewall.class.php:340
 msgid "Reset"
-msgstr ""
+msgstr "重新设置"
 
 #: views/page.about.php:38 views/view.smart.php:2
 msgid "Responsive Firewall"
