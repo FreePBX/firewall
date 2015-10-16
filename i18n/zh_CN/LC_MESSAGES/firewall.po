@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-05 22:48-0700\n"
-"PO-Revision-Date: 2015-10-16 08:29+0200\n"
+"PO-Revision-Date: 2015-10-16 13:56+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/zh_CN/>\n"
@@ -609,7 +609,7 @@ msgstr ""
 
 #: views/page.zones.php:93 views/page.zones.php:175
 msgid "Save Changes"
-msgstr ""
+msgstr "保存修改"
 
 #: views/view.portmaps.php:36
 msgid "See Custom Service page"
@@ -631,7 +631,7 @@ msgstr ""
 
 #: views/page.about.php:35
 msgid "Settings"
-msgstr ""
+msgstr "设置"
 
 #: views/view.customsvc.php:65
 #, php-format
