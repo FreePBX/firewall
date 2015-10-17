@@ -310,21 +310,52 @@ function updateFirewallRules() {
 		// If it has a comma, it's multiple ports.
 		$requestedports = explode(",", $c['port']);
 
+		$realports = array();
+		// Have we been given a range? (eg, "1234:5678")
+		foreach ($requestedports as $port) {
+			if (strpos($port, ":") !== false) {
+				// Sanity check that the numbers are in the correct order, and are, in fact,
+				// numbers.
+				$range = explode(":", $c['port']);
+				if (!isset($range[1])) {
+					// This is invalid, we need two digits
+					continue;
+				}
+				$start = (int) $range[0];
+				$end = (int) $range[1];
+				if ($start > $end) {
+					$lowest = $end;
+					$highest = $start;
+				} else {
+					$lowest = $start;
+					$highest = $end;
+				}
+
+				if ($lowest < 1 || $highest > 65534) {
+					// Invalid
+					continue;
+				}
+
+				$realports[] = "$lowest:$higest";
+			} else {
+				// It should just be a number.
+				$realnum = (int) $port;
+				if ($realnum > 65534 || $realnum < 1) {
+					continue;
+				}
+				$realports[] = $realnum;
+			}
+		}
+
 		// Create our '$ports' array for the driver.
 		$ports = array();
 		if ($c['protocol'] == "both" || $c['protocol'] == "tcp") {
-			foreach ($requestedports as $p) {
-				if ($p > 65535 || $p < 0) {
-					continue;
-				}
-				$ports[] = array("protocol" => "tcp", "port" => $p);
+			foreach ($realports as $p) {
+				$ports[] = array("protocol" => "tcp", "port" => $intp);
 			}
 		}
 		if ($rule['custfw']['protocol'] == "both" || $rule['custfw']['protocol'] == "udp") {
-			foreach ($requestedports as $p) {
-				if ($p > 65535 || $p < 0) {
-					continue;
-				}
+			foreach ($realports as $p) {
 				$ports[] = array("protocol" => "udp", "port" => $p);
 			}
 		}
