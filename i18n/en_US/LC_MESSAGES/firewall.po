@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-05 22:48-0700\n"
+"POT-Creation-Date: 2015-10-18 09:06+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -131,7 +131,7 @@ msgstr ""
 msgid "Both (TCP and UDP)"
 msgstr ""
 
-#: Services.class.php:135
+#: Services.class.php:159
 msgid "CHAN_SIP Protocol"
 msgstr ""
 
@@ -216,11 +216,11 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:188
+#: Services.class.php:212
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:190
+#: Services.class.php:214
 msgid "FTP is used by things to do stuff. Redo this text."
 msgstr ""
 
@@ -278,15 +278,15 @@ msgid ""
 "networks to not harm your computer."
 msgstr ""
 
-#: Services.class.php:158
+#: Services.class.php:182
 msgid "HTTP Provisioning"
 msgstr ""
 
-#: Services.class.php:148 Smart.class.php:43
+#: Services.class.php:172 Smart.class.php:43
 msgid "IAX Protocol"
 msgstr ""
 
-#: Services.class.php:150
+#: Services.class.php:174
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
@@ -384,11 +384,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:211
+#: Services.class.php:235
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:217
+#: Services.class.php:241
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -471,6 +471,10 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
+#: Services.class.php:151
+msgid "PJSIP is not available on this machine"
+msgstr ""
+
 #: views/disabled.php:13
 msgid "Please visit the FreePBX Wiki for more information on the firewall."
 msgstr ""
@@ -518,7 +522,7 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:168
+#: Services.class.php:192
 msgid "REST Apps"
 msgstr ""
 
@@ -574,11 +578,11 @@ msgstr ""
 msgid "SIP Protocol"
 msgstr ""
 
-#: Services.class.php:267
+#: Services.class.php:291
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:269
+#: Services.class.php:293
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -666,23 +670,23 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:198
+#: Services.class.php:222
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:200
+#: Services.class.php:224
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
-#: Services.class.php:160
+#: Services.class.php:184
 msgid "Text for HTTP Provisioning not done..."
 msgstr ""
 
-#: Services.class.php:170
+#: Services.class.php:194
 msgid "Text for REST Apps not done..."
 msgstr ""
 
-#: Services.class.php:180
+#: Services.class.php:204
 msgid "Text for XMPP not done..."
 msgstr ""
 
@@ -733,7 +737,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:220
+#: Services.class.php:244
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -787,7 +791,7 @@ msgstr ""
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:137
+#: Services.class.php:161
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
@@ -909,7 +913,7 @@ msgid ""
 "instead allowed a very limited amount of registration attempts."
 msgstr ""
 
-#: Services.class.php:178
+#: Services.class.php:202
 msgid "XMPP"
 msgstr ""
 
