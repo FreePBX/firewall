@@ -559,7 +559,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function detectHost() {
-		return $_SERVER['REMOTE_ADDR'];
+		$ip = $_SERVER['REMOTE_ADDR'];
+		if (filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+			return "$ip/32";
+		} elseif (filter_var($ip, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+			return "$ip/128";
+		} else {
+			throw new \Exception("REMOTE_ADDR didn't parse - $ip");
+		}
 	}
 
 	// /////////////// //
