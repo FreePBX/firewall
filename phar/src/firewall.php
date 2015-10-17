@@ -253,7 +253,7 @@ function updateFirewallRules() {
 	if ($ssh['guess'] == true) {
 		throw new \Exception("Root user unable to retrieve sshd port! This is a bug!");
 	}
-	$getservices['services']['ssh'] = $ssh;
+	$getservices['services']['ssh']['fw'] = $ssh['fw'];
 
 	$zones = array("reject" => "reject", "external" => "external", "other" => "other",
 		"internal" => "internal", "trusted" => "trusted");
