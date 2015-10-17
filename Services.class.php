@@ -122,11 +122,35 @@ class Services {
 			"name" => _("SIP Protocol"),
 			"defzones" => array("other", "internal"),
 			"descr" => _("This is the SIP driver (pjsip). Most devices use SIP."),
-			"fw" => array(
-				array("protocol" => "udp", "port" => 5060),
-				array("protocol" => "tcp", "port" => 9876), // or whatever
-			),
+			"fw" => array(),
 		);
+		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
+		if ($driver == "both" || $driver == "pjsip") {
+			$ss = \FreePBX::Sipsettings();
+			$allBinds = $ss->getConfig("binds");
+			foreach ($allBinds as $type => $listenArr) {
+				// What interface(s) are we listening on?
+				foreach ($listenArr as $ipaddr => $mode) {
+					if ($mode != "on") {
+						continue;
+					}
+					$port = $ss->getConfig($type."port-".$ipaddr);
+					if (!$port) {
+						continue;
+					}
+					if ($type == "tcp" || $type == "ws" || $type == "wss") {
+						$retarr['fw'][] = array("protocol" => "tcp", "port" => $port);
+					} elseif ($type == "udp") {
+						$retarr['fw'][] = array("protocol" => "udp", "port" => $port);
+					} else {
+						throw new \Exception("Unknown protocol $type");
+					}
+				}
+			}
+		} else {
+			$retarr['descr'] = _("PJSIP is not available on this machine");
+			$retarr['disabled'] = true;
+		}
 		return $retarr;
 	}
 
