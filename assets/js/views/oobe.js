@@ -12,6 +12,7 @@ $(document).ready(function() {
 		$(".hides3").slideUp();
 		$(".s3").slideDown();
 		getQuestion();
+		$("#ssf2").hide();
 	});
 
 });
@@ -31,6 +32,7 @@ function processQuestion(q) {
 		return;
 	}
 	var h = "<h3>"+q.desc+"</h3><div class='well'>";
+	var b;
 
 	// helptext
 	$.each(q.helptext, function(i, v) {
@@ -40,12 +42,17 @@ function processQuestion(q) {
 	h += "</div>";
 	// Buttons.
 	if (q.default === "yes") {
-		h += "<div class='pull-right clearfix'><button type='button' class='btn btn-default' onClick='buttonNo()'>No</button><button type='button' class='btn btn-default' onclick='buttonYes()'>Yes</button></div>";
+		b = "<div class='pull-right clearfix'><button type='button' class='btn btn-default' onClick='buttonNo()'>No</button><button type='button' class='btn btn-default' onclick='buttonYes()'>Yes</button></div>";
 	} else {
-		h += "<div class='pull-right clearfix'><button type='button' onClick='buttonYes()' class='btn btn-default'>Yes</button><button type='button' onClick='buttonNo()' class='btn btn-default'>No</button></div>";
+		b = "<div class='pull-right clearfix'><button type='button' onClick='buttonYes()' class='btn btn-default'>Yes</button><button type='button' onClick='buttonNo()' class='btn btn-default'>No</button></div>";
 	}
 	$("#qdiv").html(h);
+	$("#buttonsdiv").html(b);
 	$("#qdiv").data("currentquestion", q.question);
+	$("#alertsdiv").html(" ");
+	if (typeof q.alert !== "undefined") {
+		$("#alertsdiv").html("<div class='alert alert-"+q.alerttype+"'>"+q.alert+"</div>").show();
+	}
 }
 
 

@@ -1,8 +1,14 @@
 <div class='container-fluid'>
-<h2 class='s1'><?php echo _("You now have access to the Sangoma Smart Firewall!"); ?></h2>
+<h2 class='s1'><?php echo _("Sangoma Smart Firewall is now enabled!"); ?></h2>
 <div class='row s1'>
   <div class='col-sm-12'>
     <img src='modules/firewall/assets/firewall-logo.png' class='img-responsive'>
+  </div>
+  <div class='col-sm-12'>
+    <div class='alert alert-danger'>
+      <p><?php echo _("To receive the full benefits of the Sangoma Smart Firewall, you should ensure that <strong>no other firewall</strong> is intercepting traffic to this machine. This is normally accomplished by configuring your internet connection to place this machine in the 'DMZ' of your gateway."); ?></p>
+      <p><?php echo _("If you are unable to do this, it is unlikely that Responsive Firewall will work correctly, if at all."); ?></p>
+    </div>
   </div>
 </div>
 
@@ -26,8 +32,12 @@ echo "<p>"._("If you do not wish to use Sangoma Smart Firewall, simply click 'Ab
     <img src='modules/firewall/assets/firewall-logo.png' class='img-responsive'>
   </div>
 </div>
+<div class='row s2' style='display: none'>
+  <div class='col-sm-12 s2' style='display: none' id='alertsdiv'></div>
+</div>
 
 </div></div><div class='panel-footer clearfix'>
-  <button type='button' class='pull-right btn btn-default s1hide' id='ssf1'>1Continue</button>
-  <button type='button' class='pull-right btn btn-default s2show' style='display: none' id='ssf2'>2Continue</button>
+  <span id='buttonsdiv'></span>
+  <button type='button' class='pull-right btn btn-default s1hide' id='ssf1'>Continue</button>
+  <button type='button' class='pull-right btn btn-default s2show' style='display: none' id='ssf2'>Next</button>
   <button type='button' class='pull-right btn btn-default' id='ssfabort'>Abort</button>

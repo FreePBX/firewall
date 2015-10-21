@@ -140,16 +140,16 @@ class OOBE {
 			sprintf(_("The network you are currently using (%s) to manage this server isn't marked as Trusted."), $thisnet),
 			_("If this is a known secure network, you should add it to the Trusted zone"),
 		);
+		$retarr['helptext'] = $helptext;
 		list($net, $mask) = explode("/", $thisnet);
 		if (filter_var($net, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-			// Note we're closing the *well* divs, then opening the alert divs
-			$helptext[] = "</div><div class='alert alert-danger'>"._("As you are connecting from an IPv6 network it is <strong>highly recommended</strong> to add this network, as IPv6 security extensions may unexpectedly change your IP address.");
+			$retarr['alert'] = _("As you are connecting from an IPv6 network it is <strong>highly recommended</strong> to add this network, as IPv6 security extensions may unexpectedly change your IP address.");
+			$retarr['alerttype'] = "danger";
 			$retarr['default'] = "yes";
 		} else {
-			$helptext[] = "</div><div class='alert alert-warning'>"._("Please ensure that you are not inadvertently allowing unauthorized hosts access to your machine. You should only select 'Yes' if you are sure the network (above) is not accessible by any unknown third parties.");
+			$retarr['alert'] = _("Please ensure that you are not inadvertently allowing unauthorized hosts access to your machine. You should only select 'Yes' if you are sure the network (above) is not accessible by any unknown third parties.");
+			$retarr['alerttype'] = "warning";
 		}
-
-		$retarr['helptext'] = $helptext;
 		return $retarr;
 	}
 
