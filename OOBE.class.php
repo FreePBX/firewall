@@ -13,7 +13,12 @@ class OOBE {
 	}
 
 	public function oobeRequest() {
-		print "Hi. I'm an OOBE\n";
+		$ssf = _("Sangoma Smart Firewall");
+		$header = "<div class='container-fluid'><div class='panel panel-default'><div class='panel-heading'>";
+		$header .= "<div class='panel-title'>$ssf</div></div><div class='panel-body'>";
+		$body = load_view(__DIR__."/views/oobe.welcome.php", array("fw" => $this->fw));
+		$footer = "</div></div></div>\n";
+		print $header.$body.$footer;
 		return false;
 	}
 }
