@@ -287,6 +287,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "delattacker":
 			return $this->runHook("removeallblocks", array("unblock" => $_REQUEST['target']));
 
+		// OOBE
+		case "getoobequestion":
+			include __DIR__."/OOBE.class.php";
+			$o = new OOBE($this);
+			return $o->getQuestion();
+
 		default:
 			throw new \Exception("Sad Panda");
 		}
