@@ -37,7 +37,7 @@ echo "<p>"._("If you do not wish to use Sangoma Smart Firewall, simply click 'Ab
 </div>
 
 </div></div><div class='panel-footer clearfix'>
+  <button type='button' class='btn btn-default' id='ssfabort'>Abort</button>
   <span id='buttonsdiv'></span>
   <button type='button' class='pull-right btn btn-default s1hide' id='ssf1'>Continue</button>
   <button type='button' class='pull-right btn btn-default s2show' style='display: none' id='ssf2'>Next</button>
-  <button type='button' class='pull-right btn btn-default' id='ssfabort'>Abort</button>
