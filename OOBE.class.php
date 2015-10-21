@@ -118,7 +118,12 @@ class OOBE {
 	}
 
 	private function answer_enabletrustedhost() {
-		return true;
+		if ($_REQUEST['answer'] == "yes") {
+			$_REQUEST['command'] = "addthishost";
+			return $this->fw->ajaxHandler();
+		} else {
+			return true;
+		}
 	}
 
 	private function check_enabletrustednet() {
@@ -154,7 +159,12 @@ class OOBE {
 	}
 
 	private function answer_enabletrustednet() {
-		return true;
+		if ($_REQUEST['answer'] == "yes") {
+			$_REQUEST['command'] = "addthisnetwork";
+			return $this->fw->ajaxHandler();
+		} else {
+			return true;
+		}
 	}
 
 
@@ -169,7 +179,7 @@ class OOBE {
 	}
 
 	private function question_enableresponsive() {
-		return array(
+		$retarr = array(
 			"desc" => _("Enable Responsive Firewall?"),
 			"helptext" => array(
 				_("Enabling Responsive Firewall allows remote clients to securely register to this server without explicitly whitelisting them."),
@@ -178,9 +188,20 @@ class OOBE {
 			),
 			"default" => "yes",
 		);
+		if ($this->fw->getConfig('responsivefw')) {
+			$retarr['alert'] = "<h2>"._("Warning")."</h2><p>"._("Responsive Firewall is <strong>currently enabled</strong>.")."</p>";
+			$retarr['alerttype'] = "danger";
+		}
+		return $retarr;
+
 	}
 
 	private function answer_enableresponsive() {
+		if ($_REQUEST['answer'] == "yes") {
+			$this->fw->setConfig('responsivefw', true);
+		} else {
+			$this->fw->setConfig('responsivefw', false);
+		}
 		return true;
 	}
 

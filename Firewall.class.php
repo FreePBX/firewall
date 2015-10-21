@@ -298,7 +298,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $o->answerQuestion();
 
 		default:
-			throw new \Exception("Sad Panda");
+			throw new \Exception("Sad Panda - ".$_REQUEST['command']);
 		}
 	}
 

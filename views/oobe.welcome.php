@@ -20,6 +20,7 @@
 echo "<p>"._("Sangoma Smart Firewall is a revolutionary Open Source Firewall solution, designed from the ground up to completely secure your VoIP system.")."</p>";
 echo "<p>"._("To start using Sangoma Smart Firewall you simply need to answer a couple of questions, and your Firewall will be configured and activated immediately.")."</p>";
 echo "<p>"._("If you do not wish to use Sangoma Smart Firewall, simply click 'Abort'. You may return to this setup wizard via the 'Firewall' option in the Connectivity menu.")."</p>";
+echo "<p><strong>"._("At the completion of this wizard, the firewall will be automatically enabled.")."</strong></p>";
 ?>
 
       </div>
