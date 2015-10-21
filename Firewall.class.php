@@ -25,6 +25,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $files;
 	}
 
+	public function oobeHook() {
+		include __DIR__.'/OOBE.class.php';
+		$o = new OOBE($this);
+		return $o->oobeRequest();
+	}
+
 	public function dashboardService() {
 
 		// Check to see if Firewall is enabled. Warn if it's not.

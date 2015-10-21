@@ -45,4 +45,5 @@
 			<method callingMethod="fwcChownFiles" class="Firewall" namespace="FreePBX\modules">chownFreepbx</method>
 		</framework>
 	</hooks>
+	<oobe method="oobeHook" priority="200"/> <!-- run firewall last -->
 </module>
