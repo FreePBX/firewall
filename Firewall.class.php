@@ -292,6 +292,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			include __DIR__."/OOBE.class.php";
 			$o = new OOBE($this);
 			return $o->getQuestion();
+		case "answeroobequestion":
+			include __DIR__."/OOBE.class.php";
+			$o = new OOBE($this);
+			return $o->answerQuestion();
 
 		default:
 			throw new \Exception("Sad Panda");
