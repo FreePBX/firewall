@@ -229,16 +229,48 @@ class OOBE {
 			"helptext" => array(
 				_("Firewall should now auto-detect and configure External IP settings. This will assist with NAT or Translation issues."),
 				_("You should say 'Yes' to this, unless you have an extremely complex network with multiple external default gateways."),
-				_("You can verify these settings in Sip Settings after this wizard is complete."),
+				_("You can verify these settings in Sip Settings after this wizard is complete. If you have a non-static IP address, you may need to use a DDNS provider which will require manual configuration."),
 			),
 			"default" => "yes",
 		);
 	}
 
 	private function answer_externsetup() {
+		if ($_REQUEST['answer'] != "yes") {
+			return;
+		}
+
+		include 'Natget.class.php';
+		$n = new Natget();
+		$myip = $n->getVisibleIP();
+		$myroutes = $n->getRoutes();
+		\FreePBX::Sipsettings()->setConfig('externip', $myip);
+
+		// Update routes
+		$ssroutes = \FreePBX::Sipsettings()->getConfig('localnets');
+		if (!is_array($ssroutes)) {
+			$ssroutes = array();
+		}
+
+		// I don't like these loops, it feels messy.
+		foreach ($myroutes as $r) {
+			// $r = [ "1.2.3.0", "24" ]
+			$found = false;
+			foreach ($ssroutes as $current) {
+				// $current = {"net":"1.2.3.0","mask":"24"}
+				if ($current['net'] == $r[0] && $current['mask'] == $r[1]) {
+					$found = true;
+					break;
+				}
+			}
+			if (!$found) {
+				$ssroutes[] = array("net" => $r[0], "mask" => $r[1]);
+			}
+		}
+
+		$ssroutes = \FreePBX::Sipsettings()->setConfig('localnets', $ssroutes);
 		return true;
 	}
-
 }
 
 
