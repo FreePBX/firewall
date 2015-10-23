@@ -52,6 +52,17 @@ print "</div>";
 <div class='row'>
   <div class='form-horizontal clearfix'>
     <div class='col-sm-4'>
+      <label class='control-label' for='ssfwiz'><?php echo _("Firewall Wizard"); ?></label>
+    </div>
+    <div class='col-sm-8'>
+      <button type='button' class='btn btn-default' id='rerunwiz'><?php echo _("Re-Run Wizard"); ?></button>
+    </div>
+  </div>
+</div>
+
+<div class='row'>
+  <div class='form-horizontal clearfix'>
+    <div class='col-sm-4'>
       <label class='control-label' for='period'><?php echo $period; ?></label>
     </div>
     <div class='col-sm-8'>
@@ -78,3 +89,15 @@ foreach ($periods as $name => $val) {
 </div>
 
 
+<script type='text/javascript'>
+$(document).ready(function() { 
+	$("#rerunwiz").click(function() {
+		// Restart oobe
+		$.ajax({
+			url: window.ajaxurl,
+			data: { command: 'restartoobe', module: 'firewall' },
+			success: function(data) { window.location.reload(); },
+		});
+	});
+});
+</script>

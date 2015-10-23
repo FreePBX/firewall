@@ -1,6 +1,6 @@
 <?php
 // vim: set ai ts=4 sw=4 ft=php:
-namespace FreePBX\modules;
+namespace FreePBX\modules\Firewall;
 
 class OOBE {
 
@@ -17,6 +17,19 @@ class OOBE {
 	}
 
 	public function oobeRequest() {
+
+		if ($this->fw->getConfig("abortoobe")) {
+			return true;
+		}
+
+		$pending = $this->getPendingOobeQuestions();
+		if (empty($pending)) {
+			$this->fw->setConfig("status", true);
+			$this->fw->runHook("firewall");
+			return true;
+		}
+
+		// Start from the beginning.
 		$this->resetOobe();
 		$ssf = _("Sangoma Smart Firewall");
 		$header  = "<script type='text/javascript' src='modules/firewall/assets/js/views/oobe.js?123'></script>";

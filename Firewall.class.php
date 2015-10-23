@@ -27,7 +27,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function oobeHook() {
 		include __DIR__.'/OOBE.class.php';
-		$o = new OOBE($this);
+		$o = new Firewall\OOBE($this);
 		return $o->oobeRequest();
 	}
 
@@ -290,12 +290,25 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// OOBE
 		case "getoobequestion":
 			include __DIR__."/OOBE.class.php";
-			$o = new OOBE($this);
+			$o = new Firewall\OOBE($this);
 			return $o->getQuestion();
 		case "answeroobequestion":
 			include __DIR__."/OOBE.class.php";
-			$o = new OOBE($this);
+			$o = new Firewall\OOBE($this);
 			return $o->answerQuestion();
+		case "abortoobe":
+			$this->setConfig("abortoobe", true);
+			return true;
+		case "restartoobe":
+			$o = \FreePBX::OOBE()->getConfig("completed");
+			if (!is_array($o)) {
+				throw new \Exception("OOBE isn't an array");
+			}
+			unset ($o['firewall']);
+			\FreePBX::OOBE()->setConfig("completed", $o);
+			$this->setConfig("oobeanswered", array());
+			$this->setConfig("abortoobe", false);
+			return;
 
 		default:
 			throw new \Exception("Sad Panda - ".$_REQUEST['command']);

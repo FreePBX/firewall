@@ -15,6 +15,14 @@ $(document).ready(function() {
 		$("#ssf2").hide();
 	});
 
+	$("#ssfabort").click(function() {
+		// We don't want oobe.
+		$.ajax({
+			url: window.ajaxurl,
+			data: { command: 'abortoobe', module: 'firewall' },
+			success: function(data) { window.location.reload(); },
+		});
+	});
 });
 
 function getQuestion() {
