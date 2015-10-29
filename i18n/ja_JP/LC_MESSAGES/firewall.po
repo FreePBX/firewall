@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-18 09:06+1000\n"
-"PO-Revision-Date: 2015-10-27 08:43+0200\n"
+"PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/ja_JP/>\n"
@@ -644,7 +644,7 @@ msgstr ""
 
 #: views/bootnav.php:8
 msgid "Status"
-msgstr ""
+msgstr "ステータス"
 
 #: views/page.status.php:28
 msgid "Status Overview"
