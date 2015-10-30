@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-18 09:06+1000\n"
+"POT-Creation-Date: 2015-10-30 16:28-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr ""
 msgid "<strong>Responsive Firewall is not enabled</strong>."
 msgstr ""
 
-#: Firewall.class.php:72
+#: Firewall.class.php:78
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -109,6 +109,22 @@ msgstr ""
 msgid "Any name"
 msgstr ""
 
+#: OOBE.class.php:164
+msgid ""
+"As you are connecting from an IPv6 network it is <strong>highly recommended</"
+"strong> to add this network, as IPv6 security extensions may unexpectedly "
+"change your IP address."
+msgstr ""
+
+#: views/oobe.welcome.php:23
+msgid ""
+"At the completion of this wizard, the firewall will be automatically enabled."
+msgstr ""
+
+#: OOBE.class.php:228
+msgid "Automatically configure Asterisk IP Settings?"
+msgstr ""
+
 #: views/view.registered.php:6
 msgid ""
 "Below is a list of clients that have successfully registered and been "
@@ -131,7 +147,7 @@ msgstr ""
 msgid "Both (TCP and UDP)"
 msgstr ""
 
-#: Services.class.php:159
+#: Services.class.php:161
 msgid "CHAN_SIP Protocol"
 msgstr ""
 
@@ -163,7 +179,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:339
+#: Firewall.class.php:368
 msgid "Defaults"
 msgstr ""
 
@@ -204,8 +220,18 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
+#: OOBE.class.php:196
+msgid "Enable Responsive Firewall?"
+msgstr ""
+
 #: views/view.smart.php:4
 msgid "Enabled"
+msgstr ""
+
+#: OOBE.class.php:198
+msgid ""
+"Enabling Responsive Firewall allows remote clients to securely register to "
+"this server without explicitly whitelisting them."
 msgstr ""
 
 #: Zones.class.php:10
@@ -216,11 +242,11 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:212
+#: Services.class.php:214
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:214
+#: Services.class.php:216
 msgid "FTP is used by things to do stuff. Redo this text."
 msgstr ""
 
@@ -232,20 +258,30 @@ msgstr ""
 msgid "Firewall"
 msgstr ""
 
-#: Firewall.class.php:37
+#: Firewall.class.php:43
 msgid "Firewall Active"
 msgstr ""
 
-#: Firewall.class.php:53
+#: Firewall.class.php:59
 msgid "Firewall Configuration"
 msgstr ""
 
-#: Firewall.class.php:39
+#: Firewall.class.php:45
 msgid "Firewall Disabled"
 msgstr ""
 
-#: Firewall.class.php:47
+#: Firewall.class.php:53
 msgid "Firewall Service not running!"
+msgstr ""
+
+#: views/view.about.php:55
+msgid "Firewall Wizard"
+msgstr ""
+
+#: OOBE.class.php:230
+msgid ""
+"Firewall should now auto-detect and configure External IP settings. This "
+"will assist with NAT or Translation issues."
 msgstr ""
 
 #: views/page.zones.php:125
@@ -278,15 +314,19 @@ msgid ""
 "networks to not harm your computer."
 msgstr ""
 
-#: Services.class.php:182
+#: OOBE.class.php:200
+msgid "Further information is available at the FreePBX Wiki."
+msgstr ""
+
+#: Services.class.php:184
 msgid "HTTP Provisioning"
 msgstr ""
 
-#: Services.class.php:172 Smart.class.php:43
+#: Services.class.php:174 Smart.class.php:43
 msgid "IAX Protocol"
 msgstr ""
 
-#: Services.class.php:174
+#: Services.class.php:176
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
@@ -320,6 +360,11 @@ msgid ""
 "additionally granted access to UCP, if UCP is enabled."
 msgstr ""
 
+#: OOBE.class.php:159
+msgid ""
+"If this is a known secure network, you should add it to the Trusted zone"
+msgstr ""
+
 #: views/page.about.php:70
 msgid ""
 "If you are coming from an IPv6 Network, it <strong>not recommended</strong> "
@@ -334,11 +379,24 @@ msgid ""
 "information available here."
 msgstr ""
 
+#: views/oobe.welcome.php:10
+msgid ""
+"If you are unable to do this, it is unlikely that Responsive Firewall will "
+"work correctly, if at all."
+msgstr ""
+
 #: views/view.blocked.php:18
 msgid ""
 "If you believe one of the hosts has been added in error, you can click the "
 "red 'X' to remove the block. If the host continues to send invalid data, it "
 "will be automatically re-added."
+msgstr ""
+
+#: views/oobe.welcome.php:22
+msgid ""
+"If you do not wish to use Sangoma Smart Firewall, simply click 'Abort'. You "
+"may return to this setup wizard via the 'Firewall' option in the "
+"Connectivity menu."
 msgstr ""
 
 #: views/page.zones.php:124
@@ -370,6 +428,18 @@ msgid ""
 "be configured correctly without interfering with existing traffic."
 msgstr ""
 
+#: OOBE.class.php:126
+#, php-format
+msgid ""
+"It is highly recommended that the client you're currently using (%s) should "
+"be marked as Trusted. This will ensure that you can not accidentally be "
+"locked out of this server."
+msgstr ""
+
+#: OOBE.class.php:199
+msgid "It is recommended to turn this on if you have remote clients."
+msgstr ""
+
 #: Smart.class.php:42
 msgid "Legacy chan_sip Protocol"
 msgstr ""
@@ -384,11 +454,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:235
+#: Services.class.php:237
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:241
+#: Services.class.php:243
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -408,15 +478,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:98
+#: Firewall.class.php:104
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:100
+#: Firewall.class.php:106
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:101
+#: Firewall.class.php:107
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -471,8 +541,15 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: Services.class.php:151
+#: Services.class.php:153
 msgid "PJSIP is not available on this machine"
+msgstr ""
+
+#: OOBE.class.php:168
+msgid ""
+"Please ensure that you are not inadvertently allowing unauthorized hosts "
+"access to your machine. You should only select 'Yes' if you are sure the "
+"network (above) is not accessible by any unknown third parties."
 msgstr ""
 
 #: views/disabled.php:13
@@ -522,7 +599,7 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:192
+#: Services.class.php:194
 msgid "REST Apps"
 msgstr ""
 
@@ -543,6 +620,10 @@ msgstr ""
 msgid "Rate Limited Hosts"
 msgstr ""
 
+#: views/view.about.php:58
+msgid "Re-Run Wizard"
+msgstr ""
+
 #: views/view.about.php:4
 msgid "Refresh Period"
 msgstr ""
@@ -555,7 +636,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Firewall.class.php:340
+#: Firewall.class.php:369
 msgid "Reset"
 msgstr ""
 
@@ -570,6 +651,10 @@ msgid ""
 "authorized devices, without the need to manually configure them."
 msgstr ""
 
+#: OOBE.class.php:205
+msgid "Responsive Firewall is <strong>currently enabled</strong>."
+msgstr ""
+
 #: views/view.about.php:30
 msgid "Responsive Firewall is <strong>enabled</strong>."
 msgstr ""
@@ -578,11 +663,11 @@ msgstr ""
 msgid "SIP Protocol"
 msgstr ""
 
-#: Services.class.php:291
+#: Services.class.php:293
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:293
+#: Services.class.php:295
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -598,7 +683,21 @@ msgid ""
 "strong password and SSH keys. "
 msgstr ""
 
-#: Firewall.class.php:341 views/modal.customsvc.php:37
+#: OOBE.class.php:34
+msgid "Sangoma Smart Firewall"
+msgstr ""
+
+#: views/oobe.welcome.php:20
+msgid ""
+"Sangoma Smart Firewall is a revolutionary Open Source Firewall solution, "
+"designed from the ground up to completely secure your VoIP system."
+msgstr ""
+
+#: views/oobe.welcome.php:2
+msgid "Sangoma Smart Firewall is now enabled!"
+msgstr ""
+
+#: Firewall.class.php:370 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -629,6 +728,14 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+#: OOBE.class.php:124
+msgid "Should the client you're using be trusted?"
+msgstr ""
+
+#: OOBE.class.php:153
+msgid "Should your current network be trusted?"
+msgstr ""
+
 #: views/view.customsvc.php:65
 #, php-format
 msgid "Single Port: %s"
@@ -654,7 +761,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: Firewall.class.php:32 views/view.about.php:2
+#: Firewall.class.php:38 views/view.about.php:2
 msgid "System Firewall"
 msgstr ""
 
@@ -670,23 +777,23 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:222
+#: Services.class.php:224
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:224
+#: Services.class.php:226
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
-#: Services.class.php:184
+#: Services.class.php:186
 msgid "Text for HTTP Provisioning not done..."
 msgstr ""
 
-#: Services.class.php:194
+#: Services.class.php:196
 msgid "Text for REST Apps not done..."
 msgstr ""
 
-#: Services.class.php:204
+#: Services.class.php:206
 msgid "Text for XMPP not done..."
 msgstr ""
 
@@ -697,7 +804,7 @@ msgid ""
 "and de-registering, or 'slow' if you are on a low powered machine."
 msgstr ""
 
-#: Firewall.class.php:175
+#: Firewall.class.php:181
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -707,6 +814,13 @@ msgstr ""
 
 #: views/disabled.php:7
 msgid "The firewall module is not enabled!"
+msgstr ""
+
+#: OOBE.class.php:158
+#, php-format
+msgid ""
+"The network you are currently using (%s) to manage this server isn't marked "
+"as Trusted."
 msgstr ""
 
 #: views/view.blocked.php:11
@@ -737,7 +851,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:244
+#: Services.class.php:246
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -791,7 +905,7 @@ msgstr ""
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:161
+#: Services.class.php:163
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
@@ -815,6 +929,20 @@ msgid ""
 "They will NOT be permitted to access the Responsive Firewall service."
 msgstr ""
 
+#: views/oobe.welcome.php:9
+msgid ""
+"To receive the full benefits of the Sangoma Smart Firewall, you should "
+"ensure that <strong>no other firewall</strong> is intercepting traffic to "
+"this machine. This is normally accomplished by configuring your internet "
+"connection to place this machine in the 'DMZ' of your gateway."
+msgstr ""
+
+#: views/oobe.welcome.php:21
+msgid ""
+"To start using Sangoma Smart Firewall you simply need to answer a couple of "
+"questions, and your Firewall will be configured and activated immediately."
+msgstr ""
+
 #: views/view.status.php:20
 msgid "Total number of Attackers detected:"
 msgstr ""
@@ -831,11 +959,11 @@ msgstr ""
 msgid "Trusted"
 msgstr ""
 
-#: Firewall.class.php:68 Firewall.class.php:71
+#: Firewall.class.php:74 Firewall.class.php:77
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:96
+#: Firewall.class.php:102
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -863,7 +991,7 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: views/disabled.php:6
+#: OOBE.class.php:205 views/disabled.php:6
 msgid "Warning"
 msgstr ""
 
@@ -913,7 +1041,7 @@ msgid ""
 "instead allowed a very limited amount of registration attempts."
 msgstr ""
 
-#: Services.class.php:202
+#: Services.class.php:204
 msgid "XMPP"
 msgstr ""
 
@@ -923,7 +1051,7 @@ msgid ""
 "Zone. Please read the Wiki for more information."
 msgstr ""
 
-#: Firewall.class.php:176
+#: Firewall.class.php:182
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -931,10 +1059,30 @@ msgstr ""
 msgid "You can enable Responsive Firewall in the 'Responsive Firewall' tab."
 msgstr ""
 
+#: OOBE.class.php:232
+msgid ""
+"You can verify these settings in Sip Settings after this wizard is complete. "
+"If you have a non-static IP address, you may need to use a DDNS provider "
+"which will require manual configuration."
+msgstr ""
+
 #: views/page.zones.php:127
 msgid ""
 "You may also enter DDNS hostnames here, which will be automatically "
 "monitored and updated as required."
+msgstr ""
+
+#: OOBE.class.php:231
+msgid ""
+"You should say 'Yes' to this, unless you have an extremely complex network "
+"with multiple external default gateways."
+msgstr ""
+
+#: OOBE.class.php:127
+msgid ""
+"You would normally select <strong>Yes</strong> to this question. The only "
+"time you would pick No is if you are not using the client machine you will "
+"be using in the future to manage this system."
 msgstr ""
 
 #: views/page.about.php:68
