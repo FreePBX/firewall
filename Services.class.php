@@ -57,7 +57,7 @@ class Services {
 
 		// Is sshd_config anywhere else on other machines?
 		$conf = "/etc/ssh/sshd_config";
-		
+
 		// Note: Only readable by root!
 		if (!file_exists($conf) || !is_readable($conf)) {
 			return $retarr;
@@ -128,8 +128,10 @@ class Services {
 		if ($driver == "both" || $driver == "pjsip") {
 			$ss = \FreePBX::Sipsettings();
 			$allBinds = $ss->getConfig("binds");
+			$allBinds = is_array($allBinds)?$allBinds:array();
 			foreach ($allBinds as $type => $listenArr) {
 				// What interface(s) are we listening on?
+				$listenArr = is_array($listenArr)?$listenArr:array();
 				foreach ($listenArr as $ipaddr => $mode) {
 					if ($mode != "on") {
 						continue;
@@ -183,7 +185,7 @@ class Services {
 			"defzones" => array("other", "internal"),
 			"descr" => _("Text for HTTP Provisioning not done..."),
 			"fw" => array(array("protocol" => "tcp", "port" => 84)),
-		); 
+		);
 		return $retarr;
 	}
 
@@ -193,7 +195,7 @@ class Services {
 			"defzones" => array("internal"),
 			"descr" => _("Text for REST Apps not done..."),
 			"fw" => array(array("protocol" => "tcp", "port" => 85)),
-		); 
+		);
 		return $retarr;
 	}
 
@@ -203,7 +205,7 @@ class Services {
 			"defzones" => array("external", "other", "internal"),
 			"descr" => _("Text for XMPP not done..."),
 			"fw" => array(array("protocol" => "tcp", "port" => 5222)),
-		); 
+		);
 		return $retarr;
 	}
 
@@ -213,7 +215,7 @@ class Services {
 			"defzones" => array("internal"),
 			"descr" => _("FTP is used by things to do stuff. Redo this text."),
 			"fw" => array(array("protocol" => "tcp", "port" => 21)),
-		); 
+		);
 		return $retarr;
 	}
 
@@ -223,7 +225,7 @@ class Services {
 			"defzones" => array("internal"),
 			"descr" => _("TFTP is used normally for provisioning and upgrading of devices."),
 			"fw" => array(array("protocol" => "udp", "port" => 69)),
-		); 
+		);
 		return $retarr;
 	}
 
@@ -297,8 +299,7 @@ class Services {
 				array('protocol' => 'tcp', 'port' => '139'),
 				array('protocol' => 'tcp', 'port' => '445'),
 			),
-		); 
+		);
 		return $retarr;
 	}
 }
-
