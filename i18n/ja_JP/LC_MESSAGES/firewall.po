@@ -10,13 +10,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-10-18 09:06+1000\n"
-"PO-Revision-Date: 2015-10-05 22:48-0700\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2015-10-29 06:31+0200\n"
+"Last-Translator: Kevin <kevin@qloog.com>\n"
+"Language-Team: Japanese "
+"<http://weblate.freepbx.org/projects/freepbx/firewall/ja_JP/>\n"
+"Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2.2-dev\n"
 
 #: views/page.about.php:63
 msgid ""
@@ -171,7 +174,7 @@ msgstr ""
 #: views/page.zones.php:174 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: views/modal.customsvc.php:11
 msgid "Description"
@@ -558,7 +561,7 @@ msgstr ""
 
 #: Firewall.class.php:340
 msgid "Reset"
-msgstr ""
+msgstr "リセット"
 
 #: views/page.about.php:38 views/view.smart.php:2
 msgid "Responsive Firewall"
@@ -641,7 +644,7 @@ msgstr ""
 
 #: views/bootnav.php:8
 msgid "Status"
-msgstr ""
+msgstr "ステータス"
 
 #: views/page.status.php:28
 msgid "Status Overview"
