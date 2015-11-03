@@ -126,7 +126,7 @@ foreach ($ints as $i => $conf) {
 	<p><?php echo _("Note that several common settings are available on the 'Advanced' page."); ?></p>
         <p><?php echo _("You may also enter DDNS hostnames here, which will be automatically monitored and updated as required."); ?></p>
 <?php
-$nets = $fw->getZoneNetworks();
+$nets = $fw->getConfig("networkmaps");
 // Add a blank one to the bottom..
 $nets[" "] = "trusted";
 

@@ -559,17 +559,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $d->getZonesDetails();
 	}
 
-	public function getZoneNetworks() {
-		$d = $this->getDriver();
-		$nets = $d->getKnownNetworks();
-		$hosts = $this->getConfig("hostmaps");
-		if (is_array($hosts)) {
-			$nets = array_merge($nets, $hosts);
-		}
-		$this->setConfig("networkmaps", $nets);
-		return $nets;
-	}
-
 	public function detectNetwork() {
 		$client = $_SERVER['REMOTE_ADDR'];
 		// If this is an IPv4 address, treat it as a class C
@@ -604,24 +593,26 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function removeNetwork($net = false) {
 		// Is it a host? We care about them differently.
 		$hostmap = $this->getConfig("hostmaps");
-		if (!empty($hostmap[$net])) {
+		if (isset($hostmap[$net])) {
 			// It's a host, not a network
 			unset($hostmap[$net]);
 			$this->setConfig("hostmaps", $hostmap);
 		}
 
 		// Now, grab what our zones should be...
-		$nets = $this->getZoneNetworks();
+		$nets = $this->getConfig("networkmaps");
 		// Is this network part of a zone?
 		if (!isset($nets[$net])) {
 			return false;
 		}
+		unset($nets[$net]);
+		$this->setConfig("networkmaps", $net);
 		return $this->runHook("removenetwork", array("network" => $net, "zone" => $nets[$net]));
 	}
 
 	public function addNetworkToZone($net = false, $zone = false) {
 		$net = trim($net);
-		// Is this an IP address?
+		// Is this a network?
 		if (strpos($net, "/") !== false) {
 			list($addr, $subnet) = explode("/", trim($net));
 		} else {
@@ -637,7 +628,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$ip = 4;
 		} elseif (filter_var($addr, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
 			// Note: I hate this. You can't really determine the IP address of
-			// an IPv6 host..
+			// an IPv6 host. IPv6 Security Extensions - which should be on for a
+			// client - mandate the IP address changes.
 			if (!$subnet) {
 				$subnet = 128;
 			}
@@ -678,12 +670,27 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$hosts = array();
 		}
 		$hosts[$host] = $zone;
+
+		// Also add to network maps, for continuity.
+		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			$nets = array();
+		}
+		$nets[$host] = $zone;
+		$this->setConfig("networkmaps", $nets);
+
 		return $this->setConfig("hostmaps", $hosts);
 	}
 
 	public function changeNetworksZone($net, $zone) {
 		$net = trim($net);
-		$nets = $this->getZoneNetworks();
+
+		// Get our current maps...
+		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			$nets = array();
+		}
+
 		// Is this network part of a zone?
 		if (!isset($nets[$net])) {
 			throw new \Exception("Unknown network");
@@ -697,11 +704,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("hostmaps", $hostmap);
 		}
 
-		// Update the local cache
-		$nets = $this->getConfig("networkmaps");
-		if (!is_array($nets)) {
-			$nets = array();
-		}
+		// Update and save the map...
 		$nets[$net] = $zone;
 		$this->setConfig("networkmaps", $nets);
 
@@ -710,6 +713,19 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	// Add RFC1918 addresses to the trusted zone
 	public function addRfcNetworks() {
+		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			$nets = array();
+		}
+
+		$rfc = array ('192.168.0.0/16','172.16.0.0/12','10.0.0.0/8', 'fc00::/8', 'fd00::/8');
+		foreach ($rfc as $n) {
+			if (!isset($nets[$n])) {
+				$nets[$n] = "trusted";
+			}
+		}
+		$this->setConfig("networkmaps", $nets);
+
 		return $this->runHook("addrfcnetworks");
 	}
 
