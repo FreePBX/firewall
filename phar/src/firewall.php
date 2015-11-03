@@ -240,6 +240,11 @@ function updateFirewallRules() {
 		return false;
 	}
 
+	$s = stat("/var/www/html/admin/modules/firewall/bin/getservices");
+	if ($s['mode'] !== 0755) {
+		chmod("/var/www/html/admin/modules/firewall/bin/getservices", 0755);
+	}
+
 	exec("su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
 	$getservices = @json_decode($out[0], true);
 	if (!is_array($getservices) || !isset($getservices['smartports'])) {
