@@ -128,10 +128,14 @@ class Services {
 		if ($driver == "both" || $driver == "pjsip") {
 			$ss = \FreePBX::Sipsettings();
 			$allBinds = $ss->getConfig("binds");
-			$allBinds = is_array($allBinds)?$allBinds:array();
+			if (!is_array($allBinds)) {
+				$allBinds = array();
+			}
 			foreach ($allBinds as $type => $listenArr) {
+				if (!is_array($listenArr)) {
+					$listenArr = array();
+				}
 				// What interface(s) are we listening on?
-				$listenArr = is_array($listenArr)?$listenArr:array();
 				foreach ($listenArr as $ipaddr => $mode) {
 					if ($mode != "on") {
 						continue;
