@@ -3,6 +3,11 @@ $(document).ready(function() {
 		// Hide the s1 bits, show the s2 bits.
 		$(".s1").slideUp();
 		$(".s2").slideDown();
+		if (typeof window.newinstall !== "undefined" && window.newinstall) {
+			$(".newinstall").show();
+		} else {
+			$(".updateinstall").show();
+		}
 		$(".s1hide").hide();
 		$(".s2show").show();
 	});

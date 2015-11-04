@@ -187,7 +187,7 @@ class OOBE {
 	}
 
 	private function check_enableresponsive() {
-		// Is this network already trusted? If not, don't ask.
+		// Always ask about enabling responsive
 		return true;
 	}
 
@@ -224,7 +224,7 @@ class OOBE {
 	}
 
 	private function question_externsetup() {
-		return array(
+		$retarr = array(
 			"desc" => _("Automatically configure Asterisk IP Settings?"),
 			"helptext" => array(
 				_("Firewall should now auto-detect and configure External IP settings. This will assist with NAT or Translation issues."),
@@ -233,6 +233,21 @@ class OOBE {
 			),
 			"default" => "yes",
 		);
+		$extip = \FreePBX::Sipsettings()->getConfig('externip');
+		$localnets = \FreePBX::Sipsettings()->getConfig('localnets');
+		if (!$localnets || !is_array($localnets)) {
+			// No configuration has been done.
+			return $retarr;
+		}
+		$retarr['alert'] = "<h2>"._("Warning")."</h2><p>"._("Selecting 'Yes' will update your current configuration. Selecting 'No' will not change your current settings.")."</p>";
+		$retarr['alert'] .= "<p>".sprintf(_("External Address: %s"), $extip)."</p>";
+		$retarr['alert'] .= "<p>"._("Known Networks:")."<ul>";
+		foreach ($localnets as $n) {
+			$retarr['alert'] .= "<li>".$n['net']."/".$n['mask']."</li>\n";
+		}
+		$retarr['alert'] .= "</ul></p>";
+		$retarr['alerttype'] = "warning";
+		return $retarr;
 	}
 
 	private function answer_externsetup() {
@@ -267,7 +282,6 @@ class OOBE {
 				$ssroutes[] = array("net" => $r[0], "mask" => $r[1]);
 			}
 		}
-
 		$ssroutes = \FreePBX::Sipsettings()->setConfig('localnets', $ssroutes);
 		return true;
 	}

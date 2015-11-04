@@ -15,14 +15,20 @@
 <div class='row s2' style='display: none'>
   <div class='col-sm-8 s2' style='display: none'>
     <div class='container-fluid'>
-      <div class='row hides3'>
+      <div class='row hides3 newinstall' style='display: none'>
 <?php
 echo "<p>"._("Sangoma Smart Firewall is a revolutionary Open Source Firewall solution, designed from the ground up to completely secure your VoIP system.")."</p>";
 echo "<p>"._("To start using Sangoma Smart Firewall you simply need to answer a couple of questions, and your Firewall will be configured and activated immediately.")."</p>";
 echo "<p>"._("If you do not wish to use Sangoma Smart Firewall, simply click 'Abort'. You may return to this setup wizard via the 'Firewall' option in the Connectivity menu.")."</p>";
 echo "<p><strong>"._("At the completion of this wizard, the firewall will be automatically enabled.")."</strong></p>";
 ?>
-
+      </div>
+      <div class='row hides3 updateinstall' style='display: none'>
+<?php
+echo "<p>"._("Thanks for using Sangoma Smart Firewall!")."</p>";
+echo "<p>"._("We hope you're enjoying it! There's some additional questions you should answer. If you don't want to answer them at this time, just click Abort, and no changes will be made to your existing Firewall setup.")."</p>";
+echo "<p>"._("However, if you continue, your machine and firewall will be automatically updated with the latest settings!")."</p>";
+?>
       </div>
       <div class='row s3' style='display: none' id='qdiv'>
         <p>Loading...</p>
@@ -42,3 +48,15 @@ echo "<p><strong>"._("At the completion of this wizard, the firewall will be aut
   <span id='buttonsdiv'></span>
   <button type='button' class='pull-right btn btn-default s1hide' id='ssf1'>Continue</button>
   <button type='button' class='pull-right btn btn-default s2show' style='display: none' id='ssf2'>Next</button>
+
+<script type='text/javascript'>
+<?php
+// Is this an update?
+if ($fw->getConfig('status')) {
+	// Yes, it is.
+	echo "window.newinstall = false;\n";
+} else {
+	echo "window.newinstall = true;\n";
+}
+?>
+</script>
