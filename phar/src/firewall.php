@@ -263,6 +263,9 @@ function updateFirewallRules() {
 	$zones = array("reject" => "reject", "external" => "external", "other" => "other",
 		"internal" => "internal", "trusted" => "trusted");
 
+	// TESTING: Flush cache
+	// $driver->refreshCache();
+	
 	// This is the list of services we should have.
 	$validservices = array();
 	foreach ($getservices['services'] as $s => $settings) {

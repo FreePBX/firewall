@@ -898,6 +898,11 @@ class Iptables {
 		}
 	}
 
+	public function refreshCache() {
+		$this->currentconf = false;
+		return $this->getCurrentIptables();
+	}
+
 	// Driver Specific iptables stuff
 	// Root process
 	private function &getCurrentIptables() {
