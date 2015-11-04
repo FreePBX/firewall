@@ -276,6 +276,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "deletecustomrule":
 			return $this->deleteCustomService($_REQUEST['id']);
 		case "updatecustomzones":
+			if (!isset($_REQUEST['zones'])) {
+				$_REQUEST['zones'] = array();
+			}
 			return $this->setCustomServiceZones($_REQUEST['id'], $_REQUEST['zones']);
 
 		// Attackers page
