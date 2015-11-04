@@ -187,7 +187,7 @@ function getDbHandle($mysettings) {
 			} catch (\Exception $e) {
 				// It didn't work.
 				$count++;
-				print "Derp\n";
+				print "Unable to connect to Database, sleeping 2 seconds and retrying. ($count)\n";
 				sleep(2);
 				continue;
 			}
