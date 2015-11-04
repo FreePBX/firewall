@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-30 16:28-0700\n"
+"POT-Creation-Date: 2015-11-04 04:33+0000\n"
 "PO-Revision-Date: 2015-10-21 13:44+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -155,7 +155,7 @@ msgstr ""
 msgid "Both (TCP and UDP)"
 msgstr ""
 
-#: Services.class.php:161
+#: Services.class.php:165
 msgid "CHAN_SIP Protocol"
 msgstr ""
 
@@ -246,15 +246,20 @@ msgstr ""
 msgid "External"
 msgstr ""
 
+#: OOBE.class.php:243
+#, php-format
+msgid "External Address: %s"
+msgstr ""
+
 #: views/page.services.php:37 views/view.portmaps.php:17
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:214
+#: Services.class.php:218
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:216
+#: Services.class.php:220
 msgid "FTP is used by things to do stuff. Redo this text."
 msgstr ""
 
@@ -326,15 +331,21 @@ msgstr ""
 msgid "Further information is available at the FreePBX Wiki."
 msgstr ""
 
-#: Services.class.php:184
+#: Services.class.php:188
 msgid "HTTP Provisioning"
 msgstr ""
 
-#: Services.class.php:174 Smart.class.php:43
+#: views/oobe.welcome.php:30
+msgid ""
+"However, if you continue, your machine and firewall will be automatically "
+"updated with the latest settings!"
+msgstr ""
+
+#: Services.class.php:178 Smart.class.php:43
 msgid "IAX Protocol"
 msgstr ""
 
-#: Services.class.php:176
+#: Services.class.php:180
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
@@ -448,6 +459,10 @@ msgstr ""
 msgid "It is recommended to turn this on if you have remote clients."
 msgstr ""
 
+#: OOBE.class.php:244
+msgid "Known Networks:"
+msgstr ""
+
 #: Smart.class.php:42
 msgid "Legacy chan_sip Protocol"
 msgstr ""
@@ -462,11 +477,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:237
+#: Services.class.php:241
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:243
+#: Services.class.php:247
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -549,7 +564,7 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: Services.class.php:153
+#: Services.class.php:157
 msgid "PJSIP is not available on this machine"
 msgstr ""
 
@@ -607,7 +622,7 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:194
+#: Services.class.php:198
 msgid "REST Apps"
 msgstr ""
 
@@ -671,11 +686,11 @@ msgstr ""
 msgid "SIP Protocol"
 msgstr ""
 
-#: Services.class.php:293
+#: Services.class.php:297
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:295
+#: Services.class.php:299
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -716,6 +731,12 @@ msgstr "保存修改"
 
 #: views/view.portmaps.php:36
 msgid "See Custom Service page"
+msgstr ""
+
+#: OOBE.class.php:242
+msgid ""
+"Selecting 'Yes' will update your current configuration. Selecting 'No' will "
+"not change your current settings."
 msgstr ""
 
 #: views/view.portmaps.php:39
@@ -785,24 +806,28 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:224
+#: Services.class.php:228
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:226
+#: Services.class.php:230
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
-#: Services.class.php:186
+#: Services.class.php:190
 msgid "Text for HTTP Provisioning not done..."
 msgstr ""
 
-#: Services.class.php:196
+#: Services.class.php:200
 msgid "Text for REST Apps not done..."
 msgstr ""
 
-#: Services.class.php:206
+#: Services.class.php:210
 msgid "Text for XMPP not done..."
+msgstr ""
+
+#: views/oobe.welcome.php:28
+msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
 #: views/view.about.php:14
@@ -859,7 +884,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:246
+#: Services.class.php:250
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -913,7 +938,7 @@ msgstr ""
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:163
+#: Services.class.php:167
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
@@ -999,7 +1024,7 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: OOBE.class.php:205 views/disabled.php:6
+#: OOBE.class.php:205 OOBE.class.php:242 views/disabled.php:6
 msgid "Warning"
 msgstr ""
 
@@ -1012,6 +1037,13 @@ msgstr ""
 
 #: views/view.blacklist.php:20
 msgid "Warning: Unable to resolve this entry!"
+msgstr ""
+
+#: views/oobe.welcome.php:29
+msgid ""
+"We hope you're enjoying it! There's some additional questions you should "
+"answer. If you don't want to answer them at this time, just click Abort, and "
+"no changes will be made to your existing Firewall setup."
 msgstr ""
 
 #: Services.class.php:79
@@ -1049,7 +1081,7 @@ msgid ""
 "instead allowed a very limited amount of registration attempts."
 msgstr ""
 
-#: Services.class.php:204
+#: Services.class.php:208
 msgid "XMPP"
 msgstr ""
 
