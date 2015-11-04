@@ -341,7 +341,7 @@ function updateFirewallRules() {
 					continue;
 				}
 
-				$realports[] = "$lowest:$higest";
+				$realports[] = "$lowest:$highest";
 			} else {
 				// It should just be a number.
 				$realnum = (int) $port;
