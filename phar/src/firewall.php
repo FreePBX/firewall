@@ -356,7 +356,7 @@ function updateFirewallRules() {
 		$ports = array();
 		if ($c['protocol'] == "both" || $c['protocol'] == "tcp") {
 			foreach ($realports as $p) {
-				$ports[] = array("protocol" => "tcp", "port" => $intp);
+				$ports[] = array("protocol" => "tcp", "port" => $p);
 			}
 		}
 		if ($rule['custfw']['protocol'] == "both" || $rule['custfw']['protocol'] == "udp") {
