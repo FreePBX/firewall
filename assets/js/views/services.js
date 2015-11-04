@@ -71,6 +71,13 @@ $(document).ready(function() {
 		// New target. Don't need jquery here...
 		var newuri = updateQuery("tab", e.target.getAttribute('aria-controls'));
 		window.history.replaceState(null, document.title, newuri);
+		// If this is the 'Custom Services' tab, hide the action bar, as it's not
+		// used here.
+		if (e.target.getAttribute('aria-controls') == "customsvc") {
+			$("#action-bar").hide();
+		} else {
+			$("#action-bar").show();
+		}
 	});
 
 	// Focus on an input when we show the modal
