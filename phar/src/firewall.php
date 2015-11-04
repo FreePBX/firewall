@@ -176,8 +176,26 @@ function getDbHandle($mysettings) {
 			$conn = "unix_socket=".$mysettings['AMPDBSOCK'];
 		}
 		$dsn = $mysettings['AMPDBENGINE'].":$conn;dbname=".$mysettings['AMPDBNAME'].";charset=utf8";
-		$pdo = new \PDO($dsn, $mysettings['AMPDBUSER'], $mysettings['AMPDBPASS'], array(\PDO::ATTR_PERSISTENT => true));
-		$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+		// Try up to 15 times to connect, waiting 2 seconds between tries. This gives us 30
+		// seconds to actually make sure everything it started.
+		$count = 0;
+		while ($count < 16) {
+			try {
+				$pdo = new \PDO($dsn, $mysettings['AMPDBUSER'], $mysettings['AMPDBPASS'], array(\PDO::ATTR_PERSISTENT => true));
+				$pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+				$pdo->query('SELECT 1');
+			} catch (\Exception $e) {
+				// It didn't work.
+				$count++;
+				print "Derp\n";
+				sleep(2);
+				continue;
+			}
+			break;
+		}
+		if (!$pdo) {
+			throw new \Exception("Can't connect to database after 30 seconds, giving up");
+		}
 	}
 	return $pdo;
 }
