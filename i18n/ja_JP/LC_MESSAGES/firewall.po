@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-04 06:15+0000\n"
+"POT-Creation-Date: 2015-11-08 21:27+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -183,7 +183,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:371
+#: Firewall.class.php:380
 msgid "Defaults"
 msgstr ""
 
@@ -655,7 +655,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Firewall.class.php:372
+#: Firewall.class.php:381
 msgid "Reset"
 msgstr "リセット"
 
@@ -716,7 +716,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:373 views/modal.customsvc.php:37
+#: Firewall.class.php:382 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -833,7 +833,7 @@ msgid ""
 "and de-registering, or 'slow' if you are on a low powered machine."
 msgstr ""
 
-#: Firewall.class.php:181
+#: Firewall.class.php:190
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1087,7 +1087,7 @@ msgid ""
 "Zone. Please read the Wiki for more information."
 msgstr ""
 
-#: Firewall.class.php:182
+#: Firewall.class.php:191
 msgid "You can add the host automatically here."
 msgstr ""
 
