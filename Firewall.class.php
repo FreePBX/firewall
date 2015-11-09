@@ -46,6 +46,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return array($status);
 		}
 
+		if ($this->isNotReady()) {
+			$status = array_merge($status, $this->Dashboard()->genStatusIcon('warning', _("Starting up")));
+			return array($status);
+		}
+
 		// We're meant to be running, check that the firewall service is.
 		exec("pgrep -f hooks/voipfirewalld", $out, $ret);
 		// Clobber the $status if it's not running
@@ -61,21 +66,47 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		);
 
 		$foundtrustedint = false;
+		$foundnewint = false;
+		$error = false;
 		$ints = $this->getInterfaces();
-		foreach ($ints as $i => $null) {
-			if ($this->getZone($i) === "trusted") {
+		foreach ($ints as $i => $conf) {
+			if (!isset($conf['config']['ZONE'])) {
+				$foundnewint = $i;
+				break;
+			}
+			$runningzone = $this->getZone($i);
+			if ($conf['config']['ZONE'] !== $runningzone) {
+				$error = $i;
+				break;
+			} elseif ($runningzone === "trusted") {
 				$foundtrustedint = $i;
 				break;
 			}
 		}
 
-		// If we've found a trusted interface, this is bad, yell.
-		if ($foundtrustedint) {
+		if ($error) {
+			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('error', _("Firewall Integrity Failed")));
+			$this->Notifications()->add_critical('firewall', 'zoneerror', _("Firewall Integrity Failed"),
+				sprintf(_("Interface %s is not in the correct zone. This can be caused by manual alterations of iptables, or, an unexpected error. Please restart the firewall service, and then delete this notification."), $error),
+				"?display=firewall",
+				true, // Reset on update.
+				true); // Can delete
+			return array($status, $trusted);
+		} elseif ($foundnewint) { // Have we found a new interface?
+			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('error', _("New Interface Detected")));
+			$trusted['order'] = 1;
+			$this->Notifications()->add_critical('firewall', 'newint', _("New Interface Detected"),
+				sprintf(_("A new, unconfigured, network interface has been detected. Please assign interface '%s' to a zone."), $foundnewint),
+				"?display=firewall&page=zones&tab=intsettings",
+				true, // Reset on update.
+				false); // Can delete
+			return array($status, $trusted);
+		} elseif ($foundtrustedint) { // If we've found a trusted interface, this is bad, yell.
 			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('error', _("Trusted Interface Detected")));
 			$trusted['order'] = 1;
 			// Add core notification
 			$this->Notifications()->add_critical('firewall', 'trustedint', _("Trusted Interface Detected"),
-				sprintf(_("A network interface that is assigned to the 'Trusted' zone has been detected. This is a misconfiguration, possibly by the addition of a new Network Interface. To ensure your system is protected from attacks, please change the default zone of interface %s."), $i),
+				sprintf(_("A network interface that is assigned to the 'Trusted' zone has been detected. This is a misconfiguration. To ensure your system is protected from attacks, please change the default zone of interface '%s'."), $foundtrustedint),
 				"?display=firewall&page=zones&tab=intsettings",
 				true, // Reset on update.
 				false); // Can delete
@@ -284,6 +315,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "updateinterface":
 			// Remove any notifications about invalid interface configurations
 			$this->Notifications()->delete('firewall', 'trustedint');
+			$this->Notifications()->delete('firewall', 'newint');
 			return $this->runHook('updateinterface', array('iface' => $_REQUEST['iface'], 'newzone' => $_REQUEST['zone']));
 		case "updaterfw":
 			return $this->setConfig($_REQUEST['proto'], ($_REQUEST['value'] == "true"), 'rfw');
