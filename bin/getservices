@@ -67,6 +67,20 @@ foreach ($hostmaps as $host => $zone) {
 		$harr[$ipaddr] = $zone;
 	}
 }
+
+// Grab /etc/hosts and make sure that every host in there is added
+// to the trusted zone
+$hosts = file("/etc/hosts");
+foreach ($hosts as $h) {
+	$line = explode(" ", trim($h));
+	if (empty($line[0])) {
+		continue;
+	}
+	if (filter_var($line[0], \FILTER_VALIDATE_IP)) {
+		$harr[$line[0]] = "trusted";
+	}
+}
+
 $services['hostmaps'] = $harr;
 
 // print_r($services); exit;
