@@ -4,6 +4,19 @@
 
 // This updates the zone of a specified interface. Will not create a new one.
 
+// If the firewall hasn't started yet, don't do anything.
+$uptime = file("/proc/uptime");
+if (!isset($uptime[0])) {
+	throw new \Exception("Unable to read uptime? How?");
+}
+// Format of uptime is 'seconds.xx idle.xx'. Note that idle.xx can be
+// HIGHER than seconds if you're on a multi-core machine.
+list($secs, $idle) = explode(" ", $uptime[0]);
+if ((int) $secs < 300) {
+	print "Firewall not started. Ignoring\n";
+	exit;
+}
+
 // Make sure we have a param
 if (empty($argv[1])) {
 	throw new \Exception("Needs a param");
