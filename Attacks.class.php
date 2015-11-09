@@ -14,7 +14,7 @@ class Attacks {
 		} elseif (file_exists("/proc/net/ipt_recent/ATTACKER")) {
 			$this->module = "/proc/net/ipt_recent/";
 		} else {
-			throw new \Exception("Don't know which module to check");
+			throw new \Exception("Firewall is not running!");
 		}
 
 		$this->tags = array("ATTACKER", "REPEAT", "SIGNALLING", "CLAMPED");
