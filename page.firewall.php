@@ -13,6 +13,10 @@ if (!$fw->isEnabled()) {
 	print "</div>";
 } else {
     	print "<div class='col-sm-9'>";
+	if ($fw->isNotReady()) {
+		include 'views/warning.notready.php';
+	}
+
 	$fw->showLockoutWarning();
 	if (!empty($_REQUEST['page'])) {
 		$page = $_REQUEST['page'];

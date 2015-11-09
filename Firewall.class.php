@@ -183,6 +183,21 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $this->getConfig("status");
 	}
 
+	// If the machine has been up for LESS than 5 minutes, return true
+	public function isNotReady() {
+		$uptime = file("/proc/uptime");
+		if (!isset($uptime[0])) {
+			throw new \Exception("Unable to read uptime? How?");
+		}
+		// Format of uptime is 'seconds.xx idle.xx'. Note that idle.xx can be
+		// HIGHER than seconds if you're on a multi-core machine.
+		list($secs, $idle) = explode(" ", $uptime[0]);
+		if ((int) $secs < 300) {
+			return true;
+		}
+		return false;
+	}
+
 	public function showLockoutWarning() {
 		if (!$this->isTrusted()) {
 			$thishost = $this->detectHost();
