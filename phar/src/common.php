@@ -105,5 +105,20 @@ function isValidZone($zone = false) {
 	return false;
 }
 
-
+function wall($msg = false) {
+	if (!$msg) {
+		// wat.
+		fwLog("Asked to wall a blank message?");
+		return;
+	}
+	// Open a process handle to wall
+	$fds = array(0 => array("pipe", "r"), 1 => array("file", "/dev/null", "a"), 2 => array("file", "/dev/null", "a"));
+	$pipes = array();
+	$ph = proc_open("/usr/bin/wall", $fds, $pipes, "/tmp");
+	fwrite($pipes[0], $msg);
+	fclose($pipes[0]);
+	$ret = proc_close($ph);
+	fwLog("Wall: '$msg' returned $ret");
+	return $ret;
+}
 

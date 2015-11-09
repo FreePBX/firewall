@@ -39,6 +39,49 @@ if (!$fwconf['active']) {
 	print "Starting firewall.\n";
 }
 
+// If this host has been up for LESS than 5 minutes, don't
+// start the firewall.
+
+$ready = false;
+$first = true;
+$sendwarning = false;
+while (!$ready) {
+	$uptime = file("/proc/uptime");
+	if (!isset($uptime[0])) {
+		throw new \Exception("Unable to read uptime? How?");
+	}
+	// Format of uptime is 'seconds.xx idle.xx'. Note that idle.xx can be
+	// HIGHER than seconds if you're on a multi-core machine.
+	list($secs, $idle) = explode(" ", $uptime[0]);
+	if ((int) $secs > 300) {
+		$ready = true;
+		break;
+	}
+	// Not ready yet, and don't wall before 1 minute, to let people actually
+	// see it. 
+	if ($first && (int) $secs > 60) {
+		// Wall a warning that the firewall isn't started yet.
+		$warning  = "Firewall is currently in delayed startup mode, as this machine was only\n";
+		$warning .= "recently rebooted. The firewall service will automatically start after\n";
+		$warning .= "this machine has been running for 5 minutes.\n\n";
+		$warning .= "Another warning will be broadcast before this happens\n";
+		wall($warning);
+		$first = false;
+		$sendwarning = true;
+		sleep(20);
+		continue;
+	}
+
+	if ($sendwarning && (int) $secs > 270) {
+		// 30 seconds left
+		$warning = "Firewall service will start automatically in 30 seconds (or less!)\n\n";
+		wall($warning);
+		$sendwarning = false;
+	}
+	sleep(5);
+}
+wall("Firewall service now starting.\n\n");
+
 // Make sure our conntrack kernel module is configured correctly
 include 'modprobe.php';
 $m = new \FreePBX\Firewall\Modprobe;
