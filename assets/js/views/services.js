@@ -97,6 +97,11 @@ $(document).ready(function() {
 		$("#custmodal").modal('show');
 	});
 
+	// Make sure, that when the page IS loaded, that if we're on customsvc
+	// the action bar isn't shown.
+	if (window.location.search.search("tab=customsvc") !== -1) {
+		$("#action-bar").hide();
+	}
 
 });
 

@@ -517,6 +517,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$zones = $this->getZones();
 		foreach ($allsvcs as $k => $arr) {
 			foreach ($arr as $s) {
+				if (is_array($s)) {
+					// This is a custom service, not a known one, ignore.
+					continue;
+				}
 				// Known service is $s - We were told about it in the post?
 				if (!isset($svc[$s]) || !is_array($svc[$s])) {
 					// Turned off!
