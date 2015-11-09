@@ -61,9 +61,9 @@ while (!$ready) {
 	// see it. 
 	if ($first && (int) $secs > 60) {
 		// Wall a warning that the firewall isn't started yet.
-		$warning  = "Firewall is currently in delayed startup mode, as this machine was only\n";
-		$warning .= "recently rebooted. The firewall service will automatically start after\n";
-		$warning .= "this machine has been running for 5 minutes.\n\n";
+		$warning  = "Firewall is currently in delayed startup mode, as this machine was\n";
+		$warning .= "recently rebooted. The firewall service will automatically start\n";
+		$warning .= "after this machine has been running for 5 minutes.\n\n";
 		$warning .= "Another warning will be broadcast before this happens\n";
 		wall($warning);
 		$first = false;
@@ -74,7 +74,7 @@ while (!$ready) {
 
 	if ($sendwarning && (int) $secs > 270) {
 		// 30 seconds left
-		$warning = "Firewall service will start automatically in 30 seconds (or less!)\n\n";
+		$warning = "Firewall service will start automatically in 30 seconds or less!\n\n";
 		wall($warning);
 		$sendwarning = false;
 	}
