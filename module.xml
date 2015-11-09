@@ -2,13 +2,14 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.6.1</version>
+	<version>13.0.7</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
 	<category>Connectivity</category>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions</description>
 	<changelog>
+		*13.0.7* Wait until machine has been up for 5 mins before start firewall.
 		*13.0.6.1* Be more patient with incron
 		*13.0.6* Startup fixes
 		*13.0.5.1* #10600, #10616 fixes
