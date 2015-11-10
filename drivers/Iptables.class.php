@@ -75,6 +75,22 @@ class Iptables {
 		return $retarr;
 	}
 
+	public function validateRunning() {
+		// Check to make sure that nothing's jumped all over our rules,so check to
+		// make sure that some common rules are there.
+		$current = $this->getCurrentIptables();
+		$ipvers = array("ipv6", "ipv4");
+		foreach ($ipvers as $i) {
+			if (!isset($known[$i]['filter']['fpbx-rtp'][0])) {
+				return false;
+			}
+			if (!isset($known[$i]['filter']['fpbx-interfaces'][0])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	// Root process
 	public function commit() {
 		// TODO: run iptables-save here.
@@ -556,6 +572,17 @@ class Iptables {
 			$exists = array_flip($me);
 			foreach ($ports as $proto => $r) {
 				foreach ($r as $rule) {
+					// If we have a dest, check it against our ipversion
+					if ($rule['dest']) {
+						// If we're in ipv4, and we've got an ipv6 address, skip.
+						if ($ipv == "ipv4" && filter_var($rule['dest'], \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+							continue;
+						}
+						// And vice versa
+						if ($ipv == "ipv6" && filter_var($rule['dest'], \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+							continue;
+						}
+					}
 					$rule['proto'] = $proto;
 					// If we are allowing this protocol through to the rfw, tag it with the second bit, as well.
 					if ($rules['settings']['rprotocols'][$rule['name']]['state']) {

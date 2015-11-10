@@ -285,10 +285,22 @@ function checkPhar() {
 
 function updateFirewallRules() {
 	// Signature validation and firewall driver
-	global $v, $driver, $services;
+	global $v, $driver, $services, $thissvc;
 
 	// Asterisk user
 	$astuser = "asterisk";
+
+	// Make sure the rules haven't been disturbed, or aren't corrupt
+	if (!$driver->validateRunning()) {
+		// This is bad.
+		wall("Firewall Rules corrupted! Restarting in 5 seconds");
+		Lock::unLock($thissvc);
+		// Wait 4 seconds to give incron a chance to catch up
+		sleep(4);
+		// Restart me.
+		fclose(fopen("/var/spool/asterisk/incron/firewall.firewall", "a"));
+		exit;
+	}
 
 	// We want to switch to the asterisk user and ask for the port mappings.
 	try {

@@ -83,7 +83,7 @@ class Smart {
 		// These are always open to the world, on every interface.
 		// The only limitation is that we don't let people be dumb, and we'll
 		// never return less than 1024, or more than 30000. As RTP runs on
-		// UTP, it's not THAT critical, but better to be safe than sorry.
+		// UDP, it's not THAT critical, but better to be safe than sorry.
 		//
 		// Yes. This are just random ranges that I made up as 'reasonable'.
 		//
@@ -160,17 +160,22 @@ class Smart {
 			// Woo. What are our settings?
 			$ss = \FreePBX::Sipsettings();
 			$allBinds = $ss->getConfig("binds");
+			$websocket = false;
 			foreach ($allBinds as $type => $listenArr) {
 				// What interface(s) are we listening on?
 				foreach ($listenArr as $ipaddr => $mode) {
 					if ($mode != "on") {
 						continue;
 					}
+					if ($type == "ws" || $type == "wss") {
+						$websocket = \FreePBX::Config()->get('HTTPBINDPORT');
+						continue;
+					}
 					$port = $ss->getConfig($type."port-".$ipaddr);
 					if (!$port) {
 						continue;
 					}
-					if ($type == "tcp" || $type == "ws") {
+					if ($type == "tcp") {
 						$tcp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
 					} elseif ($type == "udp") {
 						$udp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
@@ -178,6 +183,9 @@ class Smart {
 						throw new \Exception("Unknown protocol $type");
 					}
 				}
+			}
+			if ($websocket) {
+				$tcp[] = array("dest" => $ipaddr, "dport" => $websocket, "name" => "pjsip");
 			}
 		}
 
