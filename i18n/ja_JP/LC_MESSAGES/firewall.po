@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-10 03:43+0000\n"
+"POT-Creation-Date: 2015-11-10 04:13+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -169,7 +169,7 @@ msgstr ""
 msgid "Both (TCP and UDP)"
 msgstr ""
 
-#: Services.class.php:174
+#: Services.class.php:184
 msgid "CHAN_SIP Protocol"
 msgstr ""
 
@@ -269,11 +269,11 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:227
+#: Services.class.php:237
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:229
+#: Services.class.php:239
 msgid "FTP is used by things to do stuff. Redo this text."
 msgstr ""
 
@@ -353,7 +353,7 @@ msgstr ""
 msgid "Further information is available at the FreePBX Wiki."
 msgstr ""
 
-#: Services.class.php:197
+#: Services.class.php:207
 msgid "HTTP Provisioning"
 msgstr ""
 
@@ -363,11 +363,11 @@ msgid ""
 "updated with the latest settings!"
 msgstr ""
 
-#: Services.class.php:187 Smart.class.php:43
+#: Services.class.php:197 Smart.class.php:43
 msgid "IAX Protocol"
 msgstr ""
 
-#: Services.class.php:189
+#: Services.class.php:199
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
@@ -507,11 +507,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:250
+#: Services.class.php:260
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:256
+#: Services.class.php:266
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -598,7 +598,7 @@ msgstr ""
 msgid "Other"
 msgstr ""
 
-#: Services.class.php:166
+#: Services.class.php:176
 msgid "PJSIP is not available on this machine"
 msgstr ""
 
@@ -656,7 +656,7 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:207
+#: Services.class.php:217
 msgid "REST Apps"
 msgstr ""
 
@@ -716,15 +716,15 @@ msgstr ""
 msgid "Responsive Firewall is <strong>enabled</strong>."
 msgstr ""
 
-#: Services.class.php:122 Smart.class.php:41
+#: Services.class.php:132 Smart.class.php:41
 msgid "SIP Protocol"
 msgstr ""
 
-#: Services.class.php:306
+#: Services.class.php:316
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:308
+#: Services.class.php:318
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -844,23 +844,23 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:237
+#: Services.class.php:247
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:239
+#: Services.class.php:249
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
-#: Services.class.php:199
+#: Services.class.php:209
 msgid "Text for HTTP Provisioning not done..."
 msgstr ""
 
-#: Services.class.php:209
+#: Services.class.php:219
 msgid "Text for REST Apps not done..."
 msgstr ""
 
-#: Services.class.php:219
+#: Services.class.php:229
 msgid "Text for XMPP not done..."
 msgstr ""
 
@@ -922,7 +922,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:259
+#: Services.class.php:269
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -979,11 +979,11 @@ msgid ""
 "extension configuration of FreePBX."
 msgstr ""
 
-#: Services.class.php:124
+#: Services.class.php:134
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:176
+#: Services.class.php:186
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
@@ -1045,11 +1045,11 @@ msgstr ""
 msgid "Trusted Management Network defined"
 msgstr ""
 
-#: Services.class.php:100
+#: Services.class.php:108
 msgid "UCP"
 msgstr ""
 
-#: Services.class.php:102
+#: Services.class.php:110
 msgid ""
 "UCP - User Control Panel - is the main user interface to FreePBX, and allows "
 "people to control their phone. Note that if you want to allow users to use "
@@ -1091,29 +1091,29 @@ msgid ""
 "no changes will be made to your existing Firewall setup."
 msgstr ""
 
-#: Services.class.php:79
+#: Services.class.php:78
 msgid "Web Management"
 msgstr ""
 
-#: Services.class.php:89
+#: Services.class.php:97
 msgid "Web Management (Secure)"
 msgstr ""
 
-#: Services.class.php:81
+#: Services.class.php:80
 msgid ""
 "Web management interface for FreePBX. This is the http, not https (secure) "
 "interface."
 msgstr ""
 
-#: Services.class.php:91
+#: Services.class.php:99
 msgid "Web management interface for FreePBX. This is the https interface."
 msgstr ""
 
-#: Services.class.php:110
+#: Services.class.php:122
 msgid "WebRTC"
 msgstr ""
 
-#: Services.class.php:112
+#: Services.class.php:124
 msgid ""
 "WebRTC is used by UCP (and other services) to enable calls to be made via a "
 "web browser."
@@ -1126,7 +1126,7 @@ msgid ""
 "instead allowed a very limited amount of registration attempts."
 msgstr ""
 
-#: Services.class.php:217
+#: Services.class.php:227
 msgid "XMPP"
 msgstr ""
 
