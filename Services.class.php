@@ -131,6 +131,7 @@ class Services {
 			if (!is_array($allBinds)) {
 				$allBinds = array();
 			}
+			$websocket = false;
 			foreach ($allBinds as $type => $listenArr) {
 				if (!is_array($listenArr)) {
 					$listenArr = array();
@@ -140,11 +141,16 @@ class Services {
 					if ($mode != "on") {
 						continue;
 					}
+					if ($type == "ws" || $type == "wss") {
+						$websocket = \FreePBX::Config()->get('HTTPBINDPORT');
+						continue;
+					}
+
 					$port = $ss->getConfig($type."port-".$ipaddr);
 					if (!$port) {
 						continue;
 					}
-					if ($type == "tcp" || $type == "ws" || $type == "wss") {
+					if ($type == "tcp") {
 						$retarr['fw'][] = array("protocol" => "tcp", "port" => $port);
 					} elseif ($type == "udp") {
 						$retarr['fw'][] = array("protocol" => "udp", "port" => $port);
@@ -152,6 +158,9 @@ class Services {
 						throw new \Exception("Unknown protocol $type");
 					}
 				}
+			}
+			if ($websocket) {
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $websocket);
 			}
 		} else {
 			$retarr['descr'] = _("PJSIP is not available on this machine");
