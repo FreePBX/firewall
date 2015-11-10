@@ -74,13 +74,21 @@ class Services {
 	}
 
 	private function getSvc_http() {
-		// TODO: Ask sysadmin, otherwise assume 80? Other options?
 		$retarr = array(
 			"name" => _("Web Management"),
 			"defzones" => array("internal"),
 			"descr" => _("Web management interface for FreePBX. This is the http, not https (secure) interface."),
 			"fw" => array(array("protocol" => "tcp", "port" => 80)),
 		);
+
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+			$retarr['fw'][0]['port'] = $ports['acp'];
+		} catch (\Exception $e) {
+			// ignore
+		}
 		return $retarr;
 	}
 
@@ -106,14 +114,16 @@ class Services {
 	}
 
 	private function getSvc_webrtc() {
+		$websocket = \FreePBX::Config()->get('HTTPBINDPORT');
+		if (!$websocket) {
+			$websocket = 8088;
+		}
 		$retarr = array(
 			"name" => _("WebRTC"),
 			"defzones" => array("reject"),
 			"descr" => _("WebRTC is used by UCP (and other services) to enable calls to be made via a web browser."),
-			"fw" => array(array("protocol" => "tcp", "port" => 8088)),
+			"fw" => array(array("protocol" => "tcp", "port" => $websocket)),
 		);
-
-		// TODO: Check httpd.conf and chan_sip.conf to make sure that it's enabled.
 		return $retarr;
 	}
 
