@@ -30,7 +30,7 @@ foreach ($apps as $app => $files) {
 	}
 	$start = $files[0];
 	// Note that ? and > are broken apart to stop syntax highlighting from getting confused.
-	$stub = "#!/usr/bin/env php\n<?php\n\$s='$start';Phar::interceptFileFuncs();set_include_path('phar://'.__FILE__.PATH_SEPARATOR.get_include_path());Phar::webPhar(null, \$s);include 'phar://'.__FILE__.'/'.\$s;__HALT_COMPILER(); ?".">\n";
+	$stub = "#!/usr/bin/env php\n<?php\n\$s='$start';\$f=__FILE__;Phar::interceptFileFuncs();set_include_path(\"phar://\$f/\".get_include_path());Phar::webPhar(null, \$s);include \"phar://\$f/\$s\";__HALT_COMPILER(); ?".">\n";
 	$phar->setStub($stub);
 	$phar->compressFiles(Phar::BZ2);
 	$phar->stopBuffering();

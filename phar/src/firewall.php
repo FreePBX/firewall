@@ -142,7 +142,7 @@ while(true) {
 	$runafter = $lastfin + $fwconf['period'];
 	if ($runafter < time()) {
 		// We finished more than $period ago. We can run again.
-		updateFirewallRules();
+		updateFirewallRules(($lastfin === 1)); // param (bool) true if this is the first run.
 		$lastfin = time();
 		continue;
 	} else {
@@ -283,15 +283,18 @@ function checkPhar() {
 	}
 }
 
-function updateFirewallRules() {
+function updateFirewallRules($firstrun = false) {
 	// Signature validation and firewall driver
 	global $v, $driver, $services, $thissvc;
 
 	// Asterisk user
 	$astuser = "asterisk";
 
-	// Make sure the rules haven't been disturbed, or aren't corrupt
-	if (!$driver->validateRunning()) {
+	// Flush cache, read what the system thinks the firewall rules are.
+	$driver->refreshCache();
+
+	// Make sure the rules haven't been disturbed, and aren't corrupt
+	if (!$firstrun && !$driver->validateRunning()) {
 		// This is bad.
 		wall("Firewall Rules corrupted! Restarting in 5 seconds");
 		Lock::unLock($thissvc);
@@ -335,9 +338,6 @@ function updateFirewallRules() {
 
 	$zones = array("reject" => "reject", "external" => "external", "other" => "other",
 		"internal" => "internal", "trusted" => "trusted");
-
-	// TESTING: Flush cache
-	// $driver->refreshCache();
 	
 	// This is the list of services we should have.
 	$validservices = array();

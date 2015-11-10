@@ -81,10 +81,12 @@ class Iptables {
 		$current = $this->getCurrentIptables();
 		$ipvers = array("ipv6", "ipv4");
 		foreach ($ipvers as $i) {
-			if (!isset($known[$i]['filter']['fpbx-rtp'][0])) {
+			if (!isset($current[$i]['filter']['fpbx-rtp'][0])) {
+				print "No fpbx-rtp in $i\n";
 				return false;
 			}
-			if (!isset($known[$i]['filter']['fpbx-interfaces'][0])) {
+			if (!isset($current[$i]['filter']['fpbxinterfaces'][0])) {
+				print "No fpbxinterfaces in $i\n";
 				return false;
 			}
 		}
@@ -1195,7 +1197,22 @@ class Iptables {
 		}
 
 		$str = "";
-		if (isset($arr['int'])) { $str .= "-i ".$arr['int']." "; }
+
+		if (isset($arr['int'])) { 
+			$str .= "-i ".$arr['int']." ";
+		}
+
+		if (isset($arr['dest'])) {
+			// TODO: Check with ipv6
+			if ($arr['dest'] != "0.0.0.0") {
+				list($dest) = explode(":", $arr['dest']);
+				if (strpos($dest, "/") === false) {
+					$dest .= "/32";
+				}
+				$str .= "-d $dest ";
+			}
+		}
+
 		if (isset($arr['proto'])) {
 			$str .= "-p ".$arr['proto']." ";
 			if (isset($arr['dport'])) {
@@ -1213,16 +1230,6 @@ class Iptables {
 				$src .= "/32";
 			}
 			$str .= "-s $src ";
-		}
-		if (isset($arr['dest'])) {
-			// TODO: Check with ipv6
-			if ($arr['dest'] != "0.0.0.0") {
-				list($dest) = explode(":", $arr['dest']);
-				if (strpos($dest, "/") === false) {
-					$dest .= "/32";
-				}
-				$str .= "-d $dest ";
-			}
 		}
 		if (isset($arr['dport'])) {
 			$str .= "--dport ".$arr['dport']." ";
