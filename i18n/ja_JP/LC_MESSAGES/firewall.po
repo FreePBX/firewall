@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-10 02:10+0000\n"
+"POT-Creation-Date: 2015-11-10 03:43+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -64,7 +64,7 @@ msgstr ""
 msgid "Add Network"
 msgstr ""
 
-#: views/page.zones.php:178 views/view.blacklist.php:40
+#: views/page.zones.php:181 views/view.blacklist.php:40
 msgid "Add New"
 msgstr ""
 
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Defaults"
 msgstr ""
 
-#: views/page.zones.php:174 views/view.blacklist.php:10
+#: views/page.zones.php:177 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
 msgstr "削除"
@@ -759,7 +759,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: views/page.zones.php:93 views/page.zones.php:175
+#: views/page.zones.php:93 views/page.zones.php:178
 msgid "Save Changes"
 msgstr ""
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-10 02:10+0000\n"
+"POT-Creation-Date: 2015-11-10 03:43+0000\n"
 "PO-Revision-Date: 2015-10-21 13:44+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -68,7 +68,7 @@ msgstr "添加主机"
 msgid "Add Network"
 msgstr ""
 
-#: views/page.zones.php:178 views/view.blacklist.php:40
+#: views/page.zones.php:181 views/view.blacklist.php:40
 msgid "Add New"
 msgstr ""
 
@@ -209,7 +209,7 @@ msgstr ""
 msgid "Defaults"
 msgstr ""
 
-#: views/page.zones.php:174 views/view.blacklist.php:10
+#: views/page.zones.php:177 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
 msgstr "删除"
@@ -763,7 +763,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: views/page.zones.php:93 views/page.zones.php:175
+#: views/page.zones.php:93 views/page.zones.php:178
 msgid "Save Changes"
 msgstr "保存修改"
 
