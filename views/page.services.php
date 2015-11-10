@@ -44,7 +44,7 @@ $extrasvc = $services['extra'];
       <div role="tabpanel" id="services" class="tab-pane <?php echo $svcs; ?>">
         <div class='container-fluid'>
 	  <p><?php echo _("Services that are assigned to zones <strong>are accessible</strong> to connections matching the zones."); ?></p>
-          <p><?php echo _("Note that the 'Reject' setting explicitly blocks that service totally, and can not be overridden. This does <strong>not</strong> allow access to the service from connections that match the 'Reject' zone. This is usually equivalent to turning off access from all zones, which is more intuitive, and can be overridden."); ?></p>
+          <p><?php echo _("Note that the 'Reject' setting explicitly blocks that service totally, and can only be overridden by access from a Trusted Zone. This is functionally equivalent to turning off access from all zones, unless you are running an extra Firewall plugin."); ?></p>
 <?php
 foreach ($coresvc as $s) {
 	$currentzones = array();
