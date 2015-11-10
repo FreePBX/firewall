@@ -127,6 +127,9 @@ foreach ($ints as $i => $conf) {
         <p><?php echo _("You may also enter DDNS hostnames here, which will be automatically monitored and updated as required."); ?></p>
 <?php
 $nets = $fw->getConfig("networkmaps");
+if (!is_array($nets)) {
+	$nets = array();
+}
 // Add a blank one to the bottom..
 $nets[" "] = "trusted";
 
