@@ -82,6 +82,10 @@ while (!$ready) {
 }
 wall("Firewall service now starting.\n\n");
 
+// Flush all iptables rules
+`service iptables stop`;
+`service ip6tables stop`;
+
 // Make sure our conntrack kernel module is configured correctly
 include 'modprobe.php';
 $m = new \FreePBX\Firewall\Modprobe;

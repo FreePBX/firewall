@@ -36,11 +36,6 @@ try {
 	exit;
 }
 
-// TEMPORARY REFRESH. Flush all iptables rules
-// TODO:: REMOVE THIS BEFORE RELEASE
-`service iptables stop`;
-`service ip6tables stop`;
-
 // Move the previous logfile out of the way.
 // Less verbose logging now, doesn't need to be clobbered.
 // @unlink("/tmp/firewall.log.previous");
