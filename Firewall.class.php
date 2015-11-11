@@ -668,9 +668,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (!isset($nets[$net])) {
 			return false;
 		}
+		$zone = $nets[$net];
 		unset($nets[$net]);
-		$this->setConfig("networkmaps", $net);
-		return $this->runHook("removenetwork", array("network" => $net, "zone" => $nets[$net]));
+		$this->setConfig("networkmaps", $nets);
+		return $this->runHook("removenetwork", array("network" => $net, "zone" => $zone));
 	}
 
 	public function addNetworkToZone($net = false, $zone = false) {
