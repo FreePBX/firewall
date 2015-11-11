@@ -18,6 +18,11 @@ class Network {
 			if ($vals[1] == "lo" || $vals[1] == "lo:") 
 				continue;
 
+			// Skip sangoma wanpipe cards, which appear as network interfaces
+			 if (preg_match("/^w\d*g\d*/", $vals[1])) {
+				continue;
+			}
+
 			// We only care about ipv4 (inet) and ipv6 (inet6) lines, or definition lines
 			if ($vals[2] != "inet" && $vals[2] != "inet6" && $vals[3] != "mtu")
 				continue;
