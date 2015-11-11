@@ -7,7 +7,7 @@
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
 	<category>Connectivity</category>
-	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions</description>
+	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
 		*13.0.9.2* Do some TODOs
 		*13.0.9.1* Make an array an array.
@@ -36,6 +36,9 @@
 		*13.0.1.2* First public release
 		*13.0.1.1* Development
 	</changelog>
+	<depends>
+		<file>/usr/lib/sysadmin/includes.php</file>
+	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>
 	</menuitems>
