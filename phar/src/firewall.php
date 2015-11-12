@@ -327,6 +327,11 @@ function updateFirewallRules($firstrun = false) {
 	// Flush cache, read what the system thinks the firewall rules are.
 	$driver->refreshCache();
 
+	// Delete our safemode flag if it exists.
+	if (file_exists("/var/run/firewalld.safemode")) {
+		unlink("/var/run/firewalld.safemode");
+	}
+
 	// Make sure the rules haven't been disturbed, and aren't corrupt
 	if (!$firstrun && !$driver->validateRunning()) {
 		// This is bad.
