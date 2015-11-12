@@ -11,7 +11,7 @@ class Services {
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc");
-		$this->extraservices = array("provis", "restapps", "xmpp", "ftp", "tftp", "nfs", "smb");
+		$this->extraservices = array("isymphony", "provis", "restapps", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
 	}
@@ -110,6 +110,20 @@ class Services {
 			"descr" => _("UCP - User Control Panel - is the main user interface to FreePBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
 			"fw" => array(array("protocol" => "tcp", "port" => 81)),
 		);
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+			$retarr['fw'][0]['port'] = $ports['ucp'];
+		} catch (\Exception $e) {
+			// ignore
+		}
+
+		// Add nodejs listen port, if it's installed.
+		$nodejs = \FreePBX::Config()->get('NODEJSBINDPORT');
+		if ($nodejs) {
+			$retarr['fw'][] = array("protocol" => "tcp", "port" => $nodejs);
+		}
 		return $retarr;
 	}
 
@@ -135,7 +149,7 @@ class Services {
 			"fw" => array(),
 		);
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
-		if ($driver == "both" || $driver == "pjsip") {
+		if ($driver == "both" || $driver == "chan_pjsip") {
 			$ss = \FreePBX::Sipsettings();
 			$allBinds = $ss->getConfig("binds");
 			if (!is_array($allBinds)) {
@@ -184,11 +198,36 @@ class Services {
 			"name" => _("CHAN_SIP Protocol"),
 			"defzones" => array("internal"),
 			"descr" => _("This is the legacy chan_sip driver."),
-			"fw" => array(
-				array("protocol" => "udp", "port" => 5061),
-				array("protocol" => "tcp", "port" => 9877), // or whatever
-			),
+			"fw" => array(),
 		);
+		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
+		if ($driver == "both" || $driver == "chan_sip") {
+			$tcp = false;
+			$bindport = 5060;
+			// Note bug in sipsettings =< 13.0.14.5 that getChanSipSettings won't
+			// return correct details when not returnraw
+			$settings = \FreePBX::Sipsettings()->getChanSipSettings(true);
+			foreach ($settings as $arr) {
+				if ($arr['keyword'] == "tcpenable" && $arr['data'] == "yes") {
+					$tcp = true;
+					continue;
+				}
+				if ($arr['keyword'] == "bindport") {
+					$bindport =- $arr['data'];
+					continue;
+				}
+			}
+			$retarr['fw'][] = array("protocol" => "udp", "port" => $bindport);
+			if ($tcp) {
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $bindport);
+			}
+		}
+
+		// Make sure there's actually some binds.
+		if (!$retarr['fw']) {
+			$retarr['descr'] = _("CHANSIP is not available on this machine");
+			$retarr['disabled'] = true;
+		}
 		return $retarr;
 	}
 
@@ -197,6 +236,7 @@ class Services {
 			"name" => _("IAX Protocol"),
 			"defzones" => array("internal"),
 			"descr" => _("IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than SIP, but few providers support it."),
+			// If you're using IAX on a non standard port, stop it. You're doing it wrong.
 			"fw" => array(array("protocol" => "udp", "port" => 4569)),
 		);
 		return $retarr;
@@ -315,14 +355,47 @@ class Services {
 		$retarr = array(
 			"name" => _("SMB/CIFS"),
 			"defzones" => array("reject"),
-			"descr" => _("SMB/CIFS is used to access files on this machine from Windows or Mac systems."),
-			"fw" => array(
+		);
+
+		if (!file_exists("/etc/samba/smb.conf")) {
+			$retarr['descr'] = _("SMB/CIFS (Samba) is not installed on this machine");
+			$retarr['disabled'] = true;
+		} else {
+			$retarr['descr'] = _("SMB/CIFS is used to access files on this machine from Windows or Mac systems.");
+			$retarr['fw'] = array(
 				array('protocol' => 'udp', 'port' => '137'),
 				array('protocol' => 'udp', 'port' => '138'),
 				array('protocol' => 'tcp', 'port' => '139'),
 				array('protocol' => 'tcp', 'port' => '445'),
-			),
+			);
+		}
+		return $retarr;
+	}
+
+	private function getSvc_isymphony() {
+		$retarr = array(
+			"name" => _("iSymphony"),
+			"defzones" => array("internal"),
 		);
+		if (!file_exists("/opt/isymphony3/server/conf/main.xml")) {
+			$retarr['descr'] = _("iSymphony is not installed on this server.");
+			$retarr['disabled'] = true;
+		} else {
+			$xml = @simplexml_load_file("/opt/isymphony3/server/conf/main.xml");
+			if (!isset($xml->Server->Web)) {
+				$retarr['descr'] = _("iSymphony is not configured correctly.");
+				$retarr['disabled'] = true;
+			} else {
+				$retarr['fw'] = array();
+				$retarr['descr'] = _("iSymphony is a web-based call management solution.");
+				if (isset($xml->Server->Web[0]['port'])) {
+					$retarr['fw'][] = array("protocol" => "tcp", "port" => (int) $xml->Server->Web[0]['port']);
+				}
+				if (isset($xml->Server->Web[0]['sslPort'])) {
+					$retarr['fw'][] = array("protocol" => "tcp", "port" => (int) $xml->Server->Web[0]['sslPort']);
+				}
+			}
+		}
 		return $retarr;
 	}
 }
