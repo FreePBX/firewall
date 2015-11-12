@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-12 02:38+0000\n"
+"POT-Creation-Date: 2015-11-12 21:54+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -21,6 +21,16 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.2-dev\n"
 
+#: Services.class.php:411
+#, php-format
+msgid "%s is a web-based call management solution."
+msgstr ""
+
+#: Services.class.php:407
+#, php-format
+msgid "%s is not configured correctly."
+msgstr ""
+
 #: views/page.about.php:63
 msgid ""
 "<strong>Important Warning!</strong> If you are in a hosted environment (for "
@@ -31,6 +41,10 @@ msgstr ""
 
 #: views/view.about.php:23
 msgid "<strong>Responsive Firewall is not enabled</strong>."
+msgstr ""
+
+#: views/view.about.php:53
+msgid "<strong>Safe mode is enabled.</strong>"
 msgstr ""
 
 #: Firewall.class.php:109
@@ -77,6 +91,12 @@ msgid ""
 "After an endpoint is registered, the source of that endpoint is "
 "<strong>automatically granted</strong> permission to use UCP, if UCP is "
 "enabled."
+msgstr ""
+
+#: views/view.about.php:55
+msgid ""
+"After the original configuration is complete, there is no reason to keep "
+"this turned on."
 msgstr ""
 
 #: views/page.zones.php:63
@@ -205,7 +225,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:427
+#: Firewall.class.php:425
 msgid "Defaults"
 msgstr ""
 
@@ -222,11 +242,11 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: views/view.about.php:47
+#: views/view.about.php:70
 msgid "Disable Firewall"
 msgstr ""
 
-#: views/view.smart.php:5
+#: views/view.about.php:15 views/view.smart.php:5
 msgid "Disabled"
 msgstr ""
 
@@ -250,7 +270,7 @@ msgstr ""
 msgid "Enable Responsive Firewall?"
 msgstr ""
 
-#: views/view.smart.php:4
+#: views/view.about.php:14 views/view.smart.php:4
 msgid "Enabled"
 msgstr ""
 
@@ -273,16 +293,14 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:277
+#: Services.class.php:293
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:279
-msgid "FTP is used by things to do stuff. Redo this text."
-msgstr ""
-
-#: views/view.about.php:5
-msgid "Fast"
+#: Services.class.php:295
+msgid ""
+"FTP is used by Endpoint Manager to send firmware images to phones, as well "
+"as additional data."
 msgstr ""
 
 #: page.firewall.php:6
@@ -309,7 +327,7 @@ msgstr ""
 msgid "Firewall Service not running!"
 msgstr ""
 
-#: views/view.about.php:55
+#: views/view.about.php:92
 msgid "Firewall Wizard"
 msgstr ""
 
@@ -511,11 +529,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:300
+#: Services.class.php:316
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:306
+#: Services.class.php:322
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -562,10 +580,6 @@ msgstr ""
 msgid "No hosts!"
 msgstr ""
 
-#: views/view.about.php:5
-msgid "Normal"
-msgstr ""
-
 #: views/view.blacklist.php:4
 msgid "Note that changes to the firewall are effective immediately."
 msgstr ""
@@ -603,6 +617,13 @@ msgstr ""
 
 #: Services.class.php:190
 msgid "PJSIP is not available on this machine"
+msgstr ""
+
+#: Services.class.php:249
+msgid ""
+"Phones that are configured via Endpoint Manager will use this port to "
+"download its configuration. It is NOT ADVISED to expose this port to the "
+"public internet, as SIP Secrets will be available to a knowledgable attacker."
 msgstr ""
 
 #: OOBE.class.php:168
@@ -659,7 +680,7 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:257
+#: Services.class.php:265
 msgid "REST Apps"
 msgstr ""
 
@@ -680,12 +701,8 @@ msgstr ""
 msgid "Rate Limited Hosts"
 msgstr ""
 
-#: views/view.about.php:58
+#: views/view.about.php:95
 msgid "Re-Run Wizard"
-msgstr ""
-
-#: views/view.about.php:4
-msgid "Refresh Period"
 msgstr ""
 
 #: views/page.status.php:31
@@ -696,7 +713,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Firewall.class.php:428
+#: Firewall.class.php:426
 msgid "Reset"
 msgstr "リセット"
 
@@ -723,15 +740,15 @@ msgstr ""
 msgid "SIP Protocol"
 msgstr ""
 
-#: Services.class.php:356
+#: Services.class.php:372
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:361
+#: Services.class.php:377
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr ""
 
-#: Services.class.php:364
+#: Services.class.php:380
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -745,6 +762,17 @@ msgid ""
 "SSH is the most commonly used system administration tool. It is also a "
 "common target for hackers. We <strong>strongly recommend</strong> using a "
 "strong password and SSH keys. "
+msgstr ""
+
+#: views/view.about.php:13
+msgid "Safe Mode"
+msgstr ""
+
+#: views/view.about.php:54
+msgid ""
+"Safe mode is normally used when setting up your Firewall for the first time. "
+"It allows you to easily recover from a misconfiguration by temporarily "
+"disabling the firewall if the machine is rebooted two times in succession."
 msgstr ""
 
 #: OOBE.class.php:34
@@ -761,7 +789,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:429 views/modal.customsvc.php:37
+#: Firewall.class.php:427 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -811,10 +839,6 @@ msgstr ""
 msgid "Single Port: %s"
 msgstr ""
 
-#: views/view.about.php:5
-msgid "Slow"
-msgstr ""
-
 #: Firewall.class.php:50
 msgid "Starting up"
 msgstr ""
@@ -851,38 +875,23 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:287
+#: Services.class.php:303
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:289
+#: Services.class.php:305
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
-#: Services.class.php:249
-msgid "Text for HTTP Provisioning not done..."
-msgstr ""
-
-#: Services.class.php:259
+#: Services.class.php:267
 msgid "Text for REST Apps not done..."
-msgstr ""
-
-#: Services.class.php:269
-msgid "Text for XMPP not done..."
 msgstr ""
 
 #: views/oobe.welcome.php:28
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: views/view.about.php:14
-msgid ""
-"The 'Refresh Period' is how often the firewall updates its rules. You would "
-"set it to 'fast' if you have many endpoints that are constantly registering "
-"and de-registering, or 'slow' if you are on a low powered machine."
-msgstr ""
-
-#: Firewall.class.php:236
+#: Firewall.class.php:226
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -929,7 +938,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:309
+#: Services.class.php:325
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -979,7 +988,7 @@ msgid ""
 "internet, and may be attackable."
 msgstr ""
 
-#: views/view.about.php:13
+#: views/view.about.php:9
 msgid ""
 "This is done by a small process that runs on your FreePBX server that "
 "automatically updates firewall rules based on the current trunk and "
@@ -988,6 +997,12 @@ msgstr ""
 
 #: Services.class.php:148
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
+msgstr ""
+
+#: Services.class.php:285
+msgid ""
+"This is the XMPP server. If you wish to connect to it using an external "
+"Jabber client, you need to open this port."
 msgstr ""
 
 #: Services.class.php:200
@@ -1126,6 +1141,14 @@ msgid ""
 "web browser."
 msgstr ""
 
+#: views/view.about.php:10
+msgid ""
+"When 'Safe Mode' is enabled, if this machine is rebooted <strong>twice</"
+"strong> within 5 minutes, the firewall will be disabled for 5 minutes after "
+"the second reboot. This is useful when originally setting up your Firewall, "
+"as it allows you an easy way to recover from an accidental misconfiguration."
+msgstr ""
+
 #: views/view.smart.php:24
 msgid ""
 "When this is enabled, any incoming VoIP connection attempts that match the "
@@ -1133,7 +1156,7 @@ msgid ""
 "instead allowed a very limited amount of registration attempts."
 msgstr ""
 
-#: Services.class.php:267
+#: Services.class.php:283
 msgid "XMPP"
 msgstr ""
 
@@ -1143,7 +1166,7 @@ msgid ""
 "Zone. Please read the Wiki for more information."
 msgstr ""
 
-#: Firewall.class.php:237
+#: Firewall.class.php:227
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -1189,23 +1212,11 @@ msgstr ""
 msgid "Zones"
 msgstr ""
 
-#: Services.class.php:377
-msgid "iSymphony"
-msgstr ""
-
-#: Services.class.php:390
-msgid "iSymphony is a web-based call management solution."
-msgstr ""
-
-#: Services.class.php:386
-msgid "iSymphony is not configured correctly."
-msgstr ""
-
-#: Services.class.php:381
+#: Services.class.php:425
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
-#: views/view.about.php:12
+#: views/view.about.php:8
 msgid ""
 "is a fully integrated and tightly coupled firewall that constantly monitors "
 "the remote clients allowed to connect to this machine, and automatically "
