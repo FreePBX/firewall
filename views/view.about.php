@@ -10,10 +10,6 @@ $docs = array(
 	_("When 'Safe Mode' is enabled, if this machine is rebooted <strong>twice</strong> within 5 minutes, the firewall will be disabled for 5 minutes after the second reboot. This is useful when originally setting up your Firewall, as it allows you an easy way to recover from an accidental misconfiguration."),
 );
 
-$safemode = _("Safe Mode");
-$ena = _("Enabled");
-$dis = _("Disabled");
-
 foreach ($docs as $p) {
 	print "<p>$p</p>\n";
 }
@@ -37,6 +33,10 @@ foreach ($docs as $p) {
 }
 print "</div>";
 
+$safemode = _("Safe Mode");
+$ena = _("Available");
+$dis = _("Disabled");
+
 // If Safe mode is enabled, show the warning to turn it off.
 if ($fw->isSafemodeEnabled()) {
 	$style = "";
@@ -50,8 +50,8 @@ if ($fw->isSafemodeEnabled()) {
 
 print "<div class='alert alert-info' id='safewarning' style='$style'>";
 $docs = array(
-	_("<strong>Safe mode is enabled.</strong>"),
-	_("Safe mode is normally used when setting up your Firewall for the first time. It allows you to easily recover from a misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
+	_("<strong>Safe mode is available.</strong>"),
+	_("Safe mode can bet used when setting up your Firewall for the first time. It gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
 	_("After the original configuration is complete, there is no reason to keep this turned on."),
 );
 foreach ($docs as $p) {
