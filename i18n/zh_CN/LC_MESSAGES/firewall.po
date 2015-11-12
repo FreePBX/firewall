@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-12 21:54+0000\n"
+"POT-Creation-Date: 2015-11-12 23:23+0000\n"
 "PO-Revision-Date: 2015-11-12 12:24+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -43,12 +43,12 @@ msgstr ""
 "to your machine! Please use common sense to make sure that you are only "
 "allowing known trusted networks."
 
-#: views/view.about.php:23
+#: views/view.about.php:19
 msgid "<strong>Responsive Firewall is not enabled</strong>."
 msgstr ""
 
 #: views/view.about.php:53
-msgid "<strong>Safe mode is enabled.</strong>"
+msgid "<strong>Safe mode is available.</strong>"
 msgstr ""
 
 #: Firewall.class.php:109
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Add to Trusted"
 msgstr ""
 
-#: views/view.about.php:32
+#: views/view.about.php:28
 msgid ""
 "After an endpoint is registered, the source of that endpoint is "
 "<strong>automatically granted</strong> permission to use UCP, if UCP is "
@@ -169,6 +169,10 @@ msgstr ""
 
 #: OOBE.class.php:228
 msgid "Automatically configure Asterisk IP Settings?"
+msgstr ""
+
+#: views/view.about.php:37
+msgid "Available"
 msgstr ""
 
 #: views/view.registered.php:6
@@ -250,7 +254,7 @@ msgstr ""
 msgid "Disable Firewall"
 msgstr ""
 
-#: views/view.about.php:15 views/view.smart.php:5
+#: views/view.about.php:38 views/view.smart.php:5
 msgid "Disabled"
 msgstr ""
 
@@ -274,7 +278,7 @@ msgstr ""
 msgid "Enable Responsive Firewall?"
 msgstr ""
 
-#: views/view.about.php:14 views/view.smart.php:4
+#: views/view.smart.php:4
 msgid "Enabled"
 msgstr ""
 
@@ -725,7 +729,7 @@ msgstr "重新设置"
 msgid "Responsive Firewall"
 msgstr ""
 
-#: views/view.about.php:24
+#: views/view.about.php:20
 msgid ""
 "Responsive Firewall allows your machine to automatically block attacks to "
 "your machine, while learning and automatically granting permission to "
@@ -736,7 +740,7 @@ msgstr ""
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
 msgstr ""
 
-#: views/view.about.php:30
+#: views/view.about.php:26
 msgid "Responsive Firewall is <strong>enabled</strong>."
 msgstr ""
 
@@ -768,15 +772,16 @@ msgid ""
 "strong password and SSH keys. "
 msgstr ""
 
-#: views/view.about.php:13
+#: views/view.about.php:36
 msgid "Safe Mode"
 msgstr ""
 
 #: views/view.about.php:54
 msgid ""
-"Safe mode is normally used when setting up your Firewall for the first time. "
-"It allows you to easily recover from a misconfiguration by temporarily "
-"disabling the firewall if the machine is rebooted two times in succession."
+"Safe mode can bet used when setting up your Firewall for the first time. It "
+"gives you the ability to recover from an accidental misconfiguration by "
+"temporarily disabling the firewall if the machine is rebooted two times in "
+"succession."
 msgstr ""
 
 #: OOBE.class.php:34
@@ -922,7 +927,7 @@ msgstr ""
 msgid "There are no hosts that have been detected as attacking this server."
 msgstr ""
 
-#: views/view.about.php:31
+#: views/view.about.php:27
 msgid ""
 "There is no need to explicitly add definitions for peers, as they are "
 "automatically allowed through the firewall after successfully registering."
@@ -1174,7 +1179,7 @@ msgstr ""
 msgid "You can add the host automatically here."
 msgstr ""
 
-#: views/view.about.php:25
+#: views/view.about.php:21
 msgid "You can enable Responsive Firewall in the 'Responsive Firewall' tab."
 msgstr ""
 
