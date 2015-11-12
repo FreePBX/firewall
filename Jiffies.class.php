@@ -91,6 +91,9 @@ class Jiffies {
 	}
 
 	public function getCurrentJiffie() {
+		if (!file_exists("/proc/timer_list")) {
+			return 1000;
+		}
 		$jf = file("/proc/timer_list", \FILE_IGNORE_NEW_LINES);
 		// Find the first entry that is 'jiffies: ' and return it
 		foreach ($jf as $l) {
