@@ -213,7 +213,7 @@ class Services {
 					continue;
 				}
 				if ($arr['keyword'] == "bindport") {
-					$bindport =- $arr['data'];
+					$bindport == $arr['data'];
 					continue;
 				}
 			}
