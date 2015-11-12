@@ -246,9 +246,17 @@ class Services {
 		$retarr = array(
 			"name" => _("HTTP Provisioning"),
 			"defzones" => array("other", "internal"),
-			"descr" => _("Text for HTTP Provisioning not done..."),
+			"descr" => _("Phones that are configured via Endpoint Manager will use this port to download its configuration. It is NOT ADVISED to expose this port to the public internet, as SIP Secrets will be available to a knowledgable attacker."),
 			"fw" => array(array("protocol" => "tcp", "port" => 84)),
 		);
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+			$retarr['fw'][0]['port'] = $ports['hpro'];
+		} catch (\Exception $e) {
+			// ignore
+		}
 		return $retarr;
 	}
 
@@ -260,13 +268,21 @@ class Services {
 			"fw" => array(array("protocol" => "tcp", "port" => 85)),
 		);
 		return $retarr;
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+			$retarr['fw'][0]['port'] = $ports['restapps'];
+		} catch (\Exception $e) {
+			// ignore
+		}
 	}
 
 	private function getSvc_xmpp() {
 		$retarr = array(
 			"name" => _("XMPP"),
 			"defzones" => array("external", "other", "internal"),
-			"descr" => _("Text for XMPP not done..."),
+			"descr" => _("This is the XMPP server. If you wish to connect to it using an external Jabber client, you need to open this port."),
 			"fw" => array(array("protocol" => "tcp", "port" => 5222)),
 		);
 		return $retarr;
@@ -276,7 +292,7 @@ class Services {
 		$retarr = array(
 			"name" => _("FTP"),
 			"defzones" => array("internal"),
-			"descr" => _("FTP is used by things to do stuff. Redo this text."),
+			"descr" => _("FTP is used by Endpoint Manager to send firmware images to phones, as well as additional data."),
 			"fw" => array(array("protocol" => "tcp", "port" => 21)),
 		);
 		return $retarr;
@@ -373,29 +389,42 @@ class Services {
 	}
 
 	private function getSvc_isymphony() {
-		$retarr = array(
-			"name" => _("iSymphony"),
-			"defzones" => array("internal"),
+
+		// This could be iSymphony, or XactView.
+		$known = array(
+			"XactView" => "/opt/xactview3/server/conf/main.xml", 
+			"iSymphony" => "/opt/isymphony3/server/conf/main.xml", 
 		);
-		if (!file_exists("/opt/isymphony3/server/conf/main.xml")) {
-			$retarr['descr'] = _("iSymphony is not installed on this server.");
-			$retarr['disabled'] = true;
-		} else {
-			$xml = @simplexml_load_file("/opt/isymphony3/server/conf/main.xml");
-			if (!isset($xml->Server->Web)) {
-				$retarr['descr'] = _("iSymphony is not configured correctly.");
-				$retarr['disabled'] = true;
-			} else {
-				$retarr['fw'] = array();
-				$retarr['descr'] = _("iSymphony is a web-based call management solution.");
-				if (isset($xml->Server->Web[0]['port'])) {
-					$retarr['fw'][] = array("protocol" => "tcp", "port" => (int) $xml->Server->Web[0]['port']);
+
+		foreach ($known as $name => $loc) {
+			if (file_exists($loc)) {
+				$retarr = array(
+					"name" => $name,
+					"defzones" => array("internal"),
+				);
+				$xml = @simplexml_load_file($loc);
+				if (!isset($xml->Server->Web)) {
+					$retarr['descr'] = sprintf(_("%s is not configured correctly."), $name);
+					$retarr['disabled'] = true;
+				} else {
+					$retarr['fw'] = array();
+					$retarr['descr'] = sprintf(_("%s is a web-based call management solution."), $name);
+					if (isset($xml->Server->Web[0]['port'])) {
+						$retarr['fw'][] = array("protocol" => "tcp", "port" => (int) $xml->Server->Web[0]['port']);
+					}
+					if (isset($xml->Server->Web[0]['sslPort'])) {
+						$retarr['fw'][] = array("protocol" => "tcp", "port" => (int) $xml->Server->Web[0]['sslPort']);
+					}
 				}
-				if (isset($xml->Server->Web[0]['sslPort'])) {
-					$retarr['fw'][] = array("protocol" => "tcp", "port" => (int) $xml->Server->Web[0]['sslPort']);
-				}
+				return $retarr;
 			}
 		}
+		$retarr = array(
+			"name" => "iSymphony",
+			"defzones" => array("internal"),
+			"descr" => _("iSymphony is not installed on this server."),
+			"disabled" => true,
+		);
 		return $retarr;
 	}
 }
