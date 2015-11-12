@@ -67,8 +67,8 @@ foreach ($protocols as $id => $tmparr) {
     </div>
     <div class='col-sm-8'>
       <span class='radioset'>
-	<input type='radio' name='<?php echo $id; ?>' id='<?php echo $id; ?>1' value='true' <?php echo "$on $d"; ?>><label for='<?php echo $id; ?>1'><?php echo $ena; ?></label>
-	<input type='radio' name='<?php echo $id; ?>' id='<?php echo $id; ?>2' value='false' <?php echo "$off $d"; ?>><label for='<?php echo $id; ?>2'><?php echo $dis; ?></label>
+	<input type='radio' class='rfw' name='<?php echo $id; ?>' id='<?php echo $id; ?>1' value='true' <?php echo "$on $d"; ?>><label for='<?php echo $id; ?>1'><?php echo $ena; ?></label>
+	<input type='radio' class='rfw' name='<?php echo $id; ?>' id='<?php echo $id; ?>2' value='false' <?php echo "$off $d"; ?>><label for='<?php echo $id; ?>2'><?php echo $dis; ?></label>
       </span>
     </div>
   </div>

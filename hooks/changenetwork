@@ -5,14 +5,7 @@
 // This updates the zone of a specified network. Will not create a new one.
 
 // If the firewall hasn't started yet, don't do anything.
-$uptime = file("/proc/uptime");
-if (!isset($uptime[0])) {
-	throw new \Exception("Unable to read uptime? How?");
-}
-// Format of uptime is 'seconds.xx idle.xx'. Note that idle.xx can be
-// HIGHER than seconds if you're on a multi-core machine.
-list($secs, $idle) = explode(" ", $uptime[0]);
-if ((int) $secs < 300) {
+if (file_exists("/var/run/firewalld.safemode")) {
 	print "Firewall not started. Ignoring\n";
 	exit;
 }

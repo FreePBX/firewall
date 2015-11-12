@@ -15,6 +15,9 @@ if (!Lock::canLock($thissvc)) {
 require 'common.php';
 fwLog("Starting firewall service");
 
+// Load our validator
+$v = new \FreePBX\modules\Firewall\Validator($sig);
+
 if (posix_geteuid() !== 0) {
 	throw new \Exception("I must be run as root.");
 }
@@ -39,26 +42,54 @@ if (!$fwconf['active']) {
 	print "Starting firewall.\n";
 }
 
-// If this host has been up for LESS than 5 minutes, don't
-// start the firewall.
+// How to detect if we're going into safe mode:
+//   1.  $services['safemode']['status'] == bool true
+//   2.  $services['safemode']['lastuptime'] =< 600
+//   4.  CURRENT uptime < 300
 
 $ready = false;
 $first = true;
 $sendwarning = false;
 while (!$ready) {
+
+	$services = getServices();
+
+	if (!isset($services['safemode']) || !is_array($services['safemode'])) {
+		fwLog("Unable to see safemode in services.. Sleeping 5 seconds and retrying");
+		print_r($services); // This will only be seen when running firewalld interactively.
+		sleep(5);
+		continue;
+	}
+
+	if (!$services['safemode']['status']) {
+		// Safemode isn't enabled;
+		break;
+	}
+
+	if ($services['safemode']['lastuptime'] > 600) {
+		// Was up for more than 10 mins, no safemode for you.
+		break;
+	}
+
+	// Now we've passed all the prerequisites. Are WE starting up at boot, too?
+
 	$uptime = file("/proc/uptime");
 	if (!isset($uptime[0])) {
 		throw new \Exception("Unable to read uptime? How?");
 	}
+
 	// Format of uptime is 'seconds.xx idle.xx'. Note that idle.xx can be
 	// HIGHER than seconds if you're on a multi-core machine.
 	list($secs, $idle) = explode(" ", $uptime[0]);
+
+	// Have we been up for more than 5 mins? No safemode.
 	if ((int) $secs > 300) {
-		$ready = true;
 		break;
 	}
-	// Not ready yet, and don't wall before 1 minute, to let people actually
-	// see it. 
+
+	// OK, we're into safemode.
+	touch("/var/run/firewalld.safemode");
+
 	if ($first && (int) $secs > 60) {
 		// Wall a warning that the firewall isn't started yet.
 		$warning  = "Firewall is currently in delayed startup mode, as this machine was\n";
@@ -82,6 +113,9 @@ while (!$ready) {
 }
 wall("Firewall service now starting.\n\n");
 
+// Delete our safemode flag if it exists.
+@unlink("/var/run/firewalld.safemode");
+
 // Flush all iptables rules
 `service iptables stop`;
 `service ip6tables stop`;
@@ -92,7 +126,6 @@ $m = new \FreePBX\Firewall\Modprobe;
 $m->checkModules();
 unset($m);
 
-$v = new \FreePBX\modules\Firewall\Validator($sig);
 $path = $v->checkFile("Services.class.php");
 include $path;
 $services = new \FreePBX\modules\Firewall\Services;
@@ -291,9 +324,6 @@ function updateFirewallRules($firstrun = false) {
 	// Signature validation and firewall driver
 	global $v, $driver, $services, $thissvc;
 
-	// Asterisk user
-	$astuser = "asterisk";
-
 	// Flush cache, read what the system thinks the firewall rules are.
 	$driver->refreshCache();
 
@@ -309,28 +339,7 @@ function updateFirewallRules($firstrun = false) {
 		exit;
 	}
 
-	// We want to switch to the asterisk user and ask for the port mappings.
-	try {
-		if (!$v->checkFile("bin/getservices")) {
-			// That should ALREADY throw...
-			throw new \Exception("Failed");
-		}
-	} catch (\Exception $e) {
-		fwLog("Can't validate bin/getservices");
-		return false;
-	}
-
-	$s = stat("/var/www/html/admin/modules/firewall/bin/getservices");
-	if ($s['mode'] !== 0755) {
-		chmod("/var/www/html/admin/modules/firewall/bin/getservices", 0755);
-	}
-
-	exec("su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
-	$getservices = @json_decode($out[0], true);
-	if (!is_array($getservices) || !isset($getservices['smartports'])) {
-		fwLog("Unparseable output from getservices - ".$out[0]." - returned $ret");
-		return;
-	}
+	$getservices = getServices();
 
 	// Root-only updates:
 	//   SSH is only readable by root
@@ -485,4 +494,36 @@ function sigHupHandler($signo) {
 	// Sigh.
 	checkPhar();
 	updateFirewallRules();
+}
+
+function getServices() {
+	global $v;
+
+	// Asterisk user
+	$astuser = "asterisk";
+
+	// We want to switch to the asterisk user and ask for the port mappings.
+	try {
+		if (!$v->checkFile("bin/getservices")) {
+			// That should ALREADY throw if there's an error
+			throw new \Exception("Failed");
+		}
+	} catch (\Exception $e) {
+		fwLog("Can't validate bin/getservices");
+		return array();
+	}
+
+	// Make sure it's executable
+	$s = stat("/var/www/html/admin/modules/firewall/bin/getservices");
+	if ($s['mode'] !== 0755) {
+		chmod("/var/www/html/admin/modules/firewall/bin/getservices", 0755);
+	}
+
+	exec("su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
+	$getservices = @json_decode($out[0], true);
+	if (!is_array($getservices) || !isset($getservices['smartports'])) {
+		fwLog("Unparseable output from getservices - ".$out[0]." - returned $ret");
+		return array();
+	}
+	return $getservices;
 }

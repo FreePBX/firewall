@@ -2,12 +2,6 @@
 <?php
 // vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
 
-// If the firewall hasn't started yet, don't do anything.
-$uptime = file("/proc/uptime");
-if (!isset($uptime[0])) {
-	throw new \Exception("Unable to read uptime? How?");
-}
-
 require '/usr/lib/sysadmin/includes.php';
 $g = new \Sysadmin\GPG();
 $sigfile = __DIR__."/../module.sig";

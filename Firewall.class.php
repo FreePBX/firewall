@@ -214,19 +214,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $this->getConfig("status");
 	}
 
-	// If the machine has been up for LESS than 5 minutes, return true
+	// If the machine is currently in safe mode, return true.
 	public function isNotReady() {
-		$uptime = file("/proc/uptime");
-		if (!isset($uptime[0])) {
-			throw new \Exception("Unable to read uptime? How?");
-		}
-		// Format of uptime is 'seconds.xx idle.xx'. Note that idle.xx can be
-		// HIGHER than seconds if you're on a multi-core machine.
-		list($secs, $idle) = explode(" ", $uptime[0]);
-		if ((int) $secs < 300) {
-			return true;
-		}
-		return false;
+		return file_exists("/var/run/firewalld.safemode");
 	}
 
 	public function showLockoutWarning() {
@@ -323,6 +313,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $this->addToBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
 		case "removefromblacklist":
 			return $this->removeFromBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
+		case "setsafemode":
+			if ($_REQUEST['value'] == "disabled") {
+				return $this->disableSafemode();
+			} elseif ($_REQUEST['value'] == "enabled") {
+				return $this->enableSafemode();
+			} else {
+				throw new \Exception("Unknown safemode");
+			}
 
 		// Custom firewall rules.
 		case "addcustomrule":
@@ -913,6 +911,25 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 	public function removeFromBlacklist($host) {
 		$this->setConfig($host, false, "blacklist");
+	}
+
+	public function isSafemodeEnabled() {
+		$ena = $this->getConfig("safemodeenabled");
+		if ($ena == false || $ena == "enabled") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public function disableSafemode() {
+		$this->setConfig("safemodeenabled", "disabled");
+		return "disabled";
+	}
+
+	public function enableSafemode() {
+		$this->setConfig("safemodeenabled", "enabled");
+		return "enabled";
 	}
 
 	public function genUUID() {

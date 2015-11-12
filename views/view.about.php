@@ -1,18 +1,18 @@
 <?php
 $ssf = _("System Firewall");
 
-$period = _("Refresh Period");
-$periods = array("normal" => _("Normal"), "fast" => _("Fast"), "slow" => _("Slow"));
-
-
 ?>
 <h3><?php echo $ssf; ?></h3>
 <?php
 $docs = array(
 	"$ssf "._("is a fully integrated and tightly coupled firewall that constantly monitors the remote clients allowed to connect to this machine, and automatically allows access from valid hosts."),
 	_("This is done by a small process that runs on your FreePBX server that automatically updates firewall rules based on the current trunk and extension configuration of FreePBX."),
-	_("The 'Refresh Period' is how often the firewall updates its rules. You would set it to 'fast' if you have many endpoints that are constantly registering and de-registering, or 'slow' if you are on a low powered machine."),
+	_("When 'Safe Mode' is enabled, if this machine is rebooted <strong>twice</strong> within 5 minutes, the firewall will be disabled for 5 minutes after the second reboot. This is useful when originally setting up your Firewall, as it allows you an easy way to recover from an accidental misconfiguration."),
 );
+
+$safemode = _("Safe Mode");
+$ena = _("Enabled");
+$dis = _("Disabled");
 
 foreach ($docs as $p) {
 	print "<p>$p</p>\n";
@@ -36,6 +36,29 @@ foreach ($docs as $p) {
 	print "<p>$p</p>\n";
 }
 print "</div>";
+
+// If Safe mode is enabled, show the warning to turn it off.
+if ($fw->isSafemodeEnabled()) {
+	$style = "";
+	$senabled = "checked";
+	$sdisabled = "";
+} else {
+	$style = "display: none";
+	$senabled = "";
+	$sdisabled = "checked";
+}
+
+print "<div class='alert alert-info' id='safewarning' style='$style'>";
+$docs = array(
+	_("<strong>Safe mode is enabled.</strong>"),
+	_("Safe mode is normally used when setting up your Firewall for the first time. It allows you to easily recover from a misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
+	_("After the original configuration is complete, there is no reason to keep this turned on."),
+);
+foreach ($docs as $p) {
+	print "<p>$p</p>\n";
+}
+print "</div>";
+
 ?>
 
 <div class='row'>
@@ -52,10 +75,13 @@ print "</div>";
 <div class='row'>
   <div class='form-horizontal clearfix'>
     <div class='col-sm-4'>
-      <label class='control-label' for='ssfwiz'><?php echo _("Firewall Wizard"); ?></label>
+      <label class='control-label' for='safemode'><?php echo $safemode; ?></label>
     </div>
     <div class='col-sm-8'>
-      <button type='button' class='btn btn-default' id='rerunwiz'><?php echo _("Re-Run Wizard"); ?></button>
+      <span class='radioset'>
+	<input type='radio' class='safemode' name='safemode' id='sena' value='enabled' <?php echo $senabled; ?>><label for='sena'><?php echo $ena; ?></label>
+	<input type='radio' class='safemode' name='safemode' id='sdis' value='disabled' <?php echo $sdisabled; ?>><label for='sdis'><?php echo $dis; ?></label>
+      </span>
     </div>
   </div>
 </div>
@@ -63,27 +89,10 @@ print "</div>";
 <div class='row'>
   <div class='form-horizontal clearfix'>
     <div class='col-sm-4'>
-      <label class='control-label' for='period'><?php echo $period; ?></label>
+      <label class='control-label' for='ssfwiz'><?php echo _("Firewall Wizard"); ?></label>
     </div>
     <div class='col-sm-8'>
-      <select class='form-control' id='period'>
-<?php
-$current = \FreePBX::Firewall()->getConfig('refreshperiod');
-if (!$current) {
-	$current = "normal";
-	\FreePBX::Firewall()->setConfig('refreshperiod', 'normal');
-}
-
-foreach ($periods as $name => $val) {
-	if ($current == $name) {
-		$selected = "selected";
-	} else {
-		$selected = "";
-	}
-	print "<option value='$name' $selected>$val</option>\n";
-}
-?>
-      </select>
+      <button type='button' class='btn btn-default' id='rerunwiz'><?php echo _("Re-Run Wizard"); ?></button>
     </div>
   </div>
 </div>

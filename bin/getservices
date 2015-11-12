@@ -83,6 +83,17 @@ foreach ($hosts as $h) {
 
 $services['hostmaps'] = $harr;
 
+// Safemode handling
+$safemode = array(
+	"status" => \FreePBX::Firewall()->isSafemodeEnabled(),
+	"lastuptime" => (int) \FreePBX::Firewall()->getConfig('lastuptime'),
+);
+// Update it with the current uptime.
+$uptime = file("/proc/uptime");
+list($secs, $idle) = explode(" ", $uptime[0]);
+\FreePBX::Firewall()->setConfig('lastuptime', (int) $secs);
+$services['safemode'] = $safemode;
+
 // print_r($services); exit;
 print json_encode($services)."\n";
 

@@ -15,7 +15,8 @@ $(document).ready(function() {
 		window.history.replaceState(null, document.title, newuri);
 	});
 
-	$("input[type='radio']").click(function(e) { updateRfw(e.target) });
+	$(".rfw").click(function(e) { updateRfw(e.target) });
+	$(".safemode").click(function(e) { updateSafemode(e.target) });
 });
 
 function updateRfw(target) {
@@ -27,6 +28,26 @@ function updateRfw(target) {
 		complete: function(data) { 
 			window.location.href = window.location.href;
 		}
+	});
+}
+
+function updateSafemode(target) {
+	var d = { command: 'setsafemode', module: 'firewall', value: target.getAttribute('value') };
+	var n = target.getAttribute('name');
+	$("input[name="+n+"]").prop('disabled', true);
+	$.ajax({
+		url: window.ajaxurl,
+		data: d,
+		success: function(data) {
+			if (typeof data.message !== "undefined") {
+				if (data.message == "enabled") {
+					$("#safewarning").slideDown();
+				} else {
+					$("#safewarning").slideUp();
+				}
+			}
+			$("input[name="+n+"]").prop('disabled', false);
+		},
 	});
 }
 
