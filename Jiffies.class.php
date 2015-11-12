@@ -6,8 +6,20 @@ class Jiffies {
 
 	private $knownjiffies = false;
 
+	public function __construct() {
+		// If there isn't a /proc/timer_list, just blindly assume 1000hz.
+		if (!file_exists("/proc/timer_list")) {
+			$this->knownjiffies = 1000;
+		}
+	}
+
 	// Calculate the number of jiffies per second.
 	public function calcJiffies($seconds = 5) {
+		// If there isn't a /proc/timer_list, just blindly assume 1000hz.
+		if (!file_exists("/proc/timer_list")) {
+			return 1000;
+		}
+
 		$first = $this->getCurrentJiffie();
 		sleep(1);
 		$seconds--;
