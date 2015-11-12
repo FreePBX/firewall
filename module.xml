@@ -2,13 +2,14 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.11.1</version>
+	<version>13.0.12</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
 	<category>Connectivity</category>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.12* Tidy up of Services
 		*13.0.11.1* chan_sip fixes, and make an educated guess about jiffies
 		*13.0.10* #10714, and don't try to install if sysadmin-rpm isn't there
 		*13.0.9.2* Do some TODOs
