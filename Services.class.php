@@ -267,7 +267,6 @@ class Services {
 			"descr" => _("Text for REST Apps not done..."),
 			"fw" => array(array("protocol" => "tcp", "port" => 85)),
 		);
-		return $retarr;
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
@@ -276,6 +275,7 @@ class Services {
 		} catch (\Exception $e) {
 			// ignore
 		}
+		return $retarr;
 	}
 
 	private function getSvc_xmpp() {
