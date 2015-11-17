@@ -248,7 +248,7 @@ msgstr "描述"
 
 #: views/view.smart.php:42
 msgid "Disable"
-msgstr ""
+msgstr "禁用"
 
 #: views/view.about.php:70
 msgid "Disable Firewall"
@@ -256,7 +256,7 @@ msgstr ""
 
 #: views/view.about.php:38 views/view.smart.php:5
 msgid "Disabled"
-msgstr ""
+msgstr "禁用"
 
 #: views/page.zones.php:50
 msgid ""
@@ -272,7 +272,7 @@ msgstr "编辑"
 
 #: views/view.smart.php:44
 msgid "Enable"
-msgstr ""
+msgstr "启用"
 
 #: OOBE.class.php:196
 msgid "Enable Responsive Firewall?"
@@ -280,7 +280,7 @@ msgstr ""
 
 #: views/view.smart.php:4
 msgid "Enabled"
-msgstr ""
+msgstr "启用"
 
 #: OOBE.class.php:198
 msgid ""
@@ -801,7 +801,7 @@ msgstr ""
 #: Firewall.class.php:427 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: views/page.zones.php:93 views/page.zones.php:178
 msgid "Save Changes"
@@ -854,7 +854,7 @@ msgstr ""
 
 #: views/bootnav.php:8
 msgid "Status"
-msgstr ""
+msgstr "状态"
 
 #: views/page.status.php:28
 msgid "Status Overview"
@@ -1102,7 +1102,7 @@ msgstr ""
 
 #: OOBE.class.php:205 OOBE.class.php:242 views/disabled.php:6
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: Services.class.php:55
 msgid ""
