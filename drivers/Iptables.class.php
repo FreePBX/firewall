@@ -638,9 +638,18 @@ class Iptables {
 		// Run through the hosts and add them to what we WANT our chains to be
 		$wanted = array("4" => array(), "6" => array());
 		foreach ($hosts as $addr) {
-			if (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+			// This can be a network, too!
+			if (strpos($addr, "/")) {
+				// It's a network
+				list($host, $net) = explode("/", $addr);
+			} else {
+				$host = $addr;
+			}
+
+			// Now, is this an IPv4 or IPv6 host?
+			if (filter_var($host, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
 				$wanted[6][] = $addr;
-			} elseif (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+			} elseif (filter_var($host, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
 				$wanted[4][] = $addr;
 			} else {
 				throw new \Exception("Unknown host address $addr");
