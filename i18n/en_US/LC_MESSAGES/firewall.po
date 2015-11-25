@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-12 23:23+0000\n"
+"POT-Creation-Date: 2015-11-25 14:01-0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Add Network"
 msgstr ""
 
-#: views/page.zones.php:181 views/view.blacklist.php:40
+#: views/page.zones.php:188 views/view.blacklist.php:40
 msgid "Add New"
 msgstr ""
 
@@ -201,6 +201,10 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: firewall.i18n.php:6 firewall.i18n.php:12
+msgid "Connectivity"
+msgstr ""
+
 #: views/view.portmaps.php:11
 msgid "Core Services"
 msgstr ""
@@ -229,7 +233,7 @@ msgstr ""
 msgid "Defaults"
 msgstr ""
 
-#: views/page.zones.php:177 views/view.blacklist.php:10
+#: views/page.zones.php:184 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
 msgstr ""
@@ -303,7 +307,7 @@ msgid ""
 "as additional data."
 msgstr ""
 
-#: page.firewall.php:6
+#: firewall.i18n.php:10 page.firewall.php:6
 msgid "Firewall"
 msgstr ""
 
@@ -341,7 +345,7 @@ msgid ""
 "will assist with NAT or Translation issues."
 msgstr ""
 
-#: views/page.zones.php:125
+#: views/page.zones.php:132
 msgid ""
 "For example, if interface eth0 is assigned to the 'External' zone, here you "
 "can add a specific <strong>source</strong> network to the 'Trusted' zone. "
@@ -395,11 +399,11 @@ msgid ""
 "SIP, but few providers support it."
 msgstr ""
 
-#: views/page.zones.php:105
+#: views/page.zones.php:112
 msgid "IP Address: "
 msgstr ""
 
-#: views/page.zones.php:103
+#: views/page.zones.php:110
 msgid "IP Addresses: "
 msgstr ""
 
@@ -462,10 +466,17 @@ msgid ""
 "Connectivity menu."
 msgstr ""
 
-#: views/page.zones.php:124
+#: views/page.zones.php:131
 msgid ""
 "Individual hosts and networks are specified here, that override the default "
 "rule for an interface."
+msgstr ""
+
+#: firewall.i18n.php:8
+msgid ""
+"Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 "
+"compatible distributions. Note: This requires the Sysadmin RPM. Please see "
+"wiki for further information."
 msgstr ""
 
 #: Firewall.class.php:90
@@ -553,7 +564,7 @@ msgstr ""
 msgid "No Endpoints have been allowed through the Responsive Firewall"
 msgstr ""
 
-#: views/page.zones.php:100
+#: views/page.zones.php:107
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
@@ -591,7 +602,7 @@ msgid ""
 "used when an incoming connection <strong>would normally be blocked</strong>."
 msgstr ""
 
-#: views/page.zones.php:126
+#: views/page.zones.php:133
 msgid "Note that several common settings are available on the 'Advanced' page."
 msgstr ""
 
@@ -795,7 +806,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: views/page.zones.php:93 views/page.zones.php:178
+#: views/page.zones.php:100 views/page.zones.php:185
 msgid "Save Changes"
 msgstr ""
 
@@ -860,7 +871,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: Firewall.class.php:38 views/view.about.php:2
+#: Firewall.class.php:38 firewall.i18n.php:4 views/view.about.php:2
 msgid "System Firewall"
 msgstr ""
 
@@ -1182,7 +1193,7 @@ msgid ""
 "which will require manual configuration."
 msgstr ""
 
-#: views/page.zones.php:127
+#: views/page.zones.php:134
 msgid ""
 "You may also enter DDNS hostnames here, which will be automatically "
 "monitored and updated as required."
