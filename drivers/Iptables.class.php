@@ -1123,8 +1123,8 @@ class Iptables {
 		$retarr['fpbxshortblock'][] = array("jump" => "LOG", "append" => " --log-prefix 'clamped: '");
 		$retarr['fpbxshortblock'][] = array("jump" => "REJECT");
 
-		// Log dropped packets. This should be visible in the GUI at some point.
-		$retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'logdrop: '");
+		// Don't log normally rejected packets for the moment. No-one's using them.
+		// $retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'logdrop: '");
 		$retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
 		// Known Registrations are allowed to access signalling and UCP
