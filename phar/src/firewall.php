@@ -527,7 +527,7 @@ function getServices() {
 	exec("su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
 	$getservices = @json_decode($out[0], true);
 	if (!is_array($getservices) || !isset($getservices['smartports'])) {
-		fwLog("Unparseable output from getservices - ".$out[0]." - returned $ret");
+		fwLog("Unparseable output from getservices - ".json_encode($out)." - returned $ret");
 		return array();
 	}
 	return $getservices;
