@@ -120,6 +120,9 @@ wall("Firewall service now starting.\n\n");
 `service iptables stop`;
 `service ip6tables stop`;
 
+// Start fail2ban if we can
+`service fail2ban start`;
+
 // Make sure our conntrack kernel module is configured correctly
 include 'modprobe.php';
 $m = new \FreePBX\Firewall\Modprobe;
