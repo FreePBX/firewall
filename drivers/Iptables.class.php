@@ -50,6 +50,10 @@ class Iptables {
 
 		// If there are any left, add them to trusted.
 		foreach ($allints as $int => $null) {
+			// Note that we ignore aliases.
+			if (strpos($int, ":")) {
+				continue;
+			}
 			$zones['trusted']['interfaces'][] = $out[1];
 		}
 
