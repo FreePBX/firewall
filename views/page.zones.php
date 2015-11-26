@@ -77,7 +77,14 @@ foreach ($ints as $i => $conf) {
       <label class='control-label' for='int-<?php echo $i; ?>'><?php echo $i;?></label>
     </div>
     <div class='col-md-9'>
-      <span class='radioset'>
+<?php
+	if (empty($conf['addresses'])) {
+		$disabled='disabled';
+	} else {
+		$disabled='';
+	}
+?>
+      <span class='radioset <?php echo $class; ?>'>
 <?php
 	foreach ($z as $zn => $zone) {
 		if ($zn === $currentzone) {
@@ -87,10 +94,10 @@ foreach ($ints as $i => $conf) {
 			$active = "";
 			$checked = "";
 		}
-		print "<input type='radio' name='int-$i' id='int-$i-$zn' value='$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
+		print "<input class='$disabled' $disabled type='radio' name='int-$i' id='int-$i-$zn' value='$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
 	}
 	print "</span>\n";
-	print "<button type='button' class='btn x-btn btn-success intbutton' data-int='$i' data-action='update' title='"._("Save Changes")."'><span class='glyphicon glyphicon-ok' data-int='$i' data-action='update'></span></button>\n";
+	print "<button type='button' class='btn x-btn btn-success intbutton $disabled' $disabled data-int='$i' data-action='update' title='"._("Save Changes")."'><span class='glyphicon glyphicon-ok' data-int='$i' data-action='update'></span></button>\n";
 ?>
 
     </div>
