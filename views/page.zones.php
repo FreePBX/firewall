@@ -78,13 +78,17 @@ foreach ($ints as $i => $conf) {
     </div>
     <div class='col-md-9'>
 <?php
-	if (empty($conf['addresses'])) {
-		$disabled='disabled';
+	// Don't allow aliases to have zones. Only real interfaces can.
+	if (strpos($i, ":") !== false) {
+		list ($tmpint) = explode(":", $i);
+		$parent = $tmpint;
+		$disabled = true;
 	} else {
-		$disabled='';
+		$parent = $i;
+		$disabled = false;
 	}
 ?>
-      <span class='radioset <?php echo $class; ?>'>
+      <span class='radioset zoneset'>
 <?php
 	foreach ($z as $zn => $zone) {
 		if ($zn === $currentzone) {
@@ -94,10 +98,12 @@ foreach ($ints as $i => $conf) {
 			$active = "";
 			$checked = "";
 		}
-		print "<input class='$disabled' $disabled type='radio' name='int-$i' id='int-$i-$zn' value='$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
+		print "<input class='p$parent v$zn' data-parent='$parent' type='radio' name='int-$i' id='int-$i-$zn' value='$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
 	}
 	print "</span>\n";
-	print "<button type='button' class='btn x-btn btn-success intbutton $disabled' $disabled data-int='$i' data-action='update' title='"._("Save Changes")."'><span class='glyphicon glyphicon-ok' data-int='$i' data-action='update'></span></button>\n";
+	if (!$disabled) {
+		print "<button type='button' class='btn x-btn btn-success intbutton $disabled' $disabled data-int='$i' data-action='update' title='"._("Save Changes")."'><span class='glyphicon glyphicon-ok' data-int='$i' data-action='update'></span></button>\n";
+	}
 ?>
 
     </div>

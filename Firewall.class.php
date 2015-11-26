@@ -70,8 +70,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$error = false;
 		$ints = $this->getInterfaces();
 		foreach ($ints as $i => $conf) {
+			// Does this not have a zone?
 			if (!isset($conf['config']['ZONE'])) {
-				$foundnewint = $i;
+				// If it's got IP addresses, it's new. Otherwise, we can just ignore it.
+				if ($conf['addresses']) {
+					$foundnewint = $i;
+				}
 				break;
 			}
 			$runningzone = $this->getZone($i);
@@ -598,11 +602,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				}
 			}
 		}
-		if (!isset($ints[$int])) {
-			$ints[$int] = 'trusted';
+		// Is this an alias? eg eth0:123? Then return the zone for the REAL interface.
+		list ($realint) = explode(":", $int);
+		if (!isset($ints[$realint])) {
+			$ints[$realint] = 'trusted';
 		}
 
-		return $ints[$int];
+		return $ints[$realint];
 	}
 
 	public function getDriver() {

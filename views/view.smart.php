@@ -21,7 +21,7 @@ $protocols = $smart['rprotocols'];
 
 <?php
 $docs = array(
-	_("When this is enabled, any incoming VoIP connection attempts that match the 'Reject' or 'External' zones are <strong>not blocked</strong>, but are instead allowed a very limited amount of registration attempts."),
+	_("When this is enabled, any incoming VoIP connection attempts that would be otherwise rejected are <strong>not blocked</strong>, and instead allowed a <strong>very limited</strong> amount of registration attempts."),
 	_("If the registration attempt is successful, the remote host is then added to a 'Known Good' zone, that has permission to use that protocol, and is additionally granted access to UCP, if UCP is enabled."),
 	_("If the incoming connection attempts are invalid, traffic from that machine will be dropped for a short period of time. If attempts to authenticate continue without success, the attacking host will be blocked for 24 hours."),
 	_("If fail2ban is enabled and configured on this machine, fail2ban will send you email alerts when this happens."),

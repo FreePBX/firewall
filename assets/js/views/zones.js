@@ -14,13 +14,25 @@ $(document).ready(function() {
 		var newuri = updateQuery("tab", e.target.getAttribute('aria-controls'));
 		window.history.replaceState(null, document.title, newuri);
 	});
+
+	// When someone changes an interfaces zone
+	$(".zoneset>input").click(function(e) {
+		// Set ALL the interfaces that share the same parent to be the same.
+		var myparent=".p"+$(e.target).data('parent');
+		var myval=$(e.target).attr('value');
+		$.each($(myparent), function(i, v) {
+			if ($(v).attr('value') == myval) {
+				$(v).attr('checked', true);
+			}
+		});
+	});
 });
 
 function changeInt(o) {
 
 	var iface = o.getAttribute('data-int');
 	// Grab the checked interface that was selected.
-	var checked = $('input[name=int-'+iface+']:checked').attr('value');
+	var checked = $('input[name="int-'+iface+'"]:checked').attr('value');
 	// Show people we're doing stuff
 	$(o).prop('disabled', true);
 
