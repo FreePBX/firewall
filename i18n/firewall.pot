@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-26 11:41+1000\n"
+"POT-Creation-Date: 2015-11-26 15:09+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -232,7 +232,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:429
+#: Firewall.class.php:437
 msgid "Defaults"
 msgstr ""
 
@@ -257,6 +257,10 @@ msgstr ""
 #: views/view.about.php:38
 #: views/view.smart.php:5
 msgid "Disabled"
+msgstr ""
+
+#: views/view.about.php:103
+msgid "Drop"
 msgstr ""
 
 #: views/page.zones.php:50
@@ -311,6 +315,10 @@ msgstr ""
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
+msgstr ""
+
+#: views/view.about.php:101
+msgid "Filter Type"
 msgstr ""
 
 #: firewall.i18n.php:10
@@ -733,10 +741,11 @@ msgid "Registered Endpoints"
 msgstr ""
 
 #: Zones.class.php:9
+#: views/view.about.php:102
 msgid "Reject"
 msgstr ""
 
-#: Firewall.class.php:430
+#: Firewall.class.php:438
 msgid "Reset"
 msgstr ""
 
@@ -818,7 +827,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:431
+#: Firewall.class.php:439
 #: views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
