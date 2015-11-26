@@ -62,6 +62,13 @@ if (!$hostmaps) {
 $smart = \FreePBX::Firewall()->getSmartObj();
 $harr = array();
 foreach ($hostmaps as $host => $zone) {
+	if (!$host) {
+		// How did we get a blank one in there?
+		unset($hostmaps[$host]);
+		\FreePBX::Firewall()->setConfig("hostmaps", $hostmaps);
+		continue;
+	}
+
 	$lookup = $smart->lookup($host, false); // Don't allow caching of lookups
 	foreach ($lookup as $ipaddr) {
 		$harr[$ipaddr] = $zone;
