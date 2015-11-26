@@ -349,6 +349,11 @@ function updateFirewallRules($firstrun = false) {
 
 	$getservices = getServices();
 
+	// Make sure we actually received stuff..
+	if (!isset($getservices['smartports'])) {
+		return false;
+	}
+
 	// Root-only updates:
 	//   SSH is only readable by root
 	$ssh = $services->getService("ssh");
@@ -482,6 +487,14 @@ function updateFirewallRules($firstrun = false) {
 			$driver->removeService($as);
 		}
 	}
+
+	// Set the firewall to drop or reject mode.
+	if ($services['dropinvalid']) {
+		$driver->setRejectMode(true, false);
+	} else {
+		$driver->setRejectMode(false, false);
+	}
+	
 }
 
 function sigSleep($secs = 10) {
