@@ -489,7 +489,7 @@ function updateFirewallRules($firstrun = false) {
 	}
 
 	// Set the firewall to drop or reject mode.
-	if ($services['dropinvalid']) {
+	if ($getservices['dropinvalid']) {
 		$driver->setRejectMode(true, false);
 	} else {
 		$driver->setRejectMode(false, false);
