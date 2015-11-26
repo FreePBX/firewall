@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-25 14:01-0800\n"
+"POT-Creation-Date: 2015-11-26 11:41+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,7 +43,7 @@ msgstr ""
 msgid "<strong>Safe mode is available.</strong>"
 msgstr ""
 
-#: Firewall.class.php:109
+#: Firewall.class.php:113
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -51,7 +51,7 @@ msgid ""
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
 
-#: Firewall.class.php:99
+#: Firewall.class.php:103
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Add Network"
 msgstr ""
 
-#: views/page.zones.php:188 views/view.blacklist.php:40
+#: views/page.zones.php:194 views/view.blacklist.php:40
 msgid "Add New"
 msgstr ""
 
@@ -229,11 +229,11 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:425
+#: Firewall.class.php:429
 msgid "Defaults"
 msgstr ""
 
-#: views/page.zones.php:184 views/view.blacklist.php:10
+#: views/page.zones.php:190 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
 msgstr ""
@@ -323,7 +323,7 @@ msgstr ""
 msgid "Firewall Disabled"
 msgstr ""
 
-#: Firewall.class.php:88 Firewall.class.php:89
+#: Firewall.class.php:92 Firewall.class.php:93
 msgid "Firewall Integrity Failed"
 msgstr ""
 
@@ -345,7 +345,7 @@ msgid ""
 "will assist with NAT or Translation issues."
 msgstr ""
 
-#: views/page.zones.php:132
+#: views/page.zones.php:138
 msgid ""
 "For example, if interface eth0 is assigned to the 'External' zone, here you "
 "can add a specific <strong>source</strong> network to the 'Trusted' zone. "
@@ -399,11 +399,11 @@ msgid ""
 "SIP, but few providers support it."
 msgstr ""
 
-#: views/page.zones.php:112
+#: views/page.zones.php:118
 msgid "IP Address: "
 msgstr ""
 
-#: views/page.zones.php:110
+#: views/page.zones.php:116
 msgid "IP Addresses: "
 msgstr ""
 
@@ -466,7 +466,7 @@ msgid ""
 "Connectivity menu."
 msgstr ""
 
-#: views/page.zones.php:131
+#: views/page.zones.php:137
 msgid ""
 "Individual hosts and networks are specified here, that override the default "
 "rule for an interface."
@@ -479,7 +479,7 @@ msgid ""
 "wiki for further information."
 msgstr ""
 
-#: Firewall.class.php:90
+#: Firewall.class.php:94
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -527,7 +527,7 @@ msgid "Known Networks:"
 msgstr ""
 
 #: Smart.class.php:42
-msgid "Legacy chan_sip Protocol"
+msgid "Legacy SIP (chan_sip)"
 msgstr ""
 
 #: views/view.blocked.php:2 views/view.registered.php:15
@@ -552,7 +552,7 @@ msgstr ""
 msgid "Networks"
 msgstr ""
 
-#: Firewall.class.php:96 Firewall.class.php:98
+#: Firewall.class.php:100 Firewall.class.php:102
 msgid "New Interface Detected"
 msgstr ""
 
@@ -564,19 +564,19 @@ msgstr ""
 msgid "No Endpoints have been allowed through the Responsive Firewall"
 msgstr ""
 
-#: views/page.zones.php:107
+#: views/page.zones.php:113
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:135
+#: Firewall.class.php:139
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:137
+#: Firewall.class.php:141
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:138
+#: Firewall.class.php:142
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -602,7 +602,7 @@ msgid ""
 "used when an incoming connection <strong>would normally be blocked</strong>."
 msgstr ""
 
-#: views/page.zones.php:133
+#: views/page.zones.php:139
 msgid "Note that several common settings are available on the 'Advanced' page."
 msgstr ""
 
@@ -724,7 +724,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Firewall.class.php:426
+#: Firewall.class.php:430
 msgid "Reset"
 msgstr ""
 
@@ -747,8 +747,12 @@ msgstr ""
 msgid "Responsive Firewall is <strong>enabled</strong>."
 msgstr ""
 
-#: Services.class.php:146 Smart.class.php:41
+#: Services.class.php:146
 msgid "SIP Protocol"
+msgstr ""
+
+#: Smart.class.php:41
+msgid "SIP Protocol (pjsip)"
 msgstr ""
 
 #: Services.class.php:372
@@ -801,12 +805,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:427 views/modal.customsvc.php:37
+#: Firewall.class.php:431 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
 
-#: views/page.zones.php:100 views/page.zones.php:185
+#: views/page.zones.php:105 views/page.zones.php:191
 msgid "Save Changes"
 msgstr ""
 
@@ -903,7 +907,7 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Firewall.class.php:226
+#: Firewall.class.php:230
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1071,11 +1075,11 @@ msgstr ""
 msgid "Trusted"
 msgstr ""
 
-#: Firewall.class.php:105 Firewall.class.php:108
+#: Firewall.class.php:109 Firewall.class.php:112
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:133
+#: Firewall.class.php:137
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -1163,9 +1167,9 @@ msgstr ""
 
 #: views/view.smart.php:24
 msgid ""
-"When this is enabled, any incoming VoIP connection attempts that match the "
-"'Reject' or 'External' zones are <strong>not blocked</strong>, but are "
-"instead allowed a very limited amount of registration attempts."
+"When this is enabled, any incoming VoIP connection attempts that would be "
+"otherwise rejected are <strong>not blocked</strong>, and instead allowed a "
+"<strong>very limited</strong> amount of registration attempts."
 msgstr ""
 
 #: Services.class.php:283
@@ -1178,7 +1182,7 @@ msgid ""
 "Zone. Please read the Wiki for more information."
 msgstr ""
 
-#: Firewall.class.php:227
+#: Firewall.class.php:231
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -1193,7 +1197,7 @@ msgid ""
 "which will require manual configuration."
 msgstr ""
 
-#: views/page.zones.php:134
+#: views/page.zones.php:140
 msgid ""
 "You may also enter DDNS hostnames here, which will be automatically "
 "monitored and updated as required."
