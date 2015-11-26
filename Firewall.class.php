@@ -325,6 +325,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			} else {
 				throw new \Exception("Unknown safemode");
 			}
+		case "setrejectmode":
+			if ($_REQUEST['value'] != "reject") {
+				return $this->setConfig("dropinvalid", true);
+			} else {
+				return $this->setConfig("dropinvalid", false);
+			}
+
+		// Custom firewall rules.
 
 		// Custom firewall rules.
 		case "addcustomrule":

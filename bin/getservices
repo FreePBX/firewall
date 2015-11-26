@@ -101,6 +101,9 @@ list($secs, $idle) = explode(" ", $uptime[0]);
 \FreePBX::Firewall()->setConfig('lastuptime', (int) $secs);
 $services['safemode'] = $safemode;
 
+// Determine if we want to drop, or, reject erroring packets.
+$services['dropinvalid'] = \FreePBX::Firewall()->getConfig("dropinvalid");
+
 // print_r($services); exit;
 print json_encode($services)."\n";
 

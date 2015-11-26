@@ -501,6 +501,7 @@ class Iptables {
 		$net->updateInterfaceZone($iface, $newzone);
 	}
 
+	// Root process
 	public function setRtpPorts($rtp = false, $udptl = false) {
 		if (!is_array($rtp)) {
 			throw new \Exception("rtp neesds to be an array");
@@ -561,6 +562,7 @@ class Iptables {
 		return true;
 	}
 
+	// Root process
 	public function updateTargets($rules) {
 		// Create fpbxsmarthosts targets and signalling targets
 		//
@@ -708,6 +710,7 @@ class Iptables {
 		}
 	}
 
+	// Root process
 	public function updateRegistrations($hosts) {
 		// Allow registered hosts through without hitting the rate limits
 		$this->checkTarget("fpbxregistrations");
@@ -775,6 +778,7 @@ class Iptables {
 		}
 	}
 
+	// Root process
 	public function updateBlacklist($blacklist) {
 		// Make sure our table exists
 		$this->checkTarget("fpbxblacklist");
@@ -870,6 +874,7 @@ class Iptables {
 		}
 	}
 
+	// Root process
 	public function updateHostZones($hosts) {
 		// Make sure our table exists
 		$this->checkTarget("fpbxhosts");
@@ -938,6 +943,48 @@ class Iptables {
 			}
 		}
 	}
+
+	// Root process
+	public function setRejectMode($drop = false, $log = false) {
+		$current = &$this->getCurrentIptables();
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		foreach ($ipvers as $v => $iptcmd) {
+			$dropid = 0;
+			// Should we log?
+			// TODO: Unimplemented
+			// Should we drop or reject?
+			if ($drop) {
+				if (!isset($current[$v]['filter']['fpbxlogdrop'][$dropid])) {
+					$cmd = "$iptcmd -I fpbxlogdrop -j DROP";
+				} elseif (strpos($current[$v]['filter']['fpbxlogdrop'][$dropid], "DROP") === false) {
+					// Change it to be drop
+					$current[$v]['filter']['fpbxlogdrop'][$dropid] = "-j DROP";
+					$dropid++;
+					$cmd = "$iptcmd -R fpbxlogdrop $dropid -j DROP";
+				} else {
+					// Nothing neesd to change
+					continue;
+				}
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			} else {
+				if (!isset($current[$v]['filter']['fpbxlogdrop'][$dropid])) {
+					$cmd = "$iptcmd -I fpbxlogdrop -j REJECT";
+				} elseif (strpos($current[$v]['filter']['fpbxlogdrop'][$dropid], "REJECT") === false) {
+					// Change it to be reject
+					$current[$v]['filter']['fpbxlogdrop'][$dropid] = "-j REJECT";
+					$dropid++;
+					$cmd = "$iptcmd -R fpbxlogdrop $dropid -j REJECT";
+				} else {
+					// Nothing needs to change
+					continue;
+				}
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			}
+		}
+	}
+
 
 	public function refreshCache() {
 		$this->currentconf = false;

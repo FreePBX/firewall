@@ -97,6 +97,33 @@ print "</div>";
   </div>
 </div>
 
+<?php
+$ftype = _("Filter Type");
+$reject = _("Reject");
+$drop = _("Drop");
+
+if ($fw->getConfig("dropinvalid")) {
+	$rdrop = "checked";
+	$rreject = "";
+} else {
+	$rdrop = "";
+	$rreject = "checked";
+}
+?>
+
+<div class='row'>
+  <div class='form-horizontal clearfix'>
+    <div class='col-sm-4'>
+      <label class='control-label' for='rejmode'><?php echo $ftype; ?></label>
+    </div>
+    <div class='col-sm-8'>
+      <span class='radioset'>
+	<input type='radio' class='rejmode' name='rejmode' id='rreject' value='reject' <?php echo $rreject; ?>><label for='rreject'><?php echo $reject; ?></label>
+	<input type='radio' class='rejmode' name='rejmode' id='rdrop' value='drop' <?php echo $rdrop; ?>><label for='rdrop'><?php echo $drop; ?></label>
+      </span>
+    </div>
+  </div>
+</div>
 
 <script type='text/javascript'>
 $(document).ready(function() { 

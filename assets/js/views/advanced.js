@@ -17,6 +17,7 @@ $(document).ready(function() {
 
 	$(".rfw").click(function(e) { updateRfw(e.target) });
 	$(".safemode").click(function(e) { updateSafemode(e.target) });
+	$(".rejmode").click(function(e) { updateRejectmode(e.target) });
 });
 
 function updateRfw(target) {
@@ -46,6 +47,19 @@ function updateSafemode(target) {
 					$("#safewarning").slideUp();
 				}
 			}
+			$("input[name="+n+"]").prop('disabled', false);
+		},
+	});
+}
+
+function updateRejectmode(target) {
+	var d = { command: 'setrejectmode', module: 'firewall', value: target.getAttribute('value') };
+	var n = target.getAttribute('name');
+	$("input[name="+n+"]").prop('disabled', true);
+	$.ajax({
+		url: window.ajaxurl,
+		data: d,
+		success: function(data) {
 			$("input[name="+n+"]").prop('disabled', false);
 		},
 	});
