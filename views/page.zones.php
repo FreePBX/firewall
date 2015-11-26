@@ -81,10 +81,10 @@ foreach ($ints as $i => $conf) {
 	// Don't allow aliases to have zones. Only real interfaces can.
 	if (strpos($i, ":") !== false) {
 		list ($tmpint) = explode(":", $i);
-		$parent = $tmpint;
+		$parent = str_replace(".", "_", $tmpint);
 		$disabled = true;
 	} else {
-		$parent = $i;
+		$parent = str_replacE(".", "_", $i);
 		$disabled = false;
 	}
 ?>
