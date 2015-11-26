@@ -54,9 +54,8 @@ class Iptables {
 			if (strpos($int, ":")) {
 				continue;
 			}
-			$zones['trusted']['interfaces'][] = $out[1];
+			$zones['trusted']['interfaces'][] = $int;
 		}
-
 		return $zones;
 	}
 
