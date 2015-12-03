@@ -161,6 +161,8 @@ class Network {
 				file_put_contents($centos, $newfile);
 			}
 		}
+		// Make sure the permissions of the file are sane
+		chmod($newfile, 0644);
 	}
 }
 
