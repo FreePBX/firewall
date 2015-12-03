@@ -162,7 +162,7 @@ class Network {
 			}
 		}
 		// Make sure the permissions of the file are sane
-		chmod($centos, 0644);
+		chmod($centos, 0755);
 	}
 }
 
