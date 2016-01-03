@@ -63,7 +63,7 @@ class Smart {
 		// Returns ALL ports.
 		$retarr = array(
 			'signalling' => $this->getVoipPorts(),
-			'rtp' => $this->getRtpPorts(),
+			'rtp' => $this->getRTPPorts(),
 			'udptl' => array("start" => 4000, "end" => 4999), // This is not configurable.
 			'known' => $this->getKnown(),
 			'registrations' => $this->getRegistrations(),
@@ -82,7 +82,7 @@ class Smart {
 	public function getRTPPorts() {
 		// These are always open to the world, on every interface.
 		// The only limitation is that we don't let people be dumb, and we'll
-		// never return less than 1024, or more than 30000. As RTP runs on
+		// never return less than 1024, or more than 65000. As RTP runs on
 		// UDP, it's not THAT critical, but better to be safe than sorry.
 		//
 		// Yes. This are just random ranges that I made up as 'reasonable'.
@@ -95,8 +95,8 @@ class Smart {
 		if ($start < 1024) {
 			$start = 1024;
 		}
-		if ($end > 30000) {
-			$end = 30000;
+		if ($end > 65000) {
+			$end = 65000;
 		}
 
 		// Make sure start and end are the right way round...
