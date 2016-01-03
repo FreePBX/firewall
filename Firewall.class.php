@@ -920,9 +920,19 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 		return $retarr;
 	}
+
 	public function addToBlacklist($host) {
+		// Make sure we can look this host up, and it's a valid thing to 
+		// add to the blacklist.
+		//
+		// This will throw an exception if it can't.
+		$smart = $this->getSmartObj();
+		$smart->lookup($host);
+
+		// If it can, we can add it happily.
 		$this->setConfig($host, true, "blacklist");
 	}
+
 	public function removeFromBlacklist($host) {
 		$this->setConfig($host, false, "blacklist");
 	}
