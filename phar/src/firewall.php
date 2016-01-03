@@ -13,7 +13,6 @@ if (!Lock::canLock($thissvc)) {
 }
 
 require 'common.php';
-fwLog("Starting firewall service");
 
 // Load our validator
 $v = new \FreePBX\modules\Firewall\Validator($sig);
