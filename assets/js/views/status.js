@@ -154,7 +154,7 @@ function strDate(d) {
 	var ss = pad(d.getSeconds());
 
 	var dd = pad(d.getDate());
-	var MM = pad(d.getMonth());
+	var MM = pad(d.getMonth()+1); // Month is from 0-11, not 1-12.
 	var yyyy = d.getFullYear();
 	
 	var ret = yyyy+"-"+MM+"-"+dd+" "+hh+":"+mm+":"+ss;
