@@ -203,10 +203,13 @@ class Smart {
 			$q = $this->db->query($sql);
 			$siphosts = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($siphosts as $sip) {
-				if ($sip['data'] == "dynamic") {
+				// Trim anything after a semicolon, which could be a comment
+				$hostarr = explode(";", $sip['data']);
+				$host = trim($hostarr[0]);
+				if ($host == "dynamic") {
 					continue;
 				}
-				$discovered[$sip['data']] = true;
+				$discovered[$host] = true;
 			}
 
 			// Does an extension specifically permit a range?
@@ -214,7 +217,12 @@ class Smart {
 			$q = $this->db->query($sql);
 			$sippermits = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($sippermits as $sip) {
-				$discovered[$sip['data']] = true;
+				// permits may be seperated by ampersands, so
+				// make sure they are all added.
+				$permits = explode("&", $sip['data']);
+				foreach ($permits as $p) {
+					$discovered[$p] = true;
+				}
 			}
 		}
 
@@ -224,10 +232,13 @@ class Smart {
 			$q = $this->db->query($sql);
 			$iaxhosts = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($iaxhosts as $iax) {
-				if ($iax['data'] == "dynamic") {
+				// Trim anything after a semicolon, which could be a comment
+				$hostarr = explode(";", $iax['data']);
+				$host = trim($hostarr[0]);
+				if ($host == "dynamic") {
 					continue;
 				}
-				$discovered[$iax['data']] = true;
+				$discovered[$host] = true;
 			}
 
 			// Extensions?
@@ -235,7 +246,12 @@ class Smart {
 			$q = $this->db->query($sql);
 			$iaxpermits = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($iaxpermits as $iax) {
-				$discovered[$iax['data']] = true;
+				// permits may be seperated by ampersands, so
+				// make sure they are all added.
+				$permits = explode("&", $iax['data']);
+				foreach ($permits as $p) {
+					$discovered[$p] = true;
+				}
 			}
 		}
 

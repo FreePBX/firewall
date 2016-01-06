@@ -673,7 +673,19 @@ class Iptables {
 			$exists = array_flip($me);
 			$process = $tmparr['targets'];
 			foreach ($process as $addr) {
-				$p = "-s $addr/".$tmparr['prefix']." -m mark --mark 0x1/0x1 -j ACCEPT";
+				// Does this entry already have a prefix?
+				if (strpos($addr, "/") !== false) {
+					// Make sure that our prefix is a CIDR, not a subnet
+					list($ip, $prefix) = explode("/", $addr);
+					if (filter_var($prefix, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+						$cidr = 32-log((ip2long($prefix)^4294967295)+1,2);
+					} else {
+						$cidr = $prefix;
+					}
+					$p = "-s $ip/$cidr -m mark --mark 0x1/0x1 -j ACCEPT";
+				} else {
+					$p = "-s $addr/".$tmparr['prefix']." -m mark --mark 0x1/0x1 -j ACCEPT";
+				}
 				if (isset($exists[$p])) {
 					// It's already there, no need to change
 					unset($exists[$p]);
