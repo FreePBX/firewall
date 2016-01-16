@@ -10,13 +10,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-05 13:42+1000\n"
-"PO-Revision-Date: 2016-01-05 13:42+1000\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2016-01-16 08:58+0200\n"
+"Last-Translator: Nicolas <forums@riendeau.org>\n"
+"Language-Team: French "
+"<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 2.2-dev\n"
 
 #: Services.class.php:411
 #, php-format
@@ -26,7 +29,7 @@ msgstr ""
 #: Services.class.php:407
 #, php-format
 msgid "%s is not configured correctly."
-msgstr ""
+msgstr "%s n'est pas configuré correctement."
 
 #: views/page.about.php:63
 msgid ""
@@ -61,19 +64,19 @@ msgstr ""
 
 #: views/bootnav.php:5
 msgid "About"
-msgstr ""
+msgstr "À propos"
 
 #: views/page.zones.php:48
 msgid "About Zones"
-msgstr ""
+msgstr "À propos des zones"
 
 #: views/page.about.php:72
 msgid "Add Host"
-msgstr ""
+msgstr "Ajouter un hôte"
 
 #: views/page.about.php:71
 msgid "Add Network"
-msgstr ""
+msgstr "Ajouté un réseau"
 
 #: views/page.zones.php:194 views/view.blacklist.php:40
 msgid "Add New"
@@ -140,7 +143,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:13
 msgid "Any name"
-msgstr ""
+msgstr "N'importe quel nom"
 
 #: views/warning.notready.php:3
 msgid ""
@@ -166,7 +169,7 @@ msgstr ""
 
 #: views/view.about.php:37
 msgid "Available"
-msgstr ""
+msgstr "Disponible"
 
 #: views/view.registered.php:6
 msgid ""
@@ -176,7 +179,7 @@ msgstr ""
 
 #: views/page.zones.php:42
 msgid "Blacklists"
-msgstr ""
+msgstr "Listes noire"
 
 #: views/view.blocked.php:16
 msgid "Blocked Attackers"
@@ -237,7 +240,7 @@ msgstr ""
 #: views/page.zones.php:190 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: views/modal.customsvc.php:11
 msgid "Description"
@@ -849,7 +852,7 @@ msgstr ""
 
 #: views/page.about.php:35
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
 #: OOBE.class.php:124
 msgid "Should the client you're using be trusted?"
