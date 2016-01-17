@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-05 13:42+1000\n"
-"PO-Revision-Date: 2016-01-16 10:26+0200\n"
+"PO-Revision-Date: 2016-01-17 00:24+0200\n"
 "Last-Translator: Nicolas <forums@riendeau.org>\n"
 "Language-Team: French "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
@@ -244,7 +244,7 @@ msgstr "Supprimer"
 
 #: views/modal.customsvc.php:11
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: views/view.smart.php:42
 msgid "Disable"
@@ -738,7 +738,7 @@ msgstr ""
 
 #: Firewall.class.php:438
 msgid "Reset"
-msgstr ""
+msgstr "Remise à 0"
 
 #: views/page.about.php:38 views/view.smart.php:2
 msgid "Responsive Firewall"
@@ -873,7 +873,7 @@ msgstr ""
 
 #: views/bootnav.php:8
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 #: views/page.status.php:28
 msgid "Status Overview"
