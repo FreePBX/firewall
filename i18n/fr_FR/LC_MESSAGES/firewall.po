@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-05 13:42+1000\n"
-"PO-Revision-Date: 2016-01-17 00:24+0200\n"
+"PO-Revision-Date: 2016-01-17 06:05+0200\n"
 "Last-Translator: Nicolas <forums@riendeau.org>\n"
 "Language-Team: French "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
@@ -545,7 +545,7 @@ msgstr ""
 #: views/view.blocked.php:2 views/view.registered.php:15
 #: views/view.status.php:15
 msgid "Loading..."
-msgstr ""
+msgstr "Chargement..."
 
 #: views/view.customsvc.php:62
 #, php-format
@@ -1097,7 +1097,7 @@ msgstr ""
 
 #: Services.class.php:108
 msgid "UCP"
-msgstr ""
+msgstr "UCP"
 
 #: Services.class.php:110
 msgid ""
