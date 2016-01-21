@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-05 13:42+1000\n"
-"PO-Revision-Date: 2016-01-20 07:42+0200\n"
+"PO-Revision-Date: 2016-01-21 05:59+0200\n"
 "Last-Translator: Nicolas <forums@riendeau.org>\n"
 "Language-Team: French "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
@@ -885,7 +885,7 @@ msgstr ""
 
 #: views/view.status.php:3
 msgid "Summary"
-msgstr ""
+msgstr "Sommaire"
 
 #: Firewall.class.php:38 firewall.i18n.php:4 views/view.about.php:2
 msgid "System Firewall"
