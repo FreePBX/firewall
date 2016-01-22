@@ -105,6 +105,7 @@ function genRegHtml(registered) {
 function genClampedHtml(clamped) {
 	if (clamped.length == 0) {
 		$("#noclamped").show();
+		$("#clampeddiv").html('');
 		return;
 	}
 	$("#noclamped").hide();
