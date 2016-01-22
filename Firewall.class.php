@@ -96,12 +96,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if ($error) {
 			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('error', _("Firewall Integrity Failed")));
 			$this->Notifications()->add_critical('firewall', 'zoneerror', _("Firewall Integrity Failed"),
-				sprintf(_("Interface %s is not in the correct zone. This can be caused by manual alterations of iptables, or, an unexpected error. Please restart the firewall service, and then delete this notification."), $error),
+				sprintf(_("Interface %s is not in the correct zone. This can be caused by manual alterations of iptables, or, an unexpected error. Please restart the firewall service."), $error),
 				"?display=firewall",
 				true, // Reset on update.
 				true); // Can delete
 			return array($status, $trusted);
-		} elseif ($foundnewint) { // Have we found a new interface?
+		}
+		// No errors found. Remove zone errors, if there are any
+		$this->Notifications()->delete('firewall', 'zoneerror');
+			
+		if ($foundnewint) { // Have we found a new interface?
 			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('error', _("New Interface Detected")));
 			$trusted['order'] = 1;
 			$this->Notifications()->add_critical('firewall', 'newint', _("New Interface Detected"),
