@@ -118,6 +118,7 @@ function genClampedHtml(clamped) {
 
 function genBlockedHtml(attackers, d) {
 	if (attackers.length == 0) {
+		$("#attackersdiv").html('');
 		$("#noattackers").show();
 		return;
 	}
