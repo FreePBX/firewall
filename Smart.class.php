@@ -175,7 +175,7 @@ class Smart {
 					if (!$port) {
 						continue;
 					}
-					if ($type == "tcp") {
+					if ($type == "tcp" || $type == "tls") {
 						$tcp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
 					} elseif ($type == "udp") {
 						$udp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
