@@ -142,11 +142,11 @@ class Smart {
 					continue;
 				}
 				if ($arr['keyword'] == 'bindport') {
-					$bindport = $arr['data'];
+					$bindport = (int) $arr['data'];
 					break;
 				}
 			}
-			if (empty($bindport)) {
+			if ($bindport < 1024) {
 				$bindport = 5060;
 			}
 
