@@ -78,6 +78,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				}
 				break;
 			}
+
+			// Is it an alias? If so, ignore it, we can't set it anyway
+			if ($conf['config']['PARENT']) {
+				continue;
+			}
 			$runningzone = $this->getZone($i);
 			if ($conf['config']['ZONE'] !== $runningzone) {
 				$error = $i;
