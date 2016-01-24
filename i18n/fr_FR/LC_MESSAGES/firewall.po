@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-05 13:42+1000\n"
-"PO-Revision-Date: 2016-01-24 06:32+0200\n"
+"PO-Revision-Date: 2016-01-24 07:52+0200\n"
 "Last-Translator: Nicolas <forums@riendeau.org>\n"
 "Language-Team: French "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
@@ -276,7 +276,7 @@ msgstr "Éditer"
 
 #: views/view.smart.php:44
 msgid "Enable"
-msgstr ""
+msgstr "Activer"
 
 #: OOBE.class.php:196
 msgid "Enable Responsive Firewall?"
