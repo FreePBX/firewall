@@ -51,7 +51,7 @@ if ($fw->isSafemodeEnabled()) {
 print "<div class='alert alert-info' id='safewarning' style='$style'>";
 $docs = array(
 	_("<strong>Safe mode is available.</strong>"),
-	_("Safe mode can bet used when setting up your Firewall for the first time. It gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
+	_("Safe mode can be used when setting up your Firewall for the first time. It gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
 	_("After the original configuration is complete, there is no reason to keep this turned on."),
 );
 foreach ($docs as $p) {
@@ -126,7 +126,7 @@ if ($fw->getConfig("dropinvalid")) {
 </div>
 
 <script type='text/javascript'>
-$(document).ready(function() { 
+$(document).ready(function() {
 	$("#rerunwiz").click(function() {
 		// Restart oobe
 		$.ajax({
