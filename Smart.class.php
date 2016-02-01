@@ -142,11 +142,11 @@ class Smart {
 					continue;
 				}
 				if ($arr['keyword'] == 'bindport') {
-					$bindport = $arr['data'];
+					$bindport = (int) $arr['data'];
 					break;
 				}
 			}
-			if (empty($bindport)) {
+			if ($bindport < 1024) {
 				$bindport = 5060;
 			}
 
@@ -175,7 +175,7 @@ class Smart {
 					if (!$port) {
 						continue;
 					}
-					if ($type == "tcp") {
+					if ($type == "tcp" || $type == "tls") {
 						$tcp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
 					} elseif ($type == "udp") {
 						$udp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");

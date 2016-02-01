@@ -104,12 +104,12 @@ class Network {
 			$conf['VLAN'] = true;
 		}
 
-		// If this is an alias (has a colon) then we can't use it as
-		// a parent interface. 
+		// If this is an alias (has a colon) then it has a parent interface. 
 		if (strpos($int, ":") !== false) {
-			$conf['PARENT'] = false;
+			$parent = explode(":", $int);
+			$conf['PARENT'] = $parent[0];
 		} else {
-			$conf['PARENT'] = true;
+			$conf['PARENT'] = false;
 		}
 
 		return $conf;

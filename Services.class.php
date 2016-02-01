@@ -174,7 +174,7 @@ class Services {
 					if (!$port) {
 						continue;
 					}
-					if ($type == "tcp") {
+					if ($type == "tcp" || $type == "tls") {
 						$retarr['fw'][] = array("protocol" => "tcp", "port" => $port);
 					} elseif ($type == "udp") {
 						$retarr['fw'][] = array("protocol" => "udp", "port" => $port);
