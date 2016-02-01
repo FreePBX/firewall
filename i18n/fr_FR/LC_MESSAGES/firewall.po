@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-01-05 13:42+1000\n"
-"PO-Revision-Date: 2016-02-01 03:17+0200\n"
+"PO-Revision-Date: 2016-02-01 09:07+0200\n"
 "Last-Translator: Nicolas Riendeau <freepbx@riendeau.org>\n"
 "Language-Team: French "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
@@ -256,7 +256,7 @@ msgstr ""
 
 #: views/view.about.php:38 views/view.smart.php:5
 msgid "Disabled"
-msgstr ""
+msgstr "Désactivé"
 
 #: views/view.about.php:103
 msgid "Drop"
@@ -1121,7 +1121,7 @@ msgstr ""
 
 #: OOBE.class.php:205 OOBE.class.php:242 views/disabled.php:6
 msgid "Warning"
-msgstr ""
+msgstr "Avertissement"
 
 #: Services.class.php:55
 msgid ""
