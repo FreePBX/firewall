@@ -9,24 +9,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-05 13:42+1000\n"
+"POT-Creation-Date: 2016-02-03 14:36+1000\n"
 "PO-Revision-Date: 2016-02-01 10:06+0200\n"
 "Last-Translator: Nicolas Riendeau <freepbx@riendeau.org>\n"
-"Language-Team: French "
-"<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
-"Language: fr_FR\n"
+"Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
+"fr_FR/>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 2.2-dev\n"
 
-#: Services.class.php:411
+#: Services.class.php:423
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr ""
 
-#: Services.class.php:407
+#: Services.class.php:419
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s n'est pas configuré correctement."
@@ -47,7 +47,7 @@ msgstr ""
 msgid "<strong>Safe mode is available.</strong>"
 msgstr ""
 
-#: Firewall.class.php:113
+#: Firewall.class.php:122
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -55,7 +55,7 @@ msgid ""
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
 
-#: Firewall.class.php:103
+#: Firewall.class.php:112
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -233,7 +233,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:437
+#: Firewall.class.php:446
 msgid "Defaults"
 msgstr ""
 
@@ -305,11 +305,11 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:293
+#: Services.class.php:305
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:295
+#: Services.class.php:307
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -335,7 +335,7 @@ msgstr ""
 msgid "Firewall Disabled"
 msgstr ""
 
-#: Firewall.class.php:92 Firewall.class.php:93
+#: Firewall.class.php:97 Firewall.class.php:98
 msgid "Firewall Integrity Failed"
 msgstr ""
 
@@ -491,12 +491,12 @@ msgid ""
 "wiki for further information."
 msgstr ""
 
-#: Firewall.class.php:94
+#: Firewall.class.php:99
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
 "alterations of iptables, or, an unexpected error. Please restart the "
-"firewall service, and then delete this notification."
+"firewall service."
 msgstr ""
 
 #: views/page.zones.php:36
@@ -552,11 +552,11 @@ msgstr "Chargement..."
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:316
+#: Services.class.php:328
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:322
+#: Services.class.php:334
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -564,7 +564,7 @@ msgstr ""
 msgid "Networks"
 msgstr ""
 
-#: Firewall.class.php:100 Firewall.class.php:102
+#: Firewall.class.php:109 Firewall.class.php:111
 msgid "New Interface Detected"
 msgstr ""
 
@@ -580,15 +580,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:139
+#: Firewall.class.php:148
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:141
+#: Firewall.class.php:150
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:142
+#: Firewall.class.php:151
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -632,6 +632,10 @@ msgstr ""
 
 #: views/view.status.php:21
 msgid "Number of currently blocked Attackers:"
+msgstr ""
+
+#: Services.class.php:265
+msgid "OpenVPN Server"
 msgstr ""
 
 #: Zones.class.php:11
@@ -703,8 +707,14 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:265
+#: Services.class.php:277
 msgid "REST Apps"
+msgstr ""
+
+#: Services.class.php:279
+msgid ""
+"REST Apps are used with intelligent phones to provide an interactive "
+"interface from the phone itself."
 msgstr ""
 
 #: views/page.about.php:62
@@ -736,7 +746,7 @@ msgstr ""
 msgid "Reject"
 msgstr "Rejeter"
 
-#: Firewall.class.php:438
+#: Firewall.class.php:447
 msgid "Reset"
 msgstr "Remise à 0"
 
@@ -767,15 +777,15 @@ msgstr ""
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 
-#: Services.class.php:372
+#: Services.class.php:384
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:377
+#: Services.class.php:389
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr ""
 
-#: Services.class.php:380
+#: Services.class.php:392
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -797,7 +807,7 @@ msgstr ""
 
 #: views/view.about.php:54
 msgid ""
-"Safe mode can bet used when setting up your Firewall for the first time. It "
+"Safe mode can be used when setting up your Firewall for the first time. It "
 "gives you the ability to recover from an accidental misconfiguration by "
 "temporarily disabling the firewall if the machine is rebooted two times in "
 "succession."
@@ -817,7 +827,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:439 views/modal.customsvc.php:37
+#: Firewall.class.php:448 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -903,23 +913,19 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:303
+#: Services.class.php:315
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:305
+#: Services.class.php:317
 msgid "TFTP is used normally for provisioning and upgrading of devices."
-msgstr ""
-
-#: Services.class.php:267
-msgid "Text for REST Apps not done..."
 msgstr ""
 
 #: views/oobe.welcome.php:28
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Firewall.class.php:230
+#: Firewall.class.php:239
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -966,7 +972,13 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:325
+#: Services.class.php:267
+msgid ""
+"This allows clients to connect to an OpenVPN server running on this machine. "
+"This is an inherently secure protocol."
+msgstr ""
+
+#: Services.class.php:337
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -1027,7 +1039,7 @@ msgstr ""
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:285
+#: Services.class.php:297
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
@@ -1087,11 +1099,11 @@ msgstr ""
 msgid "Trusted"
 msgstr ""
 
-#: Firewall.class.php:109 Firewall.class.php:112
+#: Firewall.class.php:118 Firewall.class.php:121
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:137
+#: Firewall.class.php:146
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -1184,7 +1196,7 @@ msgid ""
 "<strong>very limited</strong> amount of registration attempts."
 msgstr ""
 
-#: Services.class.php:283
+#: Services.class.php:295
 msgid "XMPP"
 msgstr ""
 
@@ -1194,7 +1206,7 @@ msgid ""
 "Zone. Please read the Wiki for more information."
 msgstr ""
 
-#: Firewall.class.php:231
+#: Firewall.class.php:240
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -1240,7 +1252,7 @@ msgstr ""
 msgid "Zones"
 msgstr ""
 
-#: Services.class.php:425
+#: Services.class.php:437
 msgid "iSymphony is not installed on this server."
 msgstr ""
 

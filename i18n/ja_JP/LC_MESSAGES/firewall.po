@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-01-22 11:43+1000\n"
+"POT-Creation-Date: 2016-02-03 14:36+1000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -21,12 +21,12 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.2-dev\n"
 
-#: Services.class.php:411
+#: Services.class.php:423
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr ""
 
-#: Services.class.php:407
+#: Services.class.php:419
 #, php-format
 msgid "%s is not configured correctly."
 msgstr ""
@@ -305,11 +305,11 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:293
+#: Services.class.php:305
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:295
+#: Services.class.php:307
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -552,11 +552,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:316
+#: Services.class.php:328
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:322
+#: Services.class.php:334
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -634,6 +634,10 @@ msgstr ""
 msgid "Number of currently blocked Attackers:"
 msgstr ""
 
+#: Services.class.php:265
+msgid "OpenVPN Server"
+msgstr ""
+
 #: Zones.class.php:11
 msgid "Other"
 msgstr ""
@@ -703,8 +707,14 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:265
+#: Services.class.php:277
 msgid "REST Apps"
+msgstr ""
+
+#: Services.class.php:279
+msgid ""
+"REST Apps are used with intelligent phones to provide an interactive "
+"interface from the phone itself."
 msgstr ""
 
 #: views/page.about.php:62
@@ -767,15 +777,15 @@ msgstr ""
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 
-#: Services.class.php:372
+#: Services.class.php:384
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:377
+#: Services.class.php:389
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr ""
 
-#: Services.class.php:380
+#: Services.class.php:392
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -797,7 +807,7 @@ msgstr ""
 
 #: views/view.about.php:54
 msgid ""
-"Safe mode can bet used when setting up your Firewall for the first time. It "
+"Safe mode can be used when setting up your Firewall for the first time. It "
 "gives you the ability to recover from an accidental misconfiguration by "
 "temporarily disabling the firewall if the machine is rebooted two times in "
 "succession."
@@ -903,16 +913,12 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:303
+#: Services.class.php:315
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:305
+#: Services.class.php:317
 msgid "TFTP is used normally for provisioning and upgrading of devices."
-msgstr ""
-
-#: Services.class.php:267
-msgid "Text for REST Apps not done..."
 msgstr ""
 
 #: views/oobe.welcome.php:28
@@ -966,7 +972,13 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:325
+#: Services.class.php:267
+msgid ""
+"This allows clients to connect to an OpenVPN server running on this machine. "
+"This is an inherently secure protocol."
+msgstr ""
+
+#: Services.class.php:337
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -1027,7 +1039,7 @@ msgstr ""
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:285
+#: Services.class.php:297
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
@@ -1184,7 +1196,7 @@ msgid ""
 "<strong>very limited</strong> amount of registration attempts."
 msgstr ""
 
-#: Services.class.php:283
+#: Services.class.php:295
 msgid "XMPP"
 msgstr ""
 
@@ -1240,7 +1252,7 @@ msgstr ""
 msgid "Zones"
 msgstr ""
 
-#: Services.class.php:425
+#: Services.class.php:437
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
