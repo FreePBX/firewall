@@ -415,7 +415,10 @@ class Smart {
 				if (preg_match("/Contact:\s+(.+)@(.+?)\s/", $l, $out)) {
 					// Ok, we have a contact. This should be an IP address. Is it?
 					if (preg_match("/(?:\[?)([0-9a-f:\.]+)(?:\]?):(.+)/", $out[2], $ipaddr)) {
-						$contacts[$ipaddr[1]] = true;
+						// Ensure a random hostname like 'e.de' doesn't appear to be valid
+						if (filter_var($ipaddr[1], FILTER_VALIDATE_IP)) {
+							$contacts[$ipaddr[1]] = true;
+						}
 					} else {
 						// It's a hostname, likely to be a trunk. Don't resolve,
 						// as we've already done that as part of the registration
