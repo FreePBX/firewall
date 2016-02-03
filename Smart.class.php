@@ -135,7 +135,7 @@ class Smart {
 
 		// Let's get chansip settings if we need them.
 		if ($this->chansip) {
-			$bindport = "";
+			$bindport = 5060;
 			$settings = \FreePBX::Sipsettings()->getChanSipSettings(true);
 			foreach ($settings as $arr) {
 				if (empty($arr['data'])) {
