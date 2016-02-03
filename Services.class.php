@@ -11,7 +11,7 @@ class Services {
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc");
-		$this->extraservices = array("isymphony", "provis", "restapps", "xmpp", "ftp", "tftp", "nfs", "smb");
+		$this->extraservices = array("isymphony", "provis", "vpn", "restapps", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
 	}
@@ -260,11 +260,23 @@ class Services {
 		return $retarr;
 	}
 
+	private function getSvc_vpn() {
+		$retarr = array(
+			"name" => _("OpenVPN Server"),
+			"defzones" => array("external", "other", "internal"),
+			"descr" => _("This allows clients to connect to an OpenVPN server running on this machine. This is an inherently secure protocol."),
+			"fw" => array(
+				array("protocol" => "udp", "port" => 1194)
+			),
+		);
+		return $retarr;
+	}
+
 	private function getSvc_restapps() {
 		$retarr = array(
 			"name" => _("REST Apps"),
 			"defzones" => array("internal"),
-			"descr" => _("Text for REST Apps not done..."),
+			"descr" => _("REST Apps are used with intelligent phones to provide an interactive interface from the phone itself."),
 			"fw" => array(array("protocol" => "tcp", "port" => 85)),
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
