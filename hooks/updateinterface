@@ -97,6 +97,9 @@ if (!isset($zones[$newzone])) {
 	throw new \Exception("Asked to change to zone $newzone, but it doesn't exist");
 }
 
+$fh = fopen("/tmp/firewall.log", "a");
+fwrite($fh, time().": INTERFACE CHANGE $iface -> $newzone\n");
+fclose($fh);
 $driver->changeInterfaceZone($iface, $newzone);
 $driver->commit();
 
