@@ -104,6 +104,9 @@ $services['safemode'] = $safemode;
 // Determine if we want to drop, or, reject erroring packets.
 $services['dropinvalid'] = \FreePBX::Firewall()->getConfig("dropinvalid");
 
+// Return our current module version
+$module = (array) simplexml_load_string(file_get_contents(__DIR__."/../module.xml"));
+$services['fwversion'] = $module['version'];
 // print_r($services); exit;
 print json_encode($services)."\n";
 

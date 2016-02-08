@@ -146,6 +146,7 @@ foreach ($known as $int => $conf) {
 	} else {
 		$zone = $conf['config']['ZONE'];
 	}
+	fwLog("INTERFACE INIT: $int => $zone");
 	$driver->changeInterfaceZone($int, $zone);
 }
 
@@ -167,6 +168,9 @@ if ($nets && is_array($nets)) {
 
 // Turns out that this is unreliable. Which is why we use sigSleep below.
 pcntl_signal(SIGHUP, "sigHupHandler");
+
+// This is our version. If this changes, restart.
+$fwversion = false;
 
 // Always run the update the first time.
 $lastfin = 1;
@@ -324,7 +328,7 @@ function checkPhar() {
 
 function updateFirewallRules($firstrun = false) {
 	// Signature validation and firewall driver
-	global $v, $driver, $services, $thissvc;
+	global $v, $driver, $services, $thissvc, $fwversion;
 
 	// Flush cache, read what the system thinks the firewall rules are.
 	$driver->refreshCache();
@@ -352,6 +356,23 @@ function updateFirewallRules($firstrun = false) {
 	if (!isset($getservices['smartports'])) {
 		return false;
 	}
+
+	// Check our version
+	if ($fwversion === false) {
+		// First time run. Set it.
+		$fwversion = $getservices['fwversion'];
+	}
+
+	if ($fwversion !== $getservices['fwversion']) {
+		wall("Firewall version change detected! Restarting in 5 seconds");
+		Lock::unLock($thissvc);
+		// Wait 4 seconds to give incron a chance to catch up
+		sleep(4);
+		// Restart me.
+		fclose(fopen("/var/spool/asterisk/incron/firewall.firewall", "a"));
+		exit;
+	}
+
 
 	// Root-only updates:
 	//   SSH is only readable by root
