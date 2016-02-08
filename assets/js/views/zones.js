@@ -36,6 +36,18 @@ function changeInt(o) {
 	// Show people we're doing stuff
 	$(o).prop('disabled', true);
 
+	// Warn about 'internal' or 'other'.
+	if (checked === "internal" || checked === "other") {
+		var zn = checked[0].toUpperCase() + checked.slice(1);
+		var ok = window.confirm("Warning! Unusual setting detected!\n\nIt is unusual to set an interface to '"+zn+"'. By doing this, you are saying that all UNKNOWN TRAFFIC traffic arriving at that interface will treated as "+zn+" traffic. Normally interfaces are set to 'External'\n\nAre you sure this is correct?");
+		if (!ok) {
+			// Set the zone to External
+			$('#int-'+iface+'-external').attr('checked', true);
+			$(o).prop('disabled', false);
+			 return;
+		}
+	}
+
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'updateinterface', module: 'firewall', iface: iface, zone: checked },
@@ -104,9 +116,9 @@ function removeNetwork(c) {
 
 function updateNetwork(c) {
 	var net, zone;
-	console.log("Updating network "+c);
 	net = $("input[type=text]", "#element-"+c).val()
 	zone = $("input[type=radio]:checked", "#element-"+c).val()
+	console.log("Updating network "+c+" to "+net+" = "+zone);
 	$.ajax({
 		url: window.ajaxurl,
 		data: { command: 'updatenetwork', module: 'firewall', net: net, zone: zone },
