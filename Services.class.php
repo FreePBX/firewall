@@ -11,7 +11,7 @@ class Services {
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc");
-		$this->extraservices = array("isymphony", "provis", "vpn", "restapps", "xmpp", "ftp", "tftp", "nfs", "smb");
+		$this->extraservices = array("zulu", "isymphony", "provis", "vpn", "restapps", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
 	}
@@ -138,6 +138,35 @@ class Services {
 			"descr" => _("WebRTC is used by UCP (and other services) to enable calls to be made via a web browser."),
 			"fw" => array(array("protocol" => "tcp", "port" => $websocket)),
 		);
+		return $retarr;
+	}
+
+	private function getSvc_zulu() {
+		// See if Zulu is installed and licenced.
+		$retarr = array(
+			"name" => _("Zulu UC "),
+			"defzones" => array("internal"),
+			"descr" => _("Zulu UC delivers Outlook and browser integration for FreePBX. Note that the Zulu port is <strong>automatically opened</strong> to any registered clients. It is unlikely you need to change this."),
+		);
+
+		$zuluport = false;
+		try {
+			$lic = \FreePBX::Zulu()->licensed();
+			if ($lic) {
+				$zuluport = \FreePBX::Config()->get('ZULUBINDPORT');
+			}
+		} catch (\Exception $e) {
+			// ignore
+		}
+
+		// If zulu is not installed and active
+		if (!$zuluport) {
+			$retarr['descr'] = _("Zulu is not not available on this machine");
+			$retarr['disabled'] = true;
+			return $retarr;
+		}
+
+		$retarr['fw'] = array(array("protocol" => "tcp", "port" => $zuluport));
 		return $retarr;
 	}
 
