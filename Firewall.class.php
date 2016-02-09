@@ -416,6 +416,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case false:
 			return;
 		case 'enablefw':
+			// Make sure that whoever enabled the firewall has access
+			// to configure it!
+			$thishost = $this->detectHost();
+			$nets = $this->getConfig("networkmaps");
+			if (!is_array($nets)) {
+				$nets = array();
+			}
+			$nets[$thishost] = "trusted";
+			$this->setConfig("networkmaps", $nets);
 			$this->setConfig("status", true);
 			$this->runHook("firewall");
 			return;
