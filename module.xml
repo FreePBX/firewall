@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.18</version>
+	<version>13.0.18.1</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.18.1* Make it harder to lock yourself out of a machine
 		*13.0.18* #11504 Add warning when 'internal' is set as interface zone
 		*13.0.17* Add OpenVPN Service, #11428 and #11471
 		*13.0.16.2* Enable support for tls with PJSIP
