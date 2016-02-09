@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-08 14:23+1000\n"
+"POT-Creation-Date: 2016-02-09 11:22+1000\n"
 "PO-Revision-Date: 2016-02-07 01:50+0200\n"
 "Last-Translator: Andrew <andrew.nagy@the159.com>\n"
 "Language-Team: English (United States) <http://weblate.freepbx.org/projects/"
@@ -233,7 +233,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:446
+#: Firewall.class.php:455
 msgid "Defaults"
 msgstr ""
 
@@ -746,7 +746,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Firewall.class.php:447
+#: Firewall.class.php:456
 msgid "Reset"
 msgstr ""
 
@@ -827,7 +827,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:448 views/modal.customsvc.php:37
+#: Firewall.class.php:457 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
