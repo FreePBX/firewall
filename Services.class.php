@@ -85,7 +85,9 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			$retarr['fw'][0]['port'] = $ports['acp'];
+			if (isset($ports['acp']) && $ports['acp'] > 80) {
+				$retarr['fw'][0]['port'] = $ports['acp'];
+			}
 		} catch (\Exception $e) {
 			// ignore
 		}
@@ -114,7 +116,9 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			$retarr['fw'][0]['port'] = $ports['ucp'];
+			if (isset($ports['ucp']) && $ports['ucp'] > 80) {
+				$retarr['fw'][0]['port'] = $ports['ucp'];
+			}
 		} catch (\Exception $e) {
 			// ignore
 		}
@@ -282,7 +286,9 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			$retarr['fw'][0]['port'] = $ports['hpro'];
+			if (isset($ports['hpro']) && $ports['hpro'] > 80) {
+				$retarr['fw'][0]['port'] = $ports['hpro'];
+			}
 		} catch (\Exception $e) {
 			// ignore
 		}
@@ -312,7 +318,9 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			$retarr['fw'][0]['port'] = $ports['restapps'];
+			if (isset($ports['restapps']) && $ports['restapps'] > 80) {
+				$retarr['fw'][0]['port'] = $ports['restapps'];
+			}
 		} catch (\Exception $e) {
 			// ignore
 		}
