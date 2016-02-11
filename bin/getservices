@@ -79,7 +79,7 @@ foreach ($hostmaps as $host => $zone) {
 // to the trusted zone
 $hosts = file("/etc/hosts");
 foreach ($hosts as $h) {
-	$line = explode(" ", trim($h));
+	$line = preg_split("/\s+/", trim($h));
 	if (empty($line[0])) {
 		continue;
 	}
