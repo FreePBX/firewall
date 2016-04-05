@@ -10,6 +10,11 @@ class Network {
 			throw new \Exception('ip -o addr failed somehow.');
 		}
 
+		return $this->parseIpOutput($result);
+	}
+
+	public function parseIpOutput($result) {
+
 		$interfaces = array();
 
 		foreach ($result as $line) {
@@ -57,6 +62,9 @@ class Network {
 					$intname = $vals[1];
 				}
 			}
+
+			// It's possible for intname to end with a trailing backslash
+			$intname = str_replace("\\", "", $intname);
 
 			// Strip netmask off the end of the IP address
 			$ret = preg_match("/(.+)\/(\d*+)/", $vals[3], $ip);
