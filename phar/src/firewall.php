@@ -231,6 +231,19 @@ function shutdown() {
 	global $thissvc;
 
 	Lock::unLock($thissvc);
+
+	// Clean up on exit. Start by stopping fail2ban, if it's running
+	`service fail2ban stop`;
+	// Now reset iptables
+	`service iptables stop`;
+	`service ip6tables stop`;
+	// If sysadmin is configuring fail2ban, it'll need to regenerate the
+	// conf file
+	if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
+		`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
+	}
+	// And restart fail2ban
+	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
 	exit;
 }
 
