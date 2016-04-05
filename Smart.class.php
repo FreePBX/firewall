@@ -353,6 +353,7 @@ class Smart {
 
 	public function lookup($host = false, $allowcache = true) {
 		static $cache;
+		static $previous;
 
 		if (!$host) {
 			throw new \Exception("No host given");
@@ -361,6 +362,7 @@ class Smart {
 		// This is for PHP 5.4 and below
 		if (!is_array($cache)) {
 			$cache = array();
+			$previous = array();
 		}
 
 		// Do we need to refresh this lookup?
@@ -379,8 +381,20 @@ class Smart {
 
 			// Let's do some DNS-ing
 			// TODO: See how this goes. It might be better to use something like http://www.purplepixie.org/phpdns/
-			//
 			$dns = dns_get_record($host, \DNS_A|\DNS_AAAA);
+
+			// Sometimes we may have a transient DNS error. If dns_get_record returned nothing,
+			// but last time it returned something, we return the last one. This only happens
+			// once.
+			if (!$dns) {
+				if (isset($previous[$host]) && $previous[$host]) {
+					$dns = $previous[$host];
+					unset($previous[$host]);
+				}
+			} else {
+				$previous[$host] = $dns;
+			}
+
 			$retarr = array();
 
 			// TODO: IPv6

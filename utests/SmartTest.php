@@ -4,7 +4,7 @@
 * @backupStaticAttributes disabled
 */
 
-class RequestTest extends PHPUnit_Framework_TestCase {
+class NetworkTest extends PHPUnit_Framework_TestCase {
 
 	public static $f;
 
