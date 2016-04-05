@@ -9,7 +9,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	private static $services = false;
 
 	public function install() {}
-	public function uninstall() {}
+
+	public function uninstall() {
+		// Disable the firewall when it's uninstalled,
+		// so if it is automatically reinstalled at some
+		// point, it doesn't start.
+		$this->setConfig("status", true);
+	}
+
 	public function backup() {}
 	public function restore($backup) {}
 
