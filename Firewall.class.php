@@ -15,6 +15,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// so if it is automatically reinstalled at some
 		// point, it doesn't start.
 		$this->setConfig("status", true);
+		$o = \FreePBX::OOBE()->getConfig("completed");
+		if (is_array($o)) {
+			unset ($o['firewall']);
+			\FreePBX::OOBE()->setConfig("completed", $o);
+			$this->setConfig("oobeanswered", array());
+		}
 	}
 
 	public function backup() {}
