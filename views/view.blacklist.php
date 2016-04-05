@@ -28,6 +28,7 @@ foreach ($b as $entry => $resolved) {
 	print "    </div>\n";
 	print "  </div>\n";
 	print "</div>\n";
+	$i++;
 }
 ?>
 
