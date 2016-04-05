@@ -676,6 +676,8 @@ class Iptables {
 				// Does this entry already have a prefix?
 				if (strpos($addr, "/") !== false) {
 					// Make sure that our prefix is a CIDR, not a subnet
+					//
+					// Note - this should never ever get a subnet. Throw here?
 					list($ip, $prefix) = explode("/", $addr);
 					if (filter_var($prefix, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
 						$cidr = 32-log((ip2long($prefix)^4294967295)+1,2);

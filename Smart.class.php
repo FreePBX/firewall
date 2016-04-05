@@ -285,7 +285,7 @@ class Smart {
 			// Is this a Network definition?
 			if (strpos($d, "/") !== false) {
 				// Yes it is.
-				$retarr = array_merge($retarr, $this->parseCidr($d));
+				$retarr[] = $this->returnCidr($d);
 				continue;
 			}
 
@@ -295,9 +295,9 @@ class Smart {
 		return $retarr;
 	}
 	
-	public function parseCidr($entry = false) {
+	public function returnCidr($entry = false) {
 		if (!$entry) {
-			throw new \Exception("No CIDR Given");
+			throw new \Exception("No Net/CIDR Given");
 		}
 
 		// To start with, does it have a / in it?
@@ -306,28 +306,49 @@ class Smart {
 		}
 
 		// Good.
-		list($subnet, $cidr) = explode("/", $entry);
+		list($subnet, $network) = explode("/", $entry);
 
-		// And it's a valid subnet, right?
+		// And it's a valid network, right?
 		if (!filter_var($subnet, FILTER_VALIDATE_IP)) {
 			// Wut.
-			return array();
+			return false;
 		}
 
 		// OK. We either have IP/CIDR or a IP/NETMASK
 		// If cidr validates as an IP address, that means it's a netmask.
-		if (filter_var($cidr, FILTER_VALIDATE_IP)) {
+		if (filter_var($network, FILTER_VALIDATE_IP)) {
 			// netmask.
-			return array($subnet."/".$cidr);
+			// Make sure it's not /32
+			if ($network === "255.255.255.255") {
+				return $subnet;
+			}
+			$cidr = 32-log((ip2long($network)^4294967295)+1,2);
+			return $this->trimSubnet($subnet,$cidr);
 		}
 
 		// Otherwise it should be a valid CIDR.
-		if ((int) $cidr >= 8 && (int) $cidr <= 32) {
-			$netmask = pow(2,$cidr) - 1;
-			$netmask = long2ip($netmask << (32 - $cidr));
-			return array($subnet."/".$netmask);
+		$net = (int) $network;
+		if ($net >= 8 && $net <= 128) { // 128 == ipv6
+			return $this->trimSubnet($subnet,$net);
 		}
-		return array();
+		return false;
+	}
+
+	private function trimSubnet($subnet, $cidr) {
+		// IPv6 check
+		if (filter_var($subnet, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+			// Don't even try to think about it. Just return it as it is.
+			return "$subnet/$cidr";
+		}
+
+		// OK, we're IPv4. Get a long from the cidr
+		$netmask = pow(2, $cidr)-1 << (32 - $cidr); 
+
+		// Get a long from the Subnet
+		$longnet = ip2long($subnet);
+
+		// Now AND them and return the bits that should be on
+		return long2ip($longnet & $netmask)."/$cidr";
 	}
 
 	public function lookup($host = false, $allowcache = true) {
