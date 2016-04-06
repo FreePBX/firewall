@@ -956,12 +956,29 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Make sure we can look this host up, and it's a valid thing to 
 		// add to the blacklist.
 		//
-		// This will throw an exception if it can't.
 		$smart = $this->getSmartObj();
-		$smart->lookup($host);
+		// Is this a network? If it has a slash, assume it does.
+		if (strpos($host, "/") !== false) {
+			$rawnet = true;
+			$trust = $smart->returnCidr($host);
+		} else {
+			$rawnet = false;
+			$trust = $smart->lookup($host);
+		}
+
+		// If it's false, or empty, we couldn't validate it
+		if (!$trust) {
+			throw new \Exception("Can't validate $host");
+		}
 
 		// If it can, we can add it happily.
-		$this->setConfig($host, true, "blacklist");
+		// If this is a network, make sure we use the returnCidr value,
+		// because that's actually correct.
+		if ($rawnet) {
+			$this->setConfig($trust, true, "blacklist");
+		} else {
+			$this->setConfig($host, true, "blacklist");
+		}
 	}
 
 	public function removeFromBlacklist($host) {

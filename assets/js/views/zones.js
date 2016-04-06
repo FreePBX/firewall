@@ -195,6 +195,7 @@ function changeBlacklist(o) {
 		url: window.ajaxurl,
 		data: ajaxdata,
 		success: function(data) { window.location.href = window.location.href; },
+		error: function(data) { $(o).prop('disabled', false); }
 	});
 }
 
