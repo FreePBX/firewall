@@ -1117,6 +1117,9 @@ class Iptables {
 		// Removed. Let's see how much breaks
 
 		// Now we can do our actual filtering.
+		//
+		// If any hosts are blacklisted, reject them early.
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxblacklist");
 		// This marks VoIP Signalling packets
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxsignalling");
 		// This allows packets marked as signalling through if they're from known hosts.
@@ -1127,10 +1130,6 @@ class Iptables {
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxnets");
 		// This allows known hosts
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxhosts");
-		// If any hosts are blacklisted, reject them here. This ensures
-		// that you can override a large blacklist by a smaller network
-		// definition.
-		$retarr['fpbxfirewall'][] = array("jump" => "fpbxblacklist");
 		// And known interfaces.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
 		// If this is a VoIP Signalling packet from an unknown host, and it's eligible for
