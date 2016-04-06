@@ -181,6 +181,11 @@ class Services {
 			"descr" => _("This is the SIP driver (pjsip). Most devices use SIP."),
 			"fw" => array(),
 		);
+
+		if (\FreePBX::Firewall()->getConfig("pjsip", "rfw")) {
+			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. There is no need to explicitly allow access from zones. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
+		}
+
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
 		if ($driver == "both" || $driver == "chan_pjsip") {
 			$ss = \FreePBX::Sipsettings();
@@ -233,6 +238,11 @@ class Services {
 			"descr" => _("This is the legacy chan_sip driver."),
 			"fw" => array(),
 		);
+
+		if (\FreePBX::Firewall()->getConfig("chansip", "rfw")) {
+			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. There is no need to explicitly allow access from zones. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
+		}
+
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
 		if ($driver == "both" || $driver == "chan_sip") {
 			$tcp = false;
@@ -272,6 +282,9 @@ class Services {
 			// If you're using IAX on a non standard port, stop it. You're doing it wrong.
 			"fw" => array(array("protocol" => "udp", "port" => 4569)),
 		);
+		if (\FreePBX::Firewall()->getConfig("iax", "rfw")) {
+			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. There is no need to explicitly allow access from zones. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
+		}
 		return $retarr;
 	}
 

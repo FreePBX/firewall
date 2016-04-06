@@ -334,6 +334,24 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->Notifications()->delete('firewall', 'newint');
 			return $this->runHook('updateinterface', array('iface' => $_REQUEST['iface'], 'newzone' => $_REQUEST['zone']));
 		case "updaterfw":
+			// Ensure people don't accidentally allow traffic through when rfw is enabled
+			$proto = $_REQUEST['proto'];
+
+			// Don't allow ANYTHING through when RFW is enabled
+			if ($_REQUEST['value'] == "true") {
+				$zones = array();
+			} else {
+				// If they're turning off rfw, allow internal
+				$zones = array("internal");
+			}
+
+			// Sanity check. 
+			switch ($proto) {
+			case "iax":
+			case "pjsip":
+			case "chansip":
+				$this->setConfig($proto, $zones, "servicesettings");
+			}
 			return $this->setConfig($_REQUEST['proto'], ($_REQUEST['value'] == "true"), 'rfw');
 		case "addtoblacklist":
 			return $this->addToBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
@@ -353,8 +371,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			} else {
 				return $this->setConfig("dropinvalid", false);
 			}
-
-		// Custom firewall rules.
 
 		// Custom firewall rules.
 		case "addcustomrule":
@@ -444,7 +460,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case 'disablefw':
 			$this->setConfig("status", false);
 			return;
-		case 'updateservices':
 		case 'updateservices':
 			if (!isset($_REQUEST['svc'])) {
 				throw new \Exception("No services to update");
