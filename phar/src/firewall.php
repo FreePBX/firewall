@@ -323,7 +323,7 @@ function checkPhar() {
 			fwLog("Invalid sig file.. Hash is not sha256 - check $sigfile");
 			// We don't use SLEEP as PHP is easily confused.
 			sigSleep(10);
-			continue;
+			return;
 		}
 
 		$v->updateSig($sig);
@@ -417,13 +417,20 @@ function updateFirewallRules($firstrun = false) {
 
 		// Assign the service to the required zones
 		$myzones = array("addto" => array(), "removefrom" => $zones);
-		if (!empty($settings['zones']) && is_array($settings['zones'])) {
-			foreach ($settings['zones'] as $z) {
-				unset($myzones['removefrom'][$z]);
-				$myzones['addto'][$z] = $z;
+		if (is_array($settings['zones'])) {
+			// If we're rejecting, we need to remove it from all zones
+			if (isset($settings['zones'][0]) && $settings['zones'][0] == "reject") {
+				$driver->updateServiceZones($s, $myzones);
+				$driver->addToReject($s, $settings);
+			} else {
+				$driver->removeFromReject($s);
+				foreach ($settings['zones'] as $z) {
+					unset($myzones['removefrom'][$z]);
+					$myzones['addto'][$z] = $z;
+				}
+				$driver->updateServiceZones($s, $myzones);
 			}
 		}
-		$driver->updateServiceZones($s, $myzones);
 	}
 
 	// Update RTP rules

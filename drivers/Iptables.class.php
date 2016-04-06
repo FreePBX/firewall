@@ -351,6 +351,9 @@ class Iptables {
 			if (strpos($id, "fpbxsvc-") !== false) {
 				$rawname = substr($id, 8);
 				$services[$rawname] = $rawname;
+			} elseif (strpos($id, "rejsvc-") !== false) {
+				$rawname = substr($id, 7);
+				$services[$rawname] = $rawname;
 			}
 		}
 		return $services;
@@ -1111,11 +1114,6 @@ class Iptables {
 		// Check if this is RTP traffic. This is a high priority tag, so it's up the top.
 		$retarr['fpbxfirewall'][]= array("jump" => "fpbx-rtp");
 
-		// :: DEVELOPMENT FAILSAFE RULE ::
-		// ::   REMOVE BEFORE RELASE    ::
-		// $retarr['fpbxfirewall'][] = array("proto" => "tcp", "dport" => "22", "jump" => "ACCEPT");
-		// Removed. Let's see how much breaks
-
 		// Now we can do our actual filtering.
 		//
 		// If any hosts are blacklisted, reject them early.
@@ -1132,6 +1130,8 @@ class Iptables {
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxhosts");
 		// And known interfaces.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxinterfaces");
+		// If anything is tagged as reject, we capture it here
+		$retarr['fpbxfirewall'][] = array("jump" => "fpbxreject");
 		// If this is a VoIP Signalling packet from an unknown host, and it's eligible for
 		// RFW, then send it off there.
 		$retarr['fpbxfirewall'][] = array("other" => "-m mark --mark 0x2/0x2", "jump" => "fpbxrfw");
@@ -1430,6 +1430,93 @@ class Iptables {
 		exec($cmd, $output, $ret);
 		if ($ret == 0) {
 			$this->currentconf['ipv6']['filter'][$target] = array();
+		}
+	}
+
+	public function addToReject($name, $settings) {
+
+		$current = &$this->getCurrentIptables();
+
+		// Reject on both ipv6 and ipv4
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$svcname = "rejsvc-$name";
+
+		// Make sure our target exists
+		$this->checkTarget($svcname);
+
+		// Is the rule correct?
+		foreach ($ipvers as $ipv => $ipt) {
+			$changed = false;
+			$flipped = array_flip($current[$ipv]['filter'][$svcname]);
+			$iptcommands = array();
+			foreach ($settings['fw'] as $tmparr) {
+				$protocol = $tmparr['protocol'];
+				$port = $tmparr['port'];
+				if ($ipv == "ipv6") {
+					$reject = "icmp6-port-unreachable";
+				} else {
+					$reject = "icmp-port-unreachable";
+				}
+
+				$param = "-p $protocol -m $protocol --dport $port -j REJECT --reject-with $reject";
+				$iptcommands[] = $param;
+				if (isset($flipped[$param])) {
+					unset($flipped[$param]);
+				} else {
+					$changed = true;
+				}
+			}
+
+			// If something's wrong, blow away the rule and recreate it.
+			if ($changed || !empty($flipped)) {
+				$cmd = "$ipt -F $svcname";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+				foreach ($iptcommands as $param) {
+					$cmd = "$ipt -A $svcname $param";
+					$this->l($cmd);
+					exec($cmd, $output, $ret);
+				}
+				$current[$ipv]['filter'][$svcname] = $iptcommands;
+			}
+
+			// Now check to see if the rule is in the reject table
+			$flipped = array_flip($current[$ipv]['filter']['fpbxreject']);
+			if (!isset($flipped["-j $svcname"])) {
+				$current[$ipv]['filter']['fpbxreject'][] = "-j $svcname";
+				$cmd = "$ipt -A fpbxreject -j $svcname";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			}
+		}
+	}
+
+	public function removeFromReject($name) {
+		$current = &$this->getCurrentIptables();
+
+		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$svcname = "rejsvc-$name";
+
+		foreach ($ipvers as $ipv => $ipt) {
+			$flipped = array_flip($current[$ipv]['filter']['fpbxreject']);
+			if (!isset($flipped["-j $svcname"])) {
+				continue;
+			}
+			// It exists, and it shouldn't.
+			$cmd = "$ipt -D fpbxreject -j $svcname";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			// Remove it from rejeect, but we don't care about preserving the index
+			$index = $flipped["-j $svcname"];
+			unset($current[$ipv]['filter']['fpbxreject'][$index]);
+			// Now flush and delete it
+			$cmd = "$ipt -F $svcname";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			$cmd = "$ipt -X $svcname";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			unset($current[$ipv]['filter'][$svcname]);
 		}
 	}
 }
