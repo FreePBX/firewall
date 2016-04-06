@@ -132,6 +132,9 @@ $path = $v->checkFile("Services.class.php");
 include $path;
 $services = new \FreePBX\modules\Firewall\Services;
 
+$path = $v->checkFile("Attacks.class.php");
+include $path;
+
 // Now, start by grabbing our interfaces, and making sure
 // they are configured correctly.
 $path = $v->checkFile("Network.class.php");
@@ -434,6 +437,23 @@ function updateFirewallRules($firstrun = false) {
 
 	// And permit our registrations through
 	$driver->updateRegistrations($getservices['smartports']['registrations']);
+
+	// Make sure we nuke any kernel conntrack rules that may be hanging around for 
+	// those hosts.
+	$a = new FreePBX\modules\Firewall\Attacks(1000); // We don't care about jiffies
+	$attacks = $a->getAllAttacks(false, false); // Don't want a summary
+	$tmparr = array_flip($getservices['smartports']['registrations']);
+
+	foreach ($attacks as $chain => $attacker) {
+		foreach (array_keys($attacker) as $ip) {
+			if (isset($tmparr[$ip])) {
+				// Found one. Remove it. It's legit now.
+				$fh = fopen("/proc/net/xt_recent/$chain", "w");
+				fwrite($fh, "-$ip\n");
+				fclose($fh);
+			}
+		}
+	}
 
 	// Update blacklist
 	$driver->updateBlacklist($getservices['blacklist']);

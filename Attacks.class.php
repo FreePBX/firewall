@@ -21,15 +21,16 @@ class Attacks {
 		$this->jiffies = $jiffies;
 	}
 
-	public function getAllAttacks($registrations) {
+	public function getAllAttacks($registrations, $summary = true) {
 		$retarr = array();
 		foreach ($this->tags as $tag) {
 			$retarr[$tag] = $this->parseRecent($tag);
 		}
 
-		$summary = $this->generateSummary($retarr, $registrations);
+		if ($summary) {
+			$retarr['summary'] = $this->generateSummary($retarr, $registrations);
+		}
 
-		$retarr['summary'] = $summary;
 		return $retarr;
 	}
 
