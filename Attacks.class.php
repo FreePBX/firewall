@@ -17,7 +17,7 @@ class Attacks {
 			throw new \Exception("Firewall is not running!");
 		}
 
-		$this->tags = array("ATTACKER", "REPEAT", "SIGNALLING", "CLAMPED");
+		$this->tags = array("ATTACKER", "REPEAT", "SIGNALLING", "CLAMPED", "DISCOVERED");
 		$this->jiffies = $jiffies;
 	}
 
@@ -30,6 +30,8 @@ class Attacks {
 		if ($summary) {
 			$retarr['summary'] = $this->generateSummary($retarr, $registrations);
 		}
+		// We only use Discovered for generateSummary
+		unset($retarr['DISCOVERED']);
 
 		return $retarr;
 	}
@@ -37,7 +39,7 @@ class Attacks {
 	private function parseRecent($tag) {
 		$file = $this->module.$tag;
 		if (!file_exists($file)) {
-			throw new \Exception("Can't find $file");
+			return array();
 		}
 		$tmparr = file($file, \FILE_IGNORE_NEW_LINES|\FILE_SKIP_EMPTY_LINES);
 		$retarr = array();
@@ -107,7 +109,7 @@ class Attacks {
 		$others = array();
 		// Now we go through all the hosts that have hit RFW at all, and
 		// report them, removing ones we already have mentioned.
-		foreach ($tags['REPEAT'] as $ip => $tmparr) {
+		foreach ($tags['DISCOVERED'] as $ip => $tmparr) {
 
 			// Was this one that registered? Yay!
 			if (in_array($ip, $registrations)) {

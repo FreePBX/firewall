@@ -1148,6 +1148,8 @@ class Iptables {
 
 		// To start with, we ensure that we keep track of ALL rfw attempts.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
+		// This is purely for displaying the Registered Endpoints
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name DISCOVERED --rsource");
 		// Testing against various attack tools suggests that they tend to spam packets,
 		// even when they are rejected.  So, as a simple 'we know you're doing bad things'
 		// check, if they've sent more than 50 packets in 10 seconds, they're baddies.
