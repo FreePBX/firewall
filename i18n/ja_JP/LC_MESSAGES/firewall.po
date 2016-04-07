@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-06 15:53+1000\n"
+"POT-Creation-Date: 2016-04-08 08:19+1000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -255,7 +255,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:483
+#: Firewall.class.php:487
 msgid "Defaults"
 msgstr ""
 
@@ -792,7 +792,7 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Firewall.class.php:484
+#: Firewall.class.php:488
 msgid "Reset"
 msgstr "リセット"
 
@@ -873,7 +873,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:485 views/modal.customsvc.php:37
+#: Firewall.class.php:489 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -991,7 +991,7 @@ msgstr ""
 msgid "That is not currently trusted. Please try again."
 msgstr ""
 
-#: Firewall.class.php:252
+#: Firewall.class.php:256
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1287,7 +1287,7 @@ msgid ""
 "Zone. Please read the Wiki for more information."
 msgstr ""
 
-#: Firewall.class.php:253
+#: Firewall.class.php:257
 msgid "You can add the host automatically here."
 msgstr ""
 
