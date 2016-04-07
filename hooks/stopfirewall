@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Find the voipfirewalld process
+PID=`pgrep -f voipfirewalld`
+
+# Kill it dead. We don't want it to run, but, we also don't
+# want it to shut down and clear its rules.
+
+if [ "$PID" ]; then
+	kill -9 $PID
+fi
+
+
+
+

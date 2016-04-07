@@ -236,6 +236,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->runHook("firewall");
 	}
 
+	public function stopFirewall() {
+		$this->runHook("stopfirewall");
+	}
+
 	public function isEnabled() {
 		return $this->getConfig("status");
 	}
