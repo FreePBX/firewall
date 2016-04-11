@@ -167,6 +167,7 @@ class Services {
 		if (!$zuluport) {
 			$retarr['descr'] = _("Zulu is not not available on this machine");
 			$retarr['disabled'] = true;
+			$retarr['fw'] = array();
 			return $retarr;
 		}
 
@@ -376,7 +377,8 @@ class Services {
 
 		$retarr = array(
 			"name" => _("NFS"),
-			"defzones" => array("reject")
+			"defzones" => array("reject"),
+			"fw" => array(),
 		);
 
 		if (!$ports) {
@@ -433,6 +435,7 @@ class Services {
 		$retarr = array(
 			"name" => _("SMB/CIFS"),
 			"defzones" => array("reject"),
+			"fw" => array(),
 		);
 
 		if (!file_exists("/etc/samba/smb.conf")) {
@@ -486,6 +489,7 @@ class Services {
 			"defzones" => array("internal"),
 			"descr" => _("iSymphony is not installed on this server."),
 			"disabled" => true,
+			"fw" => array(),
 		);
 		return $retarr;
 	}
