@@ -199,7 +199,7 @@ class Smart {
 
 		if ($this->chansip) {
 			// Trunks and extens are both in the 'sip' table.
-			$sql = "SELECT `data` FROM `sip` WHERE `keyword`='host'";
+			$sql = "SELECT DISTINCT(`data`) FROM `sip` WHERE `keyword`='host'";
 			$q = $this->db->query($sql);
 			$siphosts = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($siphosts as $sip) {
@@ -213,7 +213,7 @@ class Smart {
 			}
 
 			// Does an extension specifically permit a range?
-			$sql = "SELECT `data` FROM `sip` WHERE `keyword`='permit'";
+			$sql = "SELECT DISTINCT(`data`) FROM `sip` WHERE `keyword`='permit'";
 			$q = $this->db->query($sql);
 			$sippermits = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($sippermits as $sip) {
@@ -228,7 +228,7 @@ class Smart {
 
 		if ($this->iax) {
 			// Find IAX trunks...
-			$sql = "SELECT `data` FROM `iax` WHERE `keyword`='host'";
+			$sql = "SELECT DISTINCT(`data`) FROM `iax` WHERE `keyword`='host'";
 			$q = $this->db->query($sql);
 			$iaxhosts = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($iaxhosts as $iax) {
@@ -242,7 +242,7 @@ class Smart {
 			}
 
 			// Extensions?
-			$sql = "SELECT `data` FROM `iax` WHERE `keyword`='permit'";
+			$sql = "SELECT DISTINCT(`data`) FROM `iax` WHERE `keyword`='permit'";
 			$q = $this->db->query($sql);
 			$iaxpermits = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($iaxpermits as $iax) {
@@ -257,7 +257,7 @@ class Smart {
 
 		// PJSIP?
 		if ($this->pjsip) {
-			$sql = "SELECT `data` FROM `pjsip` WHERE `keyword`='sip_server'";
+			$sql = "SELECT DISTINCT(`data`) FROM `pjsip` WHERE `keyword`='sip_server'";
 			$q = $this->db->query($sql);
 			$pjsiptrunks = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($pjsiptrunks as $p) {
@@ -278,14 +278,15 @@ class Smart {
 
 			// Is this an IP address?
 			if (filter_var($d, FILTER_VALIDATE_IP)) {
-				$retarr[] = $d;
+				$retarr[$d] = $d;
 				continue;
 			}
 
 			// Is this a Network definition?
 			if (strpos($d, "/") !== false) {
 				// Yes it is.
-				$retarr[] = $this->returnCidr($d);
+				$entry = $this->returnCidr($d);
+				$retarr[$entry] = $entry;
 				continue;
 			}
 
@@ -329,6 +330,12 @@ class Smart {
 		// Otherwise it should be a valid CIDR.
 		$net = (int) $network;
 		if ($net >= 8 && $net <= 128) { // 128 == ipv6
+			if (filter_var($subnet, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+				// If it's /32 and it's ipv4, just return the host
+				if ($net == 32) {
+					return $subnet;
+				}
+			}
 			return $this->trimSubnet($subnet,$net);
 		}
 		return false;

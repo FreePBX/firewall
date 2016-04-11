@@ -579,6 +579,7 @@ class Iptables {
 			if (!is_array($me)) {
 				$me = array();
 			}
+			$added = array();
 			$exists = array_flip($me);
 			foreach ($ports as $proto => $r) {
 				foreach ($r as $rule) {
@@ -601,11 +602,19 @@ class Iptables {
 						$p = trim($this->parseFilter($rule))." -j MARK --set-xmark 0x1/0xffffffff";
 					}
 					if (isset($exists[$p])) {
+						// This avoids duplication of entries
+						$added[$p] = true;
 						unset($exists[$p]);
 						continue;
 					}
 
+					// Have I already added this?
+					if (isset($added[$p])) {
+						continue;
+					}
+
 					// Doesn't exist. Add it.
+					$added[$p] = true;
 					$me[] = $p;
 					$cmd = "$ipt -A fpbxsignalling $p";
 					$this->l($cmd);
@@ -675,6 +684,7 @@ class Iptables {
 			$me = &$current[$ipv]['filter']['fpbxsmarthosts'];
 			$exists = array_flip($me);
 			$process = $tmparr['targets'];
+			$added = array();
 			foreach ($process as $addr) {
 				// Does this entry already have a prefix?
 				if (strpos($addr, "/") !== false) {
@@ -692,11 +702,20 @@ class Iptables {
 					$p = "-s $addr/".$tmparr['prefix']." -m mark --mark 0x1/0x1 -j ACCEPT";
 				}
 				if (isset($exists[$p])) {
+					// This avoids duplication of entries
+					$added[$p] = true;
 					// It's already there, no need to change
 					unset($exists[$p]);
 					continue;
 				}
+
+				// Have we already added this entry?
+				if (isset($added[$p])) {
+					continue;
+				}
+
 				// It doesn't exist. We need to add it.
+				$added[$p] = true;
 				$me[] = $p;
 				$cmd = $tmparr['ipt']." -A fpbxsmarthosts $p";
 				$this->l($cmd);
@@ -1449,6 +1468,9 @@ class Iptables {
 			$changed = false;
 			$flipped = array_flip($current[$ipv]['filter'][$svcname]);
 			$iptcommands = array();
+			if (!isset($settings['fw'])) {
+				$settings['fw'] = array();
+			}
 			foreach ($settings['fw'] as $tmparr) {
 				$protocol = $tmparr['protocol'];
 				$port = $tmparr['port'];
