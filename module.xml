@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.21.1</version>
+	<version>13.0.22</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.22* Fix possibility of accidental iptables entry duplication
 		*13.0.21.1* Ensure firewall stops when fwconsole stop is run
 		*13.0.21* #11610, #11916, #11947, #11709, #11813, #11919, #11920, #11935.
 		*13.0.20* Remove en_US Translations
