@@ -3,12 +3,15 @@
 # Find the voipfirewalld process
 PID=`pgrep -f voipfirewalld`
 
-# Kill it dead. We don't want it to run, but, we also don't
-# want it to shut down and clear its rules.
+# Kill it dead.
 
 if [ "$PID" ]; then
 	kill -9 $PID
 fi
+
+# Clean up any iptables rules
+service iptables stop
+service ip6tables stop
 
 
 

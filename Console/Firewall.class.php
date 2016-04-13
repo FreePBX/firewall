@@ -34,6 +34,9 @@ class Firewall extends Command {
 			return $this->stopFirewall($output);
 		case "start":
 			return $this->startFirewall($output);
+		case "disable":
+			$this->disableFirewall($output);
+			return $this->stopFirewall($output);
 		case "trust":
 			return $this->trustEntry($output, $input->getArgument('opt'));
 		case "untrust":
@@ -46,7 +49,9 @@ class Firewall extends Command {
 	private function showHelp() {
 		$help = "Valid Commands:\n";
 		$commands = array(
-			"stop" => _("Stop and Disable the System Firewall"),
+			"disable" => _("Disable the System Firewall. This will shut it down cleanly."),
+			"stop" => _("Stop the System Firewall"),
+			"start" => _("Start (and enable, if disabled) the System Firewall"),
 			"trust" => _("Add the hostname or IP specified to the Trusted Zone"),
 			"untrust" => _("Remove the hostname or IP specified from the Trusted Zone"),
 		);
@@ -54,20 +59,29 @@ class Firewall extends Command {
 			$help .= "<info>$o</info> : <comment>$t</comment>\n";
 		}
 
-		$help .= "\n<error>"._("Warning!")."</error>\n";
-		$help .= _("You can only <info>start</info> the firewall through the web interface.\n");
-		$help .= _("This is to ensure you don't lock yourself out of the server.\n");
 		return $help;
 	}
 
-	private function stopFirewall($output) {
+	private function disableFirewall($output) {
 		$fw = \FreePBX::Firewall();
 		if (!$fw->isEnabled()) {
-			$output->writeln("<error>"._("Firewall is not running, can't stop it")."</error>");
-			exit(1);
+			$output->writeln("<error>"._("Firewall is not enabled, can't disable it")."</error>");
 		}
 		$fw->setConfig("status", false);
-		$output->writeln("<info>"._("Firewall disabled and stopped")."</info>");
+	}
+
+	private function startFirewall($output) {
+		$fw = \FreePBX::Firewall();
+		if (!$fw->isEnabled()) {
+			$output->writeln("<error>"._("Enabling Firewall.")."</error>");
+			$fw->setConfig("status", true);
+		}
+		return $fw->startFirewall();
+	}
+
+	private function stopFirewall() {
+		$fw = \FreePBX::Firewall();
+		$fw->stopFirewall();
 	}
 
 	private function trustEntry($output, $param) {
