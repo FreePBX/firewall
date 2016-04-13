@@ -716,6 +716,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	// Ajax Code below //
 	// /////////////// //
 	public function removeNetwork($net = false) {
+
+		// If we've been asked to remove a hidden network,
+		// make sure we remove the hidden tag, too
+		$hidden = $this->getConfig("hiddennets");
+		if (is_array($hidden) && isset($hidden[$net])) {
+			unset($hidden[$net]);
+			$this->setConfig("hiddennets", $hidden);
+		}
+
 		// Is it a host? We care about them differently.
 		$hostmap = $this->getConfig("hostmaps");
 		if (isset($hostmap[$net])) {

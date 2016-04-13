@@ -5,6 +5,17 @@ if (!isset($_REQUEST['tab'])) {
 	$tab = $_REQUEST['tab'];
 }
 
+// This allows cloud operators to have un-removable trusted IP addresses.
+// You can see (and delete) them by adding '&showhidden=true' to the URL
+if (!isset($_REQUEST['showhidden'])) {
+	$hidden = $fw->getConfig("hiddennets");
+	if (!is_array($hidden)) {
+		$hidden = array();
+	}
+} else {
+	$hidden = array();
+}
+
 $docs = "active";
 $net = $int = $blacklist = "";
 
@@ -140,6 +151,7 @@ foreach ($ints as $i => $conf) {
         <p><?php echo _("You may also enter DDNS hostnames here, which will be automatically monitored and updated as required."); ?></p>
 <?php
 $nets = $fw->getConfig("networkmaps");
+
 if (!is_array($nets)) {
 	$nets = array();
 }
@@ -151,6 +163,10 @@ $z = $fw->getZones();
 // Now, loop through our networks and display them.
 $counter = 1;
 foreach ($nets as $net => $currentzone) {
+	if (isset($hidden[$net])) {
+		continue;
+	}
+
 	if (trim($net)) {
 		$ro = "readonly disabled";
 	} else {
