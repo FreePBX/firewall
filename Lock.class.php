@@ -42,10 +42,12 @@ class Lock {
 			throw new \Exception("No lock given");
 		}
 		if (!is_array(self::$locks)) {
-			throw new \Exception("Tried to unlock before anything was locked");
+			print "Tried to unlock before anything was locked\n";
+			return false;
 		} else {
 			if (!isset(self::$locks[$lockname])) {
-				throw new \Exception("Tried to unlock something that wasn't locked");
+				print "Tried to unlock something that wasn't locked\n";
+				return false;
 			}
 			$lockfh = self::$locks[$lockname];
 			flock($lockfh, LOCK_UN);
