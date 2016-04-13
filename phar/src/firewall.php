@@ -359,6 +359,9 @@ function updateFirewallRules($firstrun = false) {
 		// This is bad.
 		wall("Firewall Rules corrupted! Restarting in 5 seconds");
 		Lock::unLock($thissvc);
+		`service fail2ban stop`;
+		`service iptables stop`;
+		`service ip6tables stop`;
 		// Wait 4 seconds to give incron a chance to catch up
 		sleep(4);
 		// Restart me.

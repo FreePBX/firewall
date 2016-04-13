@@ -51,6 +51,7 @@ class Lock {
 			flock($lockfh, LOCK_UN);
 			fclose($lockfh);
 			unset(self::$locks[$lockname]);
+			unset($lockfh);
 		}
 		return true;
 	}
