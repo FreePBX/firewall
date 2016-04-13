@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-13 23:10+1000\n"
+"POT-Creation-Date: 2016-04-14 01:17+1000\n"
 "PO-Revision-Date: 2015-11-17 12:22+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -86,7 +86,7 @@ msgstr ""
 msgid "Add New"
 msgstr ""
 
-#: Console/Firewall.class.php:50
+#: Console/Firewall.class.php:55
 msgid "Add the hostname or IP specified to the Trusted Zone"
 msgstr ""
 
@@ -171,12 +171,12 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:74
+#: Console/Firewall.class.php:88
 #, php-format
 msgid "Attempting to add %s to Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:98
+#: Console/Firewall.class.php:112
 #, php-format
 msgid "Attempting to remove %s from Trusted Zone"
 msgstr ""
@@ -235,7 +235,7 @@ msgstr ""
 msgid "Core Services"
 msgstr ""
 
-#: Console/Firewall.class.php:86
+#: Console/Firewall.class.php:100
 msgid "Could not validate entry. Please try again."
 msgstr ""
 
@@ -280,6 +280,10 @@ msgstr "禁用"
 msgid "Disable Firewall"
 msgstr ""
 
+#: Console/Firewall.class.php:52
+msgid "Disable the System Firewall. This will shut it down cleanly."
+msgstr ""
+
 #: views/view.about.php:38 views/view.smart.php:5
 msgid "Disabled"
 msgstr "禁用"
@@ -311,6 +315,10 @@ msgstr ""
 #: views/view.smart.php:4
 msgid "Enabled"
 msgstr "启用"
+
+#: Console/Firewall.class.php:76
+msgid "Enabling Firewall."
+msgstr ""
 
 #: OOBE.class.php:198
 msgid ""
@@ -373,10 +381,6 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Console/Firewall.class.php:70
-msgid "Firewall disabled and stopped"
-msgstr ""
-
 #: Console/Firewall.class.php:21
 msgid "Firewall functions"
 msgstr ""
@@ -385,8 +389,8 @@ msgstr ""
 msgid "Firewall has not started yet!"
 msgstr ""
 
-#: Console/Firewall.class.php:66
-msgid "Firewall is not running, can't stop it"
+#: Console/Firewall.class.php:68
+msgid "Firewall is not enabled, can't disable it"
 msgstr ""
 
 #: OOBE.class.php:230
@@ -792,7 +796,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Console/Firewall.class.php:51
+#: Console/Firewall.class.php:56
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
@@ -931,6 +935,10 @@ msgstr ""
 msgid "Single Port: %s"
 msgstr ""
 
+#: Console/Firewall.class.php:54
+msgid "Start (and enable, if disabled) the System Firewall"
+msgstr ""
+
 #: Firewall.class.php:63
 msgid "Starting up"
 msgstr ""
@@ -943,15 +951,15 @@ msgstr "状态"
 msgid "Status Overview"
 msgstr ""
 
-#: Console/Firewall.class.php:49
-msgid "Stop and Disable the System Firewall"
+#: Console/Firewall.class.php:53
+msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:94
+#: Console/Firewall.class.php:108
 msgid "Success. Entry added to Trusted Zone."
 msgstr ""
 
-#: Console/Firewall.class.php:110
+#: Console/Firewall.class.php:124
 msgid "Success. Entry removed from Trusted Zone."
 msgstr ""
 
@@ -991,7 +999,7 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Console/Firewall.class.php:105
+#: Console/Firewall.class.php:119
 msgid "That is not currently trusted. Please try again."
 msgstr ""
 
@@ -1119,10 +1127,6 @@ msgstr ""
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
-#: Console/Firewall.class.php:59
-msgid "This is to ensure you don't lock yourself out of the server.\n"
-msgstr ""
-
 #: views/view.registered.php:8 views/view.status.php:8
 msgid "This page (and all tabs) automatically update every 15 seconds."
 msgstr ""
@@ -1216,10 +1220,6 @@ msgstr ""
 msgid "Warning"
 msgstr "警告"
 
-#: Console/Firewall.class.php:57
-msgid "Warning!"
-msgstr ""
-
 #: Services.class.php:55
 msgid ""
 "Warning: Unable to read /etc/ssh/sshd_config - this port may be incorrect. "
@@ -1297,11 +1297,6 @@ msgstr ""
 
 #: views/view.about.php:21
 msgid "You can enable Responsive Firewall in the 'Responsive Firewall' tab."
-msgstr ""
-
-#: Console/Firewall.class.php:58
-msgid ""
-"You can only <info>start</info> the firewall through the web interface.\n"
 msgstr ""
 
 #: OOBE.class.php:232
