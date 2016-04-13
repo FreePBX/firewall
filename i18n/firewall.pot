@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-12 08:43+1000\n"
+"POT-Creation-Date: 2016-04-13 23:10+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: views/page.zones.php:48
+#: views/page.zones.php:59
 msgid "About Zones"
 msgstr ""
 
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Add Network"
 msgstr ""
 
-#: views/page.zones.php:194
+#: views/page.zones.php:210
 #: views/view.blacklist.php:41
 msgid "Add New"
 msgstr ""
@@ -100,7 +100,7 @@ msgid ""
 "this turned on."
 msgstr ""
 
-#: views/page.zones.php:63
+#: views/page.zones.php:74
 msgid ""
 "All interfaces must be assigned to a default zone. Any traffic entering this "
 "interface (that does not originate from a network in the Networks tab) is "
@@ -188,7 +188,7 @@ msgid ""
 "validated by Responsive Firewall."
 msgstr ""
 
-#: views/page.zones.php:42
+#: views/page.zones.php:53
 msgid "Blacklists"
 msgstr ""
 
@@ -258,7 +258,7 @@ msgstr ""
 msgid "Defaults"
 msgstr ""
 
-#: views/page.zones.php:190
+#: views/page.zones.php:206
 #: views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
@@ -285,7 +285,7 @@ msgstr ""
 msgid "Drop"
 msgstr ""
 
-#: views/page.zones.php:50
+#: views/page.zones.php:61
 msgid ""
 "Each network interface on your machine must be mapped to a Zone. Note that, "
 "by default, all interfaces are mapped to trusted (Trusted networks are not "
@@ -395,7 +395,7 @@ msgid ""
 "will assist with NAT or Translation issues."
 msgstr ""
 
-#: views/page.zones.php:138
+#: views/page.zones.php:149
 msgid ""
 "For example, if interface eth0 is assigned to the 'External' zone, here you "
 "can add a specific <strong>source</strong> network to the 'Trusted' zone. "
@@ -454,11 +454,11 @@ msgid ""
 "SIP, but few providers support it."
 msgstr ""
 
-#: views/page.zones.php:118
+#: views/page.zones.php:129
 msgid "IP Address: "
 msgstr ""
 
-#: views/page.zones.php:116
+#: views/page.zones.php:127
 msgid "IP Addresses: "
 msgstr ""
 
@@ -521,7 +521,7 @@ msgid ""
 "Connectivity menu."
 msgstr ""
 
-#: views/page.zones.php:137
+#: views/page.zones.php:148
 msgid ""
 "Individual hosts and networks are specified here, that override the default "
 "rule for an interface."
@@ -542,7 +542,7 @@ msgid ""
 "firewall service."
 msgstr ""
 
-#: views/page.zones.php:36
+#: views/page.zones.php:47
 msgid "Interfaces"
 msgstr ""
 
@@ -557,7 +557,7 @@ msgid ""
 "you to limit the services this machine provides to clients."
 msgstr ""
 
-#: views/page.zones.php:64
+#: views/page.zones.php:75
 msgid ""
 "It is a misconfiguration to have a <strong>interface</strong> assigned to "
 "the Trusted zone. Only networks or hosts should be assigned to that zone. "
@@ -604,7 +604,7 @@ msgstr ""
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
-#: views/page.zones.php:39
+#: views/page.zones.php:50
 msgid "Networks"
 msgstr ""
 
@@ -621,7 +621,7 @@ msgstr ""
 msgid "No Endpoints have been allowed through the Responsive Firewall"
 msgstr ""
 
-#: views/page.zones.php:113
+#: views/page.zones.php:124
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
@@ -660,7 +660,7 @@ msgid ""
 "used when an incoming connection <strong>would normally be blocked</strong>."
 msgstr ""
 
-#: views/page.zones.php:139
+#: views/page.zones.php:150
 msgid "Note that several common settings are available on the 'Advanced' page."
 msgstr ""
 
@@ -889,8 +889,8 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: views/page.zones.php:105
-#: views/page.zones.php:191
+#: views/page.zones.php:116
+#: views/page.zones.php:207
 msgid "Save Changes"
 msgstr ""
 
@@ -1328,7 +1328,7 @@ msgid ""
 "which will require manual configuration."
 msgstr ""
 
-#: views/page.zones.php:140
+#: views/page.zones.php:151
 msgid ""
 "You may also enter DDNS hostnames here, which will be automatically "
 "monitored and updated as required."
@@ -1351,7 +1351,7 @@ msgstr ""
 msgid "Your Client"
 msgstr ""
 
-#: views/page.zones.php:33
+#: views/page.zones.php:44
 msgid "Zone Information"
 msgstr ""
 
