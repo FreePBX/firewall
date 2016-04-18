@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-14 01:17+1000\n"
+"POT-Creation-Date: 2016-04-18 20:01+1000\n"
 "PO-Revision-Date: 2015-11-17 12:22+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -82,7 +82,7 @@ msgstr "添加主机"
 msgid "Add Network"
 msgstr ""
 
-#: views/page.zones.php:210 views/view.blacklist.php:41
+#: views/page.zones.php:223 views/view.blacklist.php:41
 msgid "Add New"
 msgstr ""
 
@@ -171,12 +171,12 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:88
+#: Console/Firewall.class.php:103
 #, php-format
 msgid "Attempting to add %s to Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:112
+#: Console/Firewall.class.php:126
 #, php-format
 msgid "Attempting to remove %s from Trusted Zone"
 msgstr ""
@@ -235,7 +235,7 @@ msgstr ""
 msgid "Core Services"
 msgstr ""
 
-#: Console/Firewall.class.php:100
+#: Console/Firewall.class.php:114
 msgid "Could not validate entry. Please try again."
 msgstr ""
 
@@ -263,7 +263,7 @@ msgstr ""
 msgid "Defaults"
 msgstr ""
 
-#: views/page.zones.php:206 views/view.blacklist.php:10
+#: views/page.zones.php:219 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
 msgstr "删除"
@@ -399,7 +399,7 @@ msgid ""
 "will assist with NAT or Translation issues."
 msgstr ""
 
-#: views/page.zones.php:149
+#: views/page.zones.php:162
 msgid ""
 "For example, if interface eth0 is assigned to the 'External' zone, here you "
 "can add a specific <strong>source</strong> network to the 'Trusted' zone. "
@@ -457,11 +457,11 @@ msgid ""
 "SIP, but few providers support it."
 msgstr ""
 
-#: views/page.zones.php:129
+#: views/page.zones.php:142
 msgid "IP Address: "
 msgstr ""
 
-#: views/page.zones.php:127
+#: views/page.zones.php:140
 msgid "IP Addresses: "
 msgstr ""
 
@@ -524,7 +524,7 @@ msgid ""
 "Connectivity menu."
 msgstr ""
 
-#: views/page.zones.php:148
+#: views/page.zones.php:161
 msgid ""
 "Individual hosts and networks are specified here, that override the default "
 "rule for an interface."
@@ -622,7 +622,7 @@ msgstr ""
 msgid "No Endpoints have been allowed through the Responsive Firewall"
 msgstr ""
 
-#: views/page.zones.php:124
+#: views/page.zones.php:137
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
@@ -660,7 +660,7 @@ msgid ""
 "used when an incoming connection <strong>would normally be blocked</strong>."
 msgstr ""
 
-#: views/page.zones.php:150
+#: views/page.zones.php:163
 msgid "Note that several common settings are available on the 'Advanced' page."
 msgstr ""
 
@@ -670,6 +670,10 @@ msgid ""
 "can only be overridden by access from a Trusted Zone. This is functionally "
 "equivalent to turning off access from all zones, unless you are running an "
 "extra Firewall plugin."
+msgstr ""
+
+#: views/page.zones.php:134
+msgid "Note:"
 msgstr ""
 
 #: views/view.status.php:19
@@ -886,7 +890,7 @@ msgstr ""
 msgid "Save"
 msgstr "保存"
 
-#: views/page.zones.php:116 views/page.zones.php:207
+#: views/page.zones.php:126 views/page.zones.php:220
 msgid "Save Changes"
 msgstr "保存修改"
 
@@ -955,11 +959,11 @@ msgstr ""
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:108
+#: Console/Firewall.class.php:122
 msgid "Success. Entry added to Trusted Zone."
 msgstr ""
 
-#: Console/Firewall.class.php:124
+#: Console/Firewall.class.php:138
 msgid "Success. Entry removed from Trusted Zone."
 msgstr ""
 
@@ -999,7 +1003,7 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Console/Firewall.class.php:119
+#: Console/Firewall.class.php:133
 msgid "That is not currently trusted. Please try again."
 msgstr ""
 
@@ -1192,6 +1196,10 @@ msgstr ""
 msgid "Trusted Management Network defined"
 msgstr ""
 
+#: views/page.zones.php:134
+msgid "Tunnel interfaces are automatically assigned to the Internal zone"
+msgstr ""
+
 #: Services.class.php:110
 msgid "UCP"
 msgstr ""
@@ -1306,7 +1314,7 @@ msgid ""
 "which will require manual configuration."
 msgstr ""
 
-#: views/page.zones.php:151
+#: views/page.zones.php:164
 msgid ""
 "You may also enter DDNS hostnames here, which will be automatically "
 "monitored and updated as required."
