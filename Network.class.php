@@ -33,7 +33,6 @@ class Network {
 				continue;
 			}
 
-
 			if (preg_match("/(.+?)(?:@.+)?:$/", $vals[1], $res)) { // Matches vlans, which are eth0.100@eth0
 				// It's a network definition.
 				// This won't clobber an exsiting one, as it always comes
@@ -67,7 +66,10 @@ class Network {
 			$intname = str_replace("\\", "", $intname);
 
 			// Strip netmask off the end of the IP address
-			$ret = preg_match("/(.+)\/(\d*+)/", $vals[3], $ip);
+			if (!preg_match("/(.+)\/(\d*+)/", $vals[3], $ip)) {
+				// This is probably a point to point interface. Set it to be /32
+				$ip = array($vals[3]."/32", $vals[3], "32");
+			}
 
 			// Is this an IPv6 link-local address? Don't display it if it is.
 			if ($ip[1][0] == "f" && $ip[1][1] == "e") {

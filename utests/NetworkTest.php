@@ -25,5 +25,10 @@ class NetworkTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse(isset($parsed['eth0\\']), "Backslash being returned on eth name");
 	}
 
-
+	// FREEPBX-11934
+	public function testInvalidOffset() {
+		$ipoutput = file(__DIR__."/ipoutput.2");
+		$parsed = self::$n->parseIpOutput($ipoutput);
+		$this->assertEquals($parsed['tun1']['addresses'][0][0], "172.16.3.164", "Tunnel IP address not being returned");
+	}
 }
