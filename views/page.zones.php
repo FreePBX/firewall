@@ -81,6 +81,11 @@ $counter = 0;
 
 foreach ($ints as $i => $conf) {
 	$currentzone = $fw->getZone($i);
+	if (strpos($i, "tun") === 0) {
+		$tun = true;
+	} else {
+		$tun = false;
+	}
 ?>
 <div class='element-container'>
   <div class='row'>
@@ -109,10 +114,15 @@ foreach ($ints as $i => $conf) {
 			$active = "";
 			$checked = "";
 		}
-		print "<input class='p$parent v$zn' data-parent='$parent' type='radio' name='int-$i' id='int-$i-$zn' value='$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
+		if ($tun && $zn !== "internal") {
+			$tundis = "disabled";
+		} else {
+			$tundis = "";
+		}
+		print "<input class='p$parent v$zn' data-parent='$parent' $tundis type='radio' name='int-$i' id='int-$i-$zn' value='$zn' $checked><label for='int-$i-$zn'>".$zone['name']."</label>\n";
 	}
 	print "</span>\n";
-	if (!$disabled) {
+	if (!$tun && !$disabled) {
 		print "<button type='button' class='btn x-btn btn-success intbutton $disabled' $disabled data-int='$i' data-action='update' title='"._("Save Changes")."'><span class='glyphicon glyphicon-ok' data-int='$i' data-action='update'></span></button>\n";
 	}
 ?>
@@ -120,10 +130,13 @@ foreach ($ints as $i => $conf) {
     </div>
     <div class='col-md-9 col-md-offset-3'>
 <?php
+	if ($tun) {
+		print "<i><strong>"._("Note:")."</strong> "._("Tunnel interfaces are automatically assigned to the Internal zone")."</i><br>\n";
+	}
 	if (empty($conf['addresses'])) {
 		print _("No IP Addresses assigned to this interface.");
 	} else {
-		if (count($conf['addresses'] > 1)) {
+		if (count($conf['addresses']) > 1) {
 			print _("IP Addresses: ");
 		} else {
 			print _("IP Address: ");

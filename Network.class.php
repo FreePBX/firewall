@@ -86,6 +86,10 @@ class Network {
 
 		foreach ($ints as $i) {
 			$interfaces[$i]['config'] = $this->getInterfaceConfig($i);
+			// Is this a tunnel interface? Alway Internal. No matter what.
+			if (strpos($i, "tun") === 0) {
+				$interfaces[$i]['config']['ZONE'] = "internal";
+			}
 		}
 		return $interfaces;
 	}
@@ -143,9 +147,21 @@ class Network {
 		return array("interface" => $int, "router" => $router);
 	}
 
-	public function updateInterfaceZone($iface, $newzone) {
+	public function updateInterfaceZone($iface, $newzone = false) {
 		// SHMZ/CentOS/RHEL/etc - Update the zone in ifcfg-$iface
 		$centos = "/etc/sysconfig/network-scripts/ifcfg-$iface";
+
+		// If this is a tunnel interface, don't do anything
+		if (strpos($iface, "tun") === 0) {
+			return true;
+		}
+
+		// If newzone is false, we're deleting the interface configuration.
+		if (!$newzone) {
+			@unlink($centos);
+			return true;
+		}
+
 		if (!file_exists($centos)) {
 			// It doesn't exist. This is possibly because it's an alias,
 			// and the BASE interface hasn't been configured.

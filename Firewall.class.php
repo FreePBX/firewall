@@ -666,6 +666,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$ints[$realint] = 'trusted';
 		}
 
+		// Is this a tunnel interface? That's always ALWAYS going to be
+		// treated as 'internal' and is not configurable.
+		if (strpos($int, "tun") === 0) {
+			return "internal";
+		}
+
 		return $ints[$realint];
 	}
 

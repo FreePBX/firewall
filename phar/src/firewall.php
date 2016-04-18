@@ -139,12 +139,12 @@ include $path;
 // they are configured correctly.
 $path = $v->checkFile("Network.class.php");
 include $path;
-$nets = new \FreePBX\modules\Firewall\Network;
+$netobj = new \FreePBX\modules\Firewall\Network;
 
-$known = $nets->discoverInterfaces();
+$known = $netobj->discoverInterfaces();
 foreach ($known as $int => $conf) {
 	if (!isset($conf['config']['ZONE']) || !isValidZone($conf['config']['ZONE'])) {
-		$nets->updateInterfaceZone($int, "trusted");
+		$netobj->updateInterfaceZone($int, "trusted");
 		$zone = "trusted";
 	} else {
 		$zone = $conf['config']['ZONE'];
@@ -344,10 +344,10 @@ function checkPhar() {
 
 function updateFirewallRules($firstrun = false) {
 	// Signature validation and firewall driver
-	global $v, $driver, $services, $thissvc, $fwversion;
+	global $v, $driver, $services, $thissvc, $fwversion, $netobj;
 
 	// Flush cache, read what the system thinks the firewall rules are.
-	$driver->refreshCache();
+	$currentrules = $driver->refreshCache();
 
 	// Delete our safemode flag if it exists.
 	if (file_exists("/var/run/firewalld.safemode")) {
@@ -557,7 +557,65 @@ function updateFirewallRules($firstrun = false) {
 	} else {
 		$driver->setRejectMode(false, false);
 	}
-	
+
+	// Update any interfaces that may have changed
+	$known = $netobj->discoverInterfaces();
+	if (is_array($currentrules['ipv4']['filter']['fpbxinterfaces'])) {
+		$fints = $currentrules['ipv4']['filter']['fpbxinterfaces'];
+
+		// Look through our current rules and make sure they aren't referencing
+		// interfaces that don't exist, or, are wrong.
+
+		// Cache the discovered interfaces for later.
+		$currentcache = array();
+
+		foreach ($fints as $entry) {
+			if (!preg_match("/-i ([^\s]+) -j zone-(.+)$/", $entry, $out)) {
+				// something bad here
+				print "ERROR: Unable to parse interface line '$entry', skipping. THIS IS A BUG\n";
+				continue;
+			}
+			// Debugging:
+			// print "Line $entry - int ".$out[1]." to zone ".$out[2]."\n";
+
+			// Does this rule point to a valid interface?
+			if (!isset($known[$out[1]])) {
+				// We have a rule that references a non-existant interface, so it should be
+				// removed.
+				$driver->changeInterfaceZone($out[1], false);
+				continue;
+			}
+
+			// Is iptables pointing to the correct zone?
+			if ($out[2] !== $known[$out[1]]['config']['ZONE']) {
+				// No. Fix it.
+				$driver->changeInterfaceZone($out[1], $out[2]);
+			}
+			// Mark it as discovered
+			$currentcache[$out[1]] = $out[2];
+		}
+
+		// Now go through our discovered interfaces, and see if any
+		// are missing
+		foreach ($known as $intname => $tmparr) {
+			// If this is a child of another interface, ignore
+			if ($tmparr['config']['PARENT']) {
+				continue;
+			}
+			// Has this zone been previously discovered?
+			if (!isset($tmparr['config']['ZONE'])) {
+				// No? Set it to trusted.
+				$driver->changeInterfaceZone($intname, 'trusted');
+				continue;
+			}
+
+			$zoneshouldbe = $tmparr['config']['ZONE'];
+			// Is this interface pointing at the right zone?
+			if (!isset($currentcache[$intname]) || $zoneshouldbe !== $currentcache[$intname]) {
+				$driver->changeInterfaceZone($intname, $zoneshouldbe);
+			}
+		}
+	}
 }
 
 function sigSleep($secs = 10) {

@@ -463,7 +463,6 @@ class Iptables {
 	// Root process
 	public function changeInterfaceZone($iface = false, $newzone = false) {
 		$this->checkFpbxFirewall();
-		$this->checkTarget("zone-$newzone");
 
 		// Interfaces are checked AFTER networks, so that source networks
 		// can override default interface inputs.
@@ -492,12 +491,15 @@ class Iptables {
 					// break;
 				}
 			}
-			// Now we can just add it.
-			$cmd = "$ipt -A fpbxinterfaces $p$newzone";
-			$this->l($cmd);
-			$output = null;
-			exec($cmd, $output, $ret);
-			$interfaces[] = "$p$newzone";
+			// Now we can just add it, if we're not deleting it
+			if ($newzone) {
+				$this->checkTarget("zone-$newzone");
+				$cmd = "$ipt -A fpbxinterfaces $p$newzone";
+				$this->l($cmd);
+				$output = null;
+				exec($cmd, $output, $ret);
+				$interfaces[] = "$p$newzone";
+			}
 		}
 
 		$net = new \FreePBX\modules\Firewall\Network;
