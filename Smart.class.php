@@ -454,6 +454,13 @@ class Smart {
 			// If we have a line starting with 'Contact:' then we found one!
 			// This will be along the lines of '400/sip:400@192.168.15.38:5061          Avail     10.121'
 			if (strpos($l, "Contact:") === 0) {
+
+				// FREEPBX-12143 - Don't return unavail endpoints
+				if (strpos($l, " Unavail") !== false) {
+					continue;
+				}
+
+				// If there is no @, we pick it up as part of a trunk.
 				if (preg_match("/Contact:\s+(.+)@(.+?)\s/", $l, $out)) {
 					// Ok, we have a contact. This should be an IP address. Is it?
 					if (preg_match("/(?:\[?)([0-9a-f:\.]+)(?:\]?):(.+)/", $out[2], $ipaddr)) {
