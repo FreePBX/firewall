@@ -753,9 +753,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function addNetworkToZone($net = false, $zone = false) {
 		$net = trim($net);
+		if (!$net) {
+			// Someone clicked on an empty box..
+			return;
+		}
 		// Is this a network?
 		if (strpos($net, "/") !== false) {
 			list($addr, $subnet) = explode("/", trim($net));
+			if (!filter_var($addr, FILTER_VALIDATE_IP)) {
+				throw new \Exception("Invalid IP '$addr'");
+			}
 		} else {
 			$addr = trim($net);
 			$subnet = false;
