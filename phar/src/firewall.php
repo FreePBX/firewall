@@ -353,7 +353,7 @@ function updateFirewallRules($firstrun = false) {
 	// Make sure the rules haven't been disturbed, and aren't corrupt
 	if (!$firstrun && !$driver->validateRunning()) {
 		// This is bad.
-		wall("Firewall Rules corrupted! Restarting in 5 seconds");
+		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in /tmp/firewall.log\n");
 		Lock::unLock($thissvc);
 		`service fail2ban stop`;
 		`service iptables stop`;
