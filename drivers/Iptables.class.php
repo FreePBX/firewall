@@ -598,7 +598,7 @@ class Iptables {
 					}
 					$rule['proto'] = $proto;
 					// If we are allowing this protocol through to the rfw, tag it with the second bit, as well.
-					if ($rules['settings']['rprotocols'][$rule['name']]['state']) {
+					if ($rules['settings']['responsive'] && $rules['settings']['rprotocols'][$rule['name']]['state']) {
 						$p = trim($this->parseFilter($rule))." -j MARK --set-xmark 0x3/0xffffffff";
 					} else {
 						$p = trim($this->parseFilter($rule))." -j MARK --set-xmark 0x1/0xffffffff";
