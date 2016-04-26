@@ -257,9 +257,13 @@ class Services {
 					continue;
 				}
 				if ($arr['keyword'] == "bindport") {
-					$bindport = $arr['data'];
+					$bindport = (int) $arr['data'];
 					continue;
 				}
+			}
+			// If bindport is obviously wrong, default to 5060.
+			if ($bindport < 1024) {
+				$bindport = 5060;
 			}
 			$retarr['fw'][] = array("protocol" => "udp", "port" => $bindport);
 			if ($tcp) {
