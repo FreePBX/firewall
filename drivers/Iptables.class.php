@@ -92,6 +92,26 @@ class Iptables {
 				print "No fpbxinterfaces in $i\n";
 				return false;
 			}
+			// Make sure our responsive rules are there
+			if (!isset($current[$i]['filter']['fpbxrfw'])) {
+				print "No fpbxrfw entry in $i\n";
+				return false;
+			}
+			$rfw = $current[$i]['filter']['fpbxrfw'];
+			$rules = $this->getDefaultRules();
+			// Compare the main 3 rules, that should tell you if the kernel is OK
+			if (strpos($rfw[1], $rules['fpbxrfw'][1]['other']) === false) {
+				print "RFW rule 1 not valid (Is '".$rfw[1]."', should start with '".$rules['fpbxrfw'][1]['other']."')\nTHIS MAY BE A KERNEL ISSUE. IF THIS KEEPS OCCURRING REBOOT YOUR MACHINE URGENTLY.\n";
+				return false;
+			}
+			if (strpos($rfw[2], $rules['fpbxrfw'][2]['other']) === false) {
+				print "rfw rule 2 not valid (Is '".$rfw[2]."', should start with '".$rules['fpbxrfw'][2]['other']."')\nTHIS MAY BE A KERNEL ISSUE. IF THIS KEEPS OCCURRING REBOOT YOUR MACHINE URGENTLY.\n";
+				return false;
+			}
+			if (strpos($rfw[3], $rules['fpbxrfw'][3]['other']) === false) {
+				print "rfw rule 3 not valid (Is '".$rfw[3]."', should start with '".$rules['fpbxrfw'][3]['other']."')\nTHIS MAY BE A KERNEL ISSUE. IF THIS KEEPS OCCURRING REBOOT YOUR MACHINE URGENTLY.\n";
+				return false;
+			}
 		}
 		return true;
 	}
