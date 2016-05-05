@@ -128,19 +128,32 @@ class Services {
 		if ($nodejs) {
 			$retarr['fw'][] = array("protocol" => "tcp", "port" => $nodejs);
 		}
+		$nodejstls = \FreePBX::Config()->get('NODEJSHTTPSBINDPORT');
+		if ($nodejstls) {
+			$retarr['fw'][] = array("protocol" => "tcp", "port" => $nodejstls);
+		}
 		return $retarr;
 	}
 
 	private function getSvc_webrtc() {
 		$websocket = \FreePBX::Config()->get('HTTPBINDPORT');
+		$tlssocket = \FreePBX::Config()->get('HTTPTLSBINDPORT');
+
 		if (!$websocket) {
 			$websocket = 8088;
 		}
+		if (!$tlssocket) {
+			$tlssocket = 8089;
+		}
+
 		$retarr = array(
 			"name" => _("WebRTC"),
 			"defzones" => array("reject"),
 			"descr" => _("WebRTC is used by UCP (and other services) to enable calls to be made via a web browser."),
-			"fw" => array(array("protocol" => "tcp", "port" => $websocket)),
+			"fw" => array(
+				array("protocol" => "tcp", "port" => $websocket),
+				array("protocol" => "tcp", "port" => $tlssocket),
+			),
 		);
 		return $retarr;
 	}
