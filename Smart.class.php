@@ -159,33 +159,40 @@ class Smart {
 		if ($this->pjsip) {
 			// Woo. What are our settings?
 			$ss = \FreePBX::Sipsettings();
-			$allBinds = $ss->getConfig("binds");
-			$websocket = false;
-			foreach ($allBinds as $type => $listenArr) {
-				// What interface(s) are we listening on?
-				foreach ($listenArr as $ipaddr => $mode) {
-					if ($mode != "on") {
+			$allBinds = $ss->getBinds();
+			// ss->getBinds should always return correct information.
+			// But be paranoid.
+			if (!isset($allBinds['pjsip']) || !is_array($allBinds['pjsip'])) {
+				$pjbinds = array();
+			} else {
+				$pjbinds = $allBinds['pjsip'];
+			}
+			foreach ($pjbinds as $listenip => $allports) {
+				foreach ($allports as $protocol => $port) {
+					// If we weren't given a port, we may need to look it up
+					if ((int) $port < 1024) {
+						// If it's websockets, we need to ask FreePBX which port
+						// asterisk is listening on
+						if ($protocol == "ws") {
+							$port = \FreePBX::Config()->get('HTTPBINDPORT');
+						} elseif ($protocol == "wss") {
+							$port = \FreePBX::Config()->get('HTTPTLSBINDPORT');
+						} else {
+							throw new \Exception("Protocol '$protocol' didn't tell me what port it was listening on");
+						}
+					}
+					// If we still don't have a port, something is wildly wrong,
+					// so just skip over it and continue
+					if ((int) $port < 1024) {
 						continue;
 					}
-					if ($type == "ws" || $type == "wss") {
-						$websocket = \FreePBX::Config()->get('HTTPBINDPORT');
-						continue;
-					}
-					$port = $ss->getConfig($type."port-".$ipaddr);
-					if (!$port) {
-						continue;
-					}
-					if ($type == "tcp" || $type == "tls") {
-						$tcp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
-					} elseif ($type == "udp") {
-						$udp[] = array("dest" => $ipaddr, "dport" => $port, "name" => "pjsip");
+					// If it's not udp, it's tcp.
+					if ($protocol == "udp") {
+						$udp[] = array("dest" => $listenip, "dport" => $port, "name" => "pjsip");
 					} else {
-						throw new \Exception("Unknown protocol $type");
+						$tcp[] = array("dest" => $listenip, "dport" => $port, "name" => "pjsip");
 					}
 				}
-			}
-			if ($websocket) {
-				$tcp[] = array("dest" => $ipaddr, "dport" => $websocket, "name" => "pjsip");
 			}
 		}
 
