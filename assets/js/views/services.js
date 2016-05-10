@@ -44,7 +44,7 @@ $(document).ready(function() {
 				d.zones.push($(z).data('zone'));
 			});
 			$.ajax({
-				url: window.ajaxurl,
+				url: window.FreePBX.ajaxurl,
 				data: d,
 				complete: function(data) { $("."+id).prop("disabled", false); },
 			});
@@ -52,7 +52,7 @@ $(document).ready(function() {
 			// TODO: Show a delete modal?
 			$("."+id).prop("disabled", true);
 			$.ajax({
-				url: window.ajaxurl,
+				url: window.FreePBX.ajaxurl,
 				data: { module: "firewall", command: "deletecustomrule", id: id, },
 				complete: function(data) { 
 					window.location.href = window.location.href;
@@ -151,7 +151,7 @@ function saveCust() {
 	console.log("Saving");
 	$("#cssave").text("Saving...").prop("disabled", true);
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: d,
 		complete: function(data) { 
 			window.location.href = window.location.href;

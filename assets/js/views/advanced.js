@@ -24,7 +24,7 @@ function updateRfw(target) {
 	var d = { command: 'updaterfw', module: 'firewall', proto: target.getAttribute('name'), value: target.getAttribute('value') };
 	$("input[name="+target.getAttribute('name')+"]").prop('disabled', true);
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: d,
 		complete: function(data) { 
 			window.location.href = window.location.href;
@@ -37,7 +37,7 @@ function updateSafemode(target) {
 	var n = target.getAttribute('name');
 	$("input[name="+n+"]").prop('disabled', true);
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: d,
 		success: function(data) {
 			if (typeof data.message !== "undefined") {
@@ -57,7 +57,7 @@ function updateRejectmode(target) {
 	var n = target.getAttribute('name');
 	$("input[name="+n+"]").prop('disabled', true);
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: d,
 		success: function(data) {
 			$("input[name="+n+"]").prop('disabled', false);
@@ -68,7 +68,7 @@ function updateRejectmode(target) {
 function advancedAdd(cmd, target) {
 	$(target).text("Updating...").prop('disabled', true);
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: { command: cmd, module: 'firewall' },
 		complete: function(data) { 
 			$(target).text("Added");

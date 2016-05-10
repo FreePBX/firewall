@@ -130,7 +130,7 @@ $(document).ready(function() {
 	$("#rerunwiz").click(function() {
 		// Restart oobe
 		$.ajax({
-			url: window.ajaxurl,
+			url: window.FreePBX.ajaxurl,
 			data: { command: 'restartoobe', module: 'firewall' },
 			success: function(data) { window.location.reload(); },
 		});

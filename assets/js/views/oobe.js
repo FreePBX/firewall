@@ -23,7 +23,7 @@ $(document).ready(function() {
 	$("#ssfabort").click(function() {
 		// We don't want oobe.
 		$.ajax({
-			url: window.ajaxurl,
+			url: window.FreePBX.ajaxurl,
 			data: { command: 'abortoobe', module: 'firewall' },
 			success: function(data) { window.location.reload(); },
 		});
@@ -32,7 +32,7 @@ $(document).ready(function() {
 
 function getQuestion() {
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: { command: 'getoobequestion', module: 'firewall' },
 		success: function(data) { processQuestion(data); },
 	});
@@ -81,7 +81,7 @@ function buttonNo() {
 
 function submitAnswer(q, ans) {
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: { command: 'answeroobequestion', module: 'firewall', question: q, answer: ans },
 		success: function(data) { getQuestion(); },
 	});

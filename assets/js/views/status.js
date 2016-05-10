@@ -10,7 +10,7 @@ $(document).ready(function() {
 	$("#attackersdiv").on("click", ".delbutton", function(e) {
 		var t = $(e.target).data("ip");
 		$.ajax({
-			url: window.ajaxurl,
+			url: window.FreePBX.ajaxurl,
 			data: { command: 'delattacker', module: 'firewall', target: t },
 			success: function(data) { 
 				triggerPageUpdate();
@@ -61,7 +61,7 @@ function updateStatusPage() {
 	$(".notloading").hide();
 	$(".loading").show();
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: { command: 'getattackers', module: 'firewall' },
 		success: function(data) { 
 			$(".notloading").text("").show();

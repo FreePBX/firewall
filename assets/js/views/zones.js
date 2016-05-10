@@ -49,7 +49,7 @@ function changeInt(o) {
 	}
 
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: { command: 'updateinterface', module: 'firewall', iface: iface, zone: checked },
 		success: function(data) { window.location.href = window.location.href; },
 	});
@@ -107,7 +107,7 @@ function removeNetwork(c) {
 
 	net = $("input[type=text]", "#element-"+c).val()
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: { command: 'removenetwork', module: 'firewall', net: net },
 		success: function(data) { window.location.href = window.location.href; },
 	});
@@ -120,7 +120,7 @@ function updateNetwork(c) {
 	zone = $("input[type=radio]:checked", "#element-"+c).val()
 	console.log("Updating network "+c+" to "+net+" = "+zone);
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: { command: 'updatenetwork', module: 'firewall', net: net, zone: zone },
 		success: function(data) { window.location.href = window.location.href; },
 	});
@@ -136,7 +136,7 @@ function createNetwork(c) {
 	net = $("input[type=text]", "#element-"+c).val()
 	zone = $("input[type=radio]:checked", "#element-"+c).val()
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: { command: 'addnetworktozone', module: 'firewall', net: net, zone: zone },
 		success: function(data) { window.location.href = window.location.href; },
 	});
@@ -192,7 +192,7 @@ function changeBlacklist(o) {
 	$(o).prop('disabled', true);
 
 	$.ajax({
-		url: window.ajaxurl,
+		url: window.FreePBX.ajaxurl,
 		data: ajaxdata,
 		success: function(data) { window.location.href = window.location.href; },
 		error: function(data) { $(o).prop('disabled', false); }

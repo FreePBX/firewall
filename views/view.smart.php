@@ -75,5 +75,4 @@ foreach ($protocols as $id => $tmparr) {
 </div>
 <?php
 }
-?>
 
