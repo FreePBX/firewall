@@ -259,28 +259,30 @@ class Services {
 
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
 		if ($driver == "both" || $driver == "chan_sip") {
-			$tcp = false;
-			$bindport = 5060;
-			// Note bug in sipsettings =< 13.0.14.5 that getChanSipSettings won't
-			// return correct details when not returnraw
-			$settings = \FreePBX::Sipsettings()->getChanSipSettings(true);
-			foreach ($settings as $arr) {
-				if ($arr['keyword'] == "tcpenable" && $arr['data'] == "yes") {
-					$tcp = true;
-					continue;
-				}
-				if ($arr['keyword'] == "bindport") {
-					$bindport = (int) $arr['data'];
-					continue;
+			$sipport = 5060;
+			$tlsport = false;
+			$allBinds = \FreePBX::Sipsettings()->getBinds();
+			if (isset($allBinds['sip']) && is_array($allBinds['sip'])) {
+				foreach ($allBinds['sip'] as $sip) {
+					if (isset($sip['udp']) && (int) $sip['udp'] > 1024) {
+						$sipport = (int) $sip['udp'];
+					}
+					if (isset($sip['tcp']) && (int) $sip['tcp'] > 1024) {
+						$tlsport = (int) $sip['tcp'];
+					}
 				}
 			}
-			// If bindport is obviously wrong, default to 5060.
-			if ($bindport < 1024) {
-				$bindport = 5060;
+			$retarr['fw'][] = array("protocol" => "udp", "port" => $sipport);
+
+			// Is it listening on TCP as well as UDP? This isn't recommented, but...
+			$sipsettings = \FreePBX::Sipsettings()->getChanSipSettings();
+			if (isset($sipsettings['tcpenable']) && $sipsettings['tcpenable'] == 'yes') {
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $sipport);
 			}
-			$retarr['fw'][] = array("protocol" => "udp", "port" => $bindport);
-			if ($tcp) {
-				$retarr['fw'][] = array("protocol" => "tcp", "port" => $bindport);
+
+			// How about TLS?
+			if ($tlsport) {
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $tlsport);
 			}
 		}
 

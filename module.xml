@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.29* Update for new Sipsettings module with complete TLS support
 		*13.0.28* #12251 - PJSip issues
 		*13.0.27.1* Better TLS Support
 		*13.0.26* #12133, #12142, #12143, #12149
@@ -68,6 +69,7 @@
 	</changelog>
 	<depends>
 		<file>/usr/lib/sysadmin/includes.php</file>
+		<module>sipsettings ge 13.0.23</module>
 	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>

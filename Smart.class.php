@@ -133,33 +133,34 @@ class Smart {
 		$udp = array();
 		$tcp = array();
 
-		// Let's get chansip settings if we need them.
+		$ss = \FreePBX::Sipsettings();
+		$allBinds = $ss->getBinds();
+		// Do we want chansip settings?
 		if ($this->chansip) {
-			$bindport = 5060;
-			$settings = \FreePBX::Sipsettings()->getChanSipSettings(true);
-			foreach ($settings as $arr) {
-				if (empty($arr['data'])) {
-					continue;
+			// Note: chansip doesn't do tcp sip well, so we don't support it in
+			// sipsettings
+			$udpport = 5060;
+			$tlsport = false;
+			if (isset($allBinds['sip']) && is_array($allBinds['sip'])) {
+				$sip = array_shift($allBinds['sip']);
+				if (isset($sip['udp']) && (int) $sip['udp'] > 1024) {
+					$udpport = (int) $sip['udp'];
 				}
-				if ($arr['keyword'] == 'bindport') {
-					$bindport = (int) $arr['data'];
-					break;
+				if (isset($sip['tcp']) && (int) $sip['tcp'] > 1024) {
+					$tlsport = (int) $sip['tcp'];
 				}
 			}
-			if ($bindport < 1024) {
-				$bindport = 5060;
+
+			$udp[] = array("dest" => "0.0.0.0", "dport" => $udpport, "name" => "chansip");
+			// Do we have TLS on chansip?
+			if ($tlsport) {
+				$tcp[] = array("dest" => "::", "dport" => $tlsport, "name" => "chansip");
 			}
-
-			$udp[] = array("dest" => "0.0.0.0", "dport" => $bindport, "name" => "chansip");
-
-			// TODO: chan_sip TCP.. Maybe
 		}
 
 		// Do we have pjsip?
 		if ($this->pjsip) {
 			// Woo. What are our settings?
-			$ss = \FreePBX::Sipsettings();
-			$allBinds = $ss->getBinds();
 			// ss->getBinds should always return correct information.
 			// But be paranoid.
 			if (!isset($allBinds['pjsip']) || !is_array($allBinds['pjsip'])) {
@@ -169,23 +170,16 @@ class Smart {
 			}
 			foreach ($pjbinds as $listenip => $allports) {
 				foreach ($allports as $protocol => $port) {
-					// If we weren't given a port, we may need to look it up
+					// Throw if we weren't given a port (unless it's ws)
 					if ((int) $port < 1024) {
-						// If it's websockets, we need to ask FreePBX which port
-						// asterisk is listening on
-						if ($protocol == "ws") {
-							$port = \FreePBX::Config()->get('HTTPBINDPORT');
-						} elseif ($protocol == "wss") {
-							$port = \FreePBX::Config()->get('HTTPTLSBINDPORT');
+						// We don't care about websockets
+						if ($protocol == "ws" || $protocol == "wss") {
+							continue;
 						} else {
 							throw new \Exception("Protocol '$protocol' didn't tell me what port it was listening on");
 						}
 					}
-					// If we still don't have a port, something is wildly wrong,
-					// so just skip over it and continue
-					if ((int) $port < 1024) {
-						continue;
-					}
+
 					// If it's not udp, it's tcp.
 					if ($protocol == "udp") {
 						$udp[] = array("dest" => $listenip, "dport" => $port, "name" => "pjsip");
