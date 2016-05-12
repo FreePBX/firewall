@@ -153,7 +153,7 @@ class Smart {
 				}
 			}
 
-			$udp[] = array("dest" => "0.0.0.0", "dport" => $udpport, "name" => "chansip");
+			$udp[] = array("dest" => "::", "dport" => $udpport, "name" => "chansip");
 			// Are we listening for TCP connections?
 			if ($tcpport) {
 				$tcp[] = array("dest" => "::", "dport" => $tcpport, "name" => "chansip");
@@ -174,7 +174,7 @@ class Smart {
 			} else {
 				$pjbinds = $allBinds['pjsip'];
 			}
-			foreach ($pjbinds as $listenip => $allports) {
+			foreach ($pjbinds as $allports) {
 				foreach ($allports as $protocol => $port) {
 					// Throw if we weren't given a port (unless it's ws)
 					if ((int) $port < 1024) {
@@ -188,9 +188,9 @@ class Smart {
 
 					// If it's not udp, it's tcp.
 					if ($protocol == "udp") {
-						$udp[] = array("dest" => $listenip, "dport" => $port, "name" => "pjsip");
+						$udp[] = array("dest" => "::", "dport" => $port, "name" => "pjsip");
 					} else {
-						$tcp[] = array("dest" => $listenip, "dport" => $port, "name" => "pjsip");
+						$tcp[] = array("dest" => "::", "dport" => $port, "name" => "pjsip");
 					}
 				}
 			}

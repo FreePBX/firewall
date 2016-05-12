@@ -605,16 +605,10 @@ class Iptables {
 			$exists = array_flip($me);
 			foreach ($ports as $proto => $r) {
 				foreach ($r as $rule) {
-					// If we have a dest, check it against our ipversion
+					// If we have a dest, remove it, as we're not filtering on
+					// destinations for signalling targets.
 					if ($rule['dest']) {
-						// If we're in ipv4, and we've got an ipv6 address, skip.
-						if ($ipv == "ipv4" && filter_var($rule['dest'], \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-							continue;
-						}
-						// And vice versa
-						if ($ipv == "ipv6" && filter_var($rule['dest'], \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-							continue;
-						}
+						unset($rule['dest']);
 					}
 					$rule['proto'] = $proto;
 					// If we are allowing this protocol through to the rfw, tag it with the second bit, as well.
@@ -1319,13 +1313,26 @@ class Iptables {
 		}
 
 		if (isset($arr['dest'])) {
-			// TODO: Check with ipv6
-			if ($arr['dest'] != "0.0.0.0") {
-				list($dest) = explode(":", $arr['dest']);
-				if (strpos($dest, "/") === false) {
-					$dest .= "/32";
+			// IF this is an ipv6 addres, it MAY start and end with brackets. Remove them if so.
+			$dest = preg_replace('/^\[?([^\]]+)\]?$/', '\1', $arr['dest']);
+			// It is a valid IP address,  isn't it?
+			if (filter_var($dest, \FILTER_VALIDATE_IP)) {
+				// It is. If it's 'allow all', we can disregard.
+				if ($dest !== "0.0.0.0" && $dest !== "::") {
+					// If it's IPv6, we need to add /128. We can cheat here! Rather than
+					// running filter_var again, we can see if it's IPv6 by looking if it
+					// has a colon in it. IF, somehow, someone handed a ipv4:port here, it
+					// wouldn't have made it past the filter_var above.
+					if (strpos($dest, ":") === false) {
+						// No colon, ipv4
+						$str .= "-d $dest/32 ";
+					} else {
+						$str .= "-d $dest/128 ";
+					}
 				}
-				$str .= "-d $dest ";
+			} else {
+				// Just add it. Hopefully you know what you're doing.
+				$str .= "-d ".$arr['dest']." ";
 			}
 		}
 
