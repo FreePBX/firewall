@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.28</version>
+	<version>13.0.29</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -22,54 +22,10 @@
 		*13.0.22* Fix possibility of accidental iptables entry duplication
 		*13.0.21.1* Ensure firewall stops when fwconsole stop is run
 		*13.0.21* #11610, #11916, #11947, #11709, #11813, #11919, #11920, #11935.
-		*13.0.20* Remove en_US Translations
-		*13.0.19* Better validation of unknown services
-		*13.0.18.1* Make it harder to lock yourself out of a machine
-		*13.0.18* #11504 Add warning when 'internal' is set as interface zone
-		*13.0.17* Add OpenVPN Service, #11428 and #11471
-		*13.0.16.2* Enable support for tls with PJSIP
-		*13.0.16.1* #11310 also affected ratelimited
-		*13.0.16* Minor bugs #11374, #11330, #11310
-		*13.0.15.1* #11110 Allow multiple permit entries
-		*13.0.15* Clean up minor bugs #11140, #11127, #11109, #11013
-		*13.0.14.1* Fix potential permission error on ifcfg file
-		*13.0.14* Add ability to drop instead of reject packets
-		*13.0.13* Better support for vlans and alias'ed interfaces.
-		*13.0.12.2* Remove ability disable
-		*13.0.12.1* Slightly change wording of safe mode.
-		*13.0.12* Tidy up of Services
-		*13.0.11.1* chan_sip fixes, and make an educated guess about jiffies
-		*13.0.10* #10714, and don't try to install if sysadmin-rpm isn't there
-		*13.0.9.2* Do some TODOs
-		*13.0.9.1* Make an array an array.
-		*13.0.9* Detect when things are broken, and rebuild everything.
-		*13.0.8* #10700 - Couldn't save when a custom service was added.
-		*13.0.7.2* Wait until machine has been up for 5 mins before start firewall.
-		*13.0.6.1* Be more patient with incron
-		*13.0.6* Startup fixes
-		*13.0.5.1* #10600, #10616 fixes
-		*13.0.5* Tidy up network configurations
-		*13.0.4* Fix invalid looping array
-		*13.0.3* Fix critical privilege escalation bug, along with other minor ones reported
-		*13.0.2* Remove Beta state.
-		*13.0.1.17* Add status page and ability to remove blocks
-		*13.0.1.16* Custom Services, remove emergency SSH override
-		*13.0.1.14* Dashboard hooks, add blacklist, rework rfw.
-		*13.0.1.13* Fix isTrusted check
-		*13.0.1.12* More pjsip-is-disabled fixes
-		*13.0.1.11* Fix mis-detection of chansip as pjsip
-		*13.0.1.10* Logging!
-		*13.0.1.9* Minor wording and layout issues
-		*13.0.1.8* Finally fix module.sig
-		*13.0.1.7* Allow removing of module
-		*13.0.1.6* Start on system start, if enabled.
-		*13.0.1.5* Publishing error, retrying...
-		*13.0.1.2* First public release
-		*13.0.1.1* Development
 	</changelog>
 	<depends>
 		<file>/usr/lib/sysadmin/includes.php</file>
-		<module>sipsettings ge 13.0.23</module>
+		<module>sipsettings ge 13.0.23.1</module>
 	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>
