@@ -134,25 +134,31 @@ class Smart {
 		$tcp = array();
 
 		$ss = \FreePBX::Sipsettings();
-		$allBinds = $ss->getBinds();
+		$allBinds = $ss->getBinds(true);
 		// Do we want chansip settings?
 		if ($this->chansip) {
-			// Note: chansip doesn't do tcp sip well, so we don't support it in
-			// sipsettings
 			$udpport = 5060;
 			$tlsport = false;
+			$tcpport = false;
 			if (isset($allBinds['sip']) && is_array($allBinds['sip'])) {
 				$sip = array_shift($allBinds['sip']);
 				if (isset($sip['udp']) && (int) $sip['udp'] > 1024) {
 					$udpport = (int) $sip['udp'];
 				}
+				if (isset($sip['tls']) && (int) $sip['tls'] > 1024) {
+					$tlsport = (int) $sip['tls'];
+				}
 				if (isset($sip['tcp']) && (int) $sip['tcp'] > 1024) {
-					$tlsport = (int) $sip['tcp'];
+					$tcpport = (int) $sip['tcp'];
 				}
 			}
 
 			$udp[] = array("dest" => "0.0.0.0", "dport" => $udpport, "name" => "chansip");
-			// Do we have TLS on chansip?
+			// Are we listening for TCP connections?
+			if ($tcpport) {
+				$tcp[] = array("dest" => "::", "dport" => $tcpport, "name" => "chansip");
+			}
+			// Or TLS?
 			if ($tlsport) {
 				$tcp[] = array("dest" => "::", "dport" => $tlsport, "name" => "chansip");
 			}

@@ -261,14 +261,14 @@ class Services {
 		if ($driver == "both" || $driver == "chan_sip") {
 			$sipport = 5060;
 			$tlsport = false;
-			$allBinds = \FreePBX::Sipsettings()->getBinds();
+			$allBinds = \FreePBX::Sipsettings()->getBinds(true);
 			if (isset($allBinds['sip']) && is_array($allBinds['sip'])) {
 				foreach ($allBinds['sip'] as $sip) {
 					if (isset($sip['udp']) && (int) $sip['udp'] > 1024) {
 						$sipport = (int) $sip['udp'];
 					}
-					if (isset($sip['tcp']) && (int) $sip['tcp'] > 1024) {
-						$tlsport = (int) $sip['tcp'];
+					if (isset($sip['tls']) && (int) $sip['tls'] > 1024) {
+						$tlsport = (int) $sip['tls'];
 					}
 				}
 			}
