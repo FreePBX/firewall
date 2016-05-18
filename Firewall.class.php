@@ -358,7 +358,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 			return $this->setConfig($_REQUEST['proto'], ($_REQUEST['value'] == "true"), 'rfw');
 		case "addtoblacklist":
-			return $this->addToBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
+			return $this->addToBlacklist(htmlentities(trim($_REQUEST['entry']), \ENT_QUOTES, 'UTF-8', false));
 		case "removefromblacklist":
 			return $this->removeFromBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
 		case "setsafemode":
@@ -378,7 +378,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		// Custom firewall rules.
 		case "addcustomrule":
-			return $this->addCustomService(htmlentities($_REQUEST['name'], \ENT_QUOTES, 'UTF-8', false), $_REQUEST['proto'], $_REQUEST['port']);
+			return $this->addCustomService(htmlentities(trim($_REQUEST['name']), \ENT_QUOTES, 'UTF-8', false), $_REQUEST['proto'], $_REQUEST['port']);
 		case "editcustomrule":
 			return $this->editCustomService($_REQUEST['id'], htmlentities($_REQUEST['name'], \ENT_QUOTES, 'UTF-8', false), $_REQUEST['proto'], $_REQUEST['port']);
 		case "deletecustomrule":
