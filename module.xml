@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.29</version>
+	<version>13.0.30</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.30* #12336 and remove all kernel modules when shutting down
 		*13.0.29* Update for new Sipsettings module with complete TLS support
 		*13.0.28* #12251 - PJSip issues
 		*13.0.27.1* Better TLS Support
