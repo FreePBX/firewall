@@ -143,6 +143,10 @@ $netobj = new \FreePBX\modules\Firewall\Network;
 
 $known = $netobj->discoverInterfaces();
 foreach ($known as $int => $conf) {
+	// If this is an alias, skip
+	if (isset($conf['config']['PARENT'])) {
+		continue;
+	}
 	if (!isset($conf['config']['ZONE']) || !isValidZone($conf['config']['ZONE'])) {
 		$netobj->updateInterfaceZone($int, "trusted");
 		$zone = "trusted";

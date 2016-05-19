@@ -83,6 +83,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$error = false;
 		$ints = $this->getInterfaces();
 		foreach ($ints as $i => $conf) {
+			// Is it an alias? If so, ignore it, we can't set it anyway
+			if ($conf['config']['PARENT']) {
+				continue;
+			}
+
 			// Does this not have a zone?
 			if (!isset($conf['config']['ZONE'])) {
 				// If it's got IP addresses, it's new. Otherwise, we can just ignore it.
@@ -92,10 +97,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				break;
 			}
 
-			// Is it an alias? If so, ignore it, we can't set it anyway
-			if ($conf['config']['PARENT']) {
-				continue;
-			}
 			$runningzone = $this->getZone($i);
 			if ($conf['config']['ZONE'] !== $runningzone) {
 				$error = $i;
