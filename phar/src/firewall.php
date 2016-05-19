@@ -240,6 +240,9 @@ function shutdown() {
 	// Now reset iptables
 	`service iptables stop`;
 	`service ip6tables stop`;
+	// Make sure our xt_recent and/or ipt_recent modules aren't loaded
+	`grep xt_recent /proc/modules && rmmod xt_recent`;
+	`grep ipt_recent /proc/modules && rmmod ipt_recent`;
 	// If sysadmin is configuring fail2ban, it'll need to regenerate the
 	// conf file
 	if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {

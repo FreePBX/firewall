@@ -12,7 +12,6 @@ fi
 # Clean up any iptables rules
 service iptables stop
 service ip6tables stop
-
-
-
+grep xt_recent /proc/modules && rmmod xt_recent
+grep ipt_recent /proc/modules && rmmod ipt_recent
 
