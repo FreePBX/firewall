@@ -463,8 +463,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->runHook("firewall");
 			return;
 		case 'disablefw':
-			$this->setConfig("status", false);
-			return;
+			if (!file_exists("/etc/asterisk/firewall.lock")) {
+				$this->setConfig("status", false);
+				return;
+			} else {
+				throw new \Exception(_("Firewall can not be disabled"));
+			}
 		case 'updateservices':
 			if (!isset($_REQUEST['svc'])) {
 				throw new \Exception("No services to update");
