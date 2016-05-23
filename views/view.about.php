@@ -59,6 +59,12 @@ foreach ($docs as $p) {
 }
 print "</div>";
 
+if (file_exists("/etc/asterisk/firewall.lock")) {
+	$candisable = false;
+} else {
+	$candisable = true;
+}
+
 ?>
 
 <div class='row'>
@@ -67,7 +73,11 @@ print "</div>";
       <label class='control-label' for='ssf'><?php echo $ssf; ?></label>
     </div>
     <div class='col-sm-8'>
+<?php if ($candisable) { ?>
       <button type='submit' name='action' value='disablefw' class='btn btn-default'><?php echo _("Disable Firewall"); ?></button>
+<?php } else { ?>
+      <button type='button' class='btn btn-info' disabled><?php echo _("Can not Disable Firewall"); ?></button>
+<?php } ?>
     </div>
   </div>
 </div>
