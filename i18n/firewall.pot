@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-19 12:10+1000\n"
+"POT-Creation-Date: 2016-05-23 10:57+1000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -212,6 +212,10 @@ msgstr ""
 msgid "CHAN_SIP Protocol"
 msgstr ""
 
+#: views/view.about.php:79
+msgid "Can not Disable Firewall"
+msgstr ""
+
 #: views/modal.customsvc.php:36
 msgid "Cancel"
 msgstr ""
@@ -254,7 +258,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Firewall.class.php:488
+#: Firewall.class.php:492
 msgid "Defaults"
 msgstr ""
 
@@ -272,7 +276,7 @@ msgstr ""
 msgid "Disable"
 msgstr ""
 
-#: views/view.about.php:70
+#: views/view.about.php:77
 msgid "Disable Firewall"
 msgstr ""
 
@@ -285,7 +289,7 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: views/view.about.php:103
+#: views/view.about.php:113
 msgid "Drop"
 msgstr ""
 
@@ -347,7 +351,7 @@ msgid ""
 "as additional data."
 msgstr ""
 
-#: views/view.about.php:101
+#: views/view.about.php:111
 msgid "Filter Type"
 msgstr ""
 
@@ -377,8 +381,12 @@ msgstr ""
 msgid "Firewall Service not running!"
 msgstr ""
 
-#: views/view.about.php:92
+#: views/view.about.php:102
 msgid "Firewall Wizard"
+msgstr ""
+
+#: Firewall.class.php:470
+msgid "Firewall can not be disabled"
 msgstr ""
 
 #: Console/Firewall.class.php:21
@@ -792,7 +800,7 @@ msgstr ""
 msgid "Rate Limited Hosts"
 msgstr ""
 
-#: views/view.about.php:95
+#: views/view.about.php:105
 msgid "Re-Run Wizard"
 msgstr ""
 
@@ -801,7 +809,7 @@ msgid "Registered Endpoints"
 msgstr ""
 
 #: Zones.class.php:9
-#: views/view.about.php:102
+#: views/view.about.php:112
 msgid "Reject"
 msgstr ""
 
@@ -809,7 +817,7 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Firewall.class.php:489
+#: Firewall.class.php:493
 msgid "Reset"
 msgstr ""
 
@@ -891,7 +899,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:490
+#: Firewall.class.php:494
 #: views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
