@@ -278,6 +278,12 @@ class Smart {
 		// Now validate them all!
 		$retarr = array();
 		foreach (array_keys($discovered) as $d) {
+			// It's possible it's blank, or a space, or something
+			$d = trim($d);
+			if (!$d) {
+				continue;
+			}
+
 			// Ensure we don't start with "0.0.0.0"
 			if (strpos($d, "0.0.0.0") === 0) {
 				continue;
