@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.32</version>
+	<version>13.0.33</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.33* Do not look up blank hosts
 		*13.0.32* Add 'lock firewall on' feature - see http://wiki.freepbx.org/x/0wLzAw
 		*13.0.31* Fix issue reported on IRC, and potentially #12095
 		*13.0.30* #12336 and remove all kernel modules when shutting down
