@@ -41,6 +41,10 @@ if (!$fwconf['active']) {
 	print "Starting firewall.\n";
 }
 
+// Always load nf_contract_ftp, even if FTP isn't allowed,
+// as it helps with OUTBOUND connections, too.
+`modprobe nf_conntrack_ftp &> /dev/null`;
+
 // How to detect if we're going into safe mode:
 //   1.  $services['safemode']['status'] == bool true
 //   2.  $services['safemode']['lastuptime'] =< 600
@@ -247,6 +251,10 @@ function shutdown() {
 	// Make sure our xt_recent and/or ipt_recent modules aren't loaded
 	`grep xt_recent /proc/modules && rmmod xt_recent`;
 	`grep ipt_recent /proc/modules && rmmod ipt_recent`;
+
+	// Remove our connection tracking modules
+	`grep nf_conntrack_ftp /proc/modules && rmmod nf_conntrack_ftp`;
+	
 	// If sysadmin is configuring fail2ban, it'll need to regenerate the
 	// conf file
 	if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
