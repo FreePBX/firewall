@@ -1227,11 +1227,12 @@ class Iptables {
 		// $retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'logdrop: '");
 		$retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
-		// Known Registrations are allowed to access signalling, UCP, and Zulu
+		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports
 		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-zulu");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps");
+		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-provis");
 
 		return $retarr;
 	}
