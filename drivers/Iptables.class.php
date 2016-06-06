@@ -1231,6 +1231,7 @@ class Iptables {
 		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-zulu");
+		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps");
 
 		return $retarr;
 	}

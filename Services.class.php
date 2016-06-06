@@ -344,18 +344,25 @@ class Services {
 		$retarr = array(
 			"name" => _("REST Apps"),
 			"defzones" => array("internal"),
-			"descr" => _("REST Apps are used with intelligent phones to provide an interactive interface from the phone itself."),
-			"fw" => array(array("protocol" => "tcp", "port" => 85)),
+			"descr" => _("REST Apps are used with intelligent phones to provide an interactive interface from the phone itself. Note that any devices that are allowed access via Responsive Firewall are automatically granted access to this service."),
+			"fw" => array(),
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 			if (isset($ports['restapps']) && $ports['restapps'] > 80) {
-				$retarr['fw'][0]['port'] = $ports['restapps'];
+				$retarr['fw'] = array(
+					array("protocol" => "tcp", "port" => $ports['restapps']),
+				);
+			} else {
+				// No port assigned to restapps, it's not enabled in sysadmin
+				$retarr['descr'] = _("REST Apps are disabled in Sysadmin Port Management");
+				$retarr['disabled'] = true;
 			}
 		} catch (\Exception $e) {
-			// ignore
+			$retarr['descr'] = _("REST Apps are only available with System Admin");
+			$retarr['disabled'] = true;
 		}
 		return $retarr;
 	}
