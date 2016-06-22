@@ -104,7 +104,7 @@ class Network {
 			// No config
 			$conf = array();
 		} else {
-			$conf = @parse_ini_file("/etc/sysconfig/network-scripts/ifcfg-$int");
+			$conf = @parse_ini_file("/etc/sysconfig/network-scripts/ifcfg-$int", false, \INI_SCANNER_RAW);
 		}
 
 		// Is it a VLAN? 
@@ -173,7 +173,7 @@ class Network {
 		}
 
 		// Grab the contents of the file
-		$ifcfg = @parse_ini_file($centos, \INI_SCANNER_RAW);
+		$ifcfg = @parse_ini_file($centos, false, \INI_SCANNER_RAW);
 
 		// If it doesn't have a zone
 		if (!isset($ifcfg['ZONE'])) {
