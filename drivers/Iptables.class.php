@@ -1062,24 +1062,30 @@ class Iptables {
 				);
 			} else {
 				// Not root, need to run a hook.
-				@unlink("/tmp/iptables.out");
+				// Note that we use /run if we can, otherwise fall back to /tmp
+				if (is_dir("/run")) {
+					$out = "/run/iptables.out";
+				} else {
+					$out = "/tmp/iptables.out";
+				}
+				@unlink($out);
 				\FreePBX::Firewall()->runHook("getiptables");
 				// Wait for up to 5 seconds for the output.
 				$crashafter = time() + 5;
-				while (!file_exists("/tmp/iptables.out")) {
+				while (!file_exists($out)) {
 					if ($crashafter > time()) {
-						throw new \Exception("/tmp/iptables.out wasn't created");
+						throw new \Exception("$out wasn't created");
 					}
 					usleep(200000);
 				}
 
 				// OK, it exists. We should be able to parse it as json
 				while (true) {
-					$json = file_get_contents("/tmp/iptables.out");
+					$json = file_get_contents($out);
 					$res = json_decode($json, true);
 					if (!is_array($res)) {
 						if ($crashafter > time()) {
-							throw new \Exception("/tmp/iptables.out wasn't valid json");
+							throw new \Exception("$out wasn't valid json");
 						}
 						usleep(200000);
 					} else {

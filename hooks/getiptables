@@ -3,12 +3,18 @@
 
 $iptables = json_encode(getIptables());
 
-if (file_exists("/tmp/iptables.out")) {
-	unlink("/tmp/iptables.out");
+if (is_dir("/run")) {
+	$out = "/run/iptables.out";
+} else {
+	$out = "/tmp/iptables.out";
 }
 
-file_put_contents("/tmp/iptables.out", $iptables);
-chmod("/tmp/iptables.out", 0777);
+if (file_exists($out)) {
+	unlink($out);
+}
+
+file_put_contents($out, $iptables);
+chmod($out, 0777);
 
 function getIptables() {
 	// Parse iptables-save output
