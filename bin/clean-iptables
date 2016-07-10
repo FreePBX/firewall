@@ -1,17 +1,5 @@
 #!/bin/bash
-
-# Find the voipfirewalld process
-PID=`pgrep -f voipfirewalld`
-
-# Kill it dead.
-
-if [ "$PID" ]; then
-	kill -9 $PID
-fi
-
-# The following is imported from bin/clean-iptables (We can't run it directly,
-# as there is no integrity validation in bash, so we just paste it in here)
-
+#
 # This re-implements the 'service iptables stop' command from the
 # pre-systemd era, if systemd is in use. 
 
@@ -44,13 +32,9 @@ rmmod_r() {
 		rmmod_r $i
 	done
 
-	# Unload module.
-	# The extra test is for 2.6: The module might have autocleaned,
-	# after all referring modules are unloaded.
+	# Unload module, if it's loaded.
 	if grep -q "^${mod}" /proc/modules ; then
 		modprobe -r $mod > /dev/null 2>&1
-		res=$?
-		[ $res -eq 0 ] || echo -n " $mod"
 	fi
 }
 

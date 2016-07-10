@@ -120,8 +120,7 @@ wall("Firewall service now starting.\n\n");
 @unlink("/var/run/firewalld.safemode");
 
 // Flush all iptables rules
-`service iptables stop`;
-`service ip6tables stop`;
+$v->secureInclude("bin/clean-iptables");
 
 // Start fail2ban if we can
 `service fail2ban start`;
@@ -239,21 +238,15 @@ function getSettings($mysettings) {
 }
 
 function shutdown() {
-	global $thissvc;
+	global $thissvc, $v;
 
 	Lock::unLock($thissvc);
 
 	// Clean up on exit. Start by stopping fail2ban, if it's running
 	`service fail2ban stop`;
-	// Now reset iptables
-	`service iptables stop`;
-	`service ip6tables stop`;
-	// Make sure our xt_recent and/or ipt_recent modules aren't loaded
-	`grep xt_recent /proc/modules && rmmod xt_recent`;
-	`grep ipt_recent /proc/modules && rmmod ipt_recent`;
 
-	// Remove our connection tracking modules
-	`grep nf_conntrack_ftp /proc/modules && rmmod nf_conntrack_ftp`;
+	// Flush all iptables rules
+	$v->secureInclude("bin/clean-iptables");
 	
 	// If sysadmin is configuring fail2ban, it'll need to regenerate the
 	// conf file
@@ -261,7 +254,11 @@ function shutdown() {
 		`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
 	}
 	// And restart fail2ban
-	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
+	if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start")) {
+		`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
+	} else {
+		`service fail2ban start`;
+	}
 	exit;
 }
 

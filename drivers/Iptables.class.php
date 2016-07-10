@@ -100,15 +100,19 @@ class Iptables {
 			$rfw = $current[$i]['filter']['fpbxrfw'];
 			$rules = $this->getDefaultRules();
 			// Compare the main 3 rules, that should tell you if the kernel is OK
-			if (strpos($rfw[1], $rules['fpbxrfw'][1]['other']) === false) {
+			//
+			// Compatibility fix:
+			// 3.10 kernels add --mask ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff to this rule,
+			// which isn't visible on 2.x kernels. Just strip it in the comparison
+			if (strpos(str_replace("--mask ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff ", "", $rfw[1]), $rules['fpbxrfw'][1]['other']) === false) {
 				print "RFW rule 1 not valid (Is '".$rfw[1]."', should start with '".$rules['fpbxrfw'][1]['other']."')\nTHIS MAY BE A KERNEL ISSUE. IF THIS KEEPS OCCURRING REBOOT YOUR MACHINE URGENTLY.\n";
 				return false;
 			}
-			if (strpos($rfw[2], $rules['fpbxrfw'][2]['other']) === false) {
+			if (strpos(str_replace("--mask ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff ", "", $rfw[2]), $rules['fpbxrfw'][2]['other']) === false) {
 				print "rfw rule 2 not valid (Is '".$rfw[2]."', should start with '".$rules['fpbxrfw'][2]['other']."')\nTHIS MAY BE A KERNEL ISSUE. IF THIS KEEPS OCCURRING REBOOT YOUR MACHINE URGENTLY.\n";
 				return false;
 			}
-			if (strpos($rfw[3], $rules['fpbxrfw'][3]['other']) === false) {
+			if (strpos(str_replace("--mask ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff ", "", $rfw[3]), $rules['fpbxrfw'][3]['other']) === false) {
 				print "rfw rule 3 not valid (Is '".$rfw[3]."', should start with '".$rules['fpbxrfw'][3]['other']."')\nTHIS MAY BE A KERNEL ISSUE. IF THIS KEEPS OCCURRING REBOOT YOUR MACHINE URGENTLY.\n";
 				return false;
 			}
