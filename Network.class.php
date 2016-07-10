@@ -109,10 +109,7 @@ class Network {
 
 		// Is it a VLAN? 
 		if (strpos($int, ".") !== false) {
-			$intarr = explode(".", $conf['DEVICE']);
-			if (!isset($int[1])) {
-				throw new \Exception("VLAN Defined, but interface wrong - ".$conf['DEVICE']);
-			}
+			$intarr = explode(".", $int);
 			list($vlanid) = explode(":", $intarr[1]);
 			$conf['VLANID'] = $vlanid;
 			$conf['VLAN'] = true;
