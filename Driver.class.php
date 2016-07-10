@@ -8,12 +8,8 @@ class Driver {
 		static $driverObject = false;
 
 		if (!$driverObject) {
-			// firewalld is really slow. REALLY slow.
-			if (file_exists("/usr/bin/firewall-cmd")) {
-				$driver = "Firewalld";
-			} else {
-				$driver = "Iptables";
-			}
+			// firewalld is really slow. REALLY slow. Disabled.
+			$driver = "Iptables";
 
 			$fn = __DIR__."/drivers/$driver.class.php";
 			if (!file_exists($fn)) {
