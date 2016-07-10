@@ -32,6 +32,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			'path' => __DIR__."/hooks",
 			'perms' => 0755),
 			array('type' => 'execdir',
+			'path' => __DIR__."/bin",
+			'perms' => 0755),
+			array('type' => 'execdir',
 			'path' => __DIR__."/phar",
 			'perms' => 0755)
 		);

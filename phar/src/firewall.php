@@ -120,7 +120,8 @@ wall("Firewall service now starting.\n\n");
 @unlink("/var/run/firewalld.safemode");
 
 // Flush all iptables rules
-$v->secureInclude("bin/clean-iptables");
+$f = $v->checkFile("bin/clean-iptables");
+`$f`;
 
 // Start fail2ban if we can
 `service fail2ban start`;
@@ -261,7 +262,8 @@ function shutdown() {
 	`service fail2ban stop`;
 
 	// Flush all iptables rules
-	$v->secureInclude("bin/clean-iptables");
+	$f = $v->checkFile("bin/clean-iptables");
+	`$f`;
 	
 	// If sysadmin is configuring fail2ban, it'll need to regenerate the
 	// conf file
@@ -383,8 +385,8 @@ function updateFirewallRules($firstrun = false) {
 		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in /tmp/firewall.log\n");
 		Lock::unLock($thissvc);
 		`service fail2ban stop`;
-		`service iptables stop`;
-		`service ip6tables stop`;
+		$f = $v->checkFile("bin/clean-iptables");
+		`$f`;
 		// Wait 4 seconds to give incron a chance to catch up
 		sleep(4);
 		// Restart me.

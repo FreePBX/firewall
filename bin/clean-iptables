@@ -15,7 +15,7 @@ fi
 
 # Systemd is in use. Find all our modules and remove them
 
-NF_MODULES=($(lsmod | awk "/^ip6?table_|^ipt_|^nf_|^xt_/ {print \$1}") ip_tables ip6_tables)
+NF_MODULES=($(lsmod | awk "/^ip6?table_|^ip6?t_|^nf_|^xt_/ {print \$1}") ip_tables ip6_tables)
 NF_MODULES_COMMON=(x_tables nf_nat nf_conntrack)
 
 rmmod_r() {
