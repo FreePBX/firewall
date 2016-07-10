@@ -206,10 +206,25 @@ while(true) {
 
 function getSettings($mysettings) {
 	$pdo = getDbHandle($mysettings);
-	$sth = $pdo->prepare('SELECT * FROM `kvstore` where `module`=? and id="noid"');
-	$sth->execute(array('FreePBX\modules\Firewall'));
+	//
+	// TRANSIENT FIX
+	//
+	// As kvstore has been split into multiple tables in FreePBX 14, we need
+	// to work with both.  For the moment, try to use `kvstore`, and if that
+	// fails, try again with the F14 name.
+	// 
+	// This should be removed in FreePBX 15, and only the new name should be tried.
+	try {
+		$sth = $pdo->prepare('SELECT * FROM `kvstore` where `module`=? and id="noid"');
+		$sth->execute(array('FreePBX\modules\Firewall'));
+		$res = $sth->fetchAll();
+	} catch (\Exception $e) {
+		$sth = $pdo->prepare('SELECT * FROM `kvstore_FreePBX_modules_Firewall` where id="noid"');
+		$sth->execute();
+		$res = $sth->fetchAll();
+	}
+
 	$retarr = array();
-	$res = $sth->fetchAll();
 	foreach ($res as $row) {
 		$retarr[$row['key']] = $row['val'];
 	}
