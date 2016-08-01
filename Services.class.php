@@ -219,7 +219,7 @@ class Services {
 		);
 
 		if (\FreePBX::Firewall()->getConfig("pjsip", "rfw")) {
-			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. There is no need to explicitly allow access from zones. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
+			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You almost certainly don't want to explicitly enable any zones, but the option is available to advanced users. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
 		}
 
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
@@ -276,7 +276,7 @@ class Services {
 		);
 
 		if (\FreePBX::Firewall()->getConfig("chansip", "rfw")) {
-			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. There is no need to explicitly allow access from zones. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
+			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You almost certainly don't want to explicitly enable any zones, but the option is available to advanced users. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
 		}
 
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
@@ -518,8 +518,8 @@ class Services {
 
 		// This could be iSymphony, or XactView.
 		$known = array(
-			"XactView" => "/opt/xactview3/server/conf/main.xml", 
-			"iSymphony" => "/opt/isymphony3/server/conf/main.xml", 
+			"XactView" => "/opt/xactview3/server/conf/main.xml",
+			"iSymphony" => "/opt/isymphony3/server/conf/main.xml",
 		);
 
 		foreach ($known as $name => $loc) {
