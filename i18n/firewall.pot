@@ -9,11 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-11 08:54+0930\n"
+"POT-Creation-Date: 2016-08-01 09:56-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1183,13 +1182,20 @@ msgstr ""
 msgid "This page gives you a summary of the status of the Responsive Firewall."
 msgstr ""
 
-#: Services.class.php:222
-#: Services.class.php:279
 #: Services.class.php:328
 msgid ""
 "This protocol is being managed by the Responsive Firewall. There is no need "
 "to explicitly allow access from zones. Note that hosts in the Trusted Zone "
 "will always be allowed full access"
+msgstr ""
+
+#: Services.class.php:222
+#: Services.class.php:279
+msgid ""
+"This protocol is being managed by the Responsive Firewall. You almost "
+"certainly don't want to explicitly enable any zones, but the option is "
+"available to advanced users. Note that hosts in the Trusted Zone will always "
+"be allowed full access"
 msgstr ""
 
 #: views/view.blacklist.php:2
