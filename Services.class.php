@@ -275,7 +275,7 @@ class Services {
 			"fw" => array(),
 		);
 
-		if (\FreePBX::Firewall()->getConfig("chansip", "rfw")) {
+		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("chansip", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You almost certainly don't want to explicitly enable any zones, but the option is available to advanced users. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
 		}
 
@@ -324,7 +324,7 @@ class Services {
 			// If you're using IAX on a non standard port, stop it. You're doing it wrong.
 			"fw" => array(array("protocol" => "udp", "port" => 4569)),
 		);
-		if (\FreePBX::Firewall()->getConfig("iax", "rfw")) {
+		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("iax", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. There is no need to explicitly allow access from zones. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
 		}
 		return $retarr;
