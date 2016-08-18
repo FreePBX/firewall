@@ -138,11 +138,12 @@ class Services {
 				// No port are assigned to restapps, it's not enabled in sysadmin
 				$retarr['descr'] = _("Dedicated UCP access is disabled in Sysadmin Port Management");
 				$retarr['disabled'] = true;
+				// Don't return the nodejs stuff if UCP is disabled
+				return $retarr;
 			}
-			// Don't return the nodejs stuff if UCP is disabled
-			return $retarr;
 		} catch (\Exception $e) {
-			// ignore
+			// Ignore. User will have to manually add whatever ports
+			// they have configured UCP to listen on.
 		}
 
 		// Add nodejs listen port, if it's installed.
