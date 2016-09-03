@@ -220,9 +220,14 @@ function getSettings($mysettings) {
 		$sth->execute(array('FreePBX\modules\Firewall'));
 		$res = $sth->fetchAll();
 	} catch (\Exception $e) {
-		$sth = $pdo->prepare('SELECT * FROM `kvstore_FreePBX_modules_Firewall` where id="noid"');
-		$sth->execute();
-		$res = $sth->fetchAll();
+		try {
+			$sth = $pdo->prepare('SELECT * FROM `kvstore_FreePBX_modules_Firewall` where id="noid"');
+			$sth->execute();
+			$res = $sth->fetchAll();
+		} catch (\Exception $e) {
+			// Neither new or old table names exist, so there's nothing configured.
+			$res = array();
+		}
 	}
 
 	$retarr = array();
