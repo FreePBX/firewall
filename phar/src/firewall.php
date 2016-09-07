@@ -3,7 +3,8 @@
 $debug = true;
 
 $thissvc = "firewall";
-include 'lock.php';
+// Include once because *sometimes*, on *some machines*, it crashes?
+include_once 'lock.php';
 use \FreePBX\modules\Firewall\Lock;
 
 if (!Lock::canLock($thissvc)) {
@@ -12,7 +13,7 @@ if (!Lock::canLock($thissvc)) {
 	exit;
 }
 
-require 'common.php';
+include_once 'common.php';
 
 // Load our validator
 $v = new \FreePBX\modules\Firewall\Validator($sig);
@@ -127,22 +128,22 @@ $f = $v->checkFile("bin/clean-iptables");
 `service fail2ban start`;
 
 // Make sure our conntrack kernel module is configured correctly
-include 'modprobe.php';
+include_once 'modprobe.php';
 $m = new \FreePBX\Firewall\Modprobe;
 $m->checkModules();
 unset($m);
 
 $path = $v->checkFile("Services.class.php");
-include $path;
+include_once $path;
 $services = new \FreePBX\modules\Firewall\Services;
 
 $path = $v->checkFile("Attacks.class.php");
-include $path;
+include_once $path;
 
 // Now, start by grabbing our interfaces, and making sure
 // they are configured correctly.
 $path = $v->checkFile("Network.class.php");
-include $path;
+include_once $path;
 $netobj = new \FreePBX\modules\Firewall\Network;
 
 $known = $netobj->discoverInterfaces();

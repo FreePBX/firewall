@@ -20,14 +20,14 @@ $s = stat($thisphar);
 $startup['mtime'] = $s['mtime'];
 
 // Create the Validator object
-require '/usr/lib/sysadmin/includes.php';
+include_once '/usr/lib/sysadmin/includes.php';
 $g = new \Sysadmin\GPG();
 $sigfile = \Sysadmin\FreePBX::Config()->get('AMPWEBROOT')."/admin/modules/firewall/module.sig";
 $sig = $g->checkSig($sigfile);
 if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
 	throw new \Exception("Invalid sig file.. Hash is not sha256 - check $sigfile");
 }
-require 'validator.php';
+include_once 'validator.php';
 $v = new \FreePBX\modules\Firewall\Validator($sig); // Global
 
 // Grab the driver for this machine
