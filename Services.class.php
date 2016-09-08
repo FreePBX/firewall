@@ -97,7 +97,7 @@ class Services {
 	private function getSvc_https() {
 		$retarr = array(
 			"name" => _("Web Management (Secure)"),
-			"defzones" => array("external", "internal"),
+			"defzones" => array("internal"),
 			"descr" => _("Web management interface for FreePBX. This is the https interface."),
 			"fw" => array(array("protocol" => "tcp", "port" => 443)),
 			"noreject" => true,
