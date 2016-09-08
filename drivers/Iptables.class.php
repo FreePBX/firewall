@@ -1146,7 +1146,7 @@ class Iptables {
 		$retarr['fpbxfirewall'][]= array("int" => "lo", "jump" => "ACCEPT");
 		// 2: Allow related/established - TCP all, but udp needs a bit more care.
 		$retarr['fpbxfirewall'][]= array("proto" => "tcp", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
-		$retarr['fpbxfirewall'][]= array("proto" => "udp", "sport" => "1:1024", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
+		$retarr['fpbxfirewall'][]= array("proto" => "udp", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
 		// 3: Always allow ICMP (no, really, you always want to allow ICMP, stop thinking blocking
 		// it is a good idea)
 		$retarr['fpbxfirewall'][]= array("ipvers" => 4, "proto" => "icmp", "jump" => "ACCEPT");
