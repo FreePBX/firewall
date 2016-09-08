@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.38</version>
+	<version>13.0.38.1</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,7 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
-		*13.0.38* Potential fix for segv on startup.
+		*13.0.38.1* Potential fix for segv on startup.
 		*13.0.37.1* Fix crash on startup when unconfigured
 		*13.0.36.4* Ensure that all the node ports are returned correctly
 		*13.0.36.3* #12624 - Minor warning fix
