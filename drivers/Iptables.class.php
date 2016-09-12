@@ -675,6 +675,12 @@ class Iptables {
 		// Run through the hosts and add them to what we WANT our chains to be
 		$wanted = array("4" => array(), "6" => array());
 		foreach ($hosts as $addr) {
+			// Make sure that addr doesn't have any leading or trailing whitespace
+			$addr = trim($addr);
+			if (!$addr) {
+				// It's blank, ignore
+				continue;
+			}
 			// This can be a network, too!
 			if (strpos($addr, "/")) {
 				// It's a network
@@ -689,7 +695,7 @@ class Iptables {
 			} elseif (filter_var($host, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
 				$wanted[4][] = $addr;
 			} else {
-				throw new \Exception("Unknown host address $addr");
+				throw new \Exception("Unknown host address '$addr'");
 			}
 		}
 
