@@ -1150,9 +1150,9 @@ class Iptables {
 		// Default sanity rules. 
 		// 1: Always allow all lo traffic, no matter what.
 		$retarr['fpbxfirewall'][]= array("int" => "lo", "jump" => "ACCEPT");
-		// 2: Allow related/established - TCP all, but udp needs a bit more care.
+		// 2: Allow related/established - TCP all, but udp needs to be managed AFTER
+		// we check for any other traffic we care about.
 		$retarr['fpbxfirewall'][]= array("proto" => "tcp", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
-		$retarr['fpbxfirewall'][]= array("proto" => "udp", "sport" => "1:1024", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
 		// 3: Always allow ICMP (no, really, you always want to allow ICMP, stop thinking blocking
 		// it is a good idea)
 		$retarr['fpbxfirewall'][]= array("ipvers" => 4, "proto" => "icmp", "jump" => "ACCEPT");
@@ -1186,6 +1186,8 @@ class Iptables {
 		// If this is a VoIP Signalling packet from an unknown host, and it's eligible for
 		// RFW, then send it off there.
 		$retarr['fpbxfirewall'][] = array("other" => "-m mark --mark 0x2/0x2", "jump" => "fpbxrfw");
+		// Now, it may be other 'related' UDP traffic (tftp, for example)
+		$retarr['fpbxfirewall'][]= array("proto" => "udp", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
 		// Otherwise, log and drop.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxlogdrop");
 
