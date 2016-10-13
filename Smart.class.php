@@ -401,7 +401,11 @@ class Smart {
 
 			// Let's do some DNS-ing
 			// TODO: See how this goes. It might be better to use something like http://www.purplepixie.org/phpdns/
-			$dns = dns_get_record($host, \DNS_A|\DNS_AAAA);
+			try {
+				$dns = dns_get_record($host, \DNS_A|\DNS_AAAA);
+			} catch (\Exception $e) {
+				$dns = array();
+			}
 
 			// Sometimes we may have a transient DNS error. If dns_get_record returned nothing,
 			// but last time it returned something, we return the last one. This only happens
