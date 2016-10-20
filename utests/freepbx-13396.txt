@@ -1,0 +1,5 @@
+1: lo    inet 127.0.0.1/8 scope host lo\       valid_lft forever preferred_lft forever
+1: lo    inet6 ::1/128 scope host \       valid_lft forever preferred_lft forever
+6: eth4    inet 203.1.2.3/24 brd 203.1.2.255 scope global dynamic eth4\       valid_lft 86131sec preferred_lft 86131sec
+6: eth4    inet6 2001:4830:1200:c0:ff:ee:dead:beef/64 scope global mngtmpaddr dynamic \       valid_lft 86399sec preferred_lft 86399sec
+6: eth4    inet6 fe80::290:beef:fe3b:521c/64 scope link \       valid_lft forever preferred_lft forever

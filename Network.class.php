@@ -56,7 +56,12 @@ class Network {
 				}
 			} else {
 				if ($vals[7] == "global") {
-					$intname = $vals[8];
+					// FREEPBX-13396 - This may be 'dynamic', not ACTUALLY the real name.
+					if ($vals[8] == "dynamic") {
+						$intname = $vals[9];
+					} else {
+						$intname = $vals[8];
+					}
 				} else {
 					$intname = $vals[1];
 				}
