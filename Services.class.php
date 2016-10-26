@@ -219,7 +219,7 @@ class Services {
 			"fw" => array(),
 		);
 
-		if (\FreePBX::Firewall()->getConfig("pjsip", "rfw")) {
+		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("pjsip", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You almost certainly don't want to explicitly enable any zones, but the option is available to advanced users. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
 		}
 
