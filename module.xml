@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.40</version>
+	<version>13.0.40.1</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.40.1* FREEPBX-12624 - Missed pjsip in the warnings
 		*13.0.40* Complete first stagge of FreePBX 14 support
 		*13.0.39.3* FREEPBX-13396 More edge cases in 'ip -o addr'
 		*13.0.39.2* FREEPBX-13357 PHP 5.6 throws exception instead of empty array
