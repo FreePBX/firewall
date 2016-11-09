@@ -11,7 +11,7 @@ class Services {
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc");
-		$this->extraservices = array("zulu", "isymphony", "provis", "vpn", "restapps", "xmpp", "ftp", "tftp", "nfs", "smb");
+		$this->extraservices = array("zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
 	}
@@ -335,7 +335,7 @@ class Services {
 		$retarr = array(
 			"name" => _("HTTP Provisioning"),
 			"defzones" => array("other", "internal"),
-			"descr" => _("Phones that are configured via Endpoint Manager will use this port to download its configuration. It is NOT ADVISED to expose this port to the public internet, as SIP Secrets will be available to a knowledgable attacker."),
+			"descr" => _("Phones that are configured via Endpoint Manager to use HTTP provisioning will use this port to download its configuration. It is NOT ADVISED to expose this port to the public internet, as SIP Secrets will be available to a knowledgable attacker."),
 			"fw" => array(array("protocol" => "tcp", "port" => 84)),
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
@@ -346,12 +346,35 @@ class Services {
 			if (isset($ports['hpro']) && $ports['hpro'] !== 'disabled' && $ports['hpro'] > 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['hpro']);
 			}
+			if (!$retarr['fw']) {
+				// No port are assigned to restapps, it's not enabled in sysadmin
+				$retarr['descr'] = _("HTTP Provisioning is disabled in Sysadmin Port Management");
+				$retarr['disabled'] = true;
+			}
+		} catch (\Exception $e) {
+			// ignore
+		}
+		return $retarr;
+	}
+
+	private function getSvc_provis_ssl() {
+		$retarr = array(
+			"name" => _("HTTPS Provisioning"),
+			"defzones" => array("other", "internal"),
+			"descr" => _("Phones that are configured via Endpoint Manager to use HTTPS provisioning will use this port to download its configuration. It is NOT ADVISED to expose this port to the public internet, as SIP Secrets will be available to a knowledgable attacker."),
+			"fw" => array(array("protocol" => "tcp", "port" => 1443)),
+		);
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+			$retarr['fw'] = array();
 			if (isset($ports['sslhpro']) && $ports['sslhpro'] !== 'disabled' && $ports['sslhpro'] > 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslhpro']);
 			}
 			if (!$retarr['fw']) {
 				// No port are assigned to restapps, it's not enabled in sysadmin
-				$retarr['descr'] = _("HTTP Provisioning is disabled in Sysadmin Port Management");
+				$retarr['descr'] = _("HTTPS Provisioning is disabled in Sysadmin Port Management");
 				$retarr['disabled'] = true;
 			}
 		} catch (\Exception $e) {
@@ -374,7 +397,7 @@ class Services {
 
 	private function getSvc_restapps() {
 		$retarr = array(
-			"name" => _("REST Apps"),
+			"name" => _("REST Apps (HTTP)"),
 			"defzones" => array("internal"),
 			"descr" => _("REST Apps are used with intelligent phones to provide an interactive interface from the phone itself. Note that any devices that are allowed access via Responsive Firewall are automatically granted access to this service."),
 			"fw" => array(),
@@ -386,6 +409,31 @@ class Services {
 			if (isset($ports['restapps']) && $ports['restapps'] !== 'disabled' &&  $ports['restapps'] > 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['restapps']);
 			}
+
+			// Were there any ports discovered?
+			if (!$retarr['fw']) {
+				// No port are assigned to restapps, it's not enabled in sysadmin
+				$retarr['descr'] = _("HTTP REST Apps are disabled in Sysadmin Port Management");
+				$retarr['disabled'] = true;
+			}
+		} catch (\Exception $e) {
+			$retarr['descr'] = _("REST Apps are only available with System Admin");
+			$retarr['disabled'] = true;
+		}
+		return $retarr;
+	}
+
+	private function getSvc_restapps_ssl() {
+		$retarr = array(
+			"name" => _("REST Apps (HTTPS)"),
+			"defzones" => array("internal"),
+			"descr" => _("REST Apps are used with intelligent phones to provide an interactive interface from the phone itself. Note that any devices that are allowed access via Responsive Firewall are automatically granted access to this service."),
+			"fw" => array(),
+		);
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
 			if (isset($ports['sslrestapps']) && $ports['sslrestapps'] !== 'disabled' && $ports['sslrestapps'] > 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslrestapps']);
 			}
@@ -393,7 +441,7 @@ class Services {
 			// Were there any ports discovered?
 			if (!$retarr['fw']) {
 				// No port are assigned to restapps, it's not enabled in sysadmin
-				$retarr['descr'] = _("REST Apps are disabled in Sysadmin Port Management");
+				$retarr['descr'] = _("HTTPS REST Apps are disabled in Sysadmin Port Management");
 				$retarr['disabled'] = true;
 			}
 		} catch (\Exception $e) {

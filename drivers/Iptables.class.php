@@ -1250,7 +1250,9 @@ class Iptables {
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-zulu");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps");
+		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps_ssl");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-provis");
+		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-provis_ssl");
 
 		return $retarr;
 	}
