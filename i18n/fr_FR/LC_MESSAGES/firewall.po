@@ -9,24 +9,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-26 23:00+0000\n"
+"POT-Creation-Date: 2016-11-09 14:14+1000\n"
 "PO-Revision-Date: 2016-02-20 20:37+0200\n"
 "Last-Translator: Nicolas Riendeau <freepbx@riendeau.org>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
 "fr_FR/>\n"
-"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 2.2-dev\n"
 
-#: Services.class.php:538
+#: Services.class.php:586
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr ""
 
-#: Services.class.php:534
+#: Services.class.php:582
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s n'est pas configuré correctement."
@@ -345,11 +345,11 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:418
+#: Services.class.php:466
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:420
+#: Services.class.php:468
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -451,8 +451,24 @@ msgstr ""
 msgid "HTTP Provisioning"
 msgstr ""
 
-#: Services.class.php:354
+#: Services.class.php:351
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
+msgstr ""
+
+#: Services.class.php:416
+msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
+msgstr ""
+
+#: Services.class.php:362
+msgid "HTTPS Provisioning"
+msgstr ""
+
+#: Services.class.php:377
+msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
+msgstr ""
+
+#: Services.class.php:444
+msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
 #: views/oobe.welcome.php:30
@@ -612,11 +628,11 @@ msgstr "Chargement..."
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:441
+#: Services.class.php:489
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:448
+#: Services.class.php:496
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -698,7 +714,7 @@ msgstr ""
 msgid "Number of currently blocked Attackers:"
 msgstr ""
 
-#: Services.class.php:365
+#: Services.class.php:388
 msgid "OpenVPN Server"
 msgstr ""
 
@@ -716,9 +732,18 @@ msgstr ""
 
 #: Services.class.php:338
 msgid ""
-"Phones that are configured via Endpoint Manager will use this port to "
-"download its configuration. It is NOT ADVISED to expose this port to the "
-"public internet, as SIP Secrets will be available to a knowledgable attacker."
+"Phones that are configured via Endpoint Manager to use HTTP provisioning "
+"will use this port to download its configuration. It is NOT ADVISED to "
+"expose this port to the public internet, as SIP Secrets will be available to "
+"a knowledgable attacker."
+msgstr ""
+
+#: Services.class.php:364
+msgid ""
+"Phones that are configured via Endpoint Manager to use HTTPS provisioning "
+"will use this port to download its configuration. It is NOT ADVISED to "
+"expose this port to the public internet, as SIP Secrets will be available to "
+"a knowledgable attacker."
 msgstr ""
 
 #: OOBE.class.php:168
@@ -775,19 +800,19 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:377
-msgid "REST Apps"
-msgstr ""
-
-#: Services.class.php:396
-msgid "REST Apps are disabled in Sysadmin Port Management"
-msgstr ""
-
 #: Services.class.php:400
+msgid "REST Apps (HTTP)"
+msgstr ""
+
+#: Services.class.php:428
+msgid "REST Apps (HTTPS)"
+msgstr ""
+
+#: Services.class.php:420 Services.class.php:448
 msgid "REST Apps are only available with System Admin"
 msgstr ""
 
-#: Services.class.php:379
+#: Services.class.php:402 Services.class.php:430
 msgid ""
 "REST Apps are used with intelligent phones to provide an interactive "
 "interface from the phone itself. Note that any devices that are allowed "
@@ -859,15 +884,15 @@ msgstr ""
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 
-#: Services.class.php:498
+#: Services.class.php:546
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:504
+#: Services.class.php:552
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr ""
 
-#: Services.class.php:507
+#: Services.class.php:555
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -1015,11 +1040,11 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:428
+#: Services.class.php:476
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:430
+#: Services.class.php:478
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
@@ -1078,13 +1103,13 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:367
+#: Services.class.php:390
 msgid ""
 "This allows clients to connect to an OpenVPN server running on this machine. "
 "This is an inherently secure protocol."
 msgstr ""
 
-#: Services.class.php:451
+#: Services.class.php:499
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -1145,7 +1170,7 @@ msgstr ""
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:410
+#: Services.class.php:458
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
@@ -1321,7 +1346,7 @@ msgid ""
 "<strong>very limited</strong> amount of registration attempts."
 msgstr ""
 
-#: Services.class.php:408
+#: Services.class.php:456
 msgid "XMPP"
 msgstr ""
 
@@ -1392,7 +1417,7 @@ msgstr ""
 msgid "Zulu is not not available on this machine"
 msgstr ""
 
-#: Services.class.php:552
+#: Services.class.php:600
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
