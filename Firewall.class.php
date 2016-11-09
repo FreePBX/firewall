@@ -821,6 +821,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function addHostToZone($host, $zone) {
 		$host = trim($host);
+		if (!$host) {
+			throw new \Exception("Can't add empty host");
+		}
+
 		$hosts = $this->getConfig("hostmaps");
 		if (!is_array($hosts)) {
 			$hosts = array();
@@ -840,6 +844,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function changeNetworksZone($net, $zone) {
 		$net = trim($net);
+		if (!$net) {
+			throw new \Exception("Can't add empty net");
+		}
 
 		// Get our current maps...
 		$nets = $this->getConfig("networkmaps");
