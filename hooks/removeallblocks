@@ -28,3 +28,24 @@ foreach ($recent as $chain) {
 	fclose($fh);
 }
 
+if (!empty($settings['login'])) {
+	$ip = $settings['unblock'];
+	if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+		$iptables = "ip6tables";
+	} else {
+		$iptables = "iptables";
+	}
+	// The user has been logged in by an external process. Add this IP to the logged in table.
+	$cmd = "$iptables -A fpbxregistrations -s $ip -j fpbxknownreg";
+	`$cmd`;
+	// Did we add it at the same time as something else did?
+	$cmd = "${iptables}-save | grep fpbxregistrations | grep '$ip' | wc -l";
+	$res = trim(`$cmd`);
+	if ($res == 2) {
+		// Something else added it at the same time. Remove one.
+		$delcmd = "$iptables -D fpbxregistrations -s $ip -j fpbxknownreg";
+		`$delcmd`;
+	}
+}
+
+
