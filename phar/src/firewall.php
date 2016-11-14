@@ -592,60 +592,62 @@ function updateFirewallRules($firstrun = false) {
 
 	// Update any interfaces that may have changed
 	$known = $netobj->discoverInterfaces();
-	if (is_array($currentrules['ipv4']['filter']['fpbxinterfaces'])) {
+	if (!isset($currentrules['ipv4']['filter']['fpbxinterfaces']) || !is_array($currentrules['ipv4']['filter']['fpbxinterfaces'])) {
+		$fints = array();
+	} else {
 		$fints = $currentrules['ipv4']['filter']['fpbxinterfaces'];
+	}
 
-		// Look through our current rules and make sure they aren't referencing
-		// interfaces that don't exist, or, are wrong.
+	// Look through our current rules and make sure they aren't referencing
+	// interfaces that don't exist, or, are wrong.
 
-		// Cache the discovered interfaces for later.
-		$currentcache = array();
+	// Cache the discovered interfaces for later.
+	$currentcache = array();
 
-		foreach ($fints as $entry) {
-			if (!preg_match("/-i ([^\s]+) -j zone-(.+)$/", $entry, $out)) {
-				// something bad here
-				print "ERROR: Unable to parse interface line '$entry', skipping. THIS IS A BUG\n";
-				continue;
-			}
-			// Debugging:
-			// print "Line $entry - int ".$out[1]." to zone ".$out[2]."\n";
+	foreach ($fints as $entry) {
+		if (!preg_match("/-i ([^\s]+) -j zone-(.+)$/", $entry, $out)) {
+			// something bad here
+			print "ERROR: Unable to parse interface line '$entry', skipping. THIS IS A BUG\n";
+			continue;
+		}
+		// Debugging:
+		// print "Line $entry - int ".$out[1]." to zone ".$out[2]."\n";
 
-			// Does this rule point to a valid interface?
-			if (!isset($known[$out[1]])) {
-				// We have a rule that references a non-existant interface, so it should be
-				// removed.
-				$driver->changeInterfaceZone($out[1], false);
-				continue;
-			}
-
-			// Is iptables pointing to the correct zone?
-			if ($out[2] !== $known[$out[1]]['config']['ZONE']) {
-				// No. Fix it.
-				$driver->changeInterfaceZone($out[1], $out[2]);
-			}
-			// Mark it as discovered
-			$currentcache[$out[1]] = $out[2];
+		// Does this rule point to a valid interface?
+		if (!isset($known[$out[1]])) {
+			// We have a rule that references a non-existant interface, so it should be
+			// removed.
+			$driver->changeInterfaceZone($out[1], false);
+			continue;
 		}
 
-		// Now go through our discovered interfaces, and see if any
-		// are missing
-		foreach ($known as $intname => $tmparr) {
-			// If this is a child of another interface, ignore
-			if ($tmparr['config']['PARENT']) {
-				continue;
-			}
-			// Has this zone been previously discovered?
-			if (!isset($tmparr['config']['ZONE'])) {
-				// No? Set it to trusted.
-				$driver->changeInterfaceZone($intname, 'trusted');
-				continue;
-			}
+		// Is iptables pointing to the correct zone?
+		if ($out[2] !== $known[$out[1]]['config']['ZONE']) {
+			// No. Fix it.
+			$driver->changeInterfaceZone($out[1], $out[2]);
+		}
+		// Mark it as discovered
+		$currentcache[$out[1]] = $out[2];
+	}
 
-			$zoneshouldbe = $tmparr['config']['ZONE'];
-			// Is this interface pointing at the right zone?
-			if (!isset($currentcache[$intname]) || $zoneshouldbe !== $currentcache[$intname]) {
-				$driver->changeInterfaceZone($intname, $zoneshouldbe);
-			}
+	// Now go through our discovered interfaces, and see if any
+	// are missing
+	foreach ($known as $intname => $tmparr) {
+		// If this is a child of another interface, ignore
+		if ($tmparr['config']['PARENT']) {
+			continue;
+		}
+		// Has this zone been previously discovered?
+		if (!isset($tmparr['config']['ZONE'])) {
+			// No? Set it to trusted.
+			$driver->changeInterfaceZone($intname, 'trusted');
+			continue;
+		}
+
+		$zoneshouldbe = $tmparr['config']['ZONE'];
+		// Is this interface pointing at the right zone?
+		if (!isset($currentcache[$intname]) || $zoneshouldbe !== $currentcache[$intname]) {
+			$driver->changeInterfaceZone($intname, $zoneshouldbe);
 		}
 	}
 }
