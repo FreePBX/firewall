@@ -33,6 +33,7 @@ try {
 // Regen fail2ban conf, if we can
 if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
 	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
+	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
 }
 
 // Move the previous logfile out of the way.
