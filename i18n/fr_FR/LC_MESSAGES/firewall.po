@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-11-22 22:17+0200\n"
+"PO-Revision-Date: 2016-11-25 03:57+0200\n"
 "Last-Translator: Pascal <pascal.noyel@ipexia.com>\n"
 "Language-Team: French "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
@@ -308,7 +308,7 @@ msgstr ""
 
 #: views/view.customsvc.php:44
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Editer"
 
 #: views/view.smart.php:44
 msgid "Enable"
