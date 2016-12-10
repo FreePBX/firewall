@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-09 10:05+0200\n"
+"PO-Revision-Date: 2016-12-10 00:31+0200\n"
 "Last-Translator: Alexander <alexander.schley@paranagua.pr.gov.br>\n"
 "Language-Team: Portuguese (Brazil) "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/pt_BR/>\n"
@@ -702,7 +702,7 @@ msgstr ""
 
 #: views/page.zones.php:134
 msgid "Note:"
-msgstr ""
+msgstr "Comentário:"
 
 #: views/view.status.php:19
 msgid "Number of Currently Rate-Limited Clients:"
@@ -967,7 +967,7 @@ msgstr ""
 
 #: views/page.about.php:35
 msgid "Settings"
-msgstr ""
+msgstr "Configurações"
 
 #: OOBE.class.php:124
 msgid "Should the client you're using be trusted?"
