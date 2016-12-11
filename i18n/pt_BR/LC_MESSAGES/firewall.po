@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-10 00:31+0200\n"
+"PO-Revision-Date: 2016-12-10 21:59+0200\n"
 "Last-Translator: Alexander <alexander.schley@paranagua.pr.gov.br>\n"
 "Language-Team: Portuguese (Brazil) "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/pt_BR/>\n"
@@ -221,7 +221,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
@@ -306,7 +306,7 @@ msgstr ""
 
 #: views/view.customsvc.php:44
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: views/view.smart.php:44
 msgid "Enable"
@@ -345,7 +345,7 @@ msgstr ""
 
 #: Services.class.php:466
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
 #: Services.class.php:468
 msgid ""
@@ -897,7 +897,7 @@ msgstr ""
 
 #: Services.class.php:50
 msgid "SSH"
-msgstr ""
+msgstr "SSH"
 
 #: Services.class.php:52
 msgid ""
