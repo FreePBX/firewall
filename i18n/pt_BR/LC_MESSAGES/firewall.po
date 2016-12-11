@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-11 05:11+0200\n"
+"PO-Revision-Date: 2016-12-11 08:13+0200\n"
 "Last-Translator: Alexander <alexander.schley@paranagua.pr.gov.br>\n"
 "Language-Team: Portuguese (Brazil) "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/pt_BR/>\n"
@@ -332,7 +332,7 @@ msgstr ""
 
 #: Zones.class.php:10
 msgid "External"
-msgstr ""
+msgstr "Externo"
 
 #: OOBE.class.php:243
 #, php-format
@@ -722,7 +722,7 @@ msgstr ""
 
 #: Zones.class.php:11
 msgid "Other"
-msgstr ""
+msgstr "Outro"
 
 #: Services.class.php:265
 msgid "PJSIP is not available on this machine"
@@ -1346,7 +1346,7 @@ msgstr ""
 
 #: Services.class.php:456
 msgid "XMPP"
-msgstr ""
+msgstr "XMPP"
 
 #: views/view.blacklist.php:3
 msgid ""
