@@ -10,23 +10,26 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-11-09 14:14+1000\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2016-12-11 18:18+0200\n"
+"Last-Translator: Sven <spiderrs4@web.de>\n"
+"Language-Team: German "
+"<http://weblate.freepbx.org/projects/freepbx/firewall/de_DE/>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.4\n"
 
 #: Services.class.php:586
 #, php-format
 msgid "%s is a web-based call management solution."
-msgstr ""
+msgstr "%s ist eine web-basierte Lösung zur Anrufverwaltung."
 
 #: Services.class.php:582
 #, php-format
 msgid "%s is not configured correctly."
-msgstr ""
+msgstr "%s ist nicht richtig konfiguriert."
 
 #: views/page.about.php:63
 msgid ""
@@ -35,14 +38,19 @@ msgid ""
 "hosted clients unrestricted access to your machine! Please use common sense "
 "to make sure that you are only allowing known trusted networks."
 msgstr ""
+"<strong>Wichtige Warnung!</strong> Wenn Sie sich in einer gehosteten "
+"Umgebung (z. B. AWS) befinden und Sie dies aktivieren, können Sie "
+"unbeabsichtigt anderen gehosteten Clients uneingeschränkten Zugriff auf "
+"Ihren Computer gewähren! Bitte verwenden Sie gesunden Menschenverstand, um "
+"sicherzustellen, dass Sie nur bekannte vertrauenswürdige Netzwerke zulassen."
 
 #: views/view.about.php:19
 msgid "<strong>Responsive Firewall is not enabled</strong>."
-msgstr ""
+msgstr "<strong>Responsive Firewall ist nicht aktiviert.</strong>"
 
 #: views/view.about.php:53
 msgid "<strong>Safe mode is available.</strong>"
-msgstr ""
+msgstr "<strong>Der abgesicherte Modus ist verfügbar.</strong>"
 
 #: Firewall.class.php:139
 #, php-format
@@ -61,31 +69,33 @@ msgstr ""
 
 #: views/bootnav.php:5
 msgid "About"
-msgstr ""
+msgstr "Über die Firewall"
 
 #: views/page.zones.php:59
 msgid "About Zones"
-msgstr ""
+msgstr "Über die Zonen"
 
 #: views/page.about.php:72
 msgid "Add Host"
-msgstr ""
+msgstr "Host hinzufügen"
 
 #: views/page.about.php:71
 msgid "Add Network"
-msgstr ""
+msgstr "Netzwerk hinzufügen"
 
 #: views/page.zones.php:223 views/view.blacklist.php:41
 msgid "Add New"
-msgstr ""
+msgstr "Neue hinzufügen"
 
 #: Console/Firewall.class.php:55
 msgid "Add the hostname or IP specified to the Trusted Zone"
 msgstr ""
+"Fügen Sie den Hostnamen oder die IP-Adresse der vertrauenswürdigen Zone "
+"hinzu."
 
 #: views/page.about.php:64
 msgid "Add to Trusted"
-msgstr ""
+msgstr "Zu Vertrauenswürdigen hinzufügen"
 
 #: views/view.about.php:28
 msgid ""
@@ -93,12 +103,17 @@ msgid ""
 "<strong>automatically granted</strong> permission to use UCP, if UCP is "
 "enabled."
 msgstr ""
+"Nachdem ein Endpunkt registriert wurde, erhält die Quelle des Endpunkts "
+"<strong>automatisch Zugriffsberechtigung</strong>, das UCP zu verwenden, "
+"wenn UCP aktiviert ist."
 
 #: views/view.about.php:55
 msgid ""
 "After the original configuration is complete, there is no reason to keep "
 "this turned on."
 msgstr ""
+"Nachdem die ursprüngliche Konfiguration abgeschlossen ist, gibt es keinen "
+"Grund, diese eingeschaltet zu lassen."
 
 #: views/page.zones.php:74
 msgid ""
