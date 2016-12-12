@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-11 08:13+0200\n"
+"PO-Revision-Date: 2016-12-12 05:28+0200\n"
 "Last-Translator: Alexander <alexander.schley@paranagua.pr.gov.br>\n"
 "Language-Team: Portuguese (Brazil) "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/pt_BR/>\n"
@@ -229,7 +229,7 @@ msgstr ""
 
 #: firewall.i18n.php:6 firewall.i18n.php:12
 msgid "Connectivity"
-msgstr ""
+msgstr "Conectividade"
 
 #: views/view.portmaps.php:11
 msgid "Core Services"
@@ -636,7 +636,7 @@ msgstr ""
 
 #: views/page.zones.php:50
 msgid "Networks"
-msgstr ""
+msgstr "Redes"
 
 #: Firewall.class.php:126 Firewall.class.php:128
 msgid "New Interface Detected"
@@ -1028,7 +1028,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:21
 msgid "TCP"
-msgstr ""
+msgstr "TCP"
 
 #: views/view.portmaps.php:65
 msgid "TCP Port:"
