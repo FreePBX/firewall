@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-11 18:18+0200\n"
+"PO-Revision-Date: 2016-12-12 18:57+0200\n"
 "Last-Translator: Sven <spiderrs4@web.de>\n"
 "Language-Team: German "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/de_DE/>\n"
@@ -130,12 +130,16 @@ msgid ""
 "All network connections are accepted. No firewalling is done on this "
 "interface."
 msgstr ""
+"Alle Netzwerkverbindungen werden akzeptiert. Auf dieser Schnittstelle "
+"arbeitet keine Firewall."
 
 #: views/warning.notready.php:5
 msgid ""
 "Any changes you make will be saved, but will not take effect until the "
 "firewall is started."
 msgstr ""
+"Alle Änderungen, die Sie vornehmen, werden gespeichert, aber sie werden erst "
+"nach dem starten der Firewall wirksam."
 
 #: views/view.blocked.php:17
 msgid ""
@@ -143,6 +147,9 @@ msgid ""
 "from them will be ignored until they cease attempting to contact the server "
 "for more than 24 hours."
 msgstr ""
+"Alle Hosts in diesem Abschnitt wurden als Angreifer klassifiziert. Der "
+"gesamte Verkehr von ihnen wird ignoriert werden, bis sie den Server für mehr "
+"als 24 Stunden nicht kontaktiert haben."
 
 #: views/view.blocked.php:7
 msgid ""
@@ -159,7 +166,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:13
 msgid "Any name"
-msgstr ""
+msgstr "Jeder Name"
 
 #: views/warning.notready.php:3
 msgid ""
@@ -182,54 +189,56 @@ msgstr ""
 #: Console/Firewall.class.php:103
 #, php-format
 msgid "Attempting to add %s to Trusted Zone"
-msgstr ""
+msgstr "Versuche %s zur sicheren Zone hinzuzufügen."
 
 #: Console/Firewall.class.php:126
 #, php-format
 msgid "Attempting to remove %s from Trusted Zone"
-msgstr ""
+msgstr "Versuche %s aus der sicheren Zone zu entfernen."
 
 #: OOBE.class.php:228
 msgid "Automatically configure Asterisk IP Settings?"
-msgstr ""
+msgstr "Asterisk IP-Einstellungen automatisch konfigurieren?"
 
 #: views/view.about.php:37
 msgid "Available"
-msgstr ""
+msgstr "Verfügbar"
 
 #: views/view.registered.php:6
 msgid ""
 "Below is a list of clients that have successfully registered and been "
 "validated by Responsive Firewall."
 msgstr ""
+"Unten ist eine Liste der Clients, die erfolgreich registriert und von "
+"Responsive Firewall überprüft wurden."
 
 #: views/page.zones.php:53
 msgid "Blacklists"
-msgstr ""
+msgstr "Sperrlisten"
 
 #: views/view.blocked.php:16
 msgid "Blocked Attackers"
-msgstr ""
+msgstr "Blockierte Angreifer"
 
 #: views/page.status.php:34
 msgid "Blocked Hosts"
-msgstr ""
+msgstr "Blockierte Hosts"
 
 #: views/modal.customsvc.php:20
 msgid "Both (TCP and UDP)"
-msgstr ""
+msgstr "Beide (TCP und UDP)"
 
 #: Services.class.php:314
 msgid "CHANSIP is not available on this machine"
-msgstr ""
+msgstr "CHANSIP ist auf dieser Maschine nicht verfügbar."
 
 #: Services.class.php:273
 msgid "CHAN_SIP Protocol"
-msgstr ""
+msgstr "CHAN_SIP Protokoll"
 
 #: views/view.about.php:79
 msgid "Can not Disable Firewall"
-msgstr ""
+msgstr "Firewall kann nicht deaktiviert werden."
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
