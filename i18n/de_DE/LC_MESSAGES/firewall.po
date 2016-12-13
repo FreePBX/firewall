@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-12 18:57+0200\n"
+"PO-Revision-Date: 2016-12-12 21:31+0200\n"
 "Last-Translator: Sven <spiderrs4@web.de>\n"
 "Language-Team: German "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/de_DE/>\n"
@@ -242,36 +242,36 @@ msgstr "Firewall kann nicht deaktiviert werden."
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
-msgstr ""
+msgstr "Abbrechen"
 
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
-msgstr ""
+msgstr "Befehl zum Ausführen (siehe --Hilfe)"
 
 #: firewall.i18n.php:6 firewall.i18n.php:12
 msgid "Connectivity"
-msgstr ""
+msgstr "Verbindungen"
 
 #: views/view.portmaps.php:11
 msgid "Core Services"
-msgstr ""
+msgstr "Standard Services"
 
 #: Console/Firewall.class.php:114
 msgid "Could not validate entry. Please try again."
-msgstr ""
+msgstr "Eintrag konnte nicht überprüft werden. Bitte versuche es erneut."
 
 #: views/view.customsvc.php:2
 msgid "Create new Service"
-msgstr ""
+msgstr "Neuen Service erstellen"
 
 #: views/view.status.php:22
 msgid "Cumulative Total of remote clients:"
-msgstr ""
+msgstr "Kumulative Anzahl der Remote-Clients:"
 
 #: views/page.services.php:40 views/view.customsvc.php:4
 #: views/view.portmaps.php:23
 msgid "Custom Services"
-msgstr ""
+msgstr "Benutzerdefinierte Services"
 
 #: views/view.customsvc.php:1
 msgid ""
@@ -286,36 +286,37 @@ msgstr ""
 
 #: Firewall.class.php:495
 msgid "Defaults"
-msgstr ""
+msgstr "Standards"
 
 #: views/page.zones.php:219 views/view.blacklist.php:10
 #: views/view.customsvc.php:45
 msgid "Delete"
-msgstr ""
+msgstr "Löschen"
 
 #: views/modal.customsvc.php:11
 msgid "Description"
-msgstr ""
+msgstr "Beschreibung"
 
 #: views/view.smart.php:42
 msgid "Disable"
-msgstr ""
+msgstr "Deaktivieren"
 
 #: views/view.about.php:77
 msgid "Disable Firewall"
-msgstr ""
+msgstr "Firewall deaktivieren"
 
 #: Console/Firewall.class.php:52
 msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
+"Deaktivieren Sie die Systemfirewall. Dadurch wird es sauber heruntergefahren."
 
 #: views/view.about.php:38 views/view.smart.php:5
 msgid "Disabled"
-msgstr ""
+msgstr "Deaktiviert"
 
 #: views/view.about.php:113
 msgid "Drop"
-msgstr ""
+msgstr "Ablegen"
 
 #: views/page.zones.php:61
 msgid ""
@@ -327,23 +328,23 @@ msgstr ""
 
 #: views/view.customsvc.php:44
 msgid "Edit"
-msgstr ""
+msgstr "Bearbeiten"
 
 #: views/view.smart.php:44
 msgid "Enable"
-msgstr ""
+msgstr "Aktivieren"
 
 #: OOBE.class.php:196
 msgid "Enable Responsive Firewall?"
-msgstr ""
+msgstr "Responsive Firewall aktivieren?"
 
 #: views/view.smart.php:4
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiviert"
 
 #: Console/Firewall.class.php:76
 msgid "Enabling Firewall."
-msgstr ""
+msgstr "Aktivieren der Firewall."
 
 #: OOBE.class.php:198
 msgid ""
@@ -353,20 +354,20 @@ msgstr ""
 
 #: Zones.class.php:10
 msgid "External"
-msgstr ""
+msgstr "Extern"
 
 #: OOBE.class.php:243
 #, php-format
 msgid "External Address: %s"
-msgstr ""
+msgstr "Externe Adresse: %s"
 
 #: views/page.services.php:37 views/view.portmaps.php:17
 msgid "Extra Services"
-msgstr ""
+msgstr "Extra Services"
 
 #: Services.class.php:466
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
 #: Services.class.php:468
 msgid ""
@@ -376,51 +377,51 @@ msgstr ""
 
 #: views/view.about.php:111
 msgid "Filter Type"
-msgstr ""
+msgstr "Filtertyp"
 
 #: firewall.i18n.php:10 page.firewall.php:6
 msgid "Firewall"
-msgstr ""
+msgstr "Firewall"
 
 #: Firewall.class.php:59
 msgid "Firewall Active"
-msgstr ""
+msgstr "Firewall aktiv"
 
 #: Firewall.class.php:80
 msgid "Firewall Configuration"
-msgstr ""
+msgstr "Firewall Konfiguration"
 
 #: Firewall.class.php:61
 msgid "Firewall Disabled"
-msgstr ""
+msgstr "Firewall deaktiviert"
 
 #: Firewall.class.php:114 Firewall.class.php:115
 msgid "Firewall Integrity Failed"
-msgstr ""
+msgstr "Firewall-Integrität fehlgeschlagen"
 
 #: Firewall.class.php:74
 msgid "Firewall Service not running!"
-msgstr ""
+msgstr "Firewall-Dienst wird nicht ausgeführt!"
 
 #: views/view.about.php:102
 msgid "Firewall Wizard"
-msgstr ""
+msgstr "Firewall-Assistent"
 
 #: Firewall.class.php:473
 msgid "Firewall can not be disabled"
-msgstr ""
+msgstr "Die Firewall kann nicht deaktiviert werden."
 
 #: Console/Firewall.class.php:21
 msgid "Firewall functions"
-msgstr ""
+msgstr "Firewall-Funktionen"
 
 #: views/warning.notready.php:2
 msgid "Firewall has not started yet!"
-msgstr ""
+msgstr "Die Firewall ist noch nicht gestartet!"
 
 #: Console/Firewall.class.php:68
 msgid "Firewall is not enabled, can't disable it"
-msgstr ""
+msgstr "Die Firewall kann nicht deaktiviert werden, da sie nicht aktiviert ist."
 
 #: OOBE.class.php:230
 msgid ""
@@ -460,7 +461,7 @@ msgstr ""
 
 #: Console/Firewall.class.php:22
 msgid "Force Add/Removal of entry"
-msgstr ""
+msgstr "Hinzufügen / Entfernen des Eintrags erzwingen."
 
 #: OOBE.class.php:200
 msgid "Further information is available at the FreePBX Wiki."
@@ -468,27 +469,29 @@ msgstr ""
 
 #: Services.class.php:336
 msgid "HTTP Provisioning"
-msgstr ""
+msgstr "HTTP-Bereitstellung"
 
 #: Services.class.php:351
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
+"HTTP-Bereitstellung ist unter System Admin im Port Management deaktiviert."
 
 #: Services.class.php:416
 msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "HTTP-REST Apps sind unter System Admin im Port Management deaktiviert."
 
 #: Services.class.php:362
 msgid "HTTPS Provisioning"
-msgstr ""
+msgstr "HTTPS-Bereitstellung"
 
 #: Services.class.php:377
 msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
+"HTTPS-Bereitstellung ist unter System Admin im Port Management deaktiviert."
 
 #: Services.class.php:444
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "HTTPS-REST Apps sind unter System Admin im Port Management deaktiviert."
 
 #: views/oobe.welcome.php:30
 msgid ""
@@ -498,7 +501,7 @@ msgstr ""
 
 #: Services.class.php:322 Smart.class.php:43
 msgid "IAX Protocol"
-msgstr ""
+msgstr "IAX Protokoll"
 
 #: Services.class.php:324
 msgid ""
@@ -508,11 +511,11 @@ msgstr ""
 
 #: views/page.zones.php:142
 msgid "IP Address: "
-msgstr ""
+msgstr "IP Adresse: "
 
 #: views/page.zones.php:140
 msgid "IP Addresses: "
-msgstr ""
+msgstr "IP Adressen: "
 
 #: views/view.smart.php:27
 msgid ""
@@ -596,11 +599,11 @@ msgstr ""
 
 #: views/page.zones.php:47
 msgid "Interfaces"
-msgstr ""
+msgstr "Schnittstellen"
 
 #: Zones.class.php:12
 msgid "Internal"
-msgstr ""
+msgstr "Intern"
 
 #: views/disabled.php:11
 msgid ""
@@ -627,11 +630,11 @@ msgstr ""
 
 #: OOBE.class.php:199
 msgid "It is recommended to turn this on if you have remote clients."
-msgstr ""
+msgstr "Es wird empfohlen, dies einzuschalten, wenn Sie Remote-Clients haben."
 
 #: OOBE.class.php:244
 msgid "Known Networks:"
-msgstr ""
+msgstr "Bekannte Netzwerke:"
 
 #: Smart.class.php:42
 msgid "Legacy SIP (chan_sip)"
@@ -640,7 +643,7 @@ msgstr ""
 #: views/view.blocked.php:2 views/view.registered.php:15
 #: views/view.status.php:15
 msgid "Loading..."
-msgstr ""
+msgstr "Laden..."
 
 #: views/view.customsvc.php:62
 #, php-format
@@ -649,23 +652,23 @@ msgstr ""
 
 #: Services.class.php:489
 msgid "NFS"
-msgstr ""
+msgstr "NFS"
 
 #: Services.class.php:496
 msgid "NFS Services are not available on this machine"
-msgstr ""
+msgstr "NFS-Dienste sind auf dieser Maschine nicht verfügbar."
 
 #: views/page.zones.php:50
 msgid "Networks"
-msgstr ""
+msgstr "Netzwerke"
 
 #: Firewall.class.php:126 Firewall.class.php:128
 msgid "New Interface Detected"
-msgstr ""
+msgstr "Neue Schnittstelle erkannt."
 
 #: views/view.portmaps.php:26
 msgid "No Custom services defined."
-msgstr ""
+msgstr "Keine Benutzerdefinierten Dienste definiert."
 
 #: views/view.registered.php:16
 msgid "No Endpoints have been allowed through the Responsive Firewall"
@@ -677,11 +680,12 @@ msgstr ""
 
 #: Firewall.class.php:165
 msgid "No Trusted Management Network"
-msgstr ""
+msgstr "Kein vertrauenswürdiges Verwaltungsnetz."
 
 #: Firewall.class.php:167
 msgid "No Trusted Network or Host defined"
 msgstr ""
+"Keine vertrauenswürdiges Netzwerk oder vertrauenswürdigen Host definiert."
 
 #: Firewall.class.php:168
 msgid ""
@@ -692,15 +696,15 @@ msgstr ""
 
 #: views/view.customsvc.php:11
 msgid "No custom services currently defined."
-msgstr ""
+msgstr "Derzeit sind keine benutzerdefinierten Dienste definiert."
 
 #: views/view.blocked.php:10 views/view.blocked.php:20
 msgid "No hosts!"
-msgstr ""
+msgstr "Keine Hosts!"
 
 #: views/view.blacklist.php:4
 msgid "Note that changes to the firewall are effective immediately."
-msgstr ""
+msgstr "Beachten Sie, dass Änderungen an der Firewall sofort wirksam sind."
 
 #: views/view.smart.php:28
 msgid ""
@@ -723,15 +727,15 @@ msgstr ""
 
 #: views/page.zones.php:134
 msgid "Note:"
-msgstr ""
+msgstr "Hinweis:"
 
 #: views/view.status.php:19
 msgid "Number of Currently Rate-Limited Clients:"
-msgstr ""
+msgstr "Anzahl der aktuell eingeschränkten Clients:"
 
 #: views/view.status.php:21
 msgid "Number of currently blocked Attackers:"
-msgstr ""
+msgstr "Anzahl der aktuell geblockten Angreifer:"
 
 #: Services.class.php:388
 msgid "OpenVPN Server"
@@ -739,15 +743,15 @@ msgstr ""
 
 #: Console/Firewall.class.php:25
 msgid "Optional parameter"
-msgstr ""
+msgstr "Optionale Parameter"
 
 #: Zones.class.php:11
 msgid "Other"
-msgstr ""
+msgstr "Andere"
 
 #: Services.class.php:265
 msgid "PJSIP is not available on this machine"
-msgstr ""
+msgstr "PJSIP ist auf dieser Maschine nicht Verfügbar."
 
 #: Services.class.php:338
 msgid ""
@@ -775,15 +779,16 @@ msgstr ""
 #: views/disabled.php:13
 msgid "Please visit the FreePBX Wiki for more information on the firewall."
 msgstr ""
+"Für mehr Informationen über die Firewall besuchen Sie bitte das FreePBX Wiki."
 
 #: views/modal.customsvc.php:27
 msgid "Port Range"
-msgstr ""
+msgstr "Portbereich"
 
 #: views/view.customsvc.php:60
 #, php-format
 msgid "Port Range: %s"
-msgstr ""
+msgstr "Portbereich: %s"
 
 #: views/modal.customsvc.php:32
 msgid ""
@@ -797,39 +802,39 @@ msgstr ""
 
 #: views/page.about.php:41
 msgid "Preconfigured"
-msgstr ""
+msgstr "Vorkonfiguriert"
 
 #: views/page.about.php:90
 msgid "Present"
-msgstr ""
+msgstr "Vorhanden"
 
 #: views/modal.customsvc.php:17
 msgid "Protocol"
-msgstr ""
+msgstr "Protokoll"
 
 #: views/view.customsvc.php:53
 msgid "Protocol: TCP"
-msgstr ""
+msgstr "Protokoll: TCP"
 
 #: views/view.customsvc.php:51
 msgid "Protocol: TCP and UDP"
-msgstr ""
+msgstr "Protokoll: TCP und UDP"
 
 #: views/view.customsvc.php:55
 msgid "Protocol: UDP"
-msgstr ""
+msgstr "Protokoll: UDP"
 
 #: Services.class.php:400
 msgid "REST Apps (HTTP)"
-msgstr ""
+msgstr "REST-Apps (HTTP)"
 
 #: Services.class.php:428
 msgid "REST Apps (HTTPS)"
-msgstr ""
+msgstr "REST-Apps (HTTPS)"
 
 #: Services.class.php:420 Services.class.php:448
 msgid "REST Apps are only available with System Admin"
-msgstr ""
+msgstr "REST-Apps sind nur als System Admin verfügbar."
 
 #: Services.class.php:402 Services.class.php:430
 msgid ""
@@ -858,27 +863,29 @@ msgstr ""
 
 #: views/view.about.php:105
 msgid "Re-Run Wizard"
-msgstr ""
+msgstr "Assistent erneut starten"
 
 #: views/page.status.php:31
 msgid "Registered Endpoints"
-msgstr ""
+msgstr "Registrierte Endpoints"
 
 #: Zones.class.php:9 views/view.about.php:112
 msgid "Reject"
-msgstr ""
+msgstr "Ablehnen"
 
 #: Console/Firewall.class.php:56
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
+"Entfernen Sie den Hostname oder die IP-Adresse aus der vertrauenswürdigen "
+"Zone."
 
 #: Firewall.class.php:496
 msgid "Reset"
-msgstr ""
+msgstr "Zurücksetzen"
 
 #: views/page.about.php:38 views/view.smart.php:2
 msgid "Responsive Firewall"
-msgstr ""
+msgstr "Responsive Firewall"
 
 #: views/view.about.php:20
 msgid ""
@@ -889,27 +896,27 @@ msgstr ""
 
 #: OOBE.class.php:205
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
-msgstr ""
+msgstr "Responsive Firewall ist <strong>derzeit aktiviert</strong>."
 
 #: views/view.about.php:26
 msgid "Responsive Firewall is <strong>enabled</strong>."
-msgstr ""
+msgstr "Responsive Firewall ist <strong>aktiviert</strong>."
 
 #: Services.class.php:216
 msgid "SIP Protocol"
-msgstr ""
+msgstr "SIP Protokoll"
 
 #: Smart.class.php:41
 msgid "SIP Protocol (pjsip)"
-msgstr ""
+msgstr "SIP Protokoll (pjsip)"
 
 #: Services.class.php:546
 msgid "SMB/CIFS"
-msgstr ""
+msgstr "SMB/CIFS"
 
 #: Services.class.php:552
 msgid "SMB/CIFS (Samba) is not installed on this machine"
-msgstr ""
+msgstr "SMB/CIFS (Samba) ist auf dieser Maschine nicht Installiert."
 
 #: Services.class.php:555
 msgid ""
@@ -918,7 +925,7 @@ msgstr ""
 
 #: Services.class.php:50
 msgid "SSH"
-msgstr ""
+msgstr "SSH"
 
 #: Services.class.php:52
 msgid ""
@@ -929,7 +936,7 @@ msgstr ""
 
 #: views/view.about.php:36
 msgid "Safe Mode"
-msgstr ""
+msgstr "Abgesicherter Modus"
 
 #: views/view.about.php:54
 msgid ""
@@ -941,7 +948,7 @@ msgstr ""
 
 #: OOBE.class.php:34
 msgid "Sangoma Smart Firewall"
-msgstr ""
+msgstr "Sangoma Smart Firewall"
 
 #: views/oobe.welcome.php:20
 msgid ""
@@ -951,20 +958,20 @@ msgstr ""
 
 #: views/oobe.welcome.php:2
 msgid "Sangoma Smart Firewall is now enabled!"
-msgstr ""
+msgstr "Sangoma Smart Firewall ist jetzt aktiviert!"
 
 #: Firewall.class.php:497 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
-msgstr ""
+msgstr "Speichern"
 
 #: views/page.zones.php:126 views/page.zones.php:220
 msgid "Save Changes"
-msgstr ""
+msgstr "Änderung speichern"
 
 #: views/view.portmaps.php:36
 msgid "See Custom Service page"
-msgstr ""
+msgstr "Siehe Benutzerdefinierte Service-Seite."
 
 #: OOBE.class.php:242
 msgid ""
@@ -974,11 +981,11 @@ msgstr ""
 
 #: views/view.portmaps.php:39
 msgid "Service unavailable"
-msgstr ""
+msgstr "Dienst nicht Verfügbar"
 
 #: views/bootnav.php:6 views/page.services.php:34
 msgid "Services"
-msgstr ""
+msgstr "Dienste"
 
 #: views/page.services.php:46
 msgid ""
@@ -988,7 +995,7 @@ msgstr ""
 
 #: views/page.about.php:35
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 #: OOBE.class.php:124
 msgid "Should the client you're using be trusted?"
@@ -1000,7 +1007,7 @@ msgstr ""
 
 #: Console/Firewall.class.php:23
 msgid "Show help"
-msgstr ""
+msgstr "Hilfe anzeigen"
 
 #: views/view.customsvc.php:65
 #, php-format
