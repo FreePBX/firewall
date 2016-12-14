@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-13 23:11+0200\n"
+"PO-Revision-Date: 2016-12-14 02:31+0200\n"
 "Last-Translator: Alexander <alexander.schley@paranagua.pr.gov.br>\n"
 "Language-Team: Portuguese (Brazil) "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/pt_BR/>\n"
@@ -845,7 +845,7 @@ msgstr ""
 
 #: Zones.class.php:9 views/view.about.php:112
 msgid "Reject"
-msgstr ""
+msgstr "Rejeitar"
 
 #: Console/Firewall.class.php:56
 msgid "Remove the hostname or IP specified from the Trusted Zone"
