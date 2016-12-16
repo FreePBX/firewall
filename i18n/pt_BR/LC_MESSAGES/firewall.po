@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-14 02:31+0200\n"
+"PO-Revision-Date: 2016-12-15 21:17+0200\n"
 "Last-Translator: Alexander <alexander.schley@paranagua.pr.gov.br>\n"
 "Language-Team: Portuguese (Brazil) "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/pt_BR/>\n"
@@ -935,7 +935,7 @@ msgstr ""
 #: Firewall.class.php:497 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
-msgstr ""
+msgstr "Salvar"
 
 #: views/page.zones.php:126 views/page.zones.php:220
 msgid "Save Changes"
