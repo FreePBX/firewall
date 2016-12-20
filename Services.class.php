@@ -85,7 +85,7 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			if (isset($ports['acp']) && $ports['acp'] > 80) {
+			if (isset($ports['acp']) && $ports['acp'] >= 80) {
 				$retarr['fw'][0]['port'] = $ports['acp'];
 			}
 		} catch (\Exception $e) {
@@ -104,7 +104,7 @@ class Services {
 		);
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			if (isset($ports['sslacp']) && $ports['sslacp'] > 80) {
+			if (isset($ports['sslacp']) && $ports['sslacp'] >= 80) {
 				$retarr['fw'][0]['port'] = $ports['sslacp'];
 			}
 		} catch (\Exception $e) {
@@ -127,10 +127,10 @@ class Services {
 			// Sysadmin is installed
 			$retarr['fw'] = array();
 
-			if (isset($ports['ucp']) && $ports['ucp'] !== 'disabled' && $ports['ucp'] > 80) {
+			if (isset($ports['ucp']) && $ports['ucp'] !== 'disabled' && $ports['ucp'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['ucp']);
 			}
-			if (isset($ports['sslucp']) && $ports['sslucp'] !== 'disabled' && $ports['sslucp'] > 80) {
+			if (isset($ports['sslucp']) && $ports['sslucp'] !== 'disabled' && $ports['sslucp'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslucp']);
 			}
 			// Were there any ports discovered?
@@ -343,7 +343,7 @@ class Services {
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 			$retarr['fw'] = array();
-			if (isset($ports['hpro']) && $ports['hpro'] !== 'disabled' && $ports['hpro'] > 80) {
+			if (isset($ports['hpro']) && $ports['hpro'] !== 'disabled' && $ports['hpro'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['hpro']);
 			}
 			if (!$retarr['fw']) {
@@ -369,7 +369,7 @@ class Services {
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 			$retarr['fw'] = array();
-			if (isset($ports['sslhpro']) && $ports['sslhpro'] !== 'disabled' && $ports['sslhpro'] > 80) {
+			if (isset($ports['sslhpro']) && $ports['sslhpro'] !== 'disabled' && $ports['sslhpro'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslhpro']);
 			}
 			if (!$retarr['fw']) {
@@ -406,7 +406,7 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			if (isset($ports['restapps']) && $ports['restapps'] !== 'disabled' &&  $ports['restapps'] > 80) {
+			if (isset($ports['restapps']) && $ports['restapps'] !== 'disabled' &&  $ports['restapps'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['restapps']);
 			}
 
@@ -434,7 +434,7 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			if (isset($ports['sslrestapps']) && $ports['sslrestapps'] !== 'disabled' && $ports['sslrestapps'] > 80) {
+			if (isset($ports['sslrestapps']) && $ports['sslrestapps'] !== 'disabled' && $ports['sslrestapps'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslrestapps']);
 			}
 
