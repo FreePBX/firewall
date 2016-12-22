@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-17 00:11+0200\n"
+"PO-Revision-Date: 2016-12-21 21:46+0200\n"
 "Last-Translator: Alexander <alexander.schley@paranagua.pr.gov.br>\n"
 "Language-Team: Portuguese (Brazil) "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/pt_BR/>\n"
@@ -318,7 +318,7 @@ msgstr ""
 
 #: views/view.smart.php:4
 msgid "Enabled"
-msgstr "Habilitado"
+msgstr "Habilitar"
 
 #: Console/Firewall.class.php:76
 msgid "Enabling Firewall."
