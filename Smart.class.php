@@ -176,14 +176,9 @@ class Smart {
 			}
 			foreach ($pjbinds as $allports) {
 				foreach ($allports as $protocol => $port) {
-					// Throw if we weren't given a port (unless it's ws)
+					// Ignore protocol if we weren't given a port
 					if ((int) $port < 1024) {
-						// We don't care about websockets
-						if ($protocol == "ws" || $protocol == "wss") {
-							continue;
-						} else {
-							throw new \Exception("Protocol '$protocol' didn't tell me what port it was listening on");
-						}
+						continue;
 					}
 
 					// If it's not udp, it's tcp.
