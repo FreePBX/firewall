@@ -180,6 +180,15 @@ $lastfin = 1;
 while(true) {
 	$fwconf = getSettings();
 	if (!$fwconf['active']) {
+		// If we're here, we WERE running, and now we're not.
+		// Is this because of some database strangeness?  If we have an
+		// empty array, ignore it, and sleep for 30 seconds.
+		if (!$fwconf) {
+			wall("Firewall getSettings returned empty array. Database connection error!\nSleeping for 60 seconds before retrying\n");
+			sleep(60);
+			continue;
+		}
+		// Nope, it was shut down deliberately.
 		fwLog("Not active. Shutting down");
 		wall("Firewall has been disabled. Shutting down.");
 		shutdown();
