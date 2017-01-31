@@ -847,14 +847,23 @@ class Iptables {
 
 		$wanted = array("4" => array(), "6" => array());
 
-		// $blacklist is array("ip.range.here/cidr" => false, "hostname" => array("ip", "ip", "ip"), ...);
+		// $blacklist is array("ip.range.here(optional: /cidr)" => false, "hostname" => array("ip", "ip", "ip"), ...);
 		foreach ($blacklist as $entry => $val) {
 			if ($val === false) {
 				// It's a network.
 				$net = explode("/", $entry);
 				if (!isset($net[1])) {
-					// Well that's just crazy.
-					continue;
+					// No CIDR?  Is it an IP address?
+					if (filter_var($net[0], \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+						// Yes. It's IPv6
+						$net[1] = "128";
+					} elseif (filter_var($net[0], \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+						// Yes. It's IPv4
+						$net[1] = "32";
+					} else {
+						// Well that's just crazy.
+						continue;
+					}
 				}
 				$addr = $net[0];
 				if (filter_var($addr, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
