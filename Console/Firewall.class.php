@@ -23,6 +23,7 @@ class Firewall extends Command {
 			->addOption('help', 'h', InputOption::VALUE_NONE, _('Show help'))
 			->addArgument('cmd', InputArgument::REQUIRED, _('Command to run (see --help)'))
 			->addArgument('opt', InputArgument::OPTIONAL, _('Optional parameter'))
+			->addArgument('ids', InputArgument::OPTIONAL|InputArgument::IS_ARRAY, _('IDs to add or remove from a zone'))
 			->setHelp($this->showHelp());
 	}
 
@@ -41,6 +42,18 @@ class Firewall extends Command {
 			return $this->trustEntry($output, $input->getArgument('opt'));
 		case "untrust":
 			return $this->untrustEntry($output, $input->getArgument('opt'));
+		case "list":
+			return $this->listZone($output, $input->getArgument('opt'));
+		case "add":
+			foreach ($input->getArgument('ids') as $id) {
+				$this->addToZone($output, $input->getArgument('opt'), $id);
+			}
+			return true;
+		case "del":
+			foreach ($input->getArgument('ids') as $id) {
+				$this->removeFromZone($output, $input->getArgument('opt'), $id);
+			}
+			return true;
 		default:
 			$output->writeln($this->showHelp());
 		}
@@ -54,10 +67,20 @@ class Firewall extends Command {
 			"start" => _("Start (and enable, if disabled) the System Firewall"),
 			"trust" => _("Add the hostname or IP specified to the Trusted Zone"),
 			"untrust" => _("Remove the hostname or IP specified from the Trusted Zone"),
+			"list [zone]" => _("List all entries in zone 'zone'"),
+			"add [zone] [id id id..]" => _("Add to 'zone' the IDs provided."),
+			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
+			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
+
 		);
 		foreach ($commands as $o => $t) {
 			$help .= "<info>$o</info> : <comment>$t</comment>\n";
 		}
+
+		$help .= _("When adding or deleting from a zone, one or many IDs may be provided.")."\n";
+		$help .= _("These may be IP addresses, hostnames, or networks.")."\n";
+		$help .= _("For example:")."\n\n";
+		$help .="<comment>fwconsole firewall add trusted 10.46.80.0/24 hostname.example.com 1.2.3.4</comment>\n";
 
 		return $help;
 	}
@@ -85,6 +108,30 @@ class Firewall extends Command {
 	}
 
 	private function trustEntry($output, $param) {
+		$this->addToZone($output, "trusted", $param);
+	}
+
+	private function addToZone($output, $zone, $param) {
+		$fw = \FreePBX::Firewall();
+		$so = $fw->getSmartObj();
+
+		switch ($zone) {
+		case "trusted":
+		case "other":
+		case "internal":
+		case "external":
+			break;
+		case 'blacklist':
+			// If it's adding to blacklist, let the firewall object do it
+			$output->write("<info>".sprintf(_("Attempting to add '%s' to Blacklist ... "), "</info>$param<info>")."</info>");
+			$fw->addToBlacklist($param);
+			$output->writeln("<info>"._("Success!")."</info>");
+			return;
+		default:
+			$output->writeln("<error>".sprintf(_("Error: Can't add '%s' to unknown zone '%s'"), $param, $zone)."</error>");
+			return;
+		}
+
 		// Is this an IP address? If it matches an IP address, then it doesn't have a
 		// subnet. Add one, depending on what it is.
 		if (filter_var($param, \FILTER_VALIDATE_IP)) {
@@ -97,10 +144,7 @@ class Firewall extends Command {
 			}
 		}
 
-		$fw = \FreePBX::Firewall();
-		$so = $fw->getSmartObj();
-
-		$output->writeln("<info>".sprintf(_("Attempting to add %s to Trusted Zone"), "</info>$param<info>")."</info>");
+		$output->write("<info>".sprintf(_("Attempting to add '%s' to Zone '%s' ... "), "</info>$param<info>", "</info>$zone<info>")."</info>");
 
 		// Is this a network? If it has a slash, assume it does.
 		if (strpos($param, "/") !== false) {
@@ -111,30 +155,77 @@ class Firewall extends Command {
 
 		// If it's false, or empty, we couldn't add it.
 		if (!$trust) {
-			$output->writeln("<error>"._("Could not validate entry. Please try again.")."</error>");
+			$output->writeln("<error>"._("Failed! Could not validate entry. Please try again.")."</error>");
+			return;
 		}
 		$nets = $fw->getConfig("networkmaps");
 		if (!is_array($nets)) {
 			$nets = array();
 		}
-		$nets[$param] = "trusted";
+
+		$nets[$param] = $zone;
 		$fw->setConfig("networkmaps", $nets);
-		$output->writeln("<info>"._("Success. Entry added to Trusted Zone.")."</info>");
+		$output->writeln("<info>"._("Success!")."</info>");
 	}
 
 	private function untrustEntry($output, $param) {
-		$output->writeln("<info>".sprintf(_("Attempting to remove %s from Trusted Zone"), "</info>$param<info>")."</info>");
+		return $this->removeFromZone($output, "trusted", $param);
+	}
+
+	private function removeFromZone($output, $zone, $param) {
 		$fw = \FreePBX::Firewall();
+		$so = $fw->getSmartObj();
+
+		switch ($zone) {
+		case "trusted":
+		case "other":
+		case "internal":
+		case "external":
+			break;
+		case "blacklist":
+			throw new \Exception("No blacklist");
+		}
+
+		$output->write("<info>".sprintf(_("Attempting to remove %s from '%s' Zone ... "), "</info>$param<info>", "</info>$zone<info>")."</info>");
 		$nets = $fw->getConfig("networkmaps");
 		if (!is_array($nets)) {
 			$nets = array();
 		}
 		if (!isset($nets[$param])) {
-			$output->writeln("<error>"._("That is not currently trusted. Please try again.")."</error>");
-			exit(1);
+			$output->writeln("<error>"._("Unknown entry!")."</error>");
+			return;
 		}
 		unset($nets[$param]);
 		$fw->setConfig("networkmaps", $nets);
-		$output->writeln("<info>"._("Success. Entry removed from Trusted Zone.")."</info>");
+		$output->writeln("<info>"._("Success!")."</info>");
+	}
+
+	private function listZone($output, $param) {
+		switch ($param) {
+		case 'trusted':
+		case 'internal':
+		case 'external':
+		case 'other':
+			$fw = \FreePBX::Firewall();
+			$nets = $fw->getConfig("networkmaps");
+			$output->writeln("<info>".sprintf(_("All entries in zone '%s':"), $param)."</info>");
+			foreach ($nets as $n => $z) {
+				if ($z === $param) {
+					$output->writeln("\t$n");
+				}
+			}
+			return true;
+		case 'blacklist':
+			$bl = \FreePBX::Firewall()->getBlacklist();
+			$output->writeln("<info>"._("All blacklisted entries.")."</info>");
+			$output->writeln("<error>"._("Important!")."</error> "._("A blacklisted entry will be overridden by a defined zone entry!"));
+			foreach ($bl as $id => $res) {
+				if ($res) {
+					$output->writeln("\t".sprintf("%s: (Resolves to %s)", $id, implode(",", $res)));
+				} else {
+					$output->writeln("\t$id");
+				}
+			}
+		}
 	}
 }
