@@ -22,17 +22,7 @@ if (posix_geteuid() !== 0) {
 	throw new \Exception("I must be run as root.");
 }
 
-// Grab what our database connection settings are
-$f = file_get_contents("/etc/freepbx.conf");
-
-preg_match_all("/amp_conf\[['\"](.+)['\"]\]\s?=\s?['\"](.+)['\"];/m", $f, $out);
-$mysettings = array();
-
-foreach($out[1] as $id => $val) {
-	$mysettings[$val] = $out[2][$id];
-}
-
-$fwconf = getSettings($mysettings);
+$fwconf = getSettings();
 
 if (!$fwconf['active']) {
 	// Don't need to log this
@@ -188,9 +178,10 @@ $fwversion = false;
 $lastfin = 1;
 
 while(true) {
-	$fwconf = getSettings($mysettings);
+	$fwconf = getSettings();
 	if (!$fwconf['active']) {
 		fwLog("Not active. Shutting down");
+		wall("Firewall has been disabled. Shutting down.");
 		shutdown();
 	}
 	checkPhar();
@@ -206,8 +197,20 @@ while(true) {
 	}
 }
 
-function getSettings($mysettings) {
+function getSettings() {
+	// Grab what our database connection settings are
+	$f = file_get_contents("/etc/freepbx.conf");
+
+	preg_match_all("/amp_conf\[['\"](.+)['\"]\]\s?=\s?['\"](.+)['\"];/m", $f, $out);
+	$mysettings = array();
+
+	foreach($out[1] as $id => $val) {
+		$mysettings[$val] = $out[2][$id];
+	}
+
+	// If the Datbase goes away, this will wait indefinately for a connection.
 	$pdo = getDbHandle($mysettings);
+
 	//
 	// TRANSIENT FIX
 	//
@@ -287,7 +290,17 @@ function shutdown() {
 }
 
 function getDbHandle($mysettings) {
+	global $thissvc;
 	static $pdo = false;
+	static $lastsettings = false;
+
+	// If the current settings are different to the last settings,
+	// recreate the PDO object.
+	if (json_encode($mysettings, true) !== $lastsettings) {
+		$lastsettings = json_encode($mysettings, true);
+		$pdo = false;
+	}
+
 	// Make sure it hasn't gone away if it previously existed
 	if (is_object($pdo)) {
 		try {
@@ -299,7 +312,7 @@ function getDbHandle($mysettings) {
 	}
 
 	// Now, do we need to connect or reconnect?
-	if (!$pdo) {
+	while (!$pdo) {
 		if(empty($mysettings['AMPDBSOCK'])) {
 			if (empty($mysettings['AMPDBHOST'])) {
 				$conn = "host=localhost";
@@ -310,8 +323,10 @@ function getDbHandle($mysettings) {
 			$conn = "unix_socket=".$mysettings['AMPDBSOCK'];
 		}
 		$dsn = $mysettings['AMPDBENGINE'].":$conn;dbname=".$mysettings['AMPDBNAME'].";charset=utf8";
+
 		// Try up to 15 times to connect, waiting 2 seconds between tries. This gives us 30
-		// seconds to actually make sure everything it started.
+		// seconds to actually make sure everything is started.
+		// If it hasn't connected after 30 seconds, wall and keep trying.
 		$count = 0;
 		while ($count < 16) {
 			try {
@@ -328,7 +343,8 @@ function getDbHandle($mysettings) {
 			break;
 		}
 		if (!$pdo) {
-			throw new \Exception("Can't connect to database after 30 seconds, giving up");
+			// Something bad is happening. Wall about mysql not being there, and then keep trying.
+			wall("Firewall was unable to connect to MySQL after 30 seconds.\nCheck Database!\n");
 		}
 	}
 	return $pdo;
