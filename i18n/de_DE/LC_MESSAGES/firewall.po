@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-11-09 14:14+1000\n"
-"PO-Revision-Date: 2016-12-14 17:03+0200\n"
+"PO-Revision-Date: 2017-01-12 21:18+0200\n"
 "Last-Translator: Sven <spiderrs4@web.de>\n"
 "Language-Team: German "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/de_DE/>\n"
@@ -363,7 +363,7 @@ msgstr "Externe Adresse: %s"
 
 #: views/page.services.php:37 views/view.portmaps.php:17
 msgid "Extra Services"
-msgstr "Extra Services"
+msgstr "Zusatzleistungen"
 
 #: Services.class.php:466
 msgid "FTP"
@@ -1024,7 +1024,7 @@ msgstr ""
 
 #: views/bootnav.php:8
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: views/page.status.php:28
 msgid "Status Overview"
