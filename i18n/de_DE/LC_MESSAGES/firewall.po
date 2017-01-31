@@ -9,15 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-09 14:14+1000\n"
+"POT-Creation-Date: 2017-01-31 16:28+1100\n"
 "PO-Revision-Date: 2017-01-12 21:18+0200\n"
 "Last-Translator: Sven <spiderrs4@web.de>\n"
-"Language-Team: German "
-"<http://weblate.freepbx.org/projects/freepbx/firewall/de_DE/>\n"
-"Language: de_DE\n"
+"Language-Team: German <http://weblate.freepbx.org/projects/freepbx/firewall/"
+"de_DE/>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.4\n"
 
@@ -51,6 +51,10 @@ msgstr "<strong>Responsive Firewall ist nicht aktiviert.</strong>"
 #: views/view.about.php:53
 msgid "<strong>Safe mode is available.</strong>"
 msgstr "<strong>Der abgesicherte Modus ist verfügbar.</strong>"
+
+#: Console/Firewall.class.php:221
+msgid "A blacklisted entry will be overridden by a defined zone entry!"
+msgstr ""
 
 #: Firewall.class.php:139
 #, php-format
@@ -87,11 +91,15 @@ msgstr "Netzwerk hinzufügen"
 msgid "Add New"
 msgstr "Neue hinzufügen"
 
-#: Console/Firewall.class.php:55
+#: Console/Firewall.class.php:68
 msgid "Add the hostname or IP specified to the Trusted Zone"
 msgstr ""
 "Fügen Sie den Hostnamen oder die IP-Adresse der vertrauenswürdigen Zone "
 "hinzu."
+
+#: Console/Firewall.class.php:71
+msgid "Add to 'zone' the IDs provided."
+msgstr ""
 
 #: views/page.about.php:64
 msgid "Add to Trusted"
@@ -114,6 +122,15 @@ msgid ""
 msgstr ""
 "Nachdem die ursprüngliche Konfiguration abgeschlossen ist, gibt es keinen "
 "Grund, diese eingeschaltet zu lassen."
+
+#: Console/Firewall.class.php:220
+msgid "All blacklisted entries."
+msgstr ""
+
+#: Console/Firewall.class.php:211
+#, php-format
+msgid "All entries in zone '%s':"
+msgstr ""
 
 #: views/page.zones.php:74
 msgid ""
@@ -186,15 +203,20 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:103
-#, php-format
-msgid "Attempting to add %s to Trusted Zone"
-msgstr "Versuche %s zur sicheren Zone hinzuzufügen."
-
 #: Console/Firewall.class.php:126
 #, php-format
-msgid "Attempting to remove %s from Trusted Zone"
-msgstr "Versuche %s aus der sicheren Zone zu entfernen."
+msgid "Attempting to add '%s' to Blacklist ... "
+msgstr ""
+
+#: Console/Firewall.class.php:147
+#, php-format
+msgid "Attempting to add '%s' to Zone '%s' ... "
+msgstr ""
+
+#: Console/Firewall.class.php:189
+#, php-format
+msgid "Attempting to remove %s from '%s' Zone ... "
+msgstr ""
 
 #: OOBE.class.php:228
 msgid "Automatically configure Asterisk IP Settings?"
@@ -256,10 +278,6 @@ msgstr "Verbindungen"
 msgid "Core Services"
 msgstr "Standard Services"
 
-#: Console/Firewall.class.php:114
-msgid "Could not validate entry. Please try again."
-msgstr "Eintrag konnte nicht überprüft werden. Bitte versuche es erneut."
-
 #: views/view.customsvc.php:2
 msgid "Create new Service"
 msgstr "Neuen Service erstellen"
@@ -293,6 +311,10 @@ msgstr "Standards"
 msgid "Delete"
 msgstr "Löschen"
 
+#: Console/Firewall.class.php:72
+msgid "Delete from 'zone' the IDs provided."
+msgstr ""
+
 #: views/modal.customsvc.php:11
 msgid "Description"
 msgstr "Beschreibung"
@@ -305,7 +327,7 @@ msgstr "Deaktivieren"
 msgid "Disable Firewall"
 msgstr "Firewall deaktivieren"
 
-#: Console/Firewall.class.php:52
+#: Console/Firewall.class.php:65
 msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
 "Deaktivieren Sie die Systemfirewall. Dadurch wird es sauber heruntergefahren."
@@ -342,7 +364,7 @@ msgstr "Responsive Firewall aktivieren?"
 msgid "Enabled"
 msgstr "Aktiviert"
 
-#: Console/Firewall.class.php:76
+#: Console/Firewall.class.php:99
 msgid "Enabling Firewall."
 msgstr "Aktivieren der Firewall."
 
@@ -350,6 +372,11 @@ msgstr "Aktivieren der Firewall."
 msgid ""
 "Enabling Responsive Firewall allows remote clients to securely register to "
 "this server without explicitly whitelisting them."
+msgstr ""
+
+#: Console/Firewall.class.php:131
+#, php-format
+msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
 
 #: Zones.class.php:10
@@ -373,6 +400,10 @@ msgstr "FTP"
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
+msgstr ""
+
+#: Console/Firewall.class.php:158
+msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
 #: views/view.about.php:111
@@ -419,9 +450,10 @@ msgstr "Firewall-Funktionen"
 msgid "Firewall has not started yet!"
 msgstr "Die Firewall ist noch nicht gestartet!"
 
-#: Console/Firewall.class.php:68
+#: Console/Firewall.class.php:91
 msgid "Firewall is not enabled, can't disable it"
-msgstr "Die Firewall kann nicht deaktiviert werden, da sie nicht aktiviert ist."
+msgstr ""
+"Die Firewall kann nicht deaktiviert werden, da sie nicht aktiviert ist."
 
 #: OOBE.class.php:230
 msgid ""
@@ -437,6 +469,10 @@ msgid ""
 "that network (and arriving on <i>any interface</i>) will be treated as "
 "'Trusted'. All other traffic arriving at that interface is only allowed "
 "access to services available to the 'External' zone."
+msgstr ""
+
+#: Console/Firewall.class.php:82
+msgid "For example:"
 msgstr ""
 
 #: Zones.class.php:10
@@ -491,7 +527,8 @@ msgstr ""
 
 #: Services.class.php:444
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
-msgstr "HTTPS-REST Apps sind unter System Admin im Port Management deaktiviert."
+msgstr ""
+"HTTPS-REST Apps sind unter System Admin im Port Management deaktiviert."
 
 #: views/oobe.welcome.php:30
 msgid ""
@@ -507,6 +544,10 @@ msgstr "IAX Protokoll"
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
+msgstr ""
+
+#: Console/Firewall.class.php:26
+msgid "IDs to add or remove from a zone"
 msgstr ""
 
 #: views/page.zones.php:142
@@ -576,6 +617,10 @@ msgid ""
 "Connectivity menu."
 msgstr ""
 
+#: Console/Firewall.class.php:221
+msgid "Important!"
+msgstr ""
+
 #: views/page.zones.php:161
 msgid ""
 "Individual hosts and networks are specified here, that override the default "
@@ -638,6 +683,10 @@ msgstr "Bekannte Netzwerke:"
 
 #: Smart.class.php:42
 msgid "Legacy SIP (chan_sip)"
+msgstr ""
+
+#: Console/Firewall.class.php:70
+msgid "List all entries in zone 'zone'"
 msgstr ""
 
 #: views/view.blocked.php:2 views/view.registered.php:15
@@ -873,7 +922,7 @@ msgstr "Registrierte Endpoints"
 msgid "Reject"
 msgstr "Ablehnen"
 
-#: Console/Firewall.class.php:56
+#: Console/Firewall.class.php:69
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 "Entfernen Sie den Hostname oder die IP-Adresse aus der vertrauenswürdigen "
@@ -1014,7 +1063,7 @@ msgstr "Hilfe anzeigen"
 msgid "Single Port: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:54
+#: Console/Firewall.class.php:67
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
@@ -1030,16 +1079,13 @@ msgstr "Status"
 msgid "Status Overview"
 msgstr ""
 
-#: Console/Firewall.class.php:53
+#: Console/Firewall.class.php:66
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:122
-msgid "Success. Entry added to Trusted Zone."
-msgstr ""
-
-#: Console/Firewall.class.php:138
-msgid "Success. Entry removed from Trusted Zone."
+#: Console/Firewall.class.php:128 Console/Firewall.class.php:168
+#: Console/Firewall.class.php:200
+msgid "Success!"
 msgstr ""
 
 #: views/view.registered.php:3
@@ -1076,10 +1122,6 @@ msgstr ""
 
 #: views/oobe.welcome.php:28
 msgid "Thanks for using Sangoma Smart Firewall!"
-msgstr ""
-
-#: Console/Firewall.class.php:133
-msgid "That is not currently trusted. Please try again."
 msgstr ""
 
 #: Firewall.class.php:260
@@ -1120,6 +1162,10 @@ msgid ""
 "There is no need to manually remove entries from this section, as their rate "
 "limiting will be completely removed in 60 seconds. If they continue to send "
 "invalid data, they will be classified as an Attacker."
+msgstr ""
+
+#: Console/Firewall.class.php:81
+msgid "These may be IP addresses, hostnames, or networks."
 msgstr ""
 
 #: views/disabled.php:10
@@ -1307,6 +1353,10 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
+#: Console/Firewall.class.php:195
+msgid "Unknown entry!"
+msgstr ""
+
 #: OOBE.class.php:205 OOBE.class.php:242 views/disabled.php:6
 msgid "Warning"
 msgstr ""
@@ -1363,6 +1413,10 @@ msgid ""
 "strong> within 5 minutes, the firewall will be disabled for 5 minutes after "
 "the second reboot. This is useful when originally setting up your Firewall, "
 "as it allows you an easy way to recover from an accidental misconfiguration."
+msgstr ""
+
+#: Console/Firewall.class.php:80
+msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr ""
 
 #: views/view.smart.php:24
@@ -1453,3 +1507,12 @@ msgid ""
 "the remote clients allowed to connect to this machine, and automatically "
 "allows access from valid hosts."
 msgstr ""
+
+#~ msgid "Attempting to add %s to Trusted Zone"
+#~ msgstr "Versuche %s zur sicheren Zone hinzuzufügen."
+
+#~ msgid "Attempting to remove %s from Trusted Zone"
+#~ msgstr "Versuche %s aus der sicheren Zone zu entfernen."
+
+#~ msgid "Could not validate entry. Please try again."
+#~ msgstr "Eintrag konnte nicht überprüft werden. Bitte versuche es erneut."
