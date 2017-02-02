@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-31 16:28+1100\n"
+"POT-Creation-Date: 2017-02-02 12:00+1100\n"
 "PO-Revision-Date: 2015-11-17 12:22+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -51,10 +51,6 @@ msgstr ""
 msgid "<strong>Safe mode is available.</strong>"
 msgstr ""
 
-#: Console/Firewall.class.php:221
-msgid "A blacklisted entry will be overridden by a defined zone entry!"
-msgstr ""
-
 #: Firewall.class.php:139
 #, php-format
 msgid ""
@@ -86,15 +82,15 @@ msgstr "添加主机"
 msgid "Add Network"
 msgstr ""
 
-#: views/page.zones.php:223 views/view.blacklist.php:41
+#: views/page.zones.php:223 views/view.blacklist.php:40
 msgid "Add New"
 msgstr ""
 
-#: Console/Firewall.class.php:68
+#: Console/Firewall.class.php:78
 msgid "Add the hostname or IP specified to the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:71
+#: Console/Firewall.class.php:81
 msgid "Add to 'zone' the IDs provided."
 msgstr ""
 
@@ -115,11 +111,11 @@ msgid ""
 "this turned on."
 msgstr ""
 
-#: Console/Firewall.class.php:220
+#: Console/Firewall.class.php:254
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:211
+#: Console/Firewall.class.php:245
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -188,17 +184,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:126
+#: Console/Firewall.class.php:136
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:147
+#: Console/Firewall.class.php:157
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:189
+#: Console/Firewall.class.php:206
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -289,12 +285,12 @@ msgstr ""
 msgid "Defaults"
 msgstr ""
 
-#: views/page.zones.php:219 views/view.blacklist.php:10
+#: views/page.zones.php:219 views/view.blacklist.php:9
 #: views/view.customsvc.php:45
 msgid "Delete"
 msgstr "删除"
 
-#: Console/Firewall.class.php:72
+#: Console/Firewall.class.php:82
 msgid "Delete from 'zone' the IDs provided."
 msgstr ""
 
@@ -310,7 +306,7 @@ msgstr "禁用"
 msgid "Disable Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:65
+#: Console/Firewall.class.php:75
 msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
 
@@ -346,7 +342,7 @@ msgstr ""
 msgid "Enabled"
 msgstr "启用"
 
-#: Console/Firewall.class.php:99
+#: Console/Firewall.class.php:109
 msgid "Enabling Firewall."
 msgstr ""
 
@@ -356,7 +352,15 @@ msgid ""
 "this server without explicitly whitelisting them."
 msgstr ""
 
-#: Console/Firewall.class.php:131
+#: Console/Firewall.class.php:50 Console/Firewall.class.php:60
+msgid "Error!"
+msgstr ""
+
+#: Console/Firewall.class.php:198
+msgid "Error:"
+msgstr ""
+
+#: Console/Firewall.class.php:141
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
@@ -384,7 +388,7 @@ msgid ""
 "as additional data."
 msgstr ""
 
-#: Console/Firewall.class.php:158
+#: Console/Firewall.class.php:168
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -432,7 +436,7 @@ msgstr ""
 msgid "Firewall has not started yet!"
 msgstr ""
 
-#: Console/Firewall.class.php:91
+#: Console/Firewall.class.php:101
 msgid "Firewall is not enabled, can't disable it"
 msgstr ""
 
@@ -452,7 +456,7 @@ msgid ""
 "access to services available to the 'External' zone."
 msgstr ""
 
-#: Console/Firewall.class.php:82
+#: Console/Firewall.class.php:92
 msgid "For example:"
 msgstr ""
 
@@ -506,6 +510,11 @@ msgstr ""
 
 #: Services.class.php:444
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
+msgstr ""
+
+#: Console/Firewall.class.php:198
+#, php-format
+msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
 
 #: views/oobe.welcome.php:30
@@ -595,10 +604,6 @@ msgid ""
 "Connectivity menu."
 msgstr ""
 
-#: Console/Firewall.class.php:221
-msgid "Important!"
-msgstr ""
-
 #: views/page.zones.php:161
 msgid ""
 "Individual hosts and networks are specified here, that override the default "
@@ -663,7 +668,7 @@ msgstr ""
 msgid "Legacy SIP (chan_sip)"
 msgstr ""
 
-#: Console/Firewall.class.php:70
+#: Console/Firewall.class.php:80
 msgid "List all entries in zone 'zone'"
 msgstr ""
 
@@ -728,7 +733,11 @@ msgstr ""
 msgid "No hosts!"
 msgstr ""
 
-#: views/view.blacklist.php:4
+#: Console/Firewall.class.php:50 Console/Firewall.class.php:60
+msgid "No network identifiers supplied"
+msgstr ""
+
+#: views/view.blacklist.php:3
 msgid "Note that changes to the firewall are effective immediately."
 msgstr ""
 
@@ -898,8 +907,13 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: Console/Firewall.class.php:69
+#: Console/Firewall.class.php:79
 msgid "Remove the hostname or IP specified from the Trusted Zone"
+msgstr ""
+
+#: Console/Firewall.class.php:202
+#, php-format
+msgid "Removed %s from Blacklist."
 msgstr ""
 
 #: Firewall.class.php:496
@@ -1037,7 +1051,7 @@ msgstr ""
 msgid "Single Port: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:67
+#: Console/Firewall.class.php:77
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
@@ -1053,12 +1067,12 @@ msgstr "状态"
 msgid "Status Overview"
 msgstr ""
 
-#: Console/Firewall.class.php:66
+#: Console/Firewall.class.php:76
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:128 Console/Firewall.class.php:168
-#: Console/Firewall.class.php:200
+#: Console/Firewall.class.php:138 Console/Firewall.class.php:178
+#: Console/Firewall.class.php:234
 msgid "Success!"
 msgstr ""
 
@@ -1138,7 +1152,7 @@ msgid ""
 "invalid data, they will be classified as an Attacker."
 msgstr ""
 
-#: Console/Firewall.class.php:81
+#: Console/Firewall.class.php:91
 msgid "These may be IP addresses, hostnames, or networks."
 msgstr ""
 
@@ -1327,7 +1341,7 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: Console/Firewall.class.php:195
+#: Console/Firewall.class.php:227
 msgid "Unknown entry!"
 msgstr ""
 
@@ -1342,7 +1356,7 @@ msgid ""
 "The correct port, as configured, will be used in the firewall service."
 msgstr ""
 
-#: views/view.blacklist.php:20
+#: views/view.blacklist.php:19
 msgid "Warning: Unable to resolve this entry!"
 msgstr ""
 
@@ -1389,7 +1403,7 @@ msgid ""
 "as it allows you an easy way to recover from an accidental misconfiguration."
 msgstr ""
 
-#: Console/Firewall.class.php:80
+#: Console/Firewall.class.php:90
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr ""
 
@@ -1402,12 +1416,6 @@ msgstr ""
 
 #: Services.class.php:456
 msgid "XMPP"
-msgstr ""
-
-#: views/view.blacklist.php:3
-msgid ""
-"You can <strong>override</strong> the blacklist by assigning a network to a "
-"Zone. Please read the Wiki for more information."
 msgstr ""
 
 #: Firewall.class.php:261
