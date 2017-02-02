@@ -45,12 +45,22 @@ class Firewall extends Command {
 		case "list":
 			return $this->listZone($output, $input->getArgument('opt'));
 		case "add":
-			foreach ($input->getArgument('ids') as $id) {
+			$ids = $input->getArgument('ids');
+			if (!$ids) {
+				$output->writeln('<error>'._("Error!").'</error> '._("No network identifiers supplied"));
+				return;
+			}
+			foreach ($ids as $id) {
 				$this->addToZone($output, $input->getArgument('opt'), $id);
 			}
 			return true;
 		case "del":
-			foreach ($input->getArgument('ids') as $id) {
+			$ids = $input->getArgument('ids');
+			if (!$ids) {
+				$output->writeln('<error>'._("Error!").'</error> '._("No network identifiers supplied"));
+				return;
+			}
+			foreach ($ids as $id) {
 				$this->removeFromZone($output, $input->getArgument('opt'), $id);
 			}
 			return true;
@@ -183,7 +193,14 @@ class Firewall extends Command {
 		case "external":
 			break;
 		case "blacklist":
-			throw new \Exception("No blacklist");
+			// Does this host exist in the blacklist?
+			if (!$fw->getConfig($param, "blacklist")) {
+				$output->writeln("<error>"._("Error:")."</error> <info>".sprintf(_("Host '%s' is not currently in the blacklist."), "</info>$param<info>")."</info>");
+				return false;
+			}
+			$fw->removeFromBlacklist($param);
+			$output->writeln("<info>".sprintf(_("Removed %s from Blacklist."), "</info>$param<info>")."</info>");
+			return;
 		}
 
 		$output->write("<info>".sprintf(_("Attempting to remove %s from '%s' Zone ... "), "</info>$param<info>", "</info>$zone<info>")."</info>");
@@ -191,9 +208,26 @@ class Firewall extends Command {
 		if (!is_array($nets)) {
 			$nets = array();
 		}
+
 		if (!isset($nets[$param])) {
-			$output->writeln("<error>"._("Unknown entry!")."</error>");
-			return;
+			// It doesn't exist. Is this an IP address? If it matches an IP address,
+			// and it doesn't have a subnet, add one and try again.
+			if (filter_var($param, \FILTER_VALIDATE_IP)) {
+				// Is this an IPv4 address? Add /32
+				if (filter_var($param, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+					$param = "$param/32";
+				} else {
+					// It's IPv6. 
+					$param = "$param/128";
+				}
+
+				// Now does it exist?
+				if (!isset($nets[$param])) {
+					// No.
+					$output->writeln("<error>"._("Unknown entry!")."</error>");
+					return;
+				}
+			}
 		}
 		unset($nets[$param]);
 		$fw->setConfig("networkmaps", $nets);
@@ -218,7 +252,6 @@ class Firewall extends Command {
 		case 'blacklist':
 			$bl = \FreePBX::Firewall()->getBlacklist();
 			$output->writeln("<info>"._("All blacklisted entries.")."</info>");
-			$output->writeln("<error>"._("Important!")."</error> "._("A blacklisted entry will be overridden by a defined zone entry!"));
 			foreach ($bl as $id => $res) {
 				if ($res) {
 					$output->writeln("\t".sprintf("%s: (Resolves to %s)", $id, implode(",", $res)));
