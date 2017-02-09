@@ -15,8 +15,10 @@ label.btn {
 	padding-left: 0px;
 }
 
-/* .modalfix {
-	left: 50%;
-	transform: translateX(-50%);
-}
-	*/
+tr[zone='trusted']>td { background-color: #ffebee; }
+tr[zone='internal']>td { background-color: #e8f5e9; }
+tr[zone='external']>td { background-color: #fff9c4; }
+tr[zone='other']>td { background-color: #ede7f6; }
+
+.descrow td { border: none !important; padding-top: 0px !important; }
+

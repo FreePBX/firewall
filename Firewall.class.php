@@ -1071,5 +1071,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
 	}
+
+	// Hooks
+	public function getNameHooks($names) {
+		$newnames = \FreePBX::Hooks()->processHooks($names);
+		if ($newnames) {
+			return $newnames;
+		} else {
+			return $names;
+		}
+	}
 }
 

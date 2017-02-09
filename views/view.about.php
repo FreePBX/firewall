@@ -1,3 +1,4 @@
+<div class='container-fluid'>
 <?php
 $ssf = _("System Firewall");
 
@@ -147,3 +148,5 @@ $(document).ready(function() {
 	});
 });
 </script>
+
+</div>
