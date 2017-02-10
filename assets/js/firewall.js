@@ -1,27 +1,4 @@
-$(document).ready(function() { 
-	// Add RFC1918 addresses
-	$("#addrfc").click(function(e) { advancedAdd('addrfc', e.target); });
-
-	// Add 'this host'
-	$("#addhost").click(function(e) { advancedAdd('addthishost', e.target); });
-
-
-});
-
-
-
-
-function advancedAdd(cmd, target) {
-	$(target).text("Updating...").prop('disabled', true);
-	$.ajax({
-		url: window.FreePBX.ajaxurl,
-		data: { command: cmd, module: 'firewall' },
-		complete: function(data) { 
-			$(target).text("Added");
-		}
-	});
-}
-
+// Updates the URL with a hash.
 function updateQuery(key, value) {
 	var re = new RegExp("([?&])" + key + "=.*?(&|#|$)(.*)", "gi"), hash;
 	var url = window.location.href;
@@ -50,4 +27,3 @@ function updateQuery(key, value) {
 		}
 	}
 }
-

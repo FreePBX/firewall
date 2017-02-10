@@ -5,7 +5,6 @@ $rawnames = array(
 	"about" => _("Main"),
 	"status" => _("Status"),
 	"services" => _("Services"),
-	"zones" => _("Zones"),
 	"advanced" => _("Advanced"),
 );
 

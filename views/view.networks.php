@@ -11,7 +11,7 @@
 <table class="table" id='networkstable'>
   <thead>
     <tr>
-      <th><input type='checkbox' /></th>
+      <th><input type='checkbox' id='toggleall'></th>
       <th><?php echo _("Network/Host"); ?></th>
       <th><?php echo _("Assigned Zone"); ?></th>
     </tr>
@@ -19,12 +19,13 @@
 
 <?php
 $nets = $fw->getConfig("networkmaps");
+$descs = $fw->getNetworkDescriptions();
 
 if (!is_array($nets)) {
 	$nets = array();
 }
 // Add a blank one to the bottom..
-$nets[" "] = "internal";
+$nets[""] = "internal";
 
 $z = $fw->getZones();
 $hidden = $fw->getConfig("hiddennets");
@@ -39,7 +40,12 @@ foreach ($nets as $net => $currentzone) {
 	if (isset($hidden[$net]) && !isset($_REQUEST['showhidden'])) {
 		continue;
 	}
-	render_network($net, $currentzone, $counter, $z);
+	if (isset($descs[$net])) {
+		$desc = htmlentities($descs[$net], ENT_QUOTES);
+	} else {
+		$desc = "";
+	}
+	render_network($net, $currentzone, $desc, $counter, $z);
 }
 ?>
 </table>
@@ -47,23 +53,21 @@ foreach ($nets as $net => $currentzone) {
 <?php
 
 // Render the interface select
-function render_network($name, $current, $counter, $zones) {
-	print "<tr id='netcount-$counter' class='netzone' zone='$current' data-nextid='".($counter+1)."'>";
-	// If name is empty, that means we want an input box.
-	if (empty(trim($name))) {
-		print "<td></td>";
-		print "<td><input class='form-control' type='text' name='newentry' placeholder='"._("Enter new IP or Hostname here")."'></input></td>";
-		$width = 'calc(100% - 4em)';
-		$end = "<button type='button' class='btn x-btn btn-success pull-right' title='"._("Add New")."'><span class='glyphicon glyphicon-plus'></span></button>";
-		$selname = "newentry";
+function render_network($name, $current, $desc, $counter, $zones) {
+	print "<tr id='netcount-$counter' class='netzone' zone='$current' data-counter='$counter'>";
+	// If name is not empty, render a normal line.
+	if ($name) {
+		print "<td><input data-counter='$counter' type='checkbox' class='checkbox'></td>";
+		print "<td><tt counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
+		print "<td><select class='form-control' name='zone-$counter' data-rowid='$counter'>";
+
 	} else {
-		print "<td><input type='checkbox'></td>";
-		print "<td><tt>$name</tt></td>";
-		$width = '100%';
-		$end = "";
-		$selname = "update-$counter";
+		print "<td></td>"; // No checkbox
+		print "<td><input class='form-control' type='text' name='newentry' placeholder='"._("Enter new IP or Hostname here")."'></input></td>";
+		print "<td><select class='form-control form-inline newnetsel' name='newnetworke' data-rowid='$counter'>";
 	}
-	print "<td class='netzone'><select style='width: $width; display: inline' class='form-control form-inline netsel' name='$selname' data-rowid='$counter'>";
+
+	// Render the available zones
 	foreach ($zones as $zn => $zone) {
 		if ($current === $zn) {
 			$selected = "selected";
@@ -72,7 +76,16 @@ function render_network($name, $current, $counter, $zones) {
 		}
 		print "<option value='$zn' $selected>".$zone['name']." (".$zone['summary'].")</option>";
 	}
-	print "</select>$end</td></tr>";
-	print "<tr id='description-$counter' zone='$current' class='descrow'><td></td><td colspan=2><input class='form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this network here.")."'></td></tr>";
+	print "</select>";
+	
+	// Are we displaying the 'add' button?
+	if (!$name) {
+		print "<button data-counter='$counter' class='addnetwork btn x-btn btn-success pull-right' title='"._("Add New")."'><i data-counter='$counter' class='glyphicon glyphicon-plus'></i></button>";
+	}
+
+	print "</tr></td>";
+
+	// Render the description box
+	print "<tr id='description-$counter' zone='$current' class='descrow'><td></td><td colspan=2><input counter='$counter' class='description form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this network here.")."' value='$desc'></td></tr>";
 }
 

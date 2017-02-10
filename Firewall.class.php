@@ -291,11 +291,19 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function ajaxHandler() {
 		switch ($_REQUEST['command']) {
-		case "removenetwork":
-			if (!isset($_REQUEST['net'])) {
-				throw new \Exception("No net");
+		case "deletenetworks":
+			// We are handed a JSON string
+			if (!isset($_REQUEST['json'])) {
+				throw new \Exception("No json?");
 			}
-			return $this->removeNetwork($_REQUEST['net']);
+			$nets = @json_decode($_REQUEST['json'], true);
+			if (!is_array($nets)) {
+				throw new \Exception("Invalid JSON");
+			}
+			foreach ($nets as $net) {
+				$this->removeNetwork($net);
+			}
+			return true;
 		case "addnetworktozone":
 			if (!isset($_REQUEST['net'])) {
 				throw new \Exception("No net");
@@ -307,15 +315,25 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if (!isset($zones[$_REQUEST['zone']])) {
 				throw new \Exception("Invalid zone $zone");
 			}
-			return $this->addNetworkToZone(trim($_REQUEST['net']), $_REQUEST['zone']);
-		case "updatenetwork":
-			if (!isset($_REQUEST['net'])) {
-				throw new \Exception("No net");
+			if (!isset($_REQUEST['description'])) {
+				$descr = "";
+			} else {
+				$descr = trim($_REQUEST['description']);
 			}
-			if (!isset($_REQUEST['zone'])) {
-				throw new \Exception("No Zone");
+			return $this->addNetworkToZone(trim($_REQUEST['net']), $_REQUEST['zone'], $descr);
+		case "updatenetworks":
+			// We are handed a JSON string
+			if (!isset($_REQUEST['json'])) {
+				throw new \Exception("No json?");
 			}
-			return $this->changeNetworksZone(trim($_REQUEST['net']), $_REQUEST['zone']);
+			$nets = @json_decode($_REQUEST['json'], true);
+			if (!is_array($nets)) {
+				throw new \Exception("Invalid JSON");
+			}
+			foreach ($nets as $net => $tmparr) {
+				$this->changeNetworksZone($net, $tmparr['zone'], $tmparr['description']);
+			}
+			return true;
 		case "addrfc":
 			return $this->addRfcNetworks();
 		case "addthishost":
@@ -344,14 +362,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "updaterfw":
 			// Ensure people don't accidentally allow traffic through when rfw is enabled
 			$proto = $_REQUEST['proto'];
-
-			// Don't allow ANYTHING through when RFW is enabled
-			if ($_REQUEST['value'] == "true") {
-				$zones = array();
-			} else {
-				// If they're turning off rfw, allow internal
-				$zones = array("internal");
-			}
+			$zones = array("internal");
 
 			// Sanity check. 
 			switch ($proto) {
@@ -488,14 +499,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
-	// We want a button on the 'services' page
+	// We want a button on the main page only
 	public function getActionBar($request) {
-		if (isset($request['page']) && $request['page'] == "services") {
-			return array(
-				"defaults" => array('name' => 'defaults', 'id' => 'btndefaults', 'value' => _("Defaults")),
-				"reset" => array('name' => 'reset', 'id' => 'btnreset', 'value' => _("Reset")),
-				"submit" => array('name' => 'submit', 'id' => 'btnsave', 'value' => _("Save")),
-			);
+		if ($this->getConfig("status")) {
+			if (!isset($request['page']) || $request['page'] == "about") {
+				return array(
+					"savenets" => array('name' => 'savenets', 'id' => 'savenets', 'value' => _("Update All")),
+					"delsel" => array('name' => 'delsel', 'id' => 'delsel', 'value' => _("Delete Selected")),
+				);
+			}
 		}
 	}
 
@@ -698,6 +710,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $d->getZonesDetails();
 	}
 
+	public function getNetworkDescriptions() {
+		$desc = $this->getConfig("descriptions", "network");
+		if (!is_array($desc)) {
+			return array();
+		} else {
+			return $desc;
+		}
+	}
+	
 	public function detectNetwork() {
 		$client = $_SERVER['REMOTE_ADDR'];
 		// If this is an IPv4 address, treat it as a class C
@@ -756,10 +777,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$zone = $nets[$net];
 		unset($nets[$net]);
 		$this->setConfig("networkmaps", $nets);
-		return $this->runHook("removenetwork", array("network" => $net, "zone" => $zone));
+
+		$desc = $this->getConfig("descriptions", "network");
+		if (is_array($desc) && isset($desc[$net])) {
+			unset($desc[$net]);
+			$this->setConfig("descriptions", $desc, "network");
+		}
+		// return $this->runHook("removenetwork", array("network" => $net, "zone" => $zone));
 	}
 
-	public function addNetworkToZone($net = false, $zone = false) {
+	public function addNetworkToZone($net = false, $zone = false, $descr = "") {
 		$net = trim($net);
 		if (!$net) {
 			// Someone clicked on an empty box..
@@ -792,7 +819,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$ip = 6;
 		} else {
 			// It's probably a host. Add it to our host maps to care about later
-			return $this->addHostToZone($net, $zone);
+			return $this->addHostToZone($net, $zone, $descr);
 		}
 
 		// Check subnet.. 
@@ -815,11 +842,21 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$nets["$addr/$subnet"] = $zone;
 		$this->setConfig("networkmaps", $nets);
 
+		// Update our description, if needed
+		if ($descr) {
+			$descriptions = $this->getConfig("descriptions", "network");
+			if (!is_array($descriptions)) {
+				$descriptions = array("$addr/$subnet" => $descr);
+			} else {
+				$descriptions["$addr/$subnet"] = $descr;
+			}
+			$this->setConfig("descriptions", $descriptions, "network");
+		}
 		$params = array($zone => array("$addr/$subnet"));
 		return $this->runHook("addnetwork", $params);
 	}
 
-	public function addHostToZone($host, $zone) {
+	public function addHostToZone($host, $zone, $descr = "") {
 		$host = trim($host);
 		if (!$host) {
 			throw new \Exception("Can't add empty host");
@@ -839,10 +876,20 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$nets[$host] = $zone;
 		$this->setConfig("networkmaps", $nets);
 
+		// Update our description, if needed
+		if ($descr) {
+			$descriptions = $this->getConfig("descriptions", "network");
+			if (!is_array($descriptions)) {
+				$descriptions = array($host => $descr);
+			} else {
+				$descriptions[$host] = $descr;
+			}
+			$this->setConfig("descriptions", $descriptions, "network");
+		}
 		return $this->setConfig("hostmaps", $hosts);
 	}
 
-	public function changeNetworksZone($net, $zone) {
+	public function changeNetworksZone($net, $zone, $descr = "") {
 		$net = trim($net);
 		if (!$net) {
 			throw new \Exception("Can't add empty net");
@@ -871,7 +918,19 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$nets[$net] = $zone;
 		$this->setConfig("networkmaps", $nets);
 
-		return $this->runHook("changenetwork", array("network" => $net, "newzone" => $zone));
+		// Update our description, if needed
+		if ($descr) {
+			$descriptions = $this->getConfig("descriptions", "network");
+			if (!is_array($descriptions)) {
+				$descriptions = array("$addr/$subnet" => $descr);
+			} else {
+				$descriptions[$net] = $descr;
+			}
+			$this->setConfig("descriptions", $descriptions, "network");
+		}
+
+		// Disable hook
+		// return $this->runHook("changenetwork", array("network" => $net, "newzone" => $zone));
 	}
 
 	// Add RFC1918 addresses to the trusted zone

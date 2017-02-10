@@ -24,7 +24,6 @@ $ss = $fw->getSmartSettings();
 
 ?>
 
-<script type='text/javascript' src='modules/firewall/assets/js/views/advanced.js'></script>
 <script type='text/javascript' src='modules/firewall/assets/js/views/main.js'></script>
 <form method='post'>
 <div class="display no-border">
