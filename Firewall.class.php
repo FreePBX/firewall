@@ -504,8 +504,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if ($this->getConfig("status")) {
 			if (!isset($request['page']) || $request['page'] == "about") {
 				return array(
-					"savenets" => array('name' => 'savenets', 'id' => 'savenets', 'value' => _("Save")),
-					"delsel" => array('name' => 'delsel', 'id' => 'delsel', 'value' => _("Delete Selected")),
+					"savenets" => array('name' => 'savenets', 'style' => 'display: none', 'id' => 'savenets', 'value' => _("Save")),
+					"delsel" => array('name' => 'delsel', 'style' => 'display: none', 'id' => 'delsel', 'value' => _("Delete Selected")),
+					"saveints" => array('name' => 'saveints', 'style' => 'display: none', 'id' => 'saveints', 'value' => _("Update Interfaces")),
 				);
 			}
 		}
@@ -666,24 +667,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function getZone($int) {
 		static $ints = false;
 		if (!$ints) {
-			$ints = array();
-			$zones = $this->getSystemZones();
-			foreach ($zones as $name => $zone) {
-				if (!$zone['interfaces']) {
-					continue;
-				}
-				foreach ($zone['interfaces'] as $i) {
-					$myInt = trim($i);
-					if ($myInt) {
-						$ints[$myInt] = $name;
-					}
-				}
-			}
-		}
-		// Is this an alias? eg eth0:123? Then return the zone for the REAL interface.
-		list ($realint) = explode(":", $int);
-		if (!isset($ints[$realint])) {
-			$ints[$realint] = 'trusted';
+			$ints = $this->getInterfaces();
 		}
 
 		// Is this a tunnel interface? That's always ALWAYS going to be
@@ -691,8 +675,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (strpos($int, "tun") === 0) {
 			return "internal";
 		}
+		// Is this an alias? eg eth0:123? Then return the zone for the REAL interface.
+		list ($realint) = explode(":", $int);
 
-		return $ints[$realint];
+		// Make sure we HAVE a zone. Default to 'trusted'
+		if (!isset($ints[$realint]['config']['ZONE'])) {
+			$ints[$realint]['config']['ZONE'] = 'trusted';
+		}
+
+		return $ints[$realint]['config']['ZONE'];
 	}
 
 	public function getDriver() {

@@ -3,9 +3,10 @@ $(document).ready(function() {
 	// the firewall.
 	$("form").on("keypress", function(e) { if (e.keyCode == 13) e.preventDefault(); });
 
-	// If we're not looking at the networktab on page load, hide the action bar.
+	// If we're not looking at the network or interface tab on page load, hide the action bar.
 	// This needs work, as it's hacky.
-	if ($("li.active").data('name') !== "networks") {
+	update_actionbar();
+	if ($("li.active").data('name') !== "networks" && $("li.active").data('name') !== "interfaces") {
 		$("#action-bar").hide();
 	}
 
@@ -13,18 +14,17 @@ $(document).ready(function() {
 	$("a[data-toggle='tab']").on('shown.bs.tab', function(e) { 
 		var newuri = updateQuery("tab", e.target.getAttribute('aria-controls'));
 		window.history.replaceState(null, document.title, newuri);
-		// If this is NOT the 'Networks' tab, hide the action bar
-		if (e.target.getAttribute('aria-controls') !== "networks") {
-			$("#action-bar").hide();
-		} else {
-			$("#action-bar").show();
-		}
+		update_actionbar();
 	});
 
-	/**** Responsive Firewall Tab ***/
+	/**** Responsive Firewall Tab ****/
 	$(".rfw").click(update_rfw);
 	$(".safemode").click(update_safemode);
 	$(".rejmode").click(update_rejectmode);
+
+	/**** Interfaces Tab ****/
+	// Update row colour on change
+	$("#interfacestable").on("change", "select", update_zone_attr);
 
 	/**** Networks Tab ****/
 	// When someone changes a network select tab, update the zone attr
@@ -101,13 +101,27 @@ function update_zone_attr(event) {
 	var target = $(event.target);
 	// The parent id is in data('rowid')
 	var parentid = target.data('rowid');
+	// Is it a network or an interface?
+	var type=target.data('type');
 	// Get our divs to update.
-	var divs = $("#netcount-"+parentid+",#description-"+parentid);
+	var divs = $("."+type+"-"+parentid);
+
 	if (divs.length === 0) {
 		// That shouldn't happen
 		return;
 	}
 	divs.attr('zone', target.val());
+	// Interfaces can be linked to parents. If there are any, update them, too.
+	console.log("select[parent='"+target.data('intname')+"']");
+	$("select[parent='"+target.data('intname')+"']").each(function() {
+		// Duplcate the code up there, basically, but we also need to
+		// update the val on the children
+		$(this).val(target.val());
+		var p = $(this).data('rowid');
+
+		// Set the colours to match
+		$("."+type+"-"+p).attr('zone', target.val());
+	});
 }
 
 function add_new_network(event) {
@@ -180,4 +194,40 @@ function delete_all_selected(ignored) {
 		success: function(data) { window.location.href = window.location.href; },
 	});
 }
+
+function update_actionbar() {
+	// If we're not looking at networks or interfaces, hide it.
+	if ($("li.active").data('name') !== "networks" && $("li.active").data('name') !== "interfaces") {
+		$("#action-bar").hide();
+		return;
+	}
+
+	// If we're looking at networks, we want 'save' and 'delete selected'
+	if ($("li.active").data('name') === "networks") {
+		$("#action-bar").show();
+		$("#savenets,#delsel").show();
+		$("#saveints").hide();
+		return;
+	}
+
+	// If we're looking at interfaces, we only want 'save interfaces'
+	if ($("li.active").data('name') === "interfaces") {
+		$("#action-bar").show();
+		$("#saveints").show();
+		$("#savenets,#delsel").hide();
+		return;
+	}
+
+	// How did we get here?
+	console.log("error?");
+}
+
+
+
+
+
+
+
+
+
 

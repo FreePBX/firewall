@@ -54,18 +54,18 @@ foreach ($nets as $net => $currentzone) {
 
 // Render the interface select
 function render_network($name, $current, $desc, $counter, $zones) {
-	print "<tr id='netcount-$counter' class='netzone' zone='$current' data-counter='$counter'>";
+	print "<tr class='net-$counter netzone' zone='$current' data-counter='$counter'>";
 	// If name is not empty, render a normal line.
 	if ($name) {
 		print "<td><input data-counter='$counter' type='checkbox' class='checkbox'></td>";
 		print "<td><tt counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
-		print "<td><select class='form-control' name='zone-$counter' data-rowid='$counter'>";
+		print "<td><select class='form-control' name='zone-$counter' data-rowid='$counter' data-type='net'>";
 		$newentry = "";
 
 	} else {
 		print "<td></td>"; // No checkbox
 		print "<td><input class='form-control newentry' type='text' name='newentry' data-counter='$counter' placeholder='"._("Enter new IP or Hostname here")."'></input></td>";
-		print "<td><select class='form-control form-inline newnetsel' name='newnetworke' data-rowid='$counter'>";
+		print "<td><select class='form-control form-inline newnetsel' name='newnetworke' data-rowid='$counter' data-type='net'>";
 		$newentry = "newentry";
 	}
 
@@ -88,6 +88,6 @@ function render_network($name, $current, $desc, $counter, $zones) {
 	print "</tr></td>";
 
 	// Render the description box
-	print "<tr id='description-$counter' zone='$current' class='descrow'><td></td><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this network here.")."' value='$desc'></td></tr>";
+	print "<tr id='description-$counter' zone='$current' class='net-$counter descrow'><td></td><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this network here.")."' value='$desc'></td></tr>";
 }
 

@@ -28,6 +28,7 @@ $counter = 0;
 $llen = ceil(strlen($in)*.75);
 
 foreach ($ints as $i => $conf) {
+	$counter++;
 	$currentzone = $fw->getZone($i);
 	render_interface($i, $currentzone, $conf, $counter, $z, $llen);
 }
@@ -39,20 +40,58 @@ foreach ($ints as $i => $conf) {
 
 // Render the interface select
 function render_interface($name, $current, $conf, $counter, $zones, $llen) {
-	print "<tr id='intcount-$counter' class='intzone' zone='$current' data-counter='$counter'>";
+	print "<tr id='intcount-$counter' class='intzone int-$counter' zone='$current' data-counter='$counter'>";
 	print "<td style='width: ${llen}em '><tt counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
-	print "<td><select class='form-control' name='zone-$counter' data-rowid='$counter'>";
+	$tun = false;
+	if ($tun || $conf['config']['PARENT']) {
+		$seldisabled = "disabled";
+	} else {
+		$seldisabled = "";
+	}
+	if ($conf['config']['PARENT']) {
+		$linked = "parent='".$conf['config']['PARENT']."'";
+	} else {
+		$linked = "";
+	}
+	print "<td><select $seldisabled $linked class='form-control' name='zone-$counter' data-rowid='$counter' data-type='int' data-intname='$name'>";
 	foreach ($zones as $zn => $zone) {
 		if ($current === $zn) {
 			$selected = "selected";
 		} else {
 			$selected = "";
 		}
-		print "<option value='$zn' $selected>".$zone['name']." (".$zone['summary'].")</option>";
+		if ($conf['config']['PARENT']) {
+			print "<option value='$zn' $selected>".$zone['name']." (".sprintf(_("Linked to Interface %s"), $conf['config']['PARENT']).")</option>";
+		} else {
+			print "<option value='$zn' $selected>".$zone['name']." (".$zone['summary'].")</option>";
+		}
 	}
 	print "</select>";
 	// var_dump($conf);
 	print "</tr></td>";
+
+	// IP Addresses
+	print "<tr data-counter='$counter' class='int-$counter descrow' zone='$current'><td>";
+
+	if (empty($conf['addresses'])) {
+		print "</td><td><strong>"._("No IP Addresses assigned to this interface.")."</strong>";
+	} else {
+		if (count($conf['addresses']) > 1) {
+			print "<strong>"._("IP Addresses: ")."</td>";
+		} else {
+			print "<strong>"._("IP Address: ")."</td>";
+		}
+		$tmparr = array();
+		foreach ($conf['addresses'] as $ips) {
+			$tmparr[] = $ips[0]."/".$ips[2];
+		}
+		print "<td>".join(", ", $tmparr)."</td>";
+	}
+	print "</tr>";
+	if ($tun) {
+		print "<tr data-counter='$counter' class='int-$counter descrow'><td colspan=2><i><strong>"._("Note:")."</strong> "._("Tunnel interfaces are automatically assigned to the Local zone.")."</i><br></td></tr>";
+	}
+
 
 	// Render the description box
 	if (!isset($conf['config']['DESCRIPTION'])) {
@@ -60,6 +99,6 @@ function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 	} else {
 		$desc = htmlentities($conf['config']['DESCRIPTION'], ENT_QUOTES);
 	}
-	print "<tr id='intdescription-$counter' zone='$current' class='descrow'><td></td><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this interface here.")."' value='$desc'></td></tr>";
+	print "<tr id='intdescription-$counter' zone='$current' class='int-$counter descrow'><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this interface here.")."' value='$desc'></td></tr>";
 }
 
