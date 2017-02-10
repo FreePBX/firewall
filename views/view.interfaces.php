@@ -1,62 +1,47 @@
+<?php
+// i18n
+$in = _("Interface Name");
+$dz = _("Default Zone");
+?>
+
 <div class='container-fluid'>
-  <p><?php echo _("All interfaces must be assigned to a default zone. All traffic received by this physical interface will have access to services available to that zone, unless the traffic originates from an otherwise defined network."); ?></p>
+  <h3><?php echo _("Default Traffic Zones"); ?></h3>
+  <p><?php echo _("All interfaces must be assigned to a default zone. Any traffic received by this interface, unless overridden in Networks, will have access to the services available to this zone."); ?></p>
   <p><?php echo _("Most interfaces should be set to <strong>Internet</strong>."); ?></p>
   <p><?php echo _("A 'Trusted' interface means that <strong>no filtering</strong> will be applied to any traffic arriving at that interface. Newly discovered interfaces are set to this zone so they can be configured correctly without interfering with existing traffic."); ?></p>
+
+<table class="table" id='interfacestable'>
+  <thead>
+    <tr>
+      <th><?php echo $in; ?></th>
+      <th><?php echo $dz; ?></th>
+    </tr>
+  </thead>
 <?php
-$fw = \FreePBX::Firewall();
 $ints = $fw->getInterfaces();
 $z = $fw->getZones();
 
-// This is for screenreaders. The IDs mean nothing.
 $counter = 0;
+
+// We need the length of 'in' so the width is calculated
+// correctly in whatever language this session is in
+$llen = ceil(strlen($in)*.75);
 
 foreach ($ints as $i => $conf) {
 	$currentzone = $fw->getZone($i);
-	if (strpos($i, "tun") === 0) {
-		$tun = true;
-	} else {
-		$tun = false;
-	}
-?>
-<div class='element-container'>
-  <div class='row'>
-    <div class='col-md-3'>
-      <label class='control-label' for='int-<?php echo $i; ?>'><?php echo $i;?></label>
-    </div>
-<?php render_interface($i, $parent, $z); ?>
-    <div class='col-md-9 col-md-offset-3'>
-<?php
-	if ($tun) {
-		print "<i><strong>"._("Note:")."</strong> "._("Tunnel interfaces are automatically assigned to the Internal zone")."</i><br>\n";
-	}
-	if (empty($conf['addresses'])) {
-		print _("No IP Addresses assigned to this interface.");
-	} else {
-		if (count($conf['addresses']) > 1) {
-			print _("IP Addresses: ");
-		} else {
-			print _("IP Address: ");
-		}
-		$tmparr = array();
-		foreach ($conf['addresses'] as $ips) {
-			$tmparr[] = $ips[0]."/".$ips[2];
-		}
-		print join(", ", $tmparr);
-	}
-?>
-    </div>
-  </div>
-</div>
-<?php // foreach ints
+	render_interface($i, $currentzone, $conf, $counter, $z, $llen);
 }
 ?>
+</table>
+
 </div>
 <?php
 
 // Render the interface select
-function render_interface($name, $parent, $zones, $disabled = false) {
-	$current = \FreePBX::Firewall()->getZone($name);
-	print "<div class='col-md-8'><select class='form-control' name='derp'>";
+function render_interface($name, $current, $conf, $counter, $zones, $llen) {
+	print "<tr id='intcount-$counter' class='intzone' zone='$current' data-counter='$counter'>";
+	print "<td style='width: ${llen}em '><tt counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
+	print "<td><select class='form-control' name='zone-$counter' data-rowid='$counter'>";
 	foreach ($zones as $zn => $zone) {
 		if ($current === $zn) {
 			$selected = "selected";
@@ -65,9 +50,16 @@ function render_interface($name, $parent, $zones, $disabled = false) {
 		}
 		print "<option value='$zn' $selected>".$zone['name']." (".$zone['summary'].")</option>";
 	}
-	print "</select></div>";
-	if (!$disabled && strpos($name, "tun") !== 0) {
-		print "<div class='col-md-1'><button type='button' class='pull-right btn x-btn btn-success intbutton $disabled' $disabled data-int='$name' data-action='update' title='"._("Save Changes")."'><span class='glyphicon glyphicon-ok' data-int='$name' data-action='update'></span></button></div>\n";
+	print "</select>";
+	// var_dump($conf);
+	print "</tr></td>";
+
+	// Render the description box
+	if (!isset($conf['config']['DESCRIPTION'])) {
+		$desc = "";
+	} else {
+		$desc = htmlentities($conf['config']['DESCRIPTION'], ENT_QUOTES);
 	}
+	print "<tr id='intdescription-$counter' zone='$current' class='descrow'><td></td><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this interface here.")."' value='$desc'></td></tr>";
 }
 

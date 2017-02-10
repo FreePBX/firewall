@@ -1,4 +1,8 @@
 $(document).ready(function() {
+	// Don't let enter accidentally submit the form, which ends up disabling
+	// the firewall.
+	$("form").on("keypress", function(e) { if (e.keyCode == 13) e.preventDefault(); });
+
 	// If we're not looking at the networktab on page load, hide the action bar.
 	// This needs work, as it's hacky.
 	if ($("li.active").data('name') !== "networks") {
@@ -29,12 +33,16 @@ $(document).ready(function() {
 
 	// Have they clicked on 'add'? 
 	$(".addnetwork").on("click", add_new_network);
+	// Or, have they pushed enter in the new box, or new description box?
+	$(".newentry").on("keydown", function(e) { if (e.keyCode == 13) add_new_network(e) });
 
 	// Clicked the top checkbox button? Toggle.
 	$("#toggleall").on("click", function(e) { $(".checkbox").prop("checked", $(e.target).prop("checked")); });
 
 	// Clicked on 'Update all'?
 	$("#savenets").on("click", save_all_nets);
+	// Pushed enter in a description box?
+	$(".description").on("keydown", function(e) { if (e.keyCode == 13) save_all_nets(e) });
 
 	// Clicked on 'Delete Selected'?
 	$("#delsel").on("click", delete_all_selected);
@@ -103,6 +111,7 @@ function update_zone_attr(event) {
 }
 
 function add_new_network(event) {
+	event.preventDefault();
 	var target = $(event.target);
 	var c = target.data('counter');
 	if (typeof c == "undefined") {

@@ -47,7 +47,7 @@ $ss = $fw->getSmartSettings();
         <?php echo load_view(__DIR__."/view.about.php", array("smart" => $ss, "fw" => $fw)); ?>
       </div>
       <div role="tabpanel" id="interfaces" class="tab-pane <?php echo $interfaces; ?>">
-        <?php echo load_view(__DIR__."/view.interfaces.php", array("smart" => $ss)); ?>
+        <?php echo load_view(__DIR__."/view.interfaces.php", array("fw" => $fw)); ?>
       </div>
       <div role="tabpanel" id="smart" class="tab-pane <?php echo $smart; ?>">
         <?php echo load_view(__DIR__."/view.smart.php", array("smart" => $ss)); ?>

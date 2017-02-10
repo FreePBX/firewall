@@ -220,7 +220,7 @@ class Services {
 		);
 
 		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("pjsip", "rfw")) {
-			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You almost certainly don't want to explicitly enable any zones, but the option is available to advanced users. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
+			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
@@ -277,7 +277,7 @@ class Services {
 		);
 
 		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("chansip", "rfw")) {
-			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You almost certainly don't want to explicitly enable any zones, but the option is available to advanced users. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
+			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
@@ -326,7 +326,7 @@ class Services {
 			"fw" => array(array("protocol" => "udp", "port" => 4569)),
 		);
 		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("iax", "rfw")) {
-			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. There is no need to explicitly allow access from zones. Note that hosts in the Trusted Zone will always be allowed full access")."</div>";
+			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 		return $retarr;
 	}

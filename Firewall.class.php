@@ -504,7 +504,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if ($this->getConfig("status")) {
 			if (!isset($request['page']) || $request['page'] == "about") {
 				return array(
-					"savenets" => array('name' => 'savenets', 'id' => 'savenets', 'value' => _("Update All")),
+					"savenets" => array('name' => 'savenets', 'id' => 'savenets', 'value' => _("Save")),
 					"delsel" => array('name' => 'delsel', 'id' => 'delsel', 'value' => _("Delete Selected")),
 				);
 			}

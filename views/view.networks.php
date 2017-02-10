@@ -1,11 +1,11 @@
 
 <div class='container-fluid'>
-<h3><?php echo _("External Network Definitions"); ?></h3>
+<h3><?php echo _("Known Network Definitions"); ?></h3>
 
-<p><?php echo _("Individual hosts and networks are specified here to override the default rule for an interface."); ?></p>
-<p><?php echo _("For example, if interface eth0 is assigned to the 'Internet' zone, here you can add a specific <strong>source</strong> network to the 'Trusted' zone."); ?></p>
-<p><?php echo _("Afte that, any connections <strong>originating</strong> from that network (and arriving on <i>any interface</i>) will be treated as 'Trusted'. All other traffic arriving at that interface is only allowed access to services available to the 'Internet' zone."); ?></p>
-<p><?php echo _("You may also enter hostnames here (for example, DDNS), which will be automatically monitored and updated as required."); ?></p>
+<p><?php echo _("You can add individual hosts and networks to override the default permission for an interface."); ?></p>
+<p><?php echo _("Example: Interface eth0 is assigned to the 'Internet' zone, and you then add '203.55.66.77' to the 'Local' zone on this page. Any traffic arriving from 203.55.66.77 will be granted access to services usable by 'Local' zone."); ?></p>
+<p><?php echo _("Any traffic arriving at eth0 from 203.55.66.88 (or any other undefined host or network) will only have access to services available to the 'Internet' zone, as that has been set to be the default zone for traffic arriving at that interface."); ?></p>
+<p><?php echo _("You may also enter hostnames here (including Dynamic DNS hosts), which will be automatically monitored and updated."); ?></p>
 </div>
 <form role='form' class='form-inline'>
 <table class="table" id='networkstable'>
@@ -60,11 +60,13 @@ function render_network($name, $current, $desc, $counter, $zones) {
 		print "<td><input data-counter='$counter' type='checkbox' class='checkbox'></td>";
 		print "<td><tt counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
 		print "<td><select class='form-control' name='zone-$counter' data-rowid='$counter'>";
+		$newentry = "";
 
 	} else {
 		print "<td></td>"; // No checkbox
-		print "<td><input class='form-control' type='text' name='newentry' placeholder='"._("Enter new IP or Hostname here")."'></input></td>";
+		print "<td><input class='form-control newentry' type='text' name='newentry' data-counter='$counter' placeholder='"._("Enter new IP or Hostname here")."'></input></td>";
 		print "<td><select class='form-control form-inline newnetsel' name='newnetworke' data-rowid='$counter'>";
+		$newentry = "newentry";
 	}
 
 	// Render the available zones
@@ -86,6 +88,6 @@ function render_network($name, $current, $desc, $counter, $zones) {
 	print "</tr></td>";
 
 	// Render the description box
-	print "<tr id='description-$counter' zone='$current' class='descrow'><td></td><td colspan=2><input counter='$counter' class='description form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this network here.")."' value='$desc'></td></tr>";
+	print "<tr id='description-$counter' zone='$current' class='descrow'><td></td><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this network here.")."' value='$desc'></td></tr>";
 }
 
