@@ -143,7 +143,6 @@ foreach ($known as $int => $conf) {
 		continue;
 	}
 	if (!isset($conf['config']['ZONE']) || !isValidZone($conf['config']['ZONE'])) {
-		$netobj->updateInterfaceZone($int, "trusted");
 		$zone = "trusted";
 	} else {
 		$zone = $conf['config']['ZONE'];
@@ -662,14 +661,14 @@ function updateFirewallRules($firstrun = false) {
 		if ($tmparr['config']['PARENT']) {
 			continue;
 		}
-		// Has this zone been previously discovered?
+
+		// If it's not configured, default to trusted
 		if (!isset($tmparr['config']['ZONE'])) {
-			// No? Set it to trusted.
-			$driver->changeInterfaceZone($intname, 'trusted');
-			continue;
+			$zoneshouldbe = "trusted";
+		} else { 
+			$zoneshouldbe = $tmparr['config']['ZONE'];
 		}
 
-		$zoneshouldbe = $tmparr['config']['ZONE'];
 		// Is this interface pointing at the right zone?
 		if (!isset($currentcache[$intname]) || $zoneshouldbe !== $currentcache[$intname]) {
 			$driver->changeInterfaceZone($intname, $zoneshouldbe);

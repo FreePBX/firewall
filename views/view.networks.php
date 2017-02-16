@@ -86,6 +86,6 @@ function render_network($name, $current, $desc, $counter, $zones) {
 	print "</tr></td>";
 
 	// Render the description box
-	print "<tr id='description-$counter' zone='$current' class='net-$counter descrow'><td></td><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this network here.")."' value='$desc'></td></tr>";
+	print "<tr id='description-$counter' zone='$current' class='net-$counter descrow'><td></td><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='netdescr-$counter' placeholder='"._("You can enter a short description for this network here.")."' value='$desc'></td></tr>";
 }
 

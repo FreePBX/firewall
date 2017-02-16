@@ -137,7 +137,7 @@ function add_new_network(event) {
 		return;
 	}
 	var netname = $("input[name='newentry']").val();
-	var descr = $("input[counter='"+c+"']").val();
+	var descr = $("input[name='netdescr-"+c+"']").val();
 	var zone = $("select[data-rowid='"+c+"']").val();
 
 	// IF there's no netname, error on it
@@ -165,7 +165,7 @@ function save_all_nets(ignored) {
 			return;
 		}
 		var zone = $("select[name='zone-"+c+"']").val();
-		var descr = $("input[name='descr-"+c+"']").val();
+		var descr = $("input[name='netdescr-"+c+"']").val();
 		networks[netname] = { zone: zone, description: descr };
 	});
 

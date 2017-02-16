@@ -41,7 +41,7 @@ foreach ($ints as $i => $conf) {
 // Render the interface select
 function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 	print "<tr id='intcount-$counter' class='intzone int-$counter' zone='$current' data-counter='$counter'>";
-	print "<td style='width: ${llen}em '><tt class='intname' counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
+	print "<td style='width: ${llen}em '><tt class='intname'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
 	$tun = false;
 	if ($tun || $conf['config']['PARENT']) {
 		$seldisabled = "disabled";
@@ -99,6 +99,6 @@ function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 	} else {
 		$desc = htmlentities($conf['config']['DESCRIPTION'], ENT_QUOTES);
 	}
-	print "<tr id='intdescription-$counter' zone='$current' class='int-$counter descrow'><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='descr-$counter' placeholder='"._("You can enter a short description for this interface here.")."' value='$desc'></td></tr>";
+	print "<tr id='intdescription-$counter' zone='$current' class='int-$counter descrow'><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='intdescr-$counter' placeholder='"._("You can enter a short description for this interface here.")."' value='$desc'></td></tr>";
 }
 
