@@ -483,9 +483,6 @@ class Iptables {
 				$interfaces[] = "$p$newzone";
 			}
 		}
-
-		$net = new \FreePBX\modules\Firewall\Network;
-		$net->updateInterfaceZone($iface, $newzone);
 	}
 
 	// Root process

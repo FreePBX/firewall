@@ -25,6 +25,9 @@ $(document).ready(function() {
 	/**** Interfaces Tab ****/
 	// Update row colour on change
 	$("#interfacestable").on("change", "select", update_zone_attr);
+	// When someone clicks on 'Update Interfaces', post the form.
+	$("#saveints").on("click", save_interface_zones);
+
 
 	/**** Networks Tab ****/
 	// When someone changes a network select tab, update the zone attr
@@ -220,6 +223,29 @@ function update_actionbar() {
 
 	// How did we get here?
 	console.log("error?");
+}
+
+
+function save_interface_zones() {
+	// Ajax setup
+	var d = { command: 'updateinterfaces', module: 'firewall' };
+	// Build our array of interfaces to be sent as JSON
+	var ints = {};
+	$(".intselect").each(function() {
+		var intname = $(this).data('intname');
+		var counter = $(this).data('rowid');
+		var newzone = $(this).val();
+		var desc = $("input", "#intdescription-"+counter).val();
+		ints[intname] = { zone: newzone, description: desc };
+	});
+
+	d['ints'] = JSON.stringify(ints);
+	$.ajax({
+		method: 'POST',
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		success: function(data) { window.location.href = window.location.href; },
+	});
 }
 
 

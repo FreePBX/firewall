@@ -41,7 +41,7 @@ foreach ($ints as $i => $conf) {
 // Render the interface select
 function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 	print "<tr id='intcount-$counter' class='intzone int-$counter' zone='$current' data-counter='$counter'>";
-	print "<td style='width: ${llen}em '><tt counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
+	print "<td style='width: ${llen}em '><tt class='intname' counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
 	$tun = false;
 	if ($tun || $conf['config']['PARENT']) {
 		$seldisabled = "disabled";
@@ -53,7 +53,7 @@ function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 	} else {
 		$linked = "";
 	}
-	print "<td><select $seldisabled $linked class='form-control' name='zone-$counter' data-rowid='$counter' data-type='int' data-intname='$name'>";
+	print "<td><select $seldisabled $linked class='form-control intselect' name='zone-$counter' data-rowid='$counter' data-type='int' data-intname='$name'>";
 	foreach ($zones as $zn => $zone) {
 		if ($current === $zn) {
 			$selected = "selected";

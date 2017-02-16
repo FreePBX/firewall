@@ -354,11 +354,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$nets[$thisnet] = "trusted";
 			$this->setConfig("networkmaps", $nets);
 			return $this->runHook('addnetwork', array('trusted' => array($thisnet)));
-		case "updateinterface":
-			// Remove any notifications about invalid interface configurations
-			$this->Notifications()->delete('firewall', 'trustedint');
-			$this->Notifications()->delete('firewall', 'newint');
-			return $this->runHook('updateinterface', array('iface' => $_REQUEST['iface'], 'newzone' => $_REQUEST['zone']));
+		case "updateinterfaces":
+			// Extract our interfaces
+			$ints = @json_decode($_REQUEST['ints'], true);
+			if (!is_array($ints)) {
+				throw new \Exception("Invalid interface data provided");
+			}
+			return $this->runHook("updateinterfaces", $_REQUEST);
 		case "updaterfw":
 			// Ensure people don't accidentally allow traffic through when rfw is enabled
 			$proto = $_REQUEST['proto'];

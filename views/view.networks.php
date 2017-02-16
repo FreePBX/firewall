@@ -7,7 +7,6 @@
 <p><?php echo _("Any traffic arriving at eth0 from 203.55.66.88 (or any other undefined host or network) will only have access to services available to the 'Internet' zone, as that has been set to be the default zone for traffic arriving at that interface."); ?></p>
 <p><?php echo _("You may also enter hostnames here (including Dynamic DNS hosts), which will be automatically monitored and updated."); ?></p>
 </div>
-<form role='form' class='form-inline'>
 <table class="table" id='networkstable'>
   <thead>
     <tr>
@@ -49,7 +48,6 @@ foreach ($nets as $net => $currentzone) {
 }
 ?>
 </table>
-</form>
 <?php
 
 // Render the interface select
