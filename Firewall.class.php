@@ -378,14 +378,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $this->addToBlacklist(htmlentities(trim($_REQUEST['entry']), \ENT_QUOTES, 'UTF-8', false));
 		case "removefromblacklist":
 			return $this->removeFromBlacklist(htmlentities($_REQUEST['entry'], \ENT_QUOTES, 'UTF-8', false));
-		case "setsafemode":
-			if ($_REQUEST['value'] == "disabled") {
-				return $this->disableSafemode();
-			} elseif ($_REQUEST['value'] == "enabled") {
-				return $this->enableSafemode();
-			} else {
-				throw new \Exception("Unknown safemode");
-			}
 		case "setrejectmode":
 			if ($_REQUEST['value'] != "reject") {
 				return $this->setConfig("dropinvalid", true);
@@ -414,6 +406,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $a->getAllAttacks($smart->getRegistrations());
 		case "delattacker":
 			return $this->runHook("removeallblocks", array("unblock" => $_REQUEST['target']));
+
+		// Advanced Settings
+		case "updateadvanced":
+			return $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
 
 		// OOBE
 		case "getoobequestion":
@@ -1099,25 +1095,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->setConfig($host, false, "blacklist");
 	}
 
-	public function isSafemodeEnabled() {
-		$ena = $this->getConfig("safemodeenabled");
-		if ($ena == false || $ena == "enabled") {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public function disableSafemode() {
-		$this->setConfig("safemodeenabled", "disabled");
-		return "disabled";
-	}
-
-	public function enableSafemode() {
-		$this->setConfig("safemodeenabled", "enabled");
-		return "enabled";
-	}
-
 	public function genUUID() {
 		// This generates a v4 GUID
 
@@ -1128,6 +1105,38 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
 
 		return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+	}
+
+	public function getAdvancedSettings() {
+		$defaults = array("safemode" => "enabled", "masq" => "enabled", "customrules" => "enabled", "rejectpackets" => "disabled");
+		$settings = $this->getConfig("advancedsettings");
+		if (!is_array($settings)) {
+			$settings = $defaults;
+			$this->setConfig("advancedsettings", $settings);
+		}
+
+		// Only return the keys we should return.
+		$retarr = array();
+		foreach ($defaults as $k => $v) {
+			if (!isset($settings[$k])) {
+				$retarr[$k] = $v;
+			} else {
+				$retarr[$k] = $settings[$k];
+			}
+		}
+		return $retarr;
+	}
+
+	public function setAdvancedSetting($setting, $val) {
+		$current = $this->getAdvancedSettings();
+		if (!isset($current[$setting])) {
+			throw new \Exception("$setting is not an advanced setting");
+		}
+		if ($current[$setting] !== trim($val)) {
+			$current[$setting] = trim($val);
+			$this->setConfig("advancedsettings", $current);
+		}
+		return $current;
 	}
 
 	// Hooks

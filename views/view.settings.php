@@ -7,6 +7,8 @@
 $ena = _("Enabled");
 $dis = _("Disabled");
 
+$advanced = $fw->getAdvancedSettings();
+
 $sections = array(
 	"safemode" => array( "desc" => _("Safe Mode"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
 		_("Safe mode gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
@@ -25,9 +27,21 @@ $sections = array(
 		_("This allows expert users to customize the firewall to their specifications. This should be <strong>Disabled</strong> unless you explicitly know why it is enabled."),
 		),
 	),
+	"rejectpackets" => array( "desc" => _("Reject Packets"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("This configures what happens when a packet is received by the Firewall that <strong>will not be allowed</strong> through to the system."),
+		_("Enabling 'Reject Packets' sends an explicit response to the other machine, telling them that their traffic has been administratively blocked. Leaving this disabled silently discards the packet, giving no indication to the attacker that their traffic has been intercepted."),
+		_("By sending a Reject packet, the attacker knows that they have discovered a machine. By dropping the packet silently, no response is sent to the attacker, and they may move on to a different target."),
+		_("Normally this should be set to <strong>Disabled</strong> unless you are debugging network connectivity."),
+		),
+	),
 );
 
 foreach ($sections as $key => $tmparr) {
+	if (!isset($advanced[$key])) {
+		throw new \Exception("Advanced setting '$key' is unknown");
+	}
+	$current = $advanced[$key];
+
 	print "<div class='well'><h4>".$tmparr['desc']."</h4>";
 	foreach ($tmparr['docs'] as $row) {
 		print "<p>$row</p>";
@@ -36,7 +50,12 @@ foreach ($sections as $key => $tmparr) {
 	print "<label class='control-label' for='$key'>".$tmparr['desc']."</label></div>";
 	print "<div class='col-sm-8'><span class='radioset'>";
 	foreach ($tmparr['values'] as $k => $v) {
-		print "<input type='radio' class='$key' name='$key' id='${key}_$k' value='$k' ><label for='${key}_$k'>$v</label>";
+		if ($current === $k) {
+			$checked = "checked";
+		} else {
+			$checked = "";
+		}
+		print "<input $checked type='radio' class='advsetting $key' name='$key' id='${key}_$k' value='$k' ><label for='${key}_$k'>$v</label>";
 	}
 	print "</span> </div> </div> </div> </div>";
 }

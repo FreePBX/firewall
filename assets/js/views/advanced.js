@@ -11,6 +11,9 @@ $(document).ready(function() {
 		window.history.replaceState(null, document.title, newuri);
 	});
 
+	// Advanced Settings Page
+	$(".advsetting").on("click", advanced_button_click);
+
 });
 
 function advancedAdd(cmd, target) {
@@ -20,6 +23,20 @@ function advancedAdd(cmd, target) {
 		data: { command: cmd, module: 'firewall' },
 		complete: function(data) { 
 			$(target).text(_("Added"));
+		}
+	});
+}
+
+function advanced_button_click(e) {
+	var t = e.currentTarget;
+	var setting = t.getAttribute('name');
+	// Set them to disabled while we ajax
+	$(".advsetting[name='"+setting+"']").attr('disabled', true);
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: { command: "updateadvanced", module: 'firewall', option: setting, val: $(t).val() },
+		complete: function() { 
+			$(".advsetting[name='"+setting+"']").attr('disabled', false);
 		}
 	});
 }

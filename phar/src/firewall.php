@@ -55,7 +55,7 @@ while (!$ready) {
 		continue;
 	}
 
-	if (!$services['safemode']['status']) {
+	if ($services['safemode']['status'] !== "enabled") {
 		// Safemode isn't enabled;
 		break;
 	}
@@ -113,6 +113,7 @@ wall("Firewall service now starting.\n\n");
 // Flush all iptables rules
 $f = $v->checkFile("bin/clean-iptables");
 `$f`;
+
 
 // Start fail2ban if we can
 `service fail2ban start`;
@@ -608,10 +609,10 @@ function updateFirewallRules($firstrun = false) {
 	}
 
 	// Set the firewall to drop or reject mode.
-	if ($getservices['dropinvalid']) {
-		$driver->setRejectMode(true, false);
-	} else {
+	if ($getservices['advancedsettings']['rejectpackets'] === "enabled") {
 		$driver->setRejectMode(false, false);
+	} else {
+		$driver->setRejectMode(true, false);
 	}
 
 	// Update any interfaces that may have changed
@@ -674,6 +675,11 @@ function updateFirewallRules($firstrun = false) {
 			$driver->changeInterfaceZone($intname, $zoneshouldbe);
 		}
 	}
+
+	// If this is the first run, import the custom firewall rules, if enabled
+	if ($firstrun && $getservices['advancedsettings']['customrules'] === "enabled") {
+		importCustomRules();
+	}
 }
 
 function sigSleep($secs = 10) {
@@ -727,3 +733,29 @@ function getServices() {
 	}
 	return $getservices;
 }
+
+function importCustomRules() {
+	$files = array("/sbin/iptables" => "/etc/firewall-4.rules", "/sbin/ip6tables" => "/etc/firewall-6.rules");
+	foreach ($files as $ipt => $f) {
+		// Validate file
+		if (!file_exists($f)) {
+			fwLog("Custom Firewall rules file $f does not exist, skipping");
+			continue;
+		}
+		$stat = stat($f);
+		if ($stat['uid'] !== 0) {
+			fwLog("Custom Firewall rules file $f not owned by root, skipping");
+			continue;
+		}
+		// Todo: Writable checks
+		$cmds = file($f, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+		foreach ($cmds as $cmd) {
+			$safecmd = escapeshellcmd($cmd);
+			fwLog("Custom rule: $ipt $safecmd");
+			exec("$ipt $safecmd");
+		}
+	}
+}
+
+
+

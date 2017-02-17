@@ -90,9 +90,11 @@ foreach ($hosts as $h) {
 
 $services['hostmaps'] = $harr;
 
+$advanced = \FreePBX::Firewall()->getAdvancedSettings();
+
 // Safemode handling
 $safemode = array(
-	"status" => \FreePBX::Firewall()->isSafemodeEnabled(),
+	"status" => $advanced['safemode'],
 	"lastuptime" => (int) \FreePBX::Firewall()->getConfig('lastuptime'),
 );
 // Update it with the current uptime.
@@ -101,8 +103,7 @@ list($secs, $idle) = explode(" ", $uptime[0]);
 \FreePBX::Firewall()->setConfig('lastuptime', (int) $secs);
 $services['safemode'] = $safemode;
 
-// Determine if we want to drop, or, reject erroring packets.
-$services['dropinvalid'] = \FreePBX::Firewall()->getConfig("dropinvalid");
+$services['advancedsettings'] = $advanced;
 
 // Return our current module version
 $module = (array) simplexml_load_string(file_get_contents(__DIR__."/../module.xml"));

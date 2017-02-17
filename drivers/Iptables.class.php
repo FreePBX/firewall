@@ -473,6 +473,13 @@ class Iptables {
 					// break;
 				}
 			}
+
+			// Make sure we're not tagged as a valid output interface. We may not be, so ignore
+			// errors.
+			$cmd = "$ipt -t nat -D masq-output -o $iface -j MARK --set-xmark 0x2/0x2 2>/dev/null";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+
 			// Now we can just add it, if we're not deleting it
 			if ($newzone) {
 				$this->checkTarget("zone-$newzone");
@@ -481,6 +488,13 @@ class Iptables {
 				$output = null;
 				exec($cmd, $output, $ret);
 				$interfaces[] = "$p$newzone";
+
+				// Masq output marking.  If this is 'external' (eg, internet), add it to the masq-output chain.
+				if ($newzone === "external") {
+					$cmd = "$ipt -t nat -A masq-output -o $iface -j MARK --set-xmark 0x2/0x2";
+					$this->l($cmd);
+					exec($cmd, $output, $ret);
+				}
 			}
 		}
 	}
@@ -1104,6 +1118,21 @@ class Iptables {
 			}
 			// unset ($rules[$name]);
 		}
+		// Add MASQ rules. They're hardcoded here, because it's just simpler.
+		$rules = array(
+			"-t nat -N masq-input",
+			"-t nat -N masq-output",
+			"-t nat -A POSTROUTING -j masq-input",  // sets bit 1 if elegible for masq
+			"-t nat -A POSTROUTING -j masq-output", // sets bit 2 if elegible for masq
+			"-t nat -A POSTROUTING -m mark --mark 0x3/0x3 -j MASQUERADE", // if 1&2 are set, masq
+		);
+
+		$ipt = array("/sbin/iptables", "/sbin/ip6tables");
+		foreach ($ipt as $cmd) {
+			foreach ($rules as $r) {
+				exec("$cmd $r");
+			}
+		}
 		return true;
 	}
 
@@ -1155,7 +1184,7 @@ class Iptables {
 		// Otherwise, log and drop.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxlogdrop");
 
-		// Our 'trusted' zone is always allow everything.
+		// Our 'trusted' zone is always allowed access to everything
 		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
 
 		// VoIP Rate limiting happens here. If they've made it here, they're an unknown host
