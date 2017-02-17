@@ -7,18 +7,15 @@ if (!isset($_REQUEST['tab'])) {
 } else {
 	$tab = $_REQUEST['tab'];
 }
-$svcs = "active";
-$extraservices = $customsvc = "";
+$servicestab = $extraservices = $customsvc = "";
 
 switch ($tab) {
 case 'extraservices':
-	$svcs = "";
-	$extraservices = "active";
-	break;
 case 'customsvc':
-	$svcs = "";
-	$customsvc = "active";
+	${$tab} = "active";
 	break;
+default: 
+	$servicestab = "active";
 }
 
 $services = $fw->getServices();
@@ -30,8 +27,8 @@ $extrasvc = $services['extra'];
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
-      <li role="presentation" data-name="services" class="<?php echo $svcs; ?>">
-        <a href="#services" aria-controls="services" role="tab" data-toggle="tab"><?php echo _("Services")?></a>
+      <li role="presentation" data-name="services" class="<?php echo $servicestab; ?>">
+        <a href="#servicestab" aria-controls="servicestab" role="tab" data-toggle="tab"><?php echo _("Services")?></a>
       </li>
       <li role="presentation" data-name="extraservices" class="<?php echo $extraservices; ?>">
         <a href="#extraservices" aria-controls="extraservices" role="tab" data-toggle="tab"><?php echo _("Extra Services")?></a>
@@ -41,7 +38,7 @@ $extrasvc = $services['extra'];
       </li>
     </ul>
     <div class="tab-content display">
-      <div role="tabpanel" id="services" class="tab-pane <?php echo $svcs; ?>">
+      <div role="tabpanel" id="servicestab" class="tab-pane <?php echo $servicestab; ?>">
         <?php echo load_view(__DIR__."/view.services.php", array("fw" => $fw, "coresvc" => $coresvc, "z" => $z)); ?>
       </div>
       <div role="tabpanel" id="extraservices" class="tab-pane <?php echo $extraservices; ?>">
@@ -71,5 +68,3 @@ foreach ($extrasvc as $s) {
 
 </form>
 
-
-<?php

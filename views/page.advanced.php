@@ -5,21 +5,20 @@ if (!isset($_REQUEST['tab'])) {
 	$tab = $_REQUEST['tab'];
 }
 
-$zoneinfo = "active";
-$services = $shortcuts = "";
+$zoneinfo = $services = $shortcuts = $settings = "";
 
 switch ($tab) {
 case 'services':
-	$status = "";
-	$services = "active";
-	break;
 case 'shortcuts':
-	$status = "";
-	$shortcuts = "active";
+case 'settings':
+	${$tab} = "active";
 	break;
+default:
+	$zoneinfo = "active";
 }
 ?>
 
+<script type='text/javascript' src='modules/firewall/assets/js/views/advanced.js'></script>
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
@@ -31,6 +30,9 @@ case 'shortcuts':
       </li>
       <li role="presentation" data-name="shortcuts" class="<?php echo $shortcuts; ?>">
         <a href="#shortcuts" aria-controls="shortcuts" role="tab" data-toggle="tab"><?php echo _("Preconfigured")?> </a>
+      </li>
+      <li role="presentation" data-name="settings" class="<?php echo $settings; ?>">
+        <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><?php echo _("Advanded Settings")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
@@ -44,6 +46,9 @@ case 'shortcuts':
       </div>
       <div role="tabpanel" id="shortcuts" class="tab-pane <?php echo $shortcuts; ?>">
         <?php echo load_view(__DIR__."/view.shortcuts.php", array("fw" => $fw)); ?>
+      </div>
+      <div role="tabpanel" id="settings" class="tab-pane <?php echo $settings; ?>">
+        <?php echo load_view(__DIR__."/view.settings.php", array("fw" => $fw)); ?>
       </div>
     </div>
   </div>

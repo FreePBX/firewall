@@ -5,18 +5,15 @@ if (!isset($_REQUEST['tab'])) {
 	$tab = $_REQUEST['tab'];
 }
 
-$status = "active";
-$registered = $blockedtab = "";
+$status = $registered = $blockedtab = "";
 
 switch ($tab) {
-case 'registered':
-	$status = "";
-	$registered = "active";
-	break;
 case 'blockedtab':
-	$status = "";
-	$blockedtab = "active";
+case 'registered':
+	${$tab} = "active";
 	break;
+default:
+	$status = "active";
 }
 ?>
 

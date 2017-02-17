@@ -8,13 +8,9 @@ $about = $smart = $shortcuts = $services = $interfaces = $networks = "";
 
 switch ($tab) {
 case 'smart':
-	$smart = "active";
-	break;
 case 'interfaces':
-	$interfaces = "active";
-	break;
 case 'networks':
-	$networks = "active";
+	${$tab} = "active";
 	break;
 default:
 	$about = "active";

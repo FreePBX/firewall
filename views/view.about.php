@@ -49,16 +49,6 @@ if ($fw->isSafemodeEnabled()) {
 	$sdisabled = "checked";
 }
 
-print "<div class='alert alert-info' id='safewarning' style='$style'>";
-$docs = array(
-	_("<strong>Safe mode is available.</strong>"),
-	_("Safe mode can be used when setting up your Firewall for the first time. It gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
-	_("After the original configuration is complete, there is no reason to keep this turned on."),
-);
-foreach ($docs as $p) {
-	print "<p>$p</p>\n";
-}
-print "</div>";
 
 if (file_exists("/etc/asterisk/firewall.lock")) {
 	$candisable = false;

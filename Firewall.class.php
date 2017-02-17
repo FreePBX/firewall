@@ -501,14 +501,20 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
-	// We want a button on the main page only
 	public function getActionBar($request) {
 		if ($this->getConfig("status")) {
+			// Buttons for the main page
 			if (!isset($request['page']) || $request['page'] == "about") {
 				return array(
 					"savenets" => array('name' => 'savenets', 'style' => 'display: none', 'id' => 'savenets', 'value' => _("Save")),
 					"delsel" => array('name' => 'delsel', 'style' => 'display: none', 'id' => 'delsel', 'value' => _("Delete Selected")),
 					"saveints" => array('name' => 'saveints', 'style' => 'display: none', 'id' => 'saveints', 'value' => _("Update Interfaces")),
+				);
+			} elseif ($request['page'] === "services") {
+				return array(
+					// "defaults" => array('name' => 'defaults', 'id' => 'btndefaults', 'value' => _("Defaults")), // Unimplemented
+					"reset" => array('name' => 'reset', 'id' => 'btnreset', 'value' => _("Reset")),
+					"submit" => array('name' => 'submit', 'id' => 'btnsave', 'value' => _("Save")),
 				);
 			}
 		}
