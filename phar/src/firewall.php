@@ -725,7 +725,7 @@ function getServices() {
 		chmod("/var/www/html/admin/modules/firewall/bin/getservices", 0755);
 	}
 
-	exec("runuser -u $astuser /var/www/html/admin/modules/firewall/bin/getservices", $out, $ret);
+	exec("/sbin/runuser $astuser -c /var/www/html/admin/modules/firewall/bin/getservices", $out, $ret);
 	$getservices = @json_decode($out[0], true);
 	if (!is_array($getservices) || !isset($getservices['smartports'])) {
 		fwLog("Unparseable output from getservices - ".json_encode($out)." - returned $ret");
