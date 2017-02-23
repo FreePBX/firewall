@@ -42,7 +42,12 @@ foreach ($ints as $i => $conf) {
 function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 	print "<tr id='intcount-$counter' class='intzone int-$counter' zone='$current' data-counter='$counter'>";
 	print "<td style='width: ${llen}em '><tt class='intname'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
-	$tun = false;
+	if (strpos($name, "tun") === 0) {
+		$tun = _("All Tunnel Interfaces are automatically set to Local");
+	} else {
+		$tun = false;
+	}
+
 	if ($tun || $conf['config']['PARENT']) {
 		$seldisabled = "disabled";
 	} else {
@@ -62,6 +67,8 @@ function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 		}
 		if ($conf['config']['PARENT']) {
 			print "<option value='$zn' $selected>".$zone['name']." (".sprintf(_("Linked to Interface %s"), $conf['config']['PARENT']).")</option>";
+		} elseif ($tun) {
+			print "<option value='$zn' $selected>".$zone['name']." ($tun)</option>";
 		} else {
 			print "<option value='$zn' $selected>".$zone['name']." (".$zone['summary'].")</option>";
 		}
@@ -88,10 +95,6 @@ function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 		print "<td>".join(", ", $tmparr)."</td>";
 	}
 	print "</tr>";
-	if ($tun) {
-		print "<tr data-counter='$counter' class='int-$counter descrow'><td colspan=2><i><strong>"._("Note:")."</strong> "._("Tunnel interfaces are automatically assigned to the Local zone.")."</i><br></td></tr>";
-	}
-
 
 	// Render the description box
 	if (!isset($conf['config']['DESCRIPTION'])) {
@@ -99,6 +102,13 @@ function render_interface($name, $current, $conf, $counter, $zones, $llen) {
 	} else {
 		$desc = htmlentities($conf['config']['DESCRIPTION'], ENT_QUOTES);
 	}
-	print "<tr id='intdescription-$counter' zone='$current' class='int-$counter descrow'><td colspan=2><input counter='$counter' class='description $newentry form-control' type='text' name='intdescr-$counter' placeholder='"._("You can enter a short description for this interface here.")."' value='$desc'></td></tr>";
+
+	if ($seldisabled) {
+		$placeholder = "";
+	} else {
+		$placeholder = _("You can enter a short description for this interface here.");
+	}
+
+	print "<tr id='intdescription-$counter' zone='$current' class='int-$counter descrow'><td colspan=2><input counter='$counter' $seldisabled class='description form-control' type='text' name='intdescr-$counter' placeholder='$placeholder' value='$desc'></td></tr>";
 }
 
