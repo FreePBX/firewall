@@ -211,6 +211,10 @@ class OOBE {
 
 	private function answer_enableresponsive() {
 		if ($_REQUEST['answer'] == "yes") {
+			$zones = array("internal");
+			$this->fw->setConfig("iax", $zones, "servicesettings");
+			$this->fw->setConfig("pjsip", $zones, "servicesettings");
+			$this->fw->setConfig("chansip", $zones, "servicesettings");
 			$this->fw->setConfig('responsivefw', true);
 		} else {
 			$this->fw->setConfig('responsivefw', false);
