@@ -15,9 +15,9 @@ label.btn {
 	padding-left: 0px;
 }
 
-tr[zone='trusted']>td { background-color: #ffebee; }
+tr[zone='external']>td { background-color: #ffebee; }
 tr[zone='internal']>td { background-color: #e8f5e9; }
-tr[zone='external']>td { background-color: #fff9c4; }
+tr[zone='trusted']>td { background-color: #fff9c4; }
 tr[zone='other']>td { background-color: #ede7f6; }
 
 .newnetsel { width: calc(100% - 4em); display: inline; }
