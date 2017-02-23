@@ -1108,7 +1108,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function getAdvancedSettings() {
-		$defaults = array("safemode" => "enabled", "masq" => "enabled", "customrules" => "enabled", "rejectpackets" => "disabled");
+		$defaults = array("safemode" => "enabled", "masq" => "enabled", "customrules" => "disabled", "rejectpackets" => "disabled");
 		$settings = $this->getConfig("advancedsettings");
 		if (!is_array($settings)) {
 			$settings = $defaults;
