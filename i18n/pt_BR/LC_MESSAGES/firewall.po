@@ -9,15 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-23 13:04+1100\n"
+"POT-Creation-Date: 2017-02-24 07:14+1000\n"
 "PO-Revision-Date: 2017-02-14 17:03+0200\n"
 "Last-Translator: Kingvoice <suporte@kingvoice.com.br>\n"
 "Language-Team: Portuguese (Brazil) <http://weblate.freepbx.org/projects/"
 "freepbx/firewall/pt_BR/>\n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 2.4\n"
 
@@ -246,7 +246,7 @@ msgstr ""
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
 
-#: OOBE.class.php:228
+#: OOBE.class.php:232
 msgid "Automatically configure Asterisk IP Settings?"
 msgstr "Configurar automaticamente as configurações de IP do Asterisk?"
 
@@ -459,7 +459,7 @@ msgstr ""
 msgid "Excluded from Firewall"
 msgstr ""
 
-#: OOBE.class.php:243
+#: OOBE.class.php:247
 #, php-format
 msgid "External Address: %s"
 msgstr "Endereço Externo: %s"
@@ -528,7 +528,7 @@ msgstr "Firewall ainda não inicializou!"
 msgid "Firewall is not enabled, can't disable it"
 msgstr "O Firewall não está habilitado, não pode desativá-lo"
 
-#: OOBE.class.php:230
+#: OOBE.class.php:234
 msgid ""
 "Firewall should now auto-detect and configure External IP settings. This "
 "will assist with NAT or Translation issues."
@@ -727,7 +727,7 @@ msgstr ""
 msgid "Known Network Definitions"
 msgstr ""
 
-#: OOBE.class.php:244
+#: OOBE.class.php:248
 msgid "Known Networks:"
 msgstr ""
 
@@ -1107,7 +1107,7 @@ msgstr "Salvar"
 msgid "See Custom Service page"
 msgstr ""
 
-#: OOBE.class.php:242
+#: OOBE.class.php:246
 msgid ""
 "Selecting 'Yes' will update your current configuration. Selecting 'No' will "
 "not change your current settings."
@@ -1478,7 +1478,7 @@ msgstr ""
 msgid "Updating..."
 msgstr ""
 
-#: OOBE.class.php:205 OOBE.class.php:242 views/disabled.php:6
+#: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
 msgid "Warning"
 msgstr "Atenção"
 
@@ -1565,7 +1565,7 @@ msgstr ""
 msgid "You can enter a short description for this network here."
 msgstr ""
 
-#: OOBE.class.php:232
+#: OOBE.class.php:236
 msgid ""
 "You can verify these settings in Sip Settings after this wizard is complete. "
 "If you have a non-static IP address, you may need to use a DDNS provider "
@@ -1578,7 +1578,7 @@ msgid ""
 "be automatically monitored and updated."
 msgstr ""
 
-#: OOBE.class.php:231
+#: OOBE.class.php:235
 msgid ""
 "You should say 'Yes' to this, unless you have an extremely complex network "
 "with multiple external default gateways."
