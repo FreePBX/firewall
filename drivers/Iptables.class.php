@@ -17,48 +17,6 @@ class Iptables {
 		}
 	}
 
-	public function getZonesDetails() {
-		// Returns array( "zonename" => array("interfaces" => .., "services" => .., "sources" => .. ), 
-		//   "zonename" => .. 
-		//   "zonename => ..
-		// );
-		$default = array("interfaces" => array(), "services" => array(), "sources" => array());
-		$zones = array("reject" => $default, "external" => $default, "other" => $default,
-			"internal" => $default, "trusted" => $default);
-
-		$current = $this->getCurrentIptables();
-
-		// Check IPv4 for the interface and config settings. IPv6 should be identical. But,
-		// if it's broken for some reason, it may not be providing useful information.
-
-		$allints = \FreePBX::Firewall()->getInterfaces();
-		if (!$this->isConfigured($current['ipv4'])) {
-			// Not Configured. Treat all our interfaces as 'Trusted'
-			$zones['trusted']['interfaces'] = array_keys($allints);
-			return $zones;
-		}
-
-		$i = $current['ipv4']['filter'];
-		// Find interfaces
-		foreach ($i['fpbxinterfaces'] as $row) {
-			if (!preg_match('/-i (.+) -j zone-(.+)/', $row, $out)) {
-				throw new \Exception("Unknown entry in interfaces - $row");
-			}
-			$zones[$out[2]]['interfaces'][] = $out[1];
-			unset($allints[$out[1]]);
-		}
-
-		// If there are any left, add them to trusted.
-		foreach ($allints as $int => $null) {
-			// Note that we ignore aliases.
-			if (strpos($int, ":")) {
-				continue;
-			}
-			$zones['trusted']['interfaces'][] = $int;
-		}
-		return $zones;
-	}
-
 	public function getKnownNetworks() {
 		// Returns array that looks like ("network/cdr" => "zone", "network/cdr" => "zone")
 		$known = $this->getCurrentIptables();
@@ -515,6 +473,7 @@ class Iptables {
 					// break;
 				}
 			}
+
 			// Now we can just add it, if we're not deleting it
 			if ($newzone) {
 				$this->checkTarget("zone-$newzone");
@@ -526,8 +485,47 @@ class Iptables {
 			}
 		}
 
-		$net = new \FreePBX\modules\Firewall\Network;
-		$net->updateInterfaceZone($iface, $newzone);
+		// If nat isn't enabled, there's nothing else to do.
+		if (!is_array($current['ipv4']['nat'])) {
+			print "Nat disabled, error\n";
+			return;
+		}
+
+		// If this is an 'INTERNET' (external) zone, mark packets that are
+		// forwared with a destination of that interface eligible
+		// for masq. Note that only ipv4 does NAT, it's ludicrous to NAT
+		// IPv6, and it's barely even supported until 4.0+ kernels.
+
+		if ($newzone !== "external") {
+			$nat = false;
+		} else {
+			$nat = true;
+		}
+
+		$foundrule = false;
+		$rule = "-o $iface -j MARK --set-xmark 0x2/0x2";
+
+		foreach ($current['ipv4']['nat']['masq-output'] as $lineno => $line) {
+			if ($line == $rule) {
+				$foundrule = $lineno;
+				break;
+			}
+		}
+
+		unset($output);
+		// If we didn't find the rule, and we need it, add it.
+		if ($foundrule === false && $nat) {
+			$cmd = "/sbin/iptables -t nat -A masq-output $rule";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			$current['ipv4']['nat']['masq-output'][] = $rule;
+		} elseif ($foundrule !== false && !$nat) {
+			// We found it, but it shoudn't be there. Delete it.
+			$cmd = "/sbin/iptables -t nat -D masq-output $rule";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			array_splice($current['ipv4']['nat']['masq-output'], $foundrule, 1);
+		}
 	}
 
 	// Root process
@@ -1064,7 +1062,7 @@ class Iptables {
 
 	// Driver Specific iptables stuff
 	// Root process
-	private function &getCurrentIptables() {
+	public function &getCurrentIptables() {
 		if (!$this->currentconf) {
 			// Am I root?
 			if (posix_getuid() === 0) {
@@ -1149,6 +1147,20 @@ class Iptables {
 			}
 			// unset ($rules[$name]);
 		}
+		// Add MASQ rules. They're hardcoded here, because it's just simpler.
+		// Note we only NAT IPv4, not IPv6.
+		$rules = array(
+			"-t nat -N masq-input",
+			"-t nat -N masq-output",
+			"-t nat -A POSTROUTING -j masq-input",  // sets bit 1 if elegible for masq
+			"-t nat -A masq-input  -j MARK --set-xmark 0x1/0xffffffff", // TODO: Validate source. Currently allow all.
+			"-t nat -A POSTROUTING -j masq-output", // sets bit 2 if elegible for masq
+			"-t nat -A POSTROUTING -m mark --mark 0x3/0x3 -j MASQUERADE", // if 1&2 are set, masq
+		);
+
+		foreach ($rules as $r) {
+			exec("/sbin/iptables $r");
+		}
 		return true;
 	}
 
@@ -1200,7 +1212,7 @@ class Iptables {
 		// Otherwise, log and drop.
 		$retarr['fpbxfirewall'][] = array("jump" => "fpbxlogdrop");
 
-		// Our 'trusted' zone is always allow everything.
+		// Our 'trusted' zone is always allowed access to everything
 		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
 
 		// VoIP Rate limiting happens here. If they've made it here, they're an unknown host
@@ -1241,17 +1253,17 @@ class Iptables {
 		// We drop rather than reject, as it slows attack scripts down, and they tend to give up quicker 
 		// after a bunch of timeouts than they do with an authoritative 'refused'.
 		$retarr['fpbxattacker'][] = array("other" => "-m recent --set --name ATTACKER --rsource");
-		$retarr['fpbxattacker'][] = array("jump" => "LOG", "append" => " --log-prefix 'attacker: '");
+		// No longer logging attackers, there's too many.
+		// $retarr['fpbxattacker'][] = array("jump" => "LOG", "append" => " --log-prefix 'attacker: '");
 		$retarr['fpbxattacker'][] = array("jump" => "DROP");
 
 		// We tag this IP so that monitoring knows that they were previously blocked. Reject, rather
 		// than drop, for phones.
 		$retarr['fpbxshortblock'][] = array("other" => "-m recent --set --name CLAMPED --rsource");
-		$retarr['fpbxshortblock'][] = array("jump" => "LOG", "append" => " --log-prefix 'clamped: '");
+		// No longer logging attackers, there's too many.
+		// $retarr['fpbxshortblock'][] = array("jump" => "LOG", "append" => " --log-prefix 'clamped: '");
 		$retarr['fpbxshortblock'][] = array("jump" => "REJECT");
 
-		// Don't log normally rejected packets for the moment. No-one's using them.
-		// $retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'logdrop: '");
 		$retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
 		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports

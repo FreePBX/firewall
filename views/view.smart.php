@@ -1,3 +1,4 @@
+<div class='container-fluid'>
 <?php
 $rf = _("Responsive Firewall");
 
@@ -75,4 +76,8 @@ foreach ($protocols as $id => $tmparr) {
 </div>
 <?php
 }
+?>
+
+</div>
+
 

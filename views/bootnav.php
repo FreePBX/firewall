@@ -1,39 +1,25 @@
 <div class='list-group'>
 <?php
 // I18n page names
-$names = array(
-	"about" => _("About"),
-	"services" => _("Services"),
-	"zones" => _("Zones"),
+$rawnames = array(
+	"about" => _("Main"),
 	"status" => _("Status"),
+	"services" => _("Services"),
+	"advanced" => _("Advanced"),
 );
+
+// Let other modules hook into our array
+$names = \FreePBX::Firewall()->getNameHooks($rawnames);
+
 // Get our list of pages
-$pages = glob(__DIR__."/page.*.php");
-// Put them in a useful format
 $known = array("about" => $names['about']);
-foreach ($pages as $p) {
-	if (preg_match("/page\.(.+)\.php$/", $p, $out)) {
-		// About is always first, and is added later
-		if ($out[1] !== "about") {
-			if (isset($names[$out[1]])) {
-				$known[$out[1]] = $names[$out[1]];
-			} else {
-				// I should throw an exception here, I guess...
-				$known[$out[1]] = ucfirst($out[1]);
-			}
-		}
-	}
-}
-
-
-// And display!
-foreach ($known as $k => $v) {
-	if ($thispage == $k) {
+foreach ($names as $name => $p) {
+	if ($thispage == $name) {
 		$active = "active";
 	} else {
 		$active = "";
 	}
-	echo "  <a href='?display=firewall&page=$k' class='list-group-item $active'>$v</a>\n";
+	echo "  <a href='?display=firewall&page=$name' class='list-group-item $active'>$p</a>\n";
 }
 ?>
 </div>

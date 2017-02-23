@@ -15,8 +15,29 @@ label.btn {
 	padding-left: 0px;
 }
 
-/* .modalfix {
-	left: 50%;
-	transform: translateX(-50%);
+tr[zone='external']>td { background-color: #ffebee; }
+tr[zone='internal']>td { background-color: #e8f5e9; }
+tr[zone='trusted']>td { background-color: #fff9c4; }
+tr[zone='other']>td { background-color: #ede7f6; }
+
+.newnetsel { width: calc(100% - 4em); display: inline; }
+.descrow td { border: none !important; padding-top: 0px !important; }
+
+/* Alert classes to change background colours */
+@-webkit-keyframes pulsebg {
+  0%   {background: white;}
+  20%  {background: pink;}
+  100% {background: white;}
 }
-	*/
+@keyframes pulsebg {
+  0%   {background: white;}
+  20%  {background: pink;}
+  100% {background: white;}
+}
+.pulsebg {
+  -webkit-animation: pulsebg 2s linear;
+  animation: pulsebg 2s linear;
+}
+
+// Dont' display the action bar unless we've explictly asked for it.
+#action-bar{ display: none; }

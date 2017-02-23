@@ -55,7 +55,7 @@ while (!$ready) {
 		continue;
 	}
 
-	if (!$services['safemode']['status']) {
+	if ($services['safemode']['status'] !== "enabled") {
 		// Safemode isn't enabled;
 		break;
 	}
@@ -114,6 +114,7 @@ wall("Firewall service now starting.\n\n");
 $f = $v->checkFile("bin/clean-iptables");
 `$f`;
 
+
 // Start fail2ban if we can
 `service fail2ban start`;
 
@@ -143,7 +144,6 @@ foreach ($known as $int => $conf) {
 		continue;
 	}
 	if (!isset($conf['config']['ZONE']) || !isValidZone($conf['config']['ZONE'])) {
-		$netobj->updateInterfaceZone($int, "trusted");
 		$zone = "trusted";
 	} else {
 		$zone = $conf['config']['ZONE'];
@@ -609,10 +609,10 @@ function updateFirewallRules($firstrun = false) {
 	}
 
 	// Set the firewall to drop or reject mode.
-	if ($getservices['dropinvalid']) {
-		$driver->setRejectMode(true, false);
-	} else {
+	if ($getservices['advancedsettings']['rejectpackets'] === "enabled") {
 		$driver->setRejectMode(false, false);
+	} else {
+		$driver->setRejectMode(true, false);
 	}
 
 	// Update any interfaces that may have changed
@@ -646,13 +646,19 @@ function updateFirewallRules($firstrun = false) {
 			continue;
 		}
 
+		// If the current known interface DOESN'T have a zone, we
+		// assume it's 'trusted'.
+		if (empty($known[$out[1]]['config']['ZONE'])) {
+			 $known[$out[1]]['config']['ZONE'] = "trusted";
+		}
+
 		// Is iptables pointing to the correct zone?
 		if ($out[2] !== $known[$out[1]]['config']['ZONE']) {
 			// No. Fix it.
-			$driver->changeInterfaceZone($out[1], $out[2]);
+			$driver->changeInterfaceZone($out[1], $known[$out[1]]['config']['ZONE']);
 		}
-		// Mark it as discovered
-		$currentcache[$out[1]] = $out[2];
+
+		$currentcache[$out[1]] = $known[$out[1]]['config']['ZONE'];
 	}
 
 	// Now go through our discovered interfaces, and see if any
@@ -662,18 +668,23 @@ function updateFirewallRules($firstrun = false) {
 		if ($tmparr['config']['PARENT']) {
 			continue;
 		}
-		// Has this zone been previously discovered?
+
+		// If it's not configured, default to trusted
 		if (!isset($tmparr['config']['ZONE'])) {
-			// No? Set it to trusted.
-			$driver->changeInterfaceZone($intname, 'trusted');
-			continue;
+			$zoneshouldbe = "trusted";
+		} else { 
+			$zoneshouldbe = $tmparr['config']['ZONE'];
 		}
 
-		$zoneshouldbe = $tmparr['config']['ZONE'];
 		// Is this interface pointing at the right zone?
 		if (!isset($currentcache[$intname]) || $zoneshouldbe !== $currentcache[$intname]) {
 			$driver->changeInterfaceZone($intname, $zoneshouldbe);
 		}
+	}
+
+	// If this is the first run, import the custom firewall rules, if enabled
+	if ($firstrun && $getservices['advancedsettings']['customrules'] === "enabled") {
+		importCustomRules();
 	}
 }
 
@@ -720,7 +731,7 @@ function getServices() {
 		chmod("/var/www/html/admin/modules/firewall/bin/getservices", 0755);
 	}
 
-	exec("su -c /var/www/html/admin/modules/firewall/bin/getservices $astuser", $out, $ret);
+	exec("/sbin/runuser $astuser -c /var/www/html/admin/modules/firewall/bin/getservices", $out, $ret);
 	$getservices = @json_decode($out[0], true);
 	if (!is_array($getservices) || !isset($getservices['smartports'])) {
 		fwLog("Unparseable output from getservices - ".json_encode($out)." - returned $ret");
@@ -728,3 +739,29 @@ function getServices() {
 	}
 	return $getservices;
 }
+
+function importCustomRules() {
+	$files = array("/sbin/iptables" => "/etc/firewall-4.rules", "/sbin/ip6tables" => "/etc/firewall-6.rules");
+	foreach ($files as $ipt => $f) {
+		// Validate file
+		if (!file_exists($f)) {
+			fwLog("Custom Firewall rules file $f does not exist, skipping");
+			continue;
+		}
+		$stat = stat($f);
+		if ($stat['uid'] !== 0) {
+			fwLog("Custom Firewall rules file $f not owned by root, skipping");
+			continue;
+		}
+		// Todo: Writable checks
+		$cmds = file($f, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+		foreach ($cmds as $cmd) {
+			$safecmd = escapeshellcmd($cmd);
+			fwLog("Custom rule: $ipt $safecmd");
+			exec("$ipt $safecmd");
+		}
+	}
+}
+
+
+

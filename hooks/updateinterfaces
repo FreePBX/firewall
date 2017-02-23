@@ -62,44 +62,47 @@ $v = new \FreePBX\modules\Firewall\Validator($sig);
 // END BOILERPLATE SECURITY VALIDATION //
 // /////////////////////////////////// //
 
-if (!isset($settings['iface'])) {
-	throw new \Exception("No Interface");
+if (!isset($settings['ints'])) {
+	throw new \Exception("No Interface list provided");
 }
 
-if (!isset($settings['newzone'])) {
-	throw new \Exception("No zone");
+$ints = @json_decode($settings['ints'], true);
+if (!is_array($ints)) {
+	throw new \Exception("Invalid Interface list provided");
 }
-
-$iface = $settings['iface'];
-$newzone = $settings['newzone'];
 
 $v->secureInclude('Zones.class.php');
 $v->secureInclude('Driver.class.php');
-$d = new \FreePBX\modules\Firewall\Driver;
+$v->secureInclude('Network.class.php');
+
+use FreePBX\modules\Firewall\Zones;
+use FreePBX\modules\Firewall\Driver;
+use FreePBX\modules\Firewall\Network;
+
+$d = new Driver;
 $driver = $d->getDriver();
 
-$v->secureInclude('Network.class.php');
-use FreePBX\modules\Firewall\Network;
-use FreePBX\modules\Firewall\Zones;
-
-// Check to make sure that interface exists
+// Get our list of interfaces and zones to validate against
 $n = new Network;
 $ifaces = $n->discoverInterfaces();
-
-if (!isset($ifaces[$iface])) {
-	throw new \Exception("Tried to change interface $iface, but it didn't exist");
-}
-
 $z = new Zones();
 $zones = $z->getZones();
 
-if (!isset($zones[$newzone])) {
-	throw new \Exception("Asked to change to zone $newzone, but it doesn't exist");
+// Now loop through the NEW settings and see what needs to be changed
+foreach ($ints as $i => $newconf) {
+	// Validate the new zone and interface
+	$newzone = $newconf['zone'];
+	if (!isset($zones[$newzone])) {
+		throw new \Exception("Invalid zone '$newzone' provided");
+	}
+	if (!isset($ifaces[$i])) {
+		throw new \Exception("Unknown interface '$i' provided");
+	}
+	if (!isset($newconf['description']) || trim($newconf['description']) == "") {
+		$descr = "unset";
+	} else {
+		$descr = trim($newconf['description']);
+	}
+	$n->updateInterfaceZone($i, $newzone, $descr);
 }
-
-$fh = fopen("/tmp/firewall.log", "a");
-fwrite($fh, time().": INTERFACE CHANGE $iface -> $newzone\n");
-fclose($fh);
-$driver->changeInterfaceZone($iface, $newzone);
-$driver->commit();
 
