@@ -917,7 +917,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if ($descr) {
 			$descriptions = $this->getConfig("descriptions", "network");
 			if (!is_array($descriptions)) {
-				$descriptions = array("$addr/$subnet" => $descr);
+				$descriptions = array($net => $descr);
 			} else {
 				$descriptions[$net] = $descr;
 			}

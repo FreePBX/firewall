@@ -164,8 +164,8 @@ function save_all_nets(ignored) {
 		if (netname.length === 0) {
 			return;
 		}
-		var zone = $("select[name='zone-"+c+"']").val();
-		var descr = $("input[name='netdescr-"+c+"']").val();
+		var zone = $("select[name='zone-"+c+"']", "#networkstable").val();
+		var descr = $("input[name='netdescr-"+c+"']", "#networkstable").val();
 		networks[netname] = { zone: zone, description: descr };
 	});
 
