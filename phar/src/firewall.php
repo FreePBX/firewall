@@ -32,9 +32,10 @@ if (!$fwconf['active']) {
 	print "Starting firewall.\n";
 }
 
-// Always load nf_contract_ftp, even if FTP isn't allowed,
+// Always load ip_contrack_ftp, even if FTP isn't allowed,
 // as it helps with OUTBOUND connections, too.
-`modprobe nf_conntrack_ftp &> /dev/null`;
+`/sbin/modprobe ip_conntrack_ftp`;
+`/sbin/modprobe nf_conntrack_ftp`;
 
 // How to detect if we're going into safe mode:
 //   1.  $services['safemode']['status'] == bool true
