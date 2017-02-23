@@ -474,12 +474,6 @@ class Iptables {
 				}
 			}
 
-			// Make sure we're not tagged as a valid output interface. We may not be, so ignore
-			// errors.
-			$cmd = "$ipt -t nat -D masq-output -o $iface -j MARK --set-xmark 0x2/0x2 2>/dev/null";
-			$this->l($cmd);
-			exec($cmd, $output, $ret);
-
 			// Now we can just add it, if we're not deleting it
 			if ($newzone) {
 				$this->checkTarget("zone-$newzone");
@@ -488,14 +482,49 @@ class Iptables {
 				$output = null;
 				exec($cmd, $output, $ret);
 				$interfaces[] = "$p$newzone";
-
-				// Masq output marking.  If this is 'external' (eg, internet), add it to the masq-output chain.
-				if ($newzone === "external") {
-					$cmd = "$ipt -t nat -A masq-output -o $iface -j MARK --set-xmark 0x2/0x2";
-					$this->l($cmd);
-					exec($cmd, $output, $ret);
-				}
 			}
+		}
+
+		// If nat isn't enabled, there's nothing else to do.
+		if (!is_array($current['ipv4']['nat'])) {
+			print "Nat disabled, error\n";
+			return;
+		}
+
+		// If this is an 'INTERNET' (external) zone, mark packets that are
+		// forwared with a destination of that interface eligible
+		// for masq. Note that only ipv4 does NAT, it's ludicrous to NAT
+		// IPv6, and it's barely even supported until 4.0+ kernels.
+
+		if ($newzone !== "external") {
+			$nat = false;
+		} else {
+			$nat = true;
+		}
+
+		$foundrule = false;
+		$rule = "-o $iface -j MARK --set-xmark 0x2/0x2";
+
+		foreach ($current['ipv4']['nat']['masq-output'] as $lineno => $line) {
+			if ($line == $rule) {
+				$foundrule = $lineno;
+				break;
+			}
+		}
+
+		unset($output);
+		// If we didn't find the rule, and we need it, add it.
+		if ($foundrule === false && $nat) {
+			$cmd = "/sbin/iptables -t nat -A masq-output $rule";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			$current['ipv4']['nat']['masq-output'][] = $rule;
+		} elseif ($foundrule !== false && !$nat) {
+			// We found it, but it shoudn't be there. Delete it.
+			$cmd = "/sbin/iptables -t nat -D masq-output $rule";
+			$this->l($cmd);
+			exec($cmd, $output, $ret);
+			array_splice($current['ipv4']['nat']['masq-output'], $foundrule, 1);
 		}
 	}
 
@@ -1033,7 +1062,7 @@ class Iptables {
 
 	// Driver Specific iptables stuff
 	// Root process
-	private function &getCurrentIptables() {
+	public function &getCurrentIptables() {
 		if (!$this->currentconf) {
 			// Am I root?
 			if (posix_getuid() === 0) {
@@ -1119,19 +1148,18 @@ class Iptables {
 			// unset ($rules[$name]);
 		}
 		// Add MASQ rules. They're hardcoded here, because it's just simpler.
+		// Note we only NAT IPv4, not IPv6.
 		$rules = array(
 			"-t nat -N masq-input",
 			"-t nat -N masq-output",
 			"-t nat -A POSTROUTING -j masq-input",  // sets bit 1 if elegible for masq
+			"-t nat -A masq-input  -j MARK --set-xmark 0x1/0xffffffff", // TODO: Validate source. Currently allow all.
 			"-t nat -A POSTROUTING -j masq-output", // sets bit 2 if elegible for masq
 			"-t nat -A POSTROUTING -m mark --mark 0x3/0x3 -j MASQUERADE", // if 1&2 are set, masq
 		);
 
-		$ipt = array("/sbin/iptables", "/sbin/ip6tables");
-		foreach ($ipt as $cmd) {
-			foreach ($rules as $r) {
-				exec("$cmd $r");
-			}
+		foreach ($rules as $r) {
+			exec("/sbin/iptables $r");
 		}
 		return true;
 	}
@@ -1225,17 +1253,17 @@ class Iptables {
 		// We drop rather than reject, as it slows attack scripts down, and they tend to give up quicker 
 		// after a bunch of timeouts than they do with an authoritative 'refused'.
 		$retarr['fpbxattacker'][] = array("other" => "-m recent --set --name ATTACKER --rsource");
-		$retarr['fpbxattacker'][] = array("jump" => "LOG", "append" => " --log-prefix 'attacker: '");
+		// No longer logging attackers, there's too many.
+		// $retarr['fpbxattacker'][] = array("jump" => "LOG", "append" => " --log-prefix 'attacker: '");
 		$retarr['fpbxattacker'][] = array("jump" => "DROP");
 
 		// We tag this IP so that monitoring knows that they were previously blocked. Reject, rather
 		// than drop, for phones.
 		$retarr['fpbxshortblock'][] = array("other" => "-m recent --set --name CLAMPED --rsource");
-		$retarr['fpbxshortblock'][] = array("jump" => "LOG", "append" => " --log-prefix 'clamped: '");
+		// No longer logging attackers, there's too many.
+		// $retarr['fpbxshortblock'][] = array("jump" => "LOG", "append" => " --log-prefix 'clamped: '");
 		$retarr['fpbxshortblock'][] = array("jump" => "REJECT");
 
-		// Don't log normally rejected packets for the moment. No-one's using them.
-		// $retarr['fpbxlogdrop'][] = array("jump" => "LOG", "append" => " --log-prefix 'logdrop: '");
 		$retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
 		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports

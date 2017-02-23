@@ -646,13 +646,19 @@ function updateFirewallRules($firstrun = false) {
 			continue;
 		}
 
+		// If the current known interface DOESN'T have a zone, we
+		// assume it's 'trusted'.
+		if (empty($known[$out[1]]['config']['ZONE'])) {
+			 $known[$out[1]]['config']['ZONE'] = "trusted";
+		}
+
 		// Is iptables pointing to the correct zone?
 		if ($out[2] !== $known[$out[1]]['config']['ZONE']) {
 			// No. Fix it.
-			$driver->changeInterfaceZone($out[1], $out[2]);
+			$driver->changeInterfaceZone($out[1], $known[$out[1]]['config']['ZONE']);
 		}
-		// Mark it as discovered
-		$currentcache[$out[1]] = $out[2];
+
+		$currentcache[$out[1]] = $known[$out[1]]['config']['ZONE'];
 	}
 
 	// Now go through our discovered interfaces, and see if any
