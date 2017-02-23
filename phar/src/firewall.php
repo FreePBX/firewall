@@ -32,11 +32,6 @@ if (!$fwconf['active']) {
 	print "Starting firewall.\n";
 }
 
-// Always load ip_contrack_ftp, even if FTP isn't allowed,
-// as it helps with OUTBOUND connections, too.
-`/sbin/modprobe ip_conntrack_ftp`;
-`/sbin/modprobe nf_conntrack_ftp`;
-
 // How to detect if we're going into safe mode:
 //   1.  $services['safemode']['status'] == bool true
 //   2.  $services['safemode']['lastuptime'] =< 600
@@ -115,9 +110,13 @@ wall("Firewall service now starting.\n\n");
 $f = $v->checkFile("bin/clean-iptables");
 `$f`;
 
-
 // Start fail2ban if we can
 `service fail2ban start`;
+
+// Always load ip_contrack_ftp, even if FTP isn't allowed,
+// as it helps with OUTBOUND connections, too.
+`/sbin/modprobe ip_conntrack_ftp`;
+`/sbin/modprobe nf_conntrack_ftp`;
 
 // Make sure our conntrack kernel module is configured correctly
 include_once 'modprobe.php';
