@@ -1,5 +1,5 @@
 <p> <?php echo _("This firewall runs in a Deny-By-Default configuration. However, if you enable 'Responsive Firewall', your Signalling ports are exposed to the internet, and may be attackable.");?> </p>
-<p> <?php echo _("To alleviate any potential attacks, you can add any number of hosts or networks here and any traffic from these entries will be silently ignored. They will NOT be permitted to access the Responsive Firewall service."); ?></p>
+<p> <?php echo _("To alleviate any potential attacks, you can add any number of hosts or networks here and any traffic from these entries will be sent a response that their traffic has been administratively blocked. They will NOT be permitted to access the Responsive Firewall service."); ?></p>
 <p> <?php echo _("Note that changes to the firewall are effective immediately."); ?></p>
 
 <?php

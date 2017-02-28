@@ -7,11 +7,12 @@ if (!isset($_REQUEST['tab'])) {
 } else {
 	$tab = $_REQUEST['tab'];
 }
-$servicestab = $extraservices = $customsvc = "";
+$servicestab = $extraservices = $customsvc = $blacklist = "";
 
 switch ($tab) {
 case 'extraservices':
 case 'customsvc':
+case 'blacklist':
 	${$tab} = "active";
 	break;
 default: 
@@ -35,6 +36,9 @@ $extrasvc = $services['extra'];
       </li>
       <li role="presentation" data-name="customsvc" class="<?php echo $customsvc; ?>">
         <a href="#customsvc" aria-controls="customsvc" role="tab" data-toggle="tab"><?php echo _("Custom Services")?></a>
+      </li>
+      <li role="presentation" data-name="blacklist" class="<?php echo $blacklist; ?>">
+        <a href="#blacklist" aria-controls="blacklist" role="tab" data-toggle="tab"><?php echo _("Blacklist")?></a>
       </li>
     </ul>
     <div class="tab-content display">
@@ -60,6 +64,11 @@ foreach ($extrasvc as $s) {
       <div role="tabpanel" id="customsvc" class="tab-pane <?php echo $customsvc; ?>">
         <div class='container-fluid'>
           <?php echo load_view(__DIR__."/view.customsvc.php", array("services" => $services, "z" => $z, "fw" => $fw)); ?>
+        </div>
+      </div>
+      <div role="tabpanel" id="blacklist" class="tab-pane <?php echo $blacklist; ?>">
+        <div class='container-fluid'>
+          <?php echo load_view(__DIR__."/view.blacklist.php", array("fw" => $fw)); ?>
         </div>
       </div>
     </div>

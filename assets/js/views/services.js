@@ -71,9 +71,8 @@ $(document).ready(function() {
 		// New target. Don't need jquery here...
 		var newuri = updateQuery("tab", e.target.getAttribute('aria-controls'));
 		window.history.replaceState(null, document.title, newuri);
-		// If this is the 'Custom Services' tab, hide the action bar, as it's not
-		// used here.
-		if (e.target.getAttribute('aria-controls') == "customsvc") {
+		// Hide the action bar if we're on blacklist or customsvc
+		if (e.target.getAttribute('aria-controls') == "customsvc" || e.target.getAttribute('aria-controls') == "blacklist") {
 			$("#action-bar").hide();
 		} else {
 			$("#action-bar").show();
@@ -97,12 +96,14 @@ $(document).ready(function() {
 		$("#custmodal").modal('show');
 	});
 
-	// Make sure, that when the page IS loaded, that if we're on customsvc
+	// Make sure, that when the page IS loaded, that if we're on customsvc or blacklist
 	// the action bar isn't shown.
-	if (window.location.search.search("tab=customsvc") !== -1) {
+	if (window.location.search.search("tab=customsvc") !== -1 || window.location.search.search("tab=blacklist") !== -1) {
 		$("#action-bar").hide();
 	}
 
+	// When someone clicks on a blacklist button
+	$('.blbutton').click(function(e) { e.preventDefault(); changeBlacklist(this); });
 });
 
 function updateQuery(key, value) {
@@ -158,3 +159,32 @@ function saveCust() {
 		}
 	});
 }
+
+function changeBlacklist(o) {
+
+	var a = o.getAttribute('data-action');
+
+	var ajaxdata = { module: 'firewall' };
+
+	// What are we being asked about?
+	var item = "bl-"+o.getAttribute('data-id');
+	ajaxdata.entry = $("input[name="+item+"]").val();
+	
+	// Are they adding a new one?
+	if (a == "create") {
+		ajaxdata.command = "addtoblacklist";
+	} else {
+		ajaxdata.command = "removefromblacklist";
+	}
+
+	// Show them we're doing something.
+	$(o).prop('disabled', true);
+
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: ajaxdata,
+		success: function(data) { window.location.href = window.location.href; },
+		error: function(data) { $(o).prop('disabled', false); }
+	});
+}
+
