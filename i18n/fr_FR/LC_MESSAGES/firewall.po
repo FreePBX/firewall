@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-28 11:40+1100\n"
-"PO-Revision-Date: 2017-03-05 21:30+0200\n"
-"Last-Translator: Francis <fbinet@solist.ca>\n"
+"PO-Revision-Date: 2017-03-07 09:14+0200\n"
+"Last-Translator: Nicolas <freepbx@riendeau.org>\n"
 "Language-Team: French "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
 "Language: fr_FR\n"
@@ -327,7 +327,7 @@ msgstr "Supprime"
 
 #: Firewall.class.php:506
 msgid "Delete Selected"
-msgstr ""
+msgstr "Supprimer les entrées sélectionnées"
 
 #: Console/Firewall.class.php:82
 msgid "Delete from 'zone' the IDs provided."
@@ -980,7 +980,7 @@ msgstr ""
 
 #: Firewall.class.php:512
 msgid "Reset"
-msgstr "Remise à zéro"
+msgstr "Réinitialiser"
 
 #: views/page.about.php:32 views/view.smart.php:3
 msgid "Responsive Firewall"
