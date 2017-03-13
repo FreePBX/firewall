@@ -32,7 +32,7 @@ default:
         <a href="#shortcuts" aria-controls="shortcuts" role="tab" data-toggle="tab"><?php echo _("Preconfigured")?> </a>
       </li>
       <li role="presentation" data-name="settings" class="<?php echo $settings; ?>">
-        <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><?php echo _("Advanded Settings")?> </a>
+        <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><?php echo _("Advanced Settings")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
