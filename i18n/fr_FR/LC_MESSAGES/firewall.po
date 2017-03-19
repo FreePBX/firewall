@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-28 11:40+1100\n"
-"PO-Revision-Date: 2016-11-25 04:11+0200\n"
-"Last-Translator: Pascal <pascal.noyel@ipexia.com>\n"
-"Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
-"fr_FR/>\n"
+"PO-Revision-Date: 2017-03-12 18:31+0200\n"
+"Last-Translator: Nicolas <freepbx@riendeau.org>\n"
+"Language-Team: French "
+"<http://weblate.freepbx.org/projects/freepbx/firewall/fr_FR/>\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 2.4\n"
 
@@ -100,11 +100,11 @@ msgstr ""
 
 #: views/bootnav.php:8
 msgid "Advanced"
-msgstr ""
+msgstr "Avancé"
 
 #: views/view.settings.php:3
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Paramètres avancés"
 
 #: views/page.advanced.php:35
 msgid "Advanded Settings"
@@ -327,7 +327,7 @@ msgstr "Supprimer"
 
 #: Firewall.class.php:506
 msgid "Delete Selected"
-msgstr ""
+msgstr "Supprimer les entrées sélectionnées"
 
 #: Console/Firewall.class.php:82
 msgid "Delete from 'zone' the IDs provided."
@@ -375,7 +375,7 @@ msgstr ""
 
 #: views/view.settings.php:7 views/view.smart.php:5
 msgid "Enabled"
-msgstr "Activé"
+msgstr "Activer"
 
 #: views/view.settings.php:35
 msgid ""
@@ -980,7 +980,7 @@ msgstr ""
 
 #: Firewall.class.php:512
 msgid "Reset"
-msgstr "Remise à zéro"
+msgstr "Réinitialiser"
 
 #: views/page.about.php:32 views/view.smart.php:3
 msgid "Responsive Firewall"
@@ -1437,7 +1437,7 @@ msgstr ""
 
 #: assets/js/views/advanced.js:20
 msgid "Updating..."
-msgstr ""
+msgstr "En cours de mise à jour..."
 
 #: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
 msgid "Warning"
