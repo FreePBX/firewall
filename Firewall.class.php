@@ -258,7 +258,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$thishost = $this->detectHost();
 			print "<div class='alert alert-warning' id='lockoutwarning'>";
 			print "<p>".sprintf(_("The client machine you are using to manage this server (<tt>%s</tt>) is <strong>not</strong> a member of the Trusted zone. It is highly recommended to add this client to your Trusted Zone to avoid accidental lockouts."), $thishost)."</p>";
-			print "<p><a href='?display=firewall&page=about&tab=shortcuts'>"._("You can add the host automatically here.")."</a></p>";
+			print "<p><a href='?display=firewall&page=advancedt&tab=shortcuts'>"._("You can add the host automatically here.")."</a></p>";
 			print "</div>";
 		}
 	}
