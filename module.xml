@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.44.3</version>
+	<version>13.0.44.4</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.44.4* FREEPBX-14321 and Minor typo fixes
 		*13.0.44.3* Significant UI rework, many bug/feature requests: #11473, #12472, #13788, #13345, #13695, #13773, #13918, #14164, #13328.
 		*13.0.43.1* Reliability update: FREEPBX-14014, FREEPBX-13844, FREEPBX-13815, FREEPBX-13729
 		*13.0.42.2* Allow other services to be on port 80
