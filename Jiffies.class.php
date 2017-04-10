@@ -94,7 +94,7 @@ class Jiffies {
 		if (!file_exists("/proc/timer_list")) {
 			return 1000;
 		}
-		$jf = file('grep -i "jiffies:" /proc/timer_list', \FILE_IGNORE_NEW_LINES);
+		exec('grep -i "jiffies:" /proc/timer_list',$jf);
 		// Find the first entry that is 'jiffies: ' and return it
 		foreach ($jf as $l) {
 			if (strpos($l, "jiffies: ") === 0) {
