@@ -34,7 +34,7 @@ class Jiffies {
 		// in ticks.
 		//
 		// This is to catch tickless systems, which won't work AT ALL with
-		// xt_recent. 
+		// xt_recent.
 		$baseline = $jiffies[0] - $first;
 		$maxdiff = $baseline * 1.10;
 		$mindiff = $baseline * .9;
@@ -94,7 +94,7 @@ class Jiffies {
 		if (!file_exists("/proc/timer_list")) {
 			return 1000;
 		}
-		$jf = file("/proc/timer_list", \FILE_IGNORE_NEW_LINES);
+		$jf = file('grep -i "jiffies:" /proc/timer_list', \FILE_IGNORE_NEW_LINES);
 		// Find the first entry that is 'jiffies: ' and return it
 		foreach ($jf as $l) {
 			if (strpos($l, "jiffies: ") === 0) {
@@ -105,4 +105,3 @@ class Jiffies {
 		throw new \Exception("Couldn't get a jiffie");
 	}
 }
-
