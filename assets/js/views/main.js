@@ -6,12 +6,12 @@ $(document).ready(function() {
 	// If we're not looking at the network or interface tab on page load, hide the action bar.
 	// This needs work, as it's hacky.
 	update_actionbar();
-	if ($("li.active").data('name') !== "networks" && $("li.active").data('name') !== "interfaces") {
+	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces") {
 		$("#action-bar").hide();
 	}
 
 	// Update address bar when someone changes tabs
-	$("a[data-toggle='tab']").on('shown.bs.tab', function(e) { 
+	$("#page_body a[data-toggle='tab']").on('shown.bs.tab', function(e) {
 		var newuri = updateQuery("tab", e.target.getAttribute('aria-controls'));
 		window.history.replaceState(null, document.title, newuri);
 		update_actionbar();
@@ -34,13 +34,13 @@ $(document).ready(function() {
 	// so the background-colour changes (defined in the CSS selectors)
 	$("#networkstable").on("change", "select", update_zone_attr);
 
-	// Have they clicked on 'add'? 
+	// Have they clicked on 'add'?
 	$(".addnetwork").on("click", add_new_network);
 	// Or, have they pushed enter in the new box, or new description box?
 	$(".newentry").on("keydown", function(e) { if (e.keyCode == 13) add_new_network(e) });
 
 	// Clicked the top checkbox button? Toggle.
-	$("#toggleall").on("click", function(e) { $(".checkbox").prop("checked", $(e.target).prop("checked")); });
+	$("#toggleall").on("click", function(e) { $("#page_body .checkbox").prop("checked", $(e.target).prop("checked")); });
 
 	// Clicked on 'Update all'?
 	$("#savenets").on("click", save_all_nets);
@@ -59,7 +59,7 @@ function update_rfw(event) {
 	$.ajax({
 		url: window.FreePBX.ajaxurl,
 		data: d,
-		complete: function(data) { 
+		complete: function(data) {
 			window.location.href = window.location.href;
 		}
 	});
@@ -200,13 +200,13 @@ function delete_all_selected(ignored) {
 
 function update_actionbar() {
 	// If we're not looking at networks or interfaces, hide it.
-	if ($("li.active").data('name') !== "networks" && $("li.active").data('name') !== "interfaces") {
+	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces") {
 		$("#action-bar").hide();
 		return;
 	}
 
 	// If we're looking at networks, we want 'save' and 'delete selected'
-	if ($("li.active").data('name') === "networks") {
+	if ($("#page_body li.active").data('name') === "networks") {
 		$("#action-bar").show();
 		$("#savenets,#delsel").show();
 		$("#saveints").hide();
@@ -214,7 +214,7 @@ function update_actionbar() {
 	}
 
 	// If we're looking at interfaces, we only want 'save interfaces'
-	if ($("li.active").data('name') === "interfaces") {
+	if ($("#page_body li.active").data('name') === "interfaces") {
 		$("#action-bar").show();
 		$("#saveints").show();
 		$("#savenets,#delsel").hide();
@@ -247,13 +247,3 @@ function save_interface_zones() {
 		success: function(data) { window.location.href = window.location.href; },
 	});
 }
-
-
-
-
-
-
-
-
-
-
