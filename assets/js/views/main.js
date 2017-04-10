@@ -157,25 +157,51 @@ function add_new_network(event) {
 
 function save_all_nets(ignored) {
 	var networks = {};
-	// Loop through our networks
-	$(".netzone").each(function(i, v) {
-		var c = $(v).data('counter');
-		var netname = $("tt[counter='"+c+"']").text();
-		if (netname.length === 0) {
+
+	var save_nets = function() {
+		// Loop through our networks
+		$(".netzone").each(function(i, v) {
+			var c = $(v).data('counter');
+			var netname = $("tt[counter='"+c+"']").text();
+			if (netname.length === 0) {
+				return;
+			}
+			var zone = $("select[name='zone-"+c+"']", "#networkstable").val();
+			var descr = $("input[name='netdescr-"+c+"']", "#networkstable").val();
+			networks[netname] = { zone: zone, description: descr };
+		});
+
+		// Now do an ajax post to update our networks
+		$.ajax({
+			method: 'POST',
+			url: window.FreePBX.ajaxurl,
+			data: { command: 'updatenetworks', module: 'firewall', json: JSON.stringify(networks) },
+			success: function(data) { window.location.href = window.location.href; },
+		});
+	};
+
+	if($("input[name=newentry]").val() !== "") {
+		var target = $("input[name=newentry]");
+		var c = target.data('counter');
+		if (typeof c == "undefined") {
+			// Bug.
+			console.log("Target doesn't have counter", target);
 			return;
 		}
-		var zone = $("select[name='zone-"+c+"']", "#networkstable").val();
-		var descr = $("input[name='netdescr-"+c+"']", "#networkstable").val();
-		networks[netname] = { zone: zone, description: descr };
-	});
+		var netname = $("input[name='newentry']").val();
+		var descr = $("input[name='netdescr-"+c+"']").val();
+		var zone = $("select[data-rowid='"+c+"']").val();
 
-	// Now do an ajax post to update our networks
-	$.ajax({
-		method: 'POST',
-		url: window.FreePBX.ajaxurl,
-		data: { command: 'updatenetworks', module: 'firewall', json: JSON.stringify(networks) },
-		success: function(data) { window.location.href = window.location.href; },
-	});
+		// Send it to FreePBX for validation
+		// If it errors, use the error handler.
+		$.ajax({
+			url: window.FreePBX.ajaxurl,
+			data: { command: 'addnetworktozone', module: 'firewall', net: netname, zone: zone, description: descr },
+			success: function(data) { save_nets(); },
+		});
+	} else {
+		save_nets();
+	}
 }
 
 function delete_all_selected(ignored) {
