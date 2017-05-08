@@ -162,7 +162,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			// Yup, there's at least one!
 			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('ok', _("Trusted Management Network defined")));
 		} else {
-			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('warn', _("No Trusted Management Network")));
+			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('warning', _("No Trusted Management Network")));
 			// Add core notification
 			$this->Notifications()->add_warning('firewall', 'trustednet', _("No Trusted Network or Host defined"),
 				_("No Trusted Network or Host has been defined. Every server should have a 'Trusted' host or network to ensure that in case of configuration error, the machine is still accessible."),
