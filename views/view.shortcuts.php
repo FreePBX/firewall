@@ -20,7 +20,7 @@ $thishost = $fw->detectHost();
 
 ?>
 <div class='container-fluid'>
-  <p><?php echo _("This allows you to simply add a pre-configured set of networks to your trusted zone. Once you have added your selections, you can fine-tune them, if required, <a href='?display=firewall&page=zones&tab=netsettings'>on the Networks tab.</a>"); ?></p>
+  <p><?php echo _("This allows you to simply add a pre-configured set of networks to your trusted zone. Once you have added your selections, you can fine-tune them, if required, <a href='?display=firewall&page=about&tab=networks'>on the Networks tab.</a>"); ?></p>
   <div class='panel panel-default'>
     <div class='panel-body'>
       <h3><?php echo $rfc[0]; ?></h3>
