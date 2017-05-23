@@ -127,7 +127,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$trusted['order'] = 1;
 			$this->Notifications()->add_critical('firewall', 'newint', _("New Interface Detected"),
 				sprintf(_("A new, unconfigured, network interface has been detected. Please assign interface '%s' to a zone."), $foundnewint),
-				"?display=firewall&page=zones&tab=intsettings",
+				"?display=firewall&page=about&tab=interfaces",
 				true, // Reset on update.
 				false); // Can delete
 			return array($status, $trusted);
@@ -137,7 +137,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			// Add core notification
 			$this->Notifications()->add_critical('firewall', 'trustedint', _("Trusted Interface Detected"),
 				sprintf(_("A network interface that is assigned to the 'Trusted' zone has been detected. This is a misconfiguration. To ensure your system is protected from attacks, please change the default zone of interface '%s'."), $foundtrustedint),
-				"?display=firewall&page=zones&tab=intsettings",
+				"?display=firewall&page=about&tab=interfaces",
 				true, // Reset on update.
 				false); // Can delete
 			return array($status, $trusted);
@@ -166,7 +166,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			// Add core notification
 			$this->Notifications()->add_warning('firewall', 'trustednet', _("No Trusted Network or Host defined"),
 				_("No Trusted Network or Host has been defined. Every server should have a 'Trusted' host or network to ensure that in case of configuration error, the machine is still accessible."),
-				"?display=firewall&page=zones&tab=netsettings",
+				"?display=firewall&page=about&tab=networks",
 				true, // Reset on update.
 				true); // Can delete
 		}
