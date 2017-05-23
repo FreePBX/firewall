@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-10 15:40-0400\n"
+"POT-Creation-Date: 2017-05-23 17:28-0400\n"
 "PO-Revision-Date: 2015-11-17 12:22+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -1255,11 +1255,11 @@ msgid ""
 msgstr ""
 
 #: views/view.shortcuts.php:23
+#, php-format
 msgid ""
 "This allows you to simply add a pre-configured set of networks to your "
 "trusted zone. Once you have added your selections, you can fine-tune them, "
-"if required, <a href='?display=firewall&page=zones&tab=netsettings'>on the "
-"Networks tab.</a>"
+"if required, %s on the Networks tab. %s"
 msgstr ""
 
 #: views/view.settings.php:28
