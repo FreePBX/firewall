@@ -117,6 +117,9 @@ $f = $v->checkFile("bin/clean-iptables");
 // as it helps with OUTBOUND connections, too.
 `/sbin/modprobe ip_conntrack_ftp`;
 `/sbin/modprobe nf_conntrack_ftp`;
+// Same for TFTP
+`/sbin/modprobe ip_conntrack_tftp`;
+`/sbin/modprobe nf_conntrack_tftp`;
 
 // Make sure our conntrack kernel module is configured correctly
 include_once 'modprobe.php';
