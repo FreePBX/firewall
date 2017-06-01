@@ -141,6 +141,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				true, // Reset on update.
 				false); // Can delete
 			return array($status, $trusted);
+		} else {
+			// No errors with interfaces, so delete any old notifications
+			$this->Notifications()->delete('firewall', 'newint');
+			$this->Notifications()->delete('firewall', 'trustedint');
 		}
 
 		// Now we need to validate that we DO have a trusted network or host. 
