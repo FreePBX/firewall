@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-05-27 04:03+0000\n"
+"POT-Creation-Date: 2017-06-01 13:37+0000\n"
 "PO-Revision-Date: 2017-03-12 18:31+0200\n"
 "Last-Translator: Nicolas <freepbx@riendeau.org>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -269,7 +269,7 @@ msgstr "Annuler"
 msgid "Command to run (see --help)"
 msgstr ""
 
-#: firewall.i18n.php:6 firewall.i18n.php:12
+#: firewall.i18n.php:6
 msgid "Connectivity"
 msgstr "Connectivité"
 
@@ -321,7 +321,7 @@ msgstr ""
 msgid "Delete"
 msgstr "Supprimer"
 
-#: Firewall.class.php:506
+#: Firewall.class.php:523
 msgid "Delete Selected"
 msgstr "Supprimer les entrées sélectionnées"
 
@@ -470,7 +470,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Firewall.class.php:482
+#: Firewall.class.php:497
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -758,15 +758,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:165
+#: Firewall.class.php:169
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:167
+#: Firewall.class.php:171
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:168
+#: Firewall.class.php:172
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -974,7 +974,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:512
+#: Firewall.class.php:529
 msgid "Reset"
 msgstr "Réinitialiser"
 
@@ -1054,7 +1054,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:505 Firewall.class.php:513 views/modal.customsvc.php:37
+#: Firewall.class.php:522 Firewall.class.php:530 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -1165,7 +1165,7 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Firewall.class.php:260
+#: Firewall.class.php:264
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1395,7 +1395,7 @@ msgstr ""
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:163
+#: Firewall.class.php:167
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -1427,7 +1427,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:507
+#: Firewall.class.php:524
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1506,7 +1506,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:261
+#: Firewall.class.php:265
 msgid "You can add the host automatically here."
 msgstr ""
 
