@@ -276,6 +276,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (strpos($page, ".") !== false) {
 			throw new \Exception("Invalid page name $page");
 		}
+
+		// Check to see if it's 'zones', which means it's an old notification.
+		if ($page == "zones") {
+			$page = "about";
+			$_REQUEST['tab'] = "interfaces";
+		}
+
 		$view = __DIR__."/views/page.$page.php";
 		if (!file_exists($view)) {
 			throw new \Exception("Can't find page $page");
@@ -360,6 +367,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if (!is_array($ints)) {
 				throw new \Exception("Invalid interface data provided");
 			}
+			// Remove any previous notifications about interfaces (They'll be recreated
+			// if they need to be)
+			$this->Notifications()->delete('firewall', 'newint');
+			$this->Notifications()->delete('firewall', 'trustedint');
 			return $this->runHook("updateinterfaces", $_REQUEST);
 		case "updaterfw":
 			// Ensure people don't accidentally allow traffic through when rfw is enabled
@@ -500,7 +511,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function getActionBar($request) {
 		if ($this->getConfig("status")) {
 			// Buttons for the main page
-			if (!isset($request['page']) || $request['page'] == "about") {
+			// Note we have 'zones' here to capture any lingering FPBX Notifications which previously
+			// were on the Zones page. 
+			if (!isset($request['page']) || $request['page'] == "about" || $request['page'] == "zones") {
 				return array(
 					"savenets" => array('name' => 'savenets', 'style' => 'display: none', 'id' => 'savenets', 'value' => _("Save")),
 					"delsel" => array('name' => 'delsel', 'style' => 'display: none', 'id' => 'delsel', 'value' => _("Delete Selected")),
