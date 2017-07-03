@@ -126,10 +126,12 @@ function genBlockedHtml(attackers, d) {
 	$("#noattackers").hide();
 	var h = "";
 	$.each(attackers, function (i, v) {
-		h += "<div class='element-container'><div class='row'><div class='col-sm-3'><h4>"+v+"</h4></div>";
-		h += "<div class='col-sm-7'>Last 5 packets:<ul>"+formatTimestamps(v, d)+"</ul></div>";
+		h += "<div class='element-container'><div class='row'>";
+		h += "<div class='col-sm-3'><h4>"+v+"</h4></div>";
+		h += "<div class='col-sm-8'>"+_("Last 5 packets")+":<ul>"+formatTimestamps(v, d)+"</ul></div>";
 		h += "<div class='col-sm-1'>";
 		h += "<button type='button' class='btn x-btn btn-danger delbutton' data-ip='"+v+"' title='Unblock'><span data-ip='"+v+"' class='glyphicon glyphicon-remove'></span></button>"
+		h += "</div>";
 		h += "</div></div>";
 	});
 	$("#attackersdiv").html(h);
