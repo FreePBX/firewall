@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-03 15:38-0400\n"
-"PO-Revision-Date: 2017-07-07 10:15+0200\n"
+"PO-Revision-Date: 2017-07-08 10:40+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -329,7 +329,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:11
 msgid "Description"
-msgstr ""
+msgstr "Mô tả"
 
 #: views/view.smart.php:43
 msgid "Disable"
