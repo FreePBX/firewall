@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-03 15:38-0400\n"
-"PO-Revision-Date: 2017-07-10 16:20+0200\n"
+"PO-Revision-Date: 2017-07-10 21:21+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -261,7 +261,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
-msgstr ""
+msgstr "Hủy"
 
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
@@ -357,7 +357,7 @@ msgstr ""
 
 #: views/view.customsvc.php:44
 msgid "Edit"
-msgstr ""
+msgstr "Chỉnh sửa"
 
 #: views/view.smart.php:45
 msgid "Enable"
@@ -369,7 +369,7 @@ msgstr ""
 
 #: views/view.settings.php:7 views/view.smart.php:5
 msgid "Enabled"
-msgstr ""
+msgstr "Đã kích hoạt"
 
 #: views/view.settings.php:35
 msgid ""
@@ -830,7 +830,7 @@ msgstr ""
 
 #: Zones.class.php:11
 msgid "Other"
-msgstr ""
+msgstr "Khác"
 
 #: Zones.class.php:11
 msgid "Other Traffic"
@@ -1116,7 +1116,7 @@ msgstr ""
 
 #: views/bootnav.php:6
 msgid "Status"
-msgstr ""
+msgstr "Tình trạng"
 
 #: views/page.status.php:25
 msgid "Status Overview"
@@ -1500,7 +1500,7 @@ msgstr ""
 
 #: Services.class.php:456
 msgid "XMPP"
-msgstr ""
+msgstr "Giao thức XMPP"
 
 #: views/view.networks.php:5
 msgid ""
