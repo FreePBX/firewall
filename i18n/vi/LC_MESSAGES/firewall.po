@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-03 15:38-0400\n"
-"PO-Revision-Date: 2017-07-13 11:31+0200\n"
+"PO-Revision-Date: 2017-07-13 13:23+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -1116,7 +1116,7 @@ msgstr ""
 
 #: views/bootnav.php:6
 msgid "Status"
-msgstr "Tình trạng"
+msgstr "Trạng thái"
 
 #: views/page.status.php:25
 msgid "Status Overview"
