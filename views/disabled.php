@@ -10,7 +10,7 @@
 print "<p>"._("This Firewall module is a tightly integrated, system level firewall that continually monitors and blocks attacks on your system, while allowing valid traffic through.")."</p>";
 print "<p>"._("It continously monitors the configuration of your machine, automatically opening and closing ports to known trunks (eg, VoIP providers), and allows you to limit the services this machine provides to clients.")."</p>";
 
-print "<p>"._("Please visit the FreePBX Wiki for more information on the firewall.")."</p>";
+print "<p>"._("Please visit the PBX Wiki for more information on the firewall.")."</p>";
 ?>
   </div>
   <div class='panel-footer clearfix'>

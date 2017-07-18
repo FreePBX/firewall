@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-03 15:38-0400\n"
+"POT-Creation-Date: 2017-07-18 16:57-0400\n"
 "PO-Revision-Date: 2015-11-17 12:22+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -42,10 +42,6 @@ msgstr ""
 "you may be inadvertently allowing other hosted clients unrestricted access "
 "to your machine! Please use common sense to make sure that you are only "
 "allowing known trusted networks."
-
-#: views/view.about.php:19
-msgid "<strong>Responsive Firewall is not enabled</strong>."
-msgstr ""
 
 #: views/view.interfaces.php:11
 msgid ""
@@ -111,10 +107,10 @@ msgid "Advanced Settings"
 msgstr ""
 
 #: views/view.about.php:28
+#, php-format
 msgid ""
-"After an endpoint is registered, the source of that endpoint is "
-"<strong>automatically granted</strong> permission to use UCP, if UCP is "
-"enabled."
+"After an endpoint is registered, the source of that endpoint is %s "
+"permission to use UCP, if UCP is enabled."
 msgstr ""
 
 #: views/view.interfaces.php:46
@@ -516,7 +512,7 @@ msgid "Force Add/Removal of entry"
 msgstr ""
 
 #: OOBE.class.php:200
-msgid "Further information is available at the FreePBX Wiki."
+msgid "Further information is available at the PBX Wiki."
 msgstr ""
 
 #: Services.class.php:336
@@ -637,9 +633,9 @@ msgstr ""
 
 #: firewall.i18n.php:8
 msgid ""
-"Integrated FreePBX Firewall. Currently works with RHEL 6 and RHEL 7 "
-"compatible distributions. Note: This requires the Sysadmin RPM. Please see "
-"wiki for further information."
+"Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible "
+"distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
+"further information."
 msgstr ""
 
 #: Firewall.class.php:116
@@ -868,7 +864,7 @@ msgid ""
 msgstr ""
 
 #: views/disabled.php:13
-msgid "Please visit the FreePBX Wiki for more information on the firewall."
+msgid "Please visit the PBX Wiki for more information on the firewall."
 msgstr ""
 
 #: views/modal.customsvc.php:27
@@ -1001,6 +997,10 @@ msgstr ""
 
 #: views/view.about.php:26
 msgid "Responsive Firewall is <strong>enabled</strong>."
+msgstr ""
+
+#: views/view.about.php:19
+msgid "Responsive Firewall is not enabled."
 msgstr ""
 
 #: Services.class.php:216
@@ -1313,9 +1313,9 @@ msgstr ""
 
 #: views/view.about.php:10
 msgid ""
-"This is done by a small process that runs on your FreePBX server that "
+"This is done by a small process that runs on your PBX server that "
 "automatically updates firewall rules based on the current trunk and "
-"extension configuration of FreePBX."
+"extension configuration of your PBX."
 msgstr ""
 
 #: Services.class.php:218
@@ -1411,7 +1411,7 @@ msgstr ""
 
 #: Services.class.php:120
 msgid ""
-"UCP - User Control Panel - is the main user interface to FreePBX, and allows "
+"UCP - User Control Panel - is the main user interface to the PBX, and allows "
 "people to control their phone. Note that if you want to allow users to use "
 "their web browsers to make calls through UCP you also need to add WebRTC to "
 "the same zone(s)."
@@ -1473,12 +1473,12 @@ msgstr ""
 
 #: Services.class.php:80
 msgid ""
-"Web management interface for FreePBX. This is the http, not https (secure) "
+"Web management interface for your PBX. This is the http, not https (secure) "
 "interface."
 msgstr ""
 
 #: Services.class.php:101
-msgid "Web management interface for FreePBX. This is the https interface."
+msgid "Web management interface for your PBX. This is the https interface."
 msgstr ""
 
 #: Services.class.php:173
@@ -1568,13 +1568,17 @@ msgstr ""
 
 #: Services.class.php:189
 msgid ""
-"Zulu UC delivers Outlook and browser integration for FreePBX. Note that the "
+"Zulu UC delivers Outlook and browser integration for the PBX. Note that the "
 "Zulu port is <strong>automatically opened</strong> to any registered "
 "clients. It is unlikely you need to change this."
 msgstr ""
 
 #: Services.class.php:204
 msgid "Zulu is not not available on this machine"
+msgstr ""
+
+#: views/view.about.php:28
+msgid "automatically granted"
 msgstr ""
 
 #: Services.class.php:600

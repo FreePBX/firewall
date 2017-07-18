@@ -77,7 +77,7 @@ class Services {
 		$retarr = array(
 			"name" => _("Web Management"),
 			"defzones" => array("internal"),
-			"descr" => _("Web management interface for FreePBX. This is the http, not https (secure) interface."),
+			"descr" => _("Web management interface for your PBX. This is the http, not https (secure) interface."),
 			"fw" => array(array("protocol" => "tcp", "port" => 80)),
 		);
 
@@ -98,7 +98,7 @@ class Services {
 		$retarr = array(
 			"name" => _("Web Management (Secure)"),
 			"defzones" => array("internal"),
-			"descr" => _("Web management interface for FreePBX. This is the https interface."),
+			"descr" => _("Web management interface for your PBX. This is the https interface."),
 			"fw" => array(array("protocol" => "tcp", "port" => 443)),
 			"noreject" => true,
 		);
@@ -117,7 +117,7 @@ class Services {
 		$retarr = array(
 			"name" => _("UCP"),
 			"defzones" => array("external", "other", "internal"),
-			"descr" => _("UCP - User Control Panel - is the main user interface to FreePBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
+			"descr" => _("UCP - User Control Panel - is the main user interface to the PBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
 			"fw" => array(array("protocol" => "tcp", "port" => 81)),
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
@@ -186,7 +186,7 @@ class Services {
 		$retarr = array(
 			"name" => _("Zulu UC "),
 			"defzones" => array("internal"),
-			"descr" => _("Zulu UC delivers Outlook and browser integration for FreePBX. Note that the Zulu port is <strong>automatically opened</strong> to any registered clients. It is unlikely you need to change this."),
+			"descr" => _("Zulu UC delivers Outlook and browser integration for the PBX. Note that the Zulu port is <strong>automatically opened</strong> to any registered clients. It is unlikely you need to change this."),
 		);
 
 		$zuluport = false;
