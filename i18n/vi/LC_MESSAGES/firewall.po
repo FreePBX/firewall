@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-18 21:27+0200\n"
+"PO-Revision-Date: 2017-07-19 22:42+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
-"Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
-"firewall/vi/>\n"
+"Language-Team: Vietnamese "
+"<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
+"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.4\n"
 
@@ -29,7 +29,7 @@ msgstr ""
 #: Services.class.php:582
 #, php-format
 msgid "%s is not configured correctly."
-msgstr ""
+msgstr "%s không được cấu hình chính xác."
 
 #: views/view.shortcuts.php:6
 msgid ""
@@ -61,42 +61,44 @@ msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
 "interface '%s' to a zone."
 msgstr ""
+"Vừa phát hiện một giao diện mạng mới chưa được cấu hình. Vui lòng gán giao "
+"diện \"%s\" vào một vùng."
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
-msgstr ""
+msgstr "Về Zone ( Vùng)"
 
 #: views/view.shortcuts.php:15
 msgid "Add Host"
-msgstr ""
+msgstr "Thêm Host"
 
 #: views/view.shortcuts.php:14
 msgid "Add Network"
-msgstr ""
+msgstr "Thêm Mạng"
 
 #: views/view.blacklist.php:40 views/view.networks.php:83
 msgid "Add New"
-msgstr ""
+msgstr "Thêm mới"
 
 #: Console/Firewall.class.php:78
 msgid "Add the hostname or IP specified to the Trusted Zone"
-msgstr ""
+msgstr "Thêm hostname hoặc IP được chỉ định vào Trusted Zone ( Vùng an toàn)"
 
 #: Console/Firewall.class.php:81
 msgid "Add to 'zone' the IDs provided."
-msgstr ""
+msgstr "Thêm vào 'zone' những ID được cung cấp."
 
 #: views/view.shortcuts.php:7
 msgid "Add to Trusted"
-msgstr ""
+msgstr "Thêm vào Trusted"
 
 #: assets/js/views/advanced.js:25
 msgid "Added"
-msgstr ""
+msgstr "Đã thêm"
 
 #: views/bootnav.php:8
 msgid "Advanced"
-msgstr ""
+msgstr "Nâng cao"
 
 #: views/page.advanced.php:35 views/view.settings.php:3
 msgid "Advanced Settings"
@@ -108,19 +110,21 @@ msgid ""
 "After an endpoint is registered, the source of that endpoint is %s "
 "permission to use UCP, if UCP is enabled."
 msgstr ""
+"Sau khi một điểm cuối được đăng ký, nguồn của điểm cuối đó là quyền %s cho "
+"phép sử dụng UCP nếu UCP được bật."
 
 #: views/view.interfaces.php:46
 msgid "All Tunnel Interfaces are automatically set to Local"
-msgstr ""
+msgstr "Tất cả các giao diện Tunnel được tự động cài đặt về Local"
 
 #: Console/Firewall.class.php:254
 msgid "All blacklisted entries."
-msgstr ""
+msgstr "Tất cả các mục nhập được liệt vào danh sách đen."
 
 #: Console/Firewall.class.php:245
 #, php-format
 msgid "All entries in zone '%s':"
-msgstr ""
+msgstr "Tất cả các mục nhập trong  vùng '%s':"
 
 #: views/view.interfaces.php:9
 msgid ""
@@ -128,18 +132,25 @@ msgid ""
 "this interface, unless overridden in Networks, will have access to the "
 "services available to this zone."
 msgstr ""
+"Tất cả các giao điện phải được gán tới một vùng mặc định. Bất kỳ traffic ("
+"lưu lượng) nào trong giao diện này trừ khi bị ghi đè trong mạng, thì đều sẽ "
+"có quyền truy nhập vào các dịch vụ sẵn có trong vùng này."
 
 #: Zones.class.php:13
 msgid ""
 "All network connections are accepted. No firewalling is done on this "
 "interface."
 msgstr ""
+"Tất cả các kết nối mạng được chấp nhận. Không có phòng chống tường lửa nào "
+"được thực hiện trong giao diện này."
 
 #: views/warning.notready.php:5
 msgid ""
 "Any changes you make will be saved, but will not take effect until the "
 "firewall is started."
 msgstr ""
+"Bất kỳ thay đổi nào bạn vừa thực hiện đều sẽ được lưu, nhưng sẽ không có "
+"hiệu lực đến khi tường lửa khởi động."
 
 #: views/view.blocked.php:17
 msgid ""
