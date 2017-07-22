@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-22 09:57+0200\n"
+"PO-Revision-Date: 2017-07-22 10:59+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -414,33 +414,40 @@ msgid ""
 "this disabled silently discards the packet, giving no indication to the "
 "attacker that their traffic has been intercepted."
 msgstr ""
+"Việc kích hoạt 'Reject Packets' sẽ gửi một phản hồi đến máy khác, nói với "
+"chúng rằng lưu lượng truy cập của chúng đã bị chặn. Âm thầm loại bỏ các "
+"packet, không để lại bất cứ dấu hiệu nào cho kẻ tấn công biết lưu lượng truy "
+"cập của chúng đã bị chặn."
 
 #: Console/Firewall.class.php:109
 msgid "Enabling Firewall."
-msgstr ""
+msgstr "Đang kích hoạt Firewall."
 
 #: OOBE.class.php:198
 msgid ""
 "Enabling Responsive Firewall allows remote clients to securely register to "
 "this server without explicitly whitelisting them."
 msgstr ""
+"Việc kích hoạt Responsive Firewall  sẽ cho phép các máy khách từ xa có thể "
+"đăng ký một cách an toàn với máy chủ này mà không cần phải whitelisting "
+"chúng."
 
 #: views/view.networks.php:65
 msgid "Enter new IP or Hostname here"
-msgstr ""
+msgstr "Nhập một IP mới hoặc Hostname ở đây"
 
 #: Console/Firewall.class.php:50 Console/Firewall.class.php:60
 msgid "Error!"
-msgstr ""
+msgstr "Lỗi!"
 
 #: Console/Firewall.class.php:198
 msgid "Error:"
-msgstr ""
+msgstr "Lỗi:"
 
 #: Console/Firewall.class.php:141
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
-msgstr ""
+msgstr "Lỗi: Không thể thêm '%s' vào vùng không xác định '%s'"
 
 #: views/view.networks.php:6
 msgid ""
@@ -448,49 +455,56 @@ msgid ""
 "'203.55.66.77' to the 'Local' zone on this page. Any traffic arriving from "
 "203.55.66.77 will be granted access to services usable by 'Local' zone."
 msgstr ""
+"Ví dụ: Giao diện eth0 được gán vào vùng 'Internet', và sau đó bạn thêm "
+"'203.55.66.77'  vào vùng 'Local' trên trang này. Bất kỳ lưu lượng đến nào từ "
+"203.55.66.77 đều có quyền truy nhập vào các dịch vụ mà Vùng 'Local' có thể "
+"sử dụng được."
 
 #: Zones.class.php:13
 msgid "Excluded from Firewall"
-msgstr ""
+msgstr "Bị loại trừ khỏi Firewall"
 
 #: OOBE.class.php:247
 #, php-format
 msgid "External Address: %s"
-msgstr ""
+msgstr "Địa chỉ bên ngoài: %s"
 
 #: views/page.services.php:35 views/view.portmaps.php:17
 msgid "Extra Services"
-msgstr ""
+msgstr "Dịch vụ bổ sung"
 
 #: Services.class.php:466
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
 #: Services.class.php:468
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
 msgstr ""
+"FTP được sử dụng bởi trình quản lý Endpoint để gửi các hình ảnh của firmware "
+"tới các điện thoại, cũng như các dữ liệu bổ sung."
 
 #: Console/Firewall.class.php:168
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
+"Không thành công! Không thể hợp lệ hóa mục nhập. Vui lòng thử lại lần nữa."
 
 #: firewall.i18n.php:10 page.firewall.php:6
 msgid "Firewall"
-msgstr ""
+msgstr "Tường lửa"
 
 #: Firewall.class.php:59
 msgid "Firewall Active"
-msgstr ""
+msgstr "Firewall hoạt động"
 
 #: Firewall.class.php:80
 msgid "Firewall Configuration"
-msgstr ""
+msgstr "Cấu hình Firewall"
 
 #: Firewall.class.php:61
 msgid "Firewall Disabled"
-msgstr ""
+msgstr "Firewall đã bị vô hiệu"
 
 #: Firewall.class.php:114 Firewall.class.php:115
 msgid "Firewall Integrity Failed"
@@ -498,43 +512,47 @@ msgstr ""
 
 #: Firewall.class.php:74
 msgid "Firewall Service not running!"
-msgstr ""
+msgstr "Dịch vụ Firewall không chạy!"
 
 #: views/view.about.php:62
 msgid "Firewall Wizard"
-msgstr ""
+msgstr "Thuật sĩ Firewall"
 
 #: Firewall.class.php:497
 msgid "Firewall can not be disabled"
-msgstr ""
+msgstr "Không thể vô hiệu Firewall"
 
 #: Console/Firewall.class.php:21
 msgid "Firewall functions"
-msgstr ""
+msgstr "Các chức năng của Firewall"
 
 #: views/warning.notready.php:2
 msgid "Firewall has not started yet!"
-msgstr ""
+msgstr "Firewall vãn chưa được khởi động!"
 
 #: Console/Firewall.class.php:101
 msgid "Firewall is not enabled, can't disable it"
-msgstr ""
+msgstr "Firewall không được kích hoạt, không thể vô hiệu hóa nó"
 
 #: OOBE.class.php:234
 msgid ""
 "Firewall should now auto-detect and configure External IP settings. This "
 "will assist with NAT or Translation issues."
 msgstr ""
+"Hiện tại, Firewall tự động phát hiện và cấu hình các cài đặt IP bên ngoài. "
+"Điều này sẽhỗ trợ NAT và các vấn đề về dịch."
 
 #: Console/Firewall.class.php:92
 msgid "For example:"
-msgstr ""
+msgstr "Ví dụ:"
 
 #: Zones.class.php:10
 msgid ""
 "For use on internal networks. You mostly trust the other computers on the "
 "networks to not harm your computer."
 msgstr ""
+"Để sử dụng trên các mạng nội bộ, bạn hầu như phải ủy thác các máy tính trên "
+"các mạng để không làm hại máy tính của bạn."
 
 #: Zones.class.php:11
 msgid ""
@@ -542,6 +560,9 @@ msgid ""
 "a DMZ, or OpenVPN network). You mostly trust the other computers on the "
 "networks to not harm your computer."
 msgstr ""
+"Đẻ sử dụng các mạng nội bộ an toàn, hoặc các thiết bị mạng khác ( như mạng "
+"DMZ, or OpenVPN ). Bạn hầu như phải ủy thác các máy tính khác trên các mạng "
+"để không làm hại máy tính của mình."
 
 #: Console/Firewall.class.php:22
 msgid "Force Add/Removal of entry"
@@ -549,7 +570,7 @@ msgstr ""
 
 #: OOBE.class.php:200
 msgid "Further information is available at the PBX Wiki."
-msgstr ""
+msgstr "Các thông tin khác có sẵn tại  PBX Wiki."
 
 #: Services.class.php:336
 msgid "HTTP Provisioning"
@@ -557,11 +578,11 @@ msgstr ""
 
 #: Services.class.php:351
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "HTTP Provisioning bị vô hiệu trong Sysadmin Port Management"
 
 #: Services.class.php:416
 msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "Các ứng dụng HTTP REST  bị vô hiệu trong Sysadmin Port Management"
 
 #: Services.class.php:362
 msgid "HTTPS Provisioning"
@@ -569,44 +590,48 @@ msgstr ""
 
 #: Services.class.php:377
 msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "HTTPS Provisioning bị vô hiệu trong Sysadmin Port Management"
 
 #: Services.class.php:444
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "HTTPS REST  bị vô hiệu trong Sysadmin Port Management"
 
 #: Console/Firewall.class.php:198
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
-msgstr ""
+msgstr "Host '%s' hiện không thuộc danh sách đen."
 
 #: views/oobe.welcome.php:30
 msgid ""
 "However, if you continue, your machine and firewall will be automatically "
 "updated with the latest settings!"
 msgstr ""
+"Tuy nhiên nếu bạn tiếp tục, máy của bạn và tường lửa sẽ được tự động cập "
+"nhật các cài đặt mới nhất!"
 
 #: Services.class.php:322 Smart.class.php:43
 msgid "IAX Protocol"
-msgstr ""
+msgstr "Giao thức IAX"
 
 #: Services.class.php:324
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
 msgstr ""
+"IAX là viết tắt của Inter Asterisk eXchange. Nó là băng thông hiệu quả hơn "
+"SIP nhưng ít nhà cung cấp hỗ trợ nó."
 
 #: Console/Firewall.class.php:26
 msgid "IDs to add or remove from a zone"
-msgstr ""
+msgstr "Các ID để thêm hay loại bỏ khỏi một vùng"
 
 #: views/view.interfaces.php:89
 msgid "IP Address: "
-msgstr ""
+msgstr "Địa chỉ IP: "
 
 #: views/view.interfaces.php:87
 msgid "IP Addresses: "
-msgstr ""
+msgstr "Các địa chỉ IP: "
 
 #: views/view.smart.php:28
 msgid ""
