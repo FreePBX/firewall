@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-21 22:12+0200\n"
+"PO-Revision-Date: 2017-07-22 09:57+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -161,12 +161,17 @@ msgid ""
 "from them will be ignored until they cease attempting to contact the server "
 "for more than 24 hours."
 msgstr ""
+"Bất cứ host nào trong phần này sẽ được phân loại như là một kẻ tấn công. Tất "
+"cả những lưu lượng từ chúng đều bị bỏ qua cho đến khi chúng ngừng lại việc "
+"kết nối với máy chủ trong vòng 24 tiếng."
 
 #: views/view.blocked.php:7
 msgid ""
 "Any hosts in this section have been rate limited, because they have sent too "
 "much data to this machine without successfully registering."
 msgstr ""
+"Bất kỳ host nào trong phần này đều được giới hạn tốc độ bởi vì chúng gửi qua "
+"nhiều dữ liệu tới máy này mà không đăng ký thành công."
 
 #: Zones.class.php:12
 msgid ""
@@ -174,6 +179,9 @@ msgid ""
 "RTP traffic, but no other ports are listening by default. You rarely want to "
 "use this."
 msgstr ""
+"Bất kỳ packet mạng đến nào đều cũng bị từ chối. Lưu lý rằn vùng này vẫn chấp "
+"nhận lưu lương RTP, nhưng theo mặc định không có cổng giao tiếp nào được "
+"nghe. Bạn sẽ hiếm khi sử dụng tới nó."
 
 #: views/modal.customsvc.php:13
 msgid "Any name"
@@ -186,6 +194,10 @@ msgid ""
 "zone, as that has been set to be the default zone for traffic arriving at "
 "that interface."
 msgstr ""
+"Bất kỳ lưu lượng đến eth0 từ 203.55.66.88 ( hoặc bất kỳ host hay mạng không "
+"xác đinh) sẽ chỉ được quyền truy nhập vào các dịch vụ có sẵn tại vùng "
+"'Internet', vì vùng này đã được cài đặt là vùng mặc định cho các lưu lượng "
+"đến tại giao diện đó."
 
 #: views/warning.notready.php:3
 msgid ""
@@ -202,6 +214,9 @@ msgid ""
 "strong> to add this network, as IPv6 security extensions may unexpectedly "
 "change your IP address."
 msgstr ""
+"Khi bạn đang kết nối từ một mạng IPv6, mạng này <strong>được khuyến "
+"cáo</strong> nên thêm vào vì những máy nhánh bảo mật IPv6 có thể bất ngờ "
+"thay đổi địa chỉ IP của bạn một."
 
 #: views/view.networks.php:15
 msgid "Assigned Zone"
@@ -265,15 +280,15 @@ msgstr ""
 
 #: Services.class.php:314
 msgid "CHANSIP is not available on this machine"
-msgstr ""
+msgstr "CHANSIP không khả dụng trên máy này"
 
 #: Services.class.php:273
 msgid "CHAN_SIP Protocol"
-msgstr ""
+msgstr "Giao thức CHAN_SIP"
 
 #: views/view.about.php:53
 msgid "Can not Disable Firewall"
-msgstr ""
+msgstr "Không thể vô hiệu Firewall"
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
@@ -281,7 +296,7 @@ msgstr "Hủy"
 
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
-msgstr ""
+msgstr "Lệnh chạy (see--help)"
 
 #: firewall.i18n.php:6
 msgid "Connectivity"
@@ -289,24 +304,24 @@ msgstr "Khả năng kết nối"
 
 #: views/view.portmaps.php:11 views/view.services.php:2
 msgid "Core Services"
-msgstr ""
+msgstr "Các dịch vụ chính"
 
 #: views/view.customsvc.php:2
 msgid "Create new Service"
-msgstr ""
+msgstr "Tạo một Dịch vụ mới"
 
 #: views/view.status.php:22
 msgid "Cumulative Total of remote clients:"
-msgstr ""
+msgstr "Tổng số tích lũy số máy khách từ xa:"
 
 #: views/view.settings.php:27
 msgid "Custom Firewall Rules"
-msgstr ""
+msgstr "Các nguyên tắc Tùy chỉnh Firewall"
 
 #: views/page.services.php:38 views/view.customsvc.php:4
 #: views/view.portmaps.php:23
 msgid "Custom Services"
-msgstr ""
+msgstr "Tùy chỉnh các dịch vụ"
 
 #: views/view.customsvc.php:1
 msgid ""
@@ -317,19 +332,19 @@ msgstr ""
 
 #: Services.class.php:139
 msgid "Dedicated UCP access is disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "Truy nhập UCP riêng bị vô hiệu trong Sysadmin Port Management"
 
 #: Zones.class.php:9
 msgid "Default Firewall"
-msgstr ""
+msgstr "Mặc định Firewall"
 
 #: views/view.interfaces.php:8
 msgid "Default Traffic Zones"
-msgstr ""
+msgstr "Mặc định Vùng lưu lượng (Traffic Zones)"
 
 #: views/view.interfaces.php:4
 msgid "Default Zone"
-msgstr ""
+msgstr "Mặc định Vùng (Zone)"
 
 #: views/view.blacklist.php:9 views/view.customsvc.php:45
 msgid "Delete"
@@ -337,11 +352,11 @@ msgstr "Xóa"
 
 #: Firewall.class.php:523
 msgid "Delete Selected"
-msgstr ""
+msgstr "Xóa những gì được chọn"
 
 #: Console/Firewall.class.php:82
 msgid "Delete from 'zone' the IDs provided."
-msgstr ""
+msgstr "Xóa các ID được cung cấp khỏi 'zone'."
 
 #: views/modal.customsvc.php:11
 msgid "Description"
@@ -349,15 +364,15 @@ msgstr "Mô Tả"
 
 #: views/view.smart.php:43
 msgid "Disable"
-msgstr ""
+msgstr "Vô hiệu"
 
 #: views/view.about.php:51
 msgid "Disable Firewall"
-msgstr ""
+msgstr "Vô hiệu Firewall"
 
 #: Console/Firewall.class.php:75
 msgid "Disable the System Firewall. This will shut it down cleanly."
-msgstr ""
+msgstr "Vô hiệu Firewall Hệ thống. Điều này sễ tắt Firewall hệ thống hoàn toàn."
 
 #: views/view.settings.php:8 views/view.smart.php:6
 msgid "Disabled"
@@ -370,6 +385,11 @@ msgid ""
 "filtered at all, so this disables the firewall for any traffic arriving at "
 "that interface). The zones you can use are:"
 msgstr ""
+"Mỗi giao diện mạng trên máy của bạn phải được chiếu tới một Khu vực. Lưu ý "
+"rằng, theo mặc định, tất cả các giao diện đều được chiếu tới vùng an toàn ("
+"Không phải tất cả các mạng an toàn đều được lọc, do đó điều này làm vô hiệu "
+"hóa tường lửa đối với bất kỳ lưu lượng đến giao diện đó). Các vùng bạn có "
+"thể sử dụng là:"
 
 #: views/view.customsvc.php:44
 msgid "Edit"
@@ -381,7 +401,7 @@ msgstr "Kích hoạt"
 
 #: OOBE.class.php:196
 msgid "Enable Responsive Firewall?"
-msgstr ""
+msgstr "Kích hoạt Responsive Firewall?"
 
 #: views/view.settings.php:7 views/view.smart.php:5
 msgid "Enabled"
