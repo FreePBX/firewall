@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-20 10:19+0200\n"
+"PO-Revision-Date: 2017-07-21 21:58+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -54,6 +54,9 @@ msgid ""
 "detected. This is a misconfiguration. To ensure your system is protected "
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
+"Một giao diện mạng được gán vào vùng \"Trusted' ( Vùng an toàn) đã được phát "
+"hiện. Đây là một cấu hình sai. Để đảm bảo hệ thống của bạn được bảo vệ khỏi "
+"các cuộc tấn công, vui lòng thay đổi vùng mặc định của giao diện '%s'."
 
 #: Firewall.class.php:129
 #, php-format
@@ -174,7 +177,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:13
 msgid "Any name"
-msgstr ""
+msgstr "Bất cứ tên nào"
 
 #: views/view.networks.php:7
 msgid ""
@@ -189,6 +192,9 @@ msgid ""
 "As this machine has recently been rebooted, the firewall is "
 "<strong>temporarily</strong> running in Safe Mode, with no rules applied."
 msgstr ""
+"Vì máy này gần đây đã được khởi động lại, tường lửa "
+"<strong>temporarily</strong> đang chạy trong Chế độ An toàn, không áp dụng "
+"các nguyên tắc."
 
 #: OOBE.class.php:164
 msgid ""
@@ -199,31 +205,32 @@ msgstr ""
 
 #: views/view.networks.php:15
 msgid "Assigned Zone"
-msgstr ""
+msgstr "Vùng được gán"
 
 #: views/oobe.welcome.php:23
 msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
+"Khi wizard ( thuật sĩ) này hoàn thành, tường lửa sẽ được kích hoạt tự động."
 
 #: Console/Firewall.class.php:136
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
-msgstr ""
+msgstr "Đang cố thêm %s vào Blacklist... "
 
 #: Console/Firewall.class.php:157
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
-msgstr ""
+msgstr "Đang cố thêm '%s' vào Vùng '%s'... "
 
 #: Console/Firewall.class.php:206
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
-msgstr ""
+msgstr "Đang cố xóa %s khỏi Vùng '%s\"... "
 
 #: OOBE.class.php:232
 msgid "Automatically configure Asterisk IP Settings?"
-msgstr ""
+msgstr "Tự động cấu hình Các cài đặt IP Asterisk?"
 
 #: views/view.registered.php:6
 msgid ""
