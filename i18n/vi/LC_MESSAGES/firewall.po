@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-18 21:27+0200\n"
+"PO-Revision-Date: 2017-07-24 19:46+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
-"Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
-"firewall/vi/>\n"
+"Language-Team: Vietnamese "
+"<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
+"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.4\n"
 
@@ -29,7 +29,7 @@ msgstr ""
 #: Services.class.php:582
 #, php-format
 msgid "%s is not configured correctly."
-msgstr ""
+msgstr "%s không được cấu hình chính xác."
 
 #: views/view.shortcuts.php:6
 msgid ""
@@ -54,6 +54,9 @@ msgid ""
 "detected. This is a misconfiguration. To ensure your system is protected "
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
+"Một giao diện mạng được gán vào vùng \"Trusted' ( Vùng an toàn) đã được phát "
+"hiện. Đây là một cấu hình sai. Để đảm bảo hệ thống của bạn được bảo vệ khỏi "
+"các cuộc tấn công, vui lòng thay đổi vùng mặc định của giao diện '%s'."
 
 #: Firewall.class.php:129
 #, php-format
@@ -61,42 +64,44 @@ msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
 "interface '%s' to a zone."
 msgstr ""
+"Vừa phát hiện một giao diện mạng mới chưa được cấu hình. Vui lòng gán giao "
+"diện \"%s\" vào một vùng."
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
-msgstr ""
+msgstr "Về Zone ( Vùng)"
 
 #: views/view.shortcuts.php:15
 msgid "Add Host"
-msgstr ""
+msgstr "Thêm Host"
 
 #: views/view.shortcuts.php:14
 msgid "Add Network"
-msgstr ""
+msgstr "Thêm Mạng"
 
 #: views/view.blacklist.php:40 views/view.networks.php:83
 msgid "Add New"
-msgstr ""
+msgstr "Thêm mới"
 
 #: Console/Firewall.class.php:78
 msgid "Add the hostname or IP specified to the Trusted Zone"
-msgstr ""
+msgstr "Thêm hostname hoặc IP được chỉ định vào Trusted Zone ( Vùng an toàn)"
 
 #: Console/Firewall.class.php:81
 msgid "Add to 'zone' the IDs provided."
-msgstr ""
+msgstr "Thêm vào 'zone' những ID được cung cấp."
 
 #: views/view.shortcuts.php:7
 msgid "Add to Trusted"
-msgstr ""
+msgstr "Thêm vào Trusted"
 
 #: assets/js/views/advanced.js:25
 msgid "Added"
-msgstr ""
+msgstr "Đã thêm"
 
 #: views/bootnav.php:8
 msgid "Advanced"
-msgstr ""
+msgstr "Nâng cao"
 
 #: views/page.advanced.php:35 views/view.settings.php:3
 msgid "Advanced Settings"
@@ -108,19 +113,21 @@ msgid ""
 "After an endpoint is registered, the source of that endpoint is %s "
 "permission to use UCP, if UCP is enabled."
 msgstr ""
+"Sau khi một điểm cuối được đăng ký, nguồn của điểm cuối đó là quyền %s cho "
+"phép sử dụng UCP nếu UCP được bật."
 
 #: views/view.interfaces.php:46
 msgid "All Tunnel Interfaces are automatically set to Local"
-msgstr ""
+msgstr "Tất cả các giao diện Tunnel được tự động cài đặt về Local"
 
 #: Console/Firewall.class.php:254
 msgid "All blacklisted entries."
-msgstr ""
+msgstr "Tất cả các mục nhập được liệt vào danh sách đen."
 
 #: Console/Firewall.class.php:245
 #, php-format
 msgid "All entries in zone '%s':"
-msgstr ""
+msgstr "Tất cả các mục nhập trong  vùng '%s':"
 
 #: views/view.interfaces.php:9
 msgid ""
@@ -128,18 +135,25 @@ msgid ""
 "this interface, unless overridden in Networks, will have access to the "
 "services available to this zone."
 msgstr ""
+"Tất cả các giao điện phải được gán tới một vùng mặc định. Bất kỳ traffic ("
+"lưu lượng) nào trong giao diện này trừ khi bị ghi đè trong mạng, thì đều sẽ "
+"có quyền truy nhập vào các dịch vụ sẵn có trong vùng này."
 
 #: Zones.class.php:13
 msgid ""
 "All network connections are accepted. No firewalling is done on this "
 "interface."
 msgstr ""
+"Tất cả các kết nối mạng được chấp nhận. Không có phòng chống tường lửa nào "
+"được thực hiện trong giao diện này."
 
 #: views/warning.notready.php:5
 msgid ""
 "Any changes you make will be saved, but will not take effect until the "
 "firewall is started."
 msgstr ""
+"Bất kỳ thay đổi nào bạn vừa thực hiện đều sẽ được lưu, nhưng sẽ không có "
+"hiệu lực đến khi tường lửa khởi động."
 
 #: views/view.blocked.php:17
 msgid ""
@@ -147,12 +161,17 @@ msgid ""
 "from them will be ignored until they cease attempting to contact the server "
 "for more than 24 hours."
 msgstr ""
+"Bất cứ host nào trong phần này sẽ được phân loại như là một kẻ tấn công. Tất "
+"cả những lưu lượng từ chúng đều bị bỏ qua cho đến khi chúng ngừng lại việc "
+"kết nối với máy chủ trong vòng 24 tiếng."
 
 #: views/view.blocked.php:7
 msgid ""
 "Any hosts in this section have been rate limited, because they have sent too "
 "much data to this machine without successfully registering."
 msgstr ""
+"Bất kỳ host nào trong phần này đều được giới hạn tốc độ bởi vì chúng gửi qua "
+"nhiều dữ liệu tới máy này mà không đăng ký thành công."
 
 #: Zones.class.php:12
 msgid ""
@@ -160,10 +179,13 @@ msgid ""
 "RTP traffic, but no other ports are listening by default. You rarely want to "
 "use this."
 msgstr ""
+"Bất kỳ packet mạng đến nào đều cũng bị từ chối. Lưu lý rằn vùng này vẫn chấp "
+"nhận lưu lương RTP, nhưng theo mặc định không có cổng giao tiếp nào được "
+"nghe. Bạn sẽ hiếm khi sử dụng tới nó."
 
 #: views/modal.customsvc.php:13
 msgid "Any name"
-msgstr ""
+msgstr "Bất cứ tên nào"
 
 #: views/view.networks.php:7
 msgid ""
@@ -172,12 +194,19 @@ msgid ""
 "zone, as that has been set to be the default zone for traffic arriving at "
 "that interface."
 msgstr ""
+"Bất kỳ lưu lượng đến eth0 từ 203.55.66.88 ( hoặc bất kỳ host hay mạng không "
+"xác đinh) sẽ chỉ được quyền truy nhập vào các dịch vụ có sẵn tại vùng "
+"'Internet', vì vùng này đã được cài đặt là vùng mặc định cho các lưu lượng "
+"đến tại giao diện đó."
 
 #: views/warning.notready.php:3
 msgid ""
 "As this machine has recently been rebooted, the firewall is "
 "<strong>temporarily</strong> running in Safe Mode, with no rules applied."
 msgstr ""
+"Vì máy này gần đây đã được khởi động lại, tường lửa "
+"<strong>temporarily</strong> đang chạy trong Chế độ An toàn, không áp dụng "
+"các nguyên tắc."
 
 #: OOBE.class.php:164
 msgid ""
@@ -185,56 +214,62 @@ msgid ""
 "strong> to add this network, as IPv6 security extensions may unexpectedly "
 "change your IP address."
 msgstr ""
+"Khi bạn đang kết nối từ một mạng IPv6, mạng này <strong>được khuyến "
+"cáo</strong> nên thêm vào vì những máy nhánh bảo mật IPv6 có thể bất ngờ "
+"thay đổi địa chỉ IP của bạn một."
 
 #: views/view.networks.php:15
 msgid "Assigned Zone"
-msgstr ""
+msgstr "Vùng được gán"
 
 #: views/oobe.welcome.php:23
 msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
+"Khi wizard ( thuật sĩ) này hoàn thành, tường lửa sẽ được kích hoạt tự động."
 
 #: Console/Firewall.class.php:136
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
-msgstr ""
+msgstr "Đang cố thêm %s vào Blacklist... "
 
 #: Console/Firewall.class.php:157
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
-msgstr ""
+msgstr "Đang cố thêm '%s' vào Vùng '%s'... "
 
 #: Console/Firewall.class.php:206
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
-msgstr ""
+msgstr "Đang cố xóa %s khỏi Vùng '%s\"... "
 
 #: OOBE.class.php:232
 msgid "Automatically configure Asterisk IP Settings?"
-msgstr ""
+msgstr "Tự động cấu hình Các cài đặt IP Asterisk?"
 
 #: views/view.registered.php:6
 msgid ""
 "Below is a list of clients that have successfully registered and been "
 "validated by Responsive Firewall."
 msgstr ""
+"Dưới đây là danh sách các máy khách đã đăng ký thành công và đã được hợp lệ "
+"hóa bằng Responsive Firewall."
 
 #: views/page.services.php:41
 msgid "Blacklist"
-msgstr ""
+msgstr "Danh sách đen"
 
 #: views/view.blocked.php:16
 msgid "Blocked Attackers"
-msgstr ""
+msgstr "Những kẻ tấn công đã bị chặn"
 
 #: views/page.status.php:31
 msgid "Blocked Hosts"
-msgstr ""
+msgstr "Các host đã bị chặn"
 
 #: views/modal.customsvc.php:20
 msgid "Both (TCP and UDP)"
-msgstr ""
+msgstr "Cả hai ( TCP và UDP)"
 
 #: views/view.settings.php:36
 msgid ""
@@ -245,15 +280,15 @@ msgstr ""
 
 #: Services.class.php:314
 msgid "CHANSIP is not available on this machine"
-msgstr ""
+msgstr "CHANSIP không khả dụng trên máy này"
 
 #: Services.class.php:273
 msgid "CHAN_SIP Protocol"
-msgstr ""
+msgstr "Giao thức CHAN_SIP"
 
 #: views/view.about.php:53
 msgid "Can not Disable Firewall"
-msgstr ""
+msgstr "Không thể vô hiệu Firewall"
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
@@ -261,7 +296,7 @@ msgstr "Hủy"
 
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
-msgstr ""
+msgstr "Lệnh chạy (see--help)"
 
 #: firewall.i18n.php:6
 msgid "Connectivity"
@@ -269,24 +304,24 @@ msgstr "Khả năng kết nối"
 
 #: views/view.portmaps.php:11 views/view.services.php:2
 msgid "Core Services"
-msgstr ""
+msgstr "Các dịch vụ chính"
 
 #: views/view.customsvc.php:2
 msgid "Create new Service"
-msgstr ""
+msgstr "Tạo một Dịch vụ mới"
 
 #: views/view.status.php:22
 msgid "Cumulative Total of remote clients:"
-msgstr ""
+msgstr "Tổng số tích lũy số máy khách từ xa:"
 
 #: views/view.settings.php:27
 msgid "Custom Firewall Rules"
-msgstr ""
+msgstr "Các nguyên tắc Tùy chỉnh Firewall"
 
 #: views/page.services.php:38 views/view.customsvc.php:4
 #: views/view.portmaps.php:23
 msgid "Custom Services"
-msgstr ""
+msgstr "Tùy chỉnh các dịch vụ"
 
 #: views/view.customsvc.php:1
 msgid ""
@@ -297,19 +332,19 @@ msgstr ""
 
 #: Services.class.php:139
 msgid "Dedicated UCP access is disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "Truy nhập UCP riêng bị vô hiệu trong Sysadmin Port Management"
 
 #: Zones.class.php:9
 msgid "Default Firewall"
-msgstr ""
+msgstr "Mặc định Firewall"
 
 #: views/view.interfaces.php:8
 msgid "Default Traffic Zones"
-msgstr ""
+msgstr "Mặc định Vùng lưu lượng (Traffic Zones)"
 
 #: views/view.interfaces.php:4
 msgid "Default Zone"
-msgstr ""
+msgstr "Mặc định Vùng (Zone)"
 
 #: views/view.blacklist.php:9 views/view.customsvc.php:45
 msgid "Delete"
@@ -317,27 +352,27 @@ msgstr "Xóa"
 
 #: Firewall.class.php:523
 msgid "Delete Selected"
-msgstr ""
+msgstr "Xóa những gì được chọn"
 
 #: Console/Firewall.class.php:82
 msgid "Delete from 'zone' the IDs provided."
-msgstr ""
+msgstr "Xóa các ID được cung cấp khỏi 'zone'."
 
 #: views/modal.customsvc.php:11
 msgid "Description"
-msgstr "Mô tả"
+msgstr "Mô Tả"
 
 #: views/view.smart.php:43
 msgid "Disable"
-msgstr ""
+msgstr "Vô hiệu"
 
 #: views/view.about.php:51
 msgid "Disable Firewall"
-msgstr ""
+msgstr "Vô hiệu Firewall"
 
 #: Console/Firewall.class.php:75
 msgid "Disable the System Firewall. This will shut it down cleanly."
-msgstr ""
+msgstr "Vô hiệu Firewall Hệ thống. Điều này sễ tắt Firewall hệ thống hoàn toàn."
 
 #: views/view.settings.php:8 views/view.smart.php:6
 msgid "Disabled"
@@ -350,6 +385,11 @@ msgid ""
 "filtered at all, so this disables the firewall for any traffic arriving at "
 "that interface). The zones you can use are:"
 msgstr ""
+"Mỗi giao diện mạng trên máy của bạn phải được chiếu tới một Khu vực. Lưu ý "
+"rằng, theo mặc định, tất cả các giao diện đều được chiếu tới vùng an toàn ("
+"Không phải tất cả các mạng an toàn đều được lọc, do đó điều này làm vô hiệu "
+"hóa tường lửa đối với bất kỳ lưu lượng đến giao diện đó). Các vùng bạn có "
+"thể sử dụng là:"
 
 #: views/view.customsvc.php:44
 msgid "Edit"
@@ -361,7 +401,7 @@ msgstr "Kích hoạt"
 
 #: OOBE.class.php:196
 msgid "Enable Responsive Firewall?"
-msgstr ""
+msgstr "Kích hoạt Responsive Firewall?"
 
 #: views/view.settings.php:7 views/view.smart.php:5
 msgid "Enabled"
@@ -374,33 +414,40 @@ msgid ""
 "this disabled silently discards the packet, giving no indication to the "
 "attacker that their traffic has been intercepted."
 msgstr ""
+"Việc kích hoạt 'Reject Packets' sẽ gửi một phản hồi đến máy khác, nói với "
+"chúng rằng lưu lượng truy cập của chúng đã bị chặn. Âm thầm loại bỏ các "
+"packet, không để lại bất cứ dấu hiệu nào cho kẻ tấn công biết lưu lượng truy "
+"cập của chúng đã bị chặn."
 
 #: Console/Firewall.class.php:109
 msgid "Enabling Firewall."
-msgstr ""
+msgstr "Đang kích hoạt Firewall."
 
 #: OOBE.class.php:198
 msgid ""
 "Enabling Responsive Firewall allows remote clients to securely register to "
 "this server without explicitly whitelisting them."
 msgstr ""
+"Việc kích hoạt Responsive Firewall  sẽ cho phép các máy khách từ xa có thể "
+"đăng ký một cách an toàn với máy chủ này mà không cần phải whitelisting "
+"chúng."
 
 #: views/view.networks.php:65
 msgid "Enter new IP or Hostname here"
-msgstr ""
+msgstr "Nhập một IP mới hoặc Hostname ở đây"
 
 #: Console/Firewall.class.php:50 Console/Firewall.class.php:60
 msgid "Error!"
-msgstr ""
+msgstr "Lỗi!"
 
 #: Console/Firewall.class.php:198
 msgid "Error:"
-msgstr ""
+msgstr "Lỗi:"
 
 #: Console/Firewall.class.php:141
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
-msgstr ""
+msgstr "Lỗi: Không thể thêm '%s' vào vùng không xác định '%s'"
 
 #: views/view.networks.php:6
 msgid ""
@@ -408,49 +455,56 @@ msgid ""
 "'203.55.66.77' to the 'Local' zone on this page. Any traffic arriving from "
 "203.55.66.77 will be granted access to services usable by 'Local' zone."
 msgstr ""
+"Ví dụ: Giao diện eth0 được gán vào vùng 'Internet', và sau đó bạn thêm "
+"'203.55.66.77'  vào vùng 'Local' trên trang này. Bất kỳ lưu lượng đến nào từ "
+"203.55.66.77 đều có quyền truy nhập vào các dịch vụ mà Vùng 'Local' có thể "
+"sử dụng được."
 
 #: Zones.class.php:13
 msgid "Excluded from Firewall"
-msgstr ""
+msgstr "Bị loại trừ khỏi Firewall"
 
 #: OOBE.class.php:247
 #, php-format
 msgid "External Address: %s"
-msgstr ""
+msgstr "Địa chỉ bên ngoài: %s"
 
 #: views/page.services.php:35 views/view.portmaps.php:17
 msgid "Extra Services"
-msgstr ""
+msgstr "Dịch vụ bổ sung"
 
 #: Services.class.php:466
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
 #: Services.class.php:468
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
 msgstr ""
+"FTP được sử dụng bởi trình quản lý Endpoint để gửi các hình ảnh của firmware "
+"tới các điện thoại, cũng như các dữ liệu bổ sung."
 
 #: Console/Firewall.class.php:168
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
+"Không thành công! Không thể hợp lệ hóa mục nhập. Vui lòng thử lại lần nữa."
 
 #: firewall.i18n.php:10 page.firewall.php:6
 msgid "Firewall"
-msgstr ""
+msgstr "Tường lửa"
 
 #: Firewall.class.php:59
 msgid "Firewall Active"
-msgstr ""
+msgstr "Firewall hoạt động"
 
 #: Firewall.class.php:80
 msgid "Firewall Configuration"
-msgstr ""
+msgstr "Cấu hình Firewall"
 
 #: Firewall.class.php:61
 msgid "Firewall Disabled"
-msgstr ""
+msgstr "Firewall đã bị vô hiệu"
 
 #: Firewall.class.php:114 Firewall.class.php:115
 msgid "Firewall Integrity Failed"
@@ -458,43 +512,47 @@ msgstr ""
 
 #: Firewall.class.php:74
 msgid "Firewall Service not running!"
-msgstr ""
+msgstr "Dịch vụ Firewall không chạy!"
 
 #: views/view.about.php:62
 msgid "Firewall Wizard"
-msgstr ""
+msgstr "Thuật sĩ Firewall"
 
 #: Firewall.class.php:497
 msgid "Firewall can not be disabled"
-msgstr ""
+msgstr "Không thể vô hiệu Firewall"
 
 #: Console/Firewall.class.php:21
 msgid "Firewall functions"
-msgstr ""
+msgstr "Các chức năng của Firewall"
 
 #: views/warning.notready.php:2
 msgid "Firewall has not started yet!"
-msgstr ""
+msgstr "Firewall vãn chưa được khởi động!"
 
 #: Console/Firewall.class.php:101
 msgid "Firewall is not enabled, can't disable it"
-msgstr ""
+msgstr "Firewall không được kích hoạt, không thể vô hiệu hóa nó"
 
 #: OOBE.class.php:234
 msgid ""
 "Firewall should now auto-detect and configure External IP settings. This "
 "will assist with NAT or Translation issues."
 msgstr ""
+"Hiện tại, Firewall tự động phát hiện và cấu hình các cài đặt IP bên ngoài. "
+"Điều này sẽhỗ trợ NAT và các vấn đề về dịch."
 
 #: Console/Firewall.class.php:92
 msgid "For example:"
-msgstr ""
+msgstr "Ví dụ:"
 
 #: Zones.class.php:10
 msgid ""
 "For use on internal networks. You mostly trust the other computers on the "
 "networks to not harm your computer."
 msgstr ""
+"Để sử dụng trên các mạng nội bộ, bạn hầu như phải ủy thác các máy tính trên "
+"các mạng để không làm hại máy tính của bạn."
 
 #: Zones.class.php:11
 msgid ""
@@ -502,6 +560,9 @@ msgid ""
 "a DMZ, or OpenVPN network). You mostly trust the other computers on the "
 "networks to not harm your computer."
 msgstr ""
+"Đẻ sử dụng các mạng nội bộ an toàn, hoặc các thiết bị mạng khác ( như mạng "
+"DMZ, or OpenVPN ). Bạn hầu như phải ủy thác các máy tính khác trên các mạng "
+"để không làm hại máy tính của mình."
 
 #: Console/Firewall.class.php:22
 msgid "Force Add/Removal of entry"
@@ -509,7 +570,7 @@ msgstr ""
 
 #: OOBE.class.php:200
 msgid "Further information is available at the PBX Wiki."
-msgstr ""
+msgstr "Các thông tin khác có sẵn tại  PBX Wiki."
 
 #: Services.class.php:336
 msgid "HTTP Provisioning"
@@ -517,11 +578,11 @@ msgstr ""
 
 #: Services.class.php:351
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "HTTP Provisioning bị vô hiệu trong Sysadmin Port Management"
 
 #: Services.class.php:416
 msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "Các ứng dụng HTTP REST  bị vô hiệu trong Sysadmin Port Management"
 
 #: Services.class.php:362
 msgid "HTTPS Provisioning"
@@ -529,50 +590,56 @@ msgstr ""
 
 #: Services.class.php:377
 msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "HTTPS Provisioning bị vô hiệu trong Sysadmin Port Management"
 
 #: Services.class.php:444
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
-msgstr ""
+msgstr "HTTPS REST  bị vô hiệu trong Sysadmin Port Management"
 
 #: Console/Firewall.class.php:198
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
-msgstr ""
+msgstr "Host '%s' hiện không thuộc danh sách đen."
 
 #: views/oobe.welcome.php:30
 msgid ""
 "However, if you continue, your machine and firewall will be automatically "
 "updated with the latest settings!"
 msgstr ""
+"Tuy nhiên nếu bạn tiếp tục, máy của bạn và tường lửa sẽ được tự động cập "
+"nhật các cài đặt mới nhất!"
 
 #: Services.class.php:322 Smart.class.php:43
 msgid "IAX Protocol"
-msgstr ""
+msgstr "Giao thức IAX"
 
 #: Services.class.php:324
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
 msgstr ""
+"IAX là viết tắt của Inter Asterisk eXchange. Nó là băng thông hiệu quả hơn "
+"SIP nhưng ít nhà cung cấp hỗ trợ nó."
 
 #: Console/Firewall.class.php:26
 msgid "IDs to add or remove from a zone"
-msgstr ""
+msgstr "Các ID để thêm hay loại bỏ khỏi một vùng"
 
 #: views/view.interfaces.php:89
 msgid "IP Address: "
-msgstr ""
+msgstr "Địa chỉ IP: "
 
 #: views/view.interfaces.php:87
 msgid "IP Addresses: "
-msgstr ""
+msgstr "Các địa chỉ IP: "
 
 #: views/view.smart.php:28
 msgid ""
 "If fail2ban is enabled and configured on this machine, fail2ban will send "
 "you email alerts when this happens."
 msgstr ""
+"Nếu fail2ban được kích hoạt và cấu hình trên máy này, fail2ban sẽ gửi cho "
+"bạn email cảnh báo về các hoạt động."
 
 #: views/view.smart.php:27
 msgid ""
@@ -592,6 +659,8 @@ msgstr ""
 msgid ""
 "If this is a known secure network, you should add it to the Trusted zone"
 msgstr ""
+"Nếu nó được xem là mạng an toàn thì nên thêm nó vào Vùng An toàn (trusted "
+"zone)"
 
 #: views/view.shortcuts.php:13
 msgid ""
@@ -606,12 +675,16 @@ msgid ""
 "If you are not using the Responsive Firewall, there will be no useful "
 "information available here."
 msgstr ""
+"Nếu bạn không đang dùng Responsive Firewall, sẽ không có sẵn thông tin có "
+"ích nào ở đây."
 
 #: views/oobe.welcome.php:10
 msgid ""
 "If you are unable to do this, it is unlikely that Responsive Firewall will "
 "work correctly, if at all."
 msgstr ""
+"Nếu bạn không thể thực hiện điều này, thì Responsive Firewall hầu như sẽ "
+"không hoạt động chính xác."
 
 #: views/view.blocked.php:18
 msgid ""
@@ -626,6 +699,9 @@ msgid ""
 "may return to this setup wizard via the 'Firewall' option in the "
 "Connectivity menu."
 msgstr ""
+"Nếu bạn không muốn sử dụng Tường lửa thông minh Sagoma Smart Firewall, chỉ "
+"cần kích vào 'Abort'. Bạn có thể quay lại thuật sĩ cài đặt này thông qua tùy "
+"chọn 'Firewall\" trong menu Connectivity."
 
 #: firewall.i18n.php:8
 msgid ""
@@ -635,24 +711,24 @@ msgid ""
 msgstr ""
 
 #: Firewall.class.php:116
-#, php-format
+#, fuzzy, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
 "alterations of iptables, or, an unexpected error. Please restart the "
 "firewall service."
-msgstr ""
+msgstr "Giao diện %s không nằm trong vùng chính xác. Nguyên"
 
 #: views/view.interfaces.php:3
 msgid "Interface Name"
-msgstr ""
+msgstr "Tên giao diện"
 
 #: views/page.about.php:35
 msgid "Interfaces"
-msgstr ""
+msgstr "Các giao diện"
 
 #: Zones.class.php:9
 msgid "Internet"
-msgstr ""
+msgstr "Mạng internet"
 
 #: views/disabled.php:11
 msgid ""
@@ -671,7 +747,7 @@ msgstr ""
 
 #: OOBE.class.php:199
 msgid "It is recommended to turn this on if you have remote clients."
-msgstr ""
+msgstr "Nếu bạn có các máy khách từ xa thì khuyến cáo nên bật nó lên."
 
 #: views/view.networks.php:3
 msgid "Known Network Definitions"
@@ -679,24 +755,24 @@ msgstr ""
 
 #: OOBE.class.php:248
 msgid "Known Networks:"
-msgstr ""
+msgstr "Các mạng đã biết:"
 
 #: assets/js/views/status.js:131
 msgid "Last 5 packets"
-msgstr ""
+msgstr "5 packet gần nhất"
 
 #: Smart.class.php:42
 msgid "Legacy SIP (chan_sip)"
-msgstr ""
+msgstr "Legacy SIP (chan_sip)"
 
 #: views/view.interfaces.php:69
 #, php-format
 msgid "Linked to Interface %s"
-msgstr ""
+msgstr "Được kết nối tới giao diện %s"
 
 #: Console/Firewall.class.php:80
 msgid "List all entries in zone 'zone'"
-msgstr ""
+msgstr "Danh sách các mục nhập trong vùng 'zone'"
 
 #: views/view.blocked.php:2 views/view.registered.php:15
 #: views/view.status.php:15
@@ -705,19 +781,19 @@ msgstr "Đang tải..."
 
 #: Zones.class.php:10
 msgid "Local"
-msgstr ""
+msgstr "Tại chỗ"
 
 #: Zones.class.php:10
 msgid "Local trusted traffic"
-msgstr ""
+msgstr "Lưu lượng an toàn tại chỗ"
 
 #: views/bootnav.php:5
 msgid "Main"
-msgstr ""
+msgstr "Chính"
 
 #: views/view.interfaces.php:10
 msgid "Most interfaces should be set to <strong>Internet</strong>."
-msgstr ""
+msgstr "Hầu hết các giao diện nên được cài đặt về <strong>Internet</strong>."
 
 #: views/view.customsvc.php:62
 #, php-format
@@ -726,43 +802,43 @@ msgstr ""
 
 #: Services.class.php:489
 msgid "NFS"
-msgstr ""
+msgstr "NFS"
 
 #: Services.class.php:496
 msgid "NFS Services are not available on this machine"
-msgstr ""
+msgstr "Các dịch vụ NFS không khat dụng trên máy này"
 
 #: views/view.networks.php:14
 msgid "Network/Host"
-msgstr ""
+msgstr "Mạng/host"
 
 #: views/page.about.php:38
 msgid "Networks"
-msgstr ""
+msgstr "Các mạng"
 
 #: Firewall.class.php:126 Firewall.class.php:128
 msgid "New Interface Detected"
-msgstr ""
+msgstr "Đã phát hiện một giao diện mới"
 
 #: views/view.portmaps.php:26
 msgid "No Custom services defined."
-msgstr ""
+msgstr "Không có tùy chỉnh dịch vụ naog được xác định."
 
 #: views/view.registered.php:16
 msgid "No Endpoints have been allowed through the Responsive Firewall"
-msgstr ""
+msgstr "Không có Enpoint nào được cho phép đi qua Responsive Firewall"
 
 #: views/view.interfaces.php:84
 msgid "No IP Addresses assigned to this interface."
-msgstr ""
+msgstr "Không có địa chỉ IP nào được gán vào giao diện này."
 
 #: Firewall.class.php:169
 msgid "No Trusted Management Network"
-msgstr ""
+msgstr "Không có mạng quản lý an toàn"
 
 #: Firewall.class.php:171
 msgid "No Trusted Network or Host defined"
-msgstr ""
+msgstr "Không có mạng an toàn hay Host xác định nào"
 
 #: Firewall.class.php:172
 msgid ""
@@ -770,28 +846,33 @@ msgid ""
 "'Trusted' host or network to ensure that in case of configuration error, the "
 "machine is still accessible."
 msgstr ""
+"Không có mạng hay host an toàn nào được xác định. Mỗi máy chủ nen có một "
+"mạng hay host  thuộc \"Trusted\" để đảm bảo trong trường hợp lỗi cấu hình, "
+"máy vẫn có thể truy nhập được."
 
 #: views/view.customsvc.php:11
 msgid "No custom services currently defined."
-msgstr ""
+msgstr "Hiện không có dịch vụ tùy chỉnh nào xác định."
 
 #: views/view.blocked.php:10 views/view.blocked.php:20
 msgid "No hosts!"
-msgstr ""
+msgstr "Không có host nào!"
 
 #: Console/Firewall.class.php:50 Console/Firewall.class.php:60
 msgid "No network identifiers supplied"
-msgstr ""
+msgstr "Không có định danh mạng nào được cung cấp"
 
 #: views/view.settings.php:37
 msgid ""
 "Normally this should be set to <strong>Disabled</strong> unless you are "
 "debugging network connectivity."
 msgstr ""
+"Thông thường nên cài đặt nó về<strong>Disabled</strong> trừ khi bạn đang gỡ "
+"lỗi kết nối mạng."
 
 #: views/view.blacklist.php:3
 msgid "Note that changes to the firewall are effective immediately."
-msgstr ""
+msgstr "Lưu ý rằng những thay đổi trên firewall sẽ có hiệu lực ngay lập tức."
 
 #: views/view.smart.php:29
 msgid ""
@@ -810,19 +891,19 @@ msgstr ""
 
 #: views/view.status.php:19
 msgid "Number of Currently Rate-Limited Clients:"
-msgstr ""
+msgstr "Số lượng máy khách bị giới hạn tốc độ ở hiện tại:"
 
 #: views/view.status.php:21
 msgid "Number of currently blocked Attackers:"
-msgstr ""
+msgstr "Số lượng kẻ tấn công bị khóa ở hiện tại:"
 
 #: Services.class.php:388
 msgid "OpenVPN Server"
-msgstr ""
+msgstr "Mở VPN Server"
 
 #: Console/Firewall.class.php:25
 msgid "Optional parameter"
-msgstr ""
+msgstr "Thông số tùy chọn"
 
 #: Zones.class.php:11
 msgid "Other"
@@ -830,11 +911,11 @@ msgstr "Khác"
 
 #: Zones.class.php:11
 msgid "Other Traffic"
-msgstr ""
+msgstr "Lưu lượng khác"
 
 #: Services.class.php:265
 msgid "PJSIP is not available on this machine"
-msgstr ""
+msgstr "PJSIP không sẵn có trên máy này"
 
 #: Services.class.php:338
 msgid ""
@@ -861,7 +942,7 @@ msgstr ""
 
 #: views/disabled.php:13
 msgid "Please visit the PBX Wiki for more information on the firewall."
-msgstr ""
+msgstr "Vui lòng xem PBX Wiki để biết thêm thông tin về firewall."
 
 #: views/modal.customsvc.php:27
 msgid "Port Range"
@@ -880,43 +961,43 @@ msgstr ""
 
 #: views/page.advanced.php:29
 msgid "Port/Service Maps"
-msgstr ""
+msgstr "Sơ đồ của Cổng giao tiếp/ dịch vụ"
 
 #: views/page.advanced.php:32
 msgid "Preconfigured"
-msgstr ""
+msgstr "Được cấu hình sẵn"
 
 #: views/view.shortcuts.php:32
 msgid "Present"
-msgstr ""
+msgstr "Hiện thị"
 
 #: views/modal.customsvc.php:17
 msgid "Protocol"
-msgstr ""
+msgstr "Giao thức"
 
 #: views/view.customsvc.php:53
 msgid "Protocol: TCP"
-msgstr ""
+msgstr "Giao thức: TCP"
 
 #: views/view.customsvc.php:51
 msgid "Protocol: TCP and UDP"
-msgstr ""
+msgstr "Giao thức: TCP và UDP"
 
 #: views/view.customsvc.php:55
 msgid "Protocol: UDP"
-msgstr ""
+msgstr "Giao thức: UDP"
 
 #: Services.class.php:400
 msgid "REST Apps (HTTP)"
-msgstr ""
+msgstr "REST Apps-ứng dụng theo cấu trúc REST ( HTTP)"
 
 #: Services.class.php:428
 msgid "REST Apps (HTTPS)"
-msgstr ""
+msgstr "REST Apps-ứng dụng theo cấu trúc REST ( HTTPS)"
 
 #: Services.class.php:420 Services.class.php:448
 msgid "REST Apps are only available with System Admin"
-msgstr ""
+msgstr "REST Apps chỉ sẵn có trên System admin (Quản trị hệ thống)"
 
 #: Services.class.php:402 Services.class.php:430
 msgid ""
@@ -937,40 +1018,40 @@ msgstr ""
 
 #: views/view.shortcuts.php:4
 msgid "RFC1918/RFC4193"
-msgstr ""
+msgstr "RFC1918/RFC4193"
 
 #: views/view.blocked.php:6
 msgid "Rate Limited Hosts"
-msgstr ""
+msgstr "Các host bị giới hạn tốc độ"
 
 #: views/view.about.php:65
 msgid "Re-Run Wizard"
-msgstr ""
+msgstr "Thuật sĩ Re-Run"
 
 #: views/page.status.php:28
 msgid "Registered Endpoints"
-msgstr ""
+msgstr "Các Endpoint đã đăng ký"
 
 #: Zones.class.php:12
 msgid "Reject"
-msgstr ""
+msgstr "Từ chối"
 
 #: views/view.settings.php:33
 msgid "Reject Packets"
-msgstr ""
+msgstr "Từ chối các Packet"
 
 #: Zones.class.php:12
 msgid "Reject incoming traffic"
-msgstr ""
+msgstr "Từ chối các lưu lượng đến"
 
 #: Console/Firewall.class.php:79
 msgid "Remove the hostname or IP specified from the Trusted Zone"
-msgstr ""
+msgstr "Xóa hostname hoặc IP được chỉ định ra khỏi Trusted Zone ( Vùng an toàn)"
 
 #: Console/Firewall.class.php:202
 #, php-format
 msgid "Removed %s from Blacklist."
-msgstr ""
+msgstr "Đã xóa %s ra khỏi Danh sách đen."
 
 #: Firewall.class.php:529
 msgid "Reset"
@@ -989,51 +1070,57 @@ msgstr ""
 
 #: OOBE.class.php:205
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
-msgstr ""
+msgstr "Responsive Firewall <strong>hiện đã được kích hoạt</strong>."
 
 #: views/view.about.php:26
 msgid "Responsive Firewall is <strong>enabled</strong>."
-msgstr ""
+msgstr "Responsive Firewall <strong>đã được kích hoạt</strong>."
 
 #: views/view.about.php:19
 msgid "Responsive Firewall is not enabled."
-msgstr ""
+msgstr "Responsive Firewall không được kích hoạt."
 
 #: Services.class.php:216
 msgid "SIP Protocol"
-msgstr ""
+msgstr "Giao thức SIP"
 
 #: Smart.class.php:41
 msgid "SIP Protocol (pjsip)"
-msgstr ""
+msgstr "Giao thức SIP( pjsip)"
 
 #: Services.class.php:546
 msgid "SMB/CIFS"
-msgstr ""
+msgstr "SMB/CIFS"
 
 #: Services.class.php:552
 msgid "SMB/CIFS (Samba) is not installed on this machine"
-msgstr ""
+msgstr "SMB/CIFS (Samba) không được cài đặt trên máy này"
 
 #: Services.class.php:555
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
+"SMB/CIFS được sử dụng để truy nhập vào các tệp trên máy này từ Windows hay "
+"các hệ thống Mac."
 
 #: Services.class.php:50
 msgid "SSH"
-msgstr ""
+msgstr "SSH"
 
 #: Services.class.php:52
+#, fuzzy
 msgid ""
 "SSH is the most commonly used system administration tool. It is also a "
 "common target for hackers. We <strong>strongly recommend</strong> using a "
 "strong password and SSH keys. "
 msgstr ""
+"SSH là công cụ quản trị được sử dụng phổ biến nhất. Nó cũng là một mục tiêu "
+"chung cho các tin tặc (hacker). Chúng tôi strong>strongly recommend</strong>"
+"  khuyến cáo nên sử dụng một mật khẩu và các khóa SSH mạnh. "
 
 #: views/view.settings.php:13
 msgid "Safe Mode"
-msgstr ""
+msgstr "Chế độ an toàn"
 
 #: views/view.settings.php:14
 msgid ""
@@ -1041,20 +1128,25 @@ msgid ""
 "misconfiguration by temporarily disabling the firewall if the machine is "
 "rebooted two times in succession."
 msgstr ""
+"Chế độ an toàn sễ giúp bạn có khả năng khôi phục một cấu hình bị lỗi ngẫu "
+"nhiên bằng cách tạm thời vô hiệu firewall nếu máy được khởi động lại 2 lần "
+"liên tục."
 
 #: OOBE.class.php:34
 msgid "Sangoma Smart Firewall"
-msgstr ""
+msgstr "Tường lửa thông minh Sangoma Smart Firewall"
 
 #: views/oobe.welcome.php:20
 msgid ""
 "Sangoma Smart Firewall is a revolutionary Open Source Firewall solution, "
 "designed from the ground up to completely secure your VoIP system."
 msgstr ""
+"Sangoma Smart Firewall là giải pháp tường lửa nguồn mở đầy đột phá, được "
+"thiết kế từ đầu đến cuối để đảm bảo an toàn cho hệ thống VoIP của bạn."
 
 #: views/oobe.welcome.php:2
 msgid "Sangoma Smart Firewall is now enabled!"
-msgstr ""
+msgstr "Sangoma Smart Firewall hiện đã kích hoạt!"
 
 #: Firewall.class.php:522 Firewall.class.php:530 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
@@ -1063,27 +1155,31 @@ msgstr "Lưu"
 
 #: views/view.portmaps.php:36
 msgid "See Custom Service page"
-msgstr ""
+msgstr "Xem trang Custom Service (Dịch vụ tùy chỉnh)"
 
 #: OOBE.class.php:246
 msgid ""
 "Selecting 'Yes' will update your current configuration. Selecting 'No' will "
 "not change your current settings."
 msgstr ""
+"Chọn \"Yes\" sẽ cập nhật cấu hình hiện tại của bạn. Chọn \"No\" sẽ để nguyên "
+"các cài đặt hiện tại của bạn."
 
 #: views/view.portmaps.php:39
 msgid "Service unavailable"
-msgstr ""
+msgstr "Dịch vụ không khả dụng"
 
 #: views/bootnav.php:7 views/page.services.php:32
 msgid "Services"
-msgstr ""
+msgstr "Các dịch vụ"
 
 #: views/view.services.php:3
 msgid ""
 "Services that are assigned to zones <strong>are accessible</strong> to "
 "connections matching the zones."
 msgstr ""
+"Các dịch vụ được gán cho các vùng <strong>có thể truy cập</strong>vào các "
+"kết nối tương ứng với mỗi vùng."
 
 #: views/page.about.php:29
 msgid "Settings"
@@ -1091,11 +1187,11 @@ msgstr "Các cài đặt"
 
 #: OOBE.class.php:124
 msgid "Should the client you're using be trusted?"
-msgstr ""
+msgstr "Liệu máy khách bạn đang sử dụng có an toàn?"
 
 #: OOBE.class.php:153
 msgid "Should your current network be trusted?"
-msgstr ""
+msgstr "Liệu mạng hiện tại của bạn có an toàn?"
 
 #: Console/Firewall.class.php:23
 msgid "Show help"
@@ -1104,11 +1200,11 @@ msgstr ""
 #: views/view.customsvc.php:65
 #, php-format
 msgid "Single Port: %s"
-msgstr ""
+msgstr "Công giao tiếp đơn (single port):%s"
 
 #: Console/Firewall.class.php:77
 msgid "Start (and enable, if disabled) the System Firewall"
-msgstr ""
+msgstr "Khởi động ( bật lên nếu đang bị vô hiệu) Firewall hệ thống"
 
 #: Firewall.class.php:66
 msgid "Starting up"
@@ -1120,11 +1216,11 @@ msgstr "Trạng thái"
 
 #: views/page.status.php:25
 msgid "Status Overview"
-msgstr ""
+msgstr "Tổng quan tình trạng"
 
 #: Console/Firewall.class.php:76
 msgid "Stop the System Firewall"
-msgstr ""
+msgstr "Dừng Firewall hệ thống"
 
 #: Console/Firewall.class.php:138 Console/Firewall.class.php:178
 #: Console/Firewall.class.php:234
@@ -1133,39 +1229,39 @@ msgstr ""
 
 #: views/view.registered.php:3
 msgid "Successfully Registered Endpoints"
-msgstr ""
+msgstr "Các Endpoints đã đăng ký thành công"
 
 #: views/view.status.php:3
 msgid "Summary"
-msgstr ""
+msgstr "Tóm lược"
 
 #: Firewall.class.php:54 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
-msgstr ""
+msgstr "Firewall Hệ thống"
 
 #: views/modal.customsvc.php:21
 msgid "TCP"
-msgstr ""
+msgstr "TCP"
 
 #: views/view.portmaps.php:65
 msgid "TCP Port:"
-msgstr ""
+msgstr "Cổng giao tiếp TCP:"
 
 #: views/view.portmaps.php:68
 msgid "TCP Ports:"
-msgstr ""
+msgstr "Các cổng giao tiếp TCP:"
 
 #: Services.class.php:476
 msgid "TFTP"
-msgstr ""
+msgstr "TFTP"
 
 #: Services.class.php:478
 msgid "TFTP is used normally for provisioning and upgrading of devices."
-msgstr ""
+msgstr "TFTP thường được dử dụng cho việc cung cấp và nâng cấp các thiết bị."
 
 #: views/oobe.welcome.php:28
 msgid "Thanks for using Sangoma Smart Firewall!"
-msgstr ""
+msgstr "Cảm ơn vì đã sử dụng Sangoma Smart Firewall!"
 
 #: Firewall.class.php:264
 #, php-format
@@ -1174,6 +1270,10 @@ msgid ""
 "<strong>not</strong> a member of the Trusted zone. It is highly recommended "
 "to add this client to your Trusted Zone to avoid accidental lockouts."
 msgstr ""
+"Mya skhachs bạn đang sử dụng để quản lý máy chủ này (<tt>%s</tt>) "
+"không<strong>phải</strong> là một thành viên của Vùng an toàn ( Trusted Zone)"
+". Khuyến cao nên them máy khách này vào Trusted one để tránh các trường hợp "
+"bị khóa đột ngột."
 
 #: views/view.settings.php:29
 msgid ""
@@ -1182,10 +1282,14 @@ msgid ""
 "Each line in the file will be given as a parameter to 'iptables' or "
 "'ip6tables, respectively."
 msgstr ""
+"Các tệp /etc/firewall-4.rules and /etc/firewall-6.rules ( cho các quy tắc "
+"IPv4 và IPv6) phải được người dùng \" gốc\" sở hữu và không thể viết bởi "
+"người dùng khác. Mỗi dòng trong tệp như một tham số cho các 'iptables' và "
+"'ip6tables tương ứng."
 
 #: views/disabled.php:7
 msgid "The firewall module is not enabled!"
-msgstr ""
+msgstr "Mô đun firewall không được kích hoạt!"
 
 #: OOBE.class.php:158
 #, php-format
@@ -1193,20 +1297,24 @@ msgid ""
 "The network you are currently using (%s) to manage this server isn't marked "
 "as Trusted."
 msgstr ""
+"Mạng (%s) bạn  hiện đang sử dụng để quản lý máy chủ này không được đánh dấu "
+"là Trusted."
 
 #: views/view.blocked.php:11
 msgid "There are no hosts that are currently being rate limited."
-msgstr ""
+msgstr "Hiện không có host nào bị giới hạn tốc độ."
 
 #: views/view.blocked.php:21
 msgid "There are no hosts that have been detected as attacking this server."
-msgstr ""
+msgstr "Không có host nào bị phát hiện là đang tấn công máy chủ này."
 
 #: views/view.about.php:27
 msgid ""
 "There is no need to explicitly add definitions for peers, as they are "
 "automatically allowed through the firewall after successfully registering."
 msgstr ""
+"Không cần thiết thêm các định nghĩa cho các peer ( đồng đẳng), vì chúng đã "
+"được tự động cho phép đi qua tương lửa sau khi đăng ký thành công."
 
 #: views/view.blocked.php:8
 msgid ""
@@ -1214,10 +1322,13 @@ msgid ""
 "limiting will be completely removed in 60 seconds. If they continue to send "
 "invalid data, they will be classified as an Attacker."
 msgstr ""
+"Không cần phải xóa thủ công các mục nhập khỏi phần này, vì giới hạn tốc độ "
+"của chúng sẽ hoàn toàn bị xóa bỏ trong 60 giây. Nếu chúng tiếp tục gửi các "
+"dữ liệu không hợp lệ, chúng sẽ bị phân loại là một kẻ tấn công."
 
 #: Console/Firewall.class.php:91
 msgid "These may be IP addresses, hostnames, or networks."
-msgstr ""
+msgstr "Đây có thể là các địa chỉ IP, Hostname hoặc các mạng."
 
 #: views/disabled.php:10
 msgid ""
@@ -1225,12 +1336,17 @@ msgid ""
 "continually monitors and blocks attacks on your system, while allowing valid "
 "traffic through."
 msgstr ""
+"Mô đun Firewall được tích hợp chặt chẽ, cấp độ hệ thống firewall vẫn tiếp "
+"tục giám sát và khóa các đối tượng tấn công hệ thống của bạn trong khi cho "
+"phép các lưu lượng hợp lệ đi qua."
 
 #: Services.class.php:390
 msgid ""
 "This allows clients to connect to an OpenVPN server running on this machine. "
 "This is an inherently secure protocol."
 msgstr ""
+"Điều này cho phép các máy khách kết nối với một máy chủ OpenVPN  trên máy "
+"này. Đây là một giao thức vốn đã an toàn."
 
 #: views/view.settings.php:30
 msgid ""
@@ -1238,6 +1354,9 @@ msgid ""
 "This should be <strong>Disabled</strong> unless you explicitly know why it "
 "is enabled."
 msgstr ""
+"Nó cho phép người dùng chuyên nghiệp tùy chỉnh tường lửa theo thông số của "
+"họ. Nó nên được <strong>Vô hiệu</strong> trừ khi bạn biết rõ vì sao nó cần "
+"được bật."
 
 #: Services.class.php:499
 msgid ""
@@ -1246,6 +1365,11 @@ msgid ""
 "recordings). Note that this is <strong>not required</strong> to be enabled "
 "to act as a NFS client, and view the filesystem of other machines."
 msgstr ""
+"Điều này cho phép máy tính này được sử dụng như một máy chủ NFS. Điều này sẽ "
+"giúp ích khi bạn muốn dễ dàng truy cập các tập tin trên máy này (ví dụ, để "
+"truy cập vào các bản ghi cuộc gọi). Lưu ý rằng điều này <strong>không "
+"cần</strong> phải được bật để hoạt động như một máy khách NFS và xem hệ "
+"thống tập tin của các máy khác."
 
 #: views/warning.notready.php:4
 msgid ""
@@ -1253,6 +1377,9 @@ msgid ""
 "accidentally locked out. The firewall will start automatically after this "
 "machine has been running for more than 5 minutes."
 msgstr ""
+"Điều này cho phép bạn thực hiện viecj sửa chữa khẩn cấp firewall trong "
+"trường hợp bạn bị khóa đột ngột. Firewall này sẽ tự động khởi động sau khi "
+"máy này khởi chạy trên 5 phút."
 
 #: views/view.shortcuts.php:23
 #, php-format
@@ -1261,18 +1388,25 @@ msgid ""
 "trusted zone. Once you have added your selections, you can fine-tune them, "
 "if required, %s on the Networks tab. %s"
 msgstr ""
+"Điều này cho phép bạn thêm các bộ mạng đã cấu hình sẵn một cách dê xdangf "
+"vào vùng An toàn của mình. Khi bạn đã thêm những lựa chọn của mình, bạn có "
+"thể tinh chỉnh chúng nếu cần, %s trên tab Network. %s"
 
 #: views/view.settings.php:28
 msgid ""
 "This authorizes the system to import custom iptables rules after the "
 "firewall has started."
 msgstr ""
+"Điều này sẽ cho phép hệ thống có quyền nhập các quy tắc iptable tùy chỉnh  "
+"sau khi firewall được khởi động."
 
 #: views/view.settings.php:34
 msgid ""
 "This configures what happens when a packet is received by the Firewall that "
 "<strong>will not be allowed</strong> through to the system."
 msgstr ""
+"Điều này sẽ cấu hình những gì xảy ra khi Firewall nhận được một packet "
+"<strong>không được phép</strong> đi qua hệ thống."
 
 #: views/view.registered.php:7
 msgid ""
@@ -1300,12 +1434,17 @@ msgid ""
 "enable 'Responsive Firewall', your Signalling ports are exposed to the "
 "internet, and may be attackable."
 msgstr ""
+"Firewall này chạy trong cấu hình Deny-By-Default. Tuy nhiên nếu bạn kích "
+"hoạt  'Responsive Firewall' thì các cổng giao tiếp tín hiệu (Signalling port)"
+" sẽ tiếp xúc với internet và có thể bị tấn công."
 
 #: Zones.class.php:9
 msgid ""
 "This interface receives traffic from the Internet. Only selected incoming "
 "connections are accepted."
 msgstr ""
+"Giao diện này nhận lưu lượng từ interet. Chỉ các kết nối đến được chọn mới "
+"được chấp nhận."
 
 #: views/view.about.php:10
 msgid ""
@@ -1313,33 +1452,41 @@ msgid ""
 "automatically updates firewall rules based on the current trunk and "
 "extension configuration of your PBX."
 msgstr ""
+"Điều này được thực hiện bằng một quy trinh nhỏ chạy trên máy chủ PBX mà nó "
+"tự động cập nhật các quy tắc firewall dựa trên các trung kế hiện tại và các "
+"cấu hình máy nhánh của PBX của bạn."
 
 #: Services.class.php:218
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
-msgstr ""
+msgstr "Đây là driver SIP (pjsip). Hầu hết các thiết bị sử dụng SIP."
 
 #: Services.class.php:458
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
 msgstr ""
+"Đầy là máy chủ XMPP. Nếu bạn muốn kết nối với nó sử dụng máy khách Jabber "
+"nội bộ, bạn cần mở cổng giao tiếp này."
 
 #: Services.class.php:275
 msgid "This is the legacy chan_sip driver."
-msgstr ""
+msgstr "Đây là dirver legacy chan_sip."
 
 #: views/view.registered.php:8 views/view.status.php:8
 msgid "This page (and all tabs) automatically update every 15 seconds."
-msgstr ""
+msgstr "Trang này( và tất cả các tab) tự động cập nhật mỗi 15 phút 1 lần."
 
 #: views/view.portmaps.php:10
 msgid ""
 "This page displays the detected ports and port ranges for all known services."
 msgstr ""
+"Trang này hiển thị các cổng giao tiếp được phát hiện và các dãy cổng giao "
+"tiếp cho tất cả các dịch vụ đã biết."
 
 #: views/view.status.php:6
 msgid "This page gives you a summary of the status of the Responsive Firewall."
 msgstr ""
+"Trang này cung cấp cho bạn một tóm tắt trạng thái của Responsive Firewall."
 
 #: Services.class.php:223 Services.class.php:280 Services.class.php:329
 msgid ""
@@ -1347,6 +1494,9 @@ msgid ""
 "<strong>should not</strong> enable access from the 'Internet' zone, or "
 "Responsive Firewall will be bypassed."
 msgstr ""
+"Giao thức này đang được quản lý bởi Responsive Firewall. Bạn <strong>không "
+"nên</strong> bật truy cập từ vùng 'Internet, hoặc Responsive Firewall  sẽ bị "
+"bỏ qua."
 
 #: views/view.settings.php:15
 msgid ""
@@ -1370,36 +1520,42 @@ msgid ""
 "this machine. This is normally accomplished by configuring your internet "
 "connection to place this machine in the 'DMZ' of your gateway."
 msgstr ""
+"Để có được đầy đủ các lợi ích của Sangoma Smart Firewall, bạn nên đảm bảo "
+"rằng <strong>nkhông có firewall nào khác</strong> đang chặn lưu lượng truy "
+"cập vào máy này. Thông thường điều này được thực hiện bằng cách cầu hình kết "
+"nối internet của bạn để đặt máy này trong 'DMZ'  tại gateway của bạn."
 
 #: views/oobe.welcome.php:21
 msgid ""
 "To start using Sangoma Smart Firewall you simply need to answer a couple of "
 "questions, and your Firewall will be configured and activated immediately."
 msgstr ""
+"Để khởi động Sangoma Smart Firewall bạn chỉ cần trả lời các cặp câu hỏi và "
+"Firewall của bạn sẽ được cấu hình và kích hoạt ngay lập tức."
 
 #: views/view.status.php:20
 msgid "Total number of Attackers detected:"
-msgstr ""
+msgstr "Tổng số kẻ tấn công được phát hiện:"
 
 #: views/view.status.php:18
 msgid "Total number of Rate-Limited Clients:"
-msgstr ""
+msgstr "Tổng số máy khách bị giới hạn tốc độ:"
 
 #: views/view.status.php:17
 msgid "Total number of Registered Clients:"
-msgstr ""
+msgstr "Tổng số máy khách đã đăng ký:"
 
 #: Zones.class.php:13
 msgid "Trusted"
-msgstr ""
+msgstr "Trusted (An toàn)"
 
 #: Firewall.class.php:135 Firewall.class.php:138
 msgid "Trusted Interface Detected"
-msgstr ""
+msgstr "Giao diện an toàn được phát hiện"
 
 #: Firewall.class.php:167
 msgid "Trusted Management Network defined"
-msgstr ""
+msgstr "Mạng quản lý an toàn (Trusted Management Network) được xác định"
 
 #: Services.class.php:118
 msgid "UCP"
@@ -1415,42 +1571,45 @@ msgstr ""
 
 #: views/modal.customsvc.php:22
 msgid "UDP"
-msgstr ""
+msgstr "UDP"
 
 #: views/view.portmaps.php:54
 msgid "UDP Port:"
-msgstr ""
+msgstr "Cổng UDP:"
 
 #: views/view.portmaps.php:57
 msgid "UDP Ports:"
-msgstr ""
+msgstr "Các cổng UDP:"
 
 #: Console/Firewall.class.php:227
 msgid "Unknown entry!"
-msgstr ""
+msgstr "Mục nhập không xác định!"
 
 #: Firewall.class.php:524
 msgid "Update Interfaces"
-msgstr ""
+msgstr "Cập nhật các giao diện"
 
 #: assets/js/views/advanced.js:20
 msgid "Updating..."
-msgstr ""
+msgstr "Đang cập nhật..."
 
 #: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
 msgid "Warning"
 msgstr "Cảnh báo"
 
 #: Services.class.php:55
+#, fuzzy
 msgid ""
 "Warning: Unable to read /etc/ssh/sshd_config - this port may be incorrect. "
 "This is <strong>expected</strong> when viewing through the Web Interface. "
 "The correct port, as configured, will be used in the firewall service."
 msgstr ""
+"Cảnh báo: Không thể đọc /etc/ssh/sshd_config- Đây là cổng giao tiếp không "
+"chính xác. Đây"
 
 #: views/view.blacklist.php:19
 msgid "Warning: Unable to resolve this entry!"
-msgstr ""
+msgstr "Cảnh báo: Không thể giải quyết mục nhập này!"
 
 #: views/oobe.welcome.php:29
 msgid ""
@@ -1458,24 +1617,29 @@ msgid ""
 "answer. If you don't want to answer them at this time, just click Abort, and "
 "no changes will be made to your existing Firewall setup."
 msgstr ""
+"Chúng tôi hi vọng bạn tận hưởng nó! Có một số câu hỏi bổ sung bạn nên trả "
+"lời. Nếu bạn không muốn trả lời vào lúc này, chỉ cần kích vào Abort, và sẽ "
+"không có that đổi nào đến các thiết lập Firewall của bạn."
 
 #: Services.class.php:78
 msgid "Web Management"
-msgstr ""
+msgstr "Quản lý web"
 
 #: Services.class.php:99
 msgid "Web Management (Secure)"
-msgstr ""
+msgstr "Quản lý web ( An ninh)"
 
 #: Services.class.php:80
 msgid ""
 "Web management interface for your PBX. This is the http, not https (secure) "
 "interface."
 msgstr ""
+"Giao diện quản lý web cho PBX của bạn. Đâyy là giao diện  http, không phải "
+"https ( an ninh)."
 
 #: Services.class.php:101
 msgid "Web management interface for your PBX. This is the https interface."
-msgstr ""
+msgstr "Giao diện quản lý web cho PBX của bạn. Đây là giao diện http."
 
 #: Services.class.php:173
 msgid "WebRTC"
@@ -1486,10 +1650,12 @@ msgid ""
 "WebRTC is used by UCP (and other services) to enable calls to be made via a "
 "web browser."
 msgstr ""
+"WebRTC được sử dụng bởi UCP ( và các dịch vụ khác) để kích hoạt các hoạt gọi "
+"được thực hiện thông qua trình duyệt web."
 
 #: Console/Firewall.class.php:90
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
-msgstr ""
+msgstr "Khi thêm hoặc xóa khỏi một vùng, một hay nhiều ID sẽ được cung cấp."
 
 #: views/view.smart.php:25
 msgid ""
