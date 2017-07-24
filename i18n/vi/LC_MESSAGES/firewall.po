@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-22 15:59+0200\n"
+"PO-Revision-Date: 2017-07-24 11:29+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -759,11 +759,11 @@ msgstr "Các mạng đã biết:"
 
 #: assets/js/views/status.js:131
 msgid "Last 5 packets"
-msgstr ""
+msgstr "5 packet gần nhất"
 
 #: Smart.class.php:42
 msgid "Legacy SIP (chan_sip)"
-msgstr ""
+msgstr "Legacy SIP (chan_sip)"
 
 #: views/view.interfaces.php:69
 #, php-format
@@ -846,6 +846,9 @@ msgid ""
 "'Trusted' host or network to ensure that in case of configuration error, the "
 "machine is still accessible."
 msgstr ""
+"Không có mạng hay host an toàn nào được xác định. Mỗi máy chủ nen có một "
+"mạng hay host  thuộc \"Trusted\" để đảm bảo trong trường hợp lỗi cấu hình, "
+"máy vẫn có thể truy nhập được."
 
 #: views/view.customsvc.php:11
 msgid "No custom services currently defined."
@@ -962,11 +965,11 @@ msgstr "Sơ đồ của Cổng giao tiếp/ dịch vụ"
 
 #: views/page.advanced.php:32
 msgid "Preconfigured"
-msgstr ""
+msgstr "Được cấu hình sẵn"
 
 #: views/view.shortcuts.php:32
 msgid "Present"
-msgstr ""
+msgstr "Hiện thị"
 
 #: views/modal.customsvc.php:17
 msgid "Protocol"
@@ -1035,7 +1038,7 @@ msgstr "Từ chối"
 
 #: views/view.settings.php:33
 msgid "Reject Packets"
-msgstr ""
+msgstr "Từ chối các Packet"
 
 #: Zones.class.php:12
 msgid "Reject incoming traffic"
@@ -1105,22 +1108,29 @@ msgid "SSH"
 msgstr "SSH"
 
 #: Services.class.php:52
+#, fuzzy
 msgid ""
 "SSH is the most commonly used system administration tool. It is also a "
 "common target for hackers. We <strong>strongly recommend</strong> using a "
 "strong password and SSH keys. "
 msgstr ""
+"SSH là công cụ quản trị được sử dụng phổ biến nhất. Nó cũng là một mục tiêu "
+"chung cho các tin tặc (hacker). Chúng tôi strong>strongly recommend</strong>"
+"  khuyến cáo nên sử dụng một mật khẩu và các khóa SSH mạnh. "
 
 #: views/view.settings.php:13
 msgid "Safe Mode"
 msgstr "Chế độ an toàn"
 
 #: views/view.settings.php:14
+#, fuzzy
 msgid ""
 "Safe mode gives you the ability to recover from an accidental "
 "misconfiguration by temporarily disabling the firewall if the machine is "
 "rebooted two times in succession."
 msgstr ""
+"Chế độ an toàn sễ giúp bạn có khả năng khôi phục lại từ các cấu hình bị lỗi "
+"bằng cách vô hiệu firewall nếu máy được khỏi động lại 2 lần thành công."
 
 #: OOBE.class.php:34
 msgid "Sangoma Smart Firewall"
