@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-24 15:50+0200\n"
+"PO-Revision-Date: 2017-07-24 17:22+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -1452,33 +1452,41 @@ msgid ""
 "automatically updates firewall rules based on the current trunk and "
 "extension configuration of your PBX."
 msgstr ""
+"Điều này được thực hiện bằng một quy trinh nhỏ chạy trên máy chủ PBX mà nó "
+"tự động cập nhật các quy tắc firewall dựa trên các trung kế hiện tại và các "
+"cấu hình máy nhánh của PBX của bạn."
 
 #: Services.class.php:218
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
-msgstr ""
+msgstr "Đây là driver SIP (pjsip). Hầu hết các thiết bị sử dụng SIP."
 
 #: Services.class.php:458
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
 msgstr ""
+"Đầy là máy chủ XMPP. Nếu bạn muốn kết nối với nó sử dụng máy khách Jabber "
+"nội bộ, bạn cần mở cổng giao tiếp này."
 
 #: Services.class.php:275
 msgid "This is the legacy chan_sip driver."
-msgstr ""
+msgstr "Đây là dirver legacy chan_sip."
 
 #: views/view.registered.php:8 views/view.status.php:8
 msgid "This page (and all tabs) automatically update every 15 seconds."
-msgstr ""
+msgstr "Trang này( và tất cả các tab) tự động cập nhật mỗi 15 phút 1 lần."
 
 #: views/view.portmaps.php:10
 msgid ""
 "This page displays the detected ports and port ranges for all known services."
 msgstr ""
+"Trang này hiển thị các cổng giao tiếp được phát hiện và các dãy cổng giao "
+"tiếp cho tất cả các dịch vụ đã biết."
 
 #: views/view.status.php:6
 msgid "This page gives you a summary of the status of the Responsive Firewall."
 msgstr ""
+"Trang này cung cấp cho bạn một tóm tắt trạng thái của Responsive Firewall."
 
 #: Services.class.php:223 Services.class.php:280 Services.class.php:329
 msgid ""
@@ -1486,6 +1494,9 @@ msgid ""
 "<strong>should not</strong> enable access from the 'Internet' zone, or "
 "Responsive Firewall will be bypassed."
 msgstr ""
+"Giao thức này đang được quản lý bởi Responsive Firewall. Bạn <strong>không "
+"nên</strong> bật truy cập từ vùng 'Internet, hoặc Responsive Firewall  sẽ bị "
+"bỏ qua."
 
 #: views/view.settings.php:15
 msgid ""
@@ -1509,36 +1520,42 @@ msgid ""
 "this machine. This is normally accomplished by configuring your internet "
 "connection to place this machine in the 'DMZ' of your gateway."
 msgstr ""
+"Để có được đầy đủ các lợi ích của Sangoma Smart Firewall, bạn nên đảm bảo "
+"rằng <strong>nkhông có firewall nào khác</strong> đang chặn lưu lượng truy "
+"cập vào máy này. Thông thường điều này được thực hiện bằng cách cầu hình kết "
+"nối internet của bạn để đặt máy này trong 'DMZ'  tại gateway của bạn."
 
 #: views/oobe.welcome.php:21
 msgid ""
 "To start using Sangoma Smart Firewall you simply need to answer a couple of "
 "questions, and your Firewall will be configured and activated immediately."
 msgstr ""
+"Để khởi động Sangoma Smart Firewall bạn chỉ cần trả lời các cặp câu hỏi và "
+"Firewall của bạn sẽ được cấu hình và kích hoạt ngay lập tức."
 
 #: views/view.status.php:20
 msgid "Total number of Attackers detected:"
-msgstr ""
+msgstr "Tổng số kẻ tấn công được phát hiện:"
 
 #: views/view.status.php:18
 msgid "Total number of Rate-Limited Clients:"
-msgstr ""
+msgstr "Tổng số máy khách bị giới hạn tốc độ:"
 
 #: views/view.status.php:17
 msgid "Total number of Registered Clients:"
-msgstr ""
+msgstr "Tổng số máy khách đã đăng ký:"
 
 #: Zones.class.php:13
 msgid "Trusted"
-msgstr ""
+msgstr "Trusted (An toàn)"
 
 #: Firewall.class.php:135 Firewall.class.php:138
 msgid "Trusted Interface Detected"
-msgstr ""
+msgstr "Giao diện an toàn được phát hiện"
 
 #: Firewall.class.php:167
 msgid "Trusted Management Network defined"
-msgstr ""
+msgstr "Mạng quản lý an toàn (Trusted Management Network) được xác định"
 
 #: Services.class.php:118
 msgid "UCP"
@@ -1554,42 +1571,45 @@ msgstr ""
 
 #: views/modal.customsvc.php:22
 msgid "UDP"
-msgstr ""
+msgstr "UDP"
 
 #: views/view.portmaps.php:54
 msgid "UDP Port:"
-msgstr ""
+msgstr "Cổng UDP:"
 
 #: views/view.portmaps.php:57
 msgid "UDP Ports:"
-msgstr ""
+msgstr "Các cổng UDP:"
 
 #: Console/Firewall.class.php:227
 msgid "Unknown entry!"
-msgstr ""
+msgstr "Mục nhập không xác định!"
 
 #: Firewall.class.php:524
 msgid "Update Interfaces"
-msgstr ""
+msgstr "Cập nhật các giao diện"
 
 #: assets/js/views/advanced.js:20
 msgid "Updating..."
-msgstr ""
+msgstr "Đang cập nhật..."
 
 #: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
 msgid "Warning"
 msgstr "Cảnh báo"
 
 #: Services.class.php:55
+#, fuzzy
 msgid ""
 "Warning: Unable to read /etc/ssh/sshd_config - this port may be incorrect. "
 "This is <strong>expected</strong> when viewing through the Web Interface. "
 "The correct port, as configured, will be used in the firewall service."
 msgstr ""
+"Cảnh báo: Không thể đọc /etc/ssh/sshd_config- Đây là cổng giao tiếp không "
+"chính xác. Đây"
 
 #: views/view.blacklist.php:19
 msgid "Warning: Unable to resolve this entry!"
-msgstr ""
+msgstr "Cảnh báo: Không thể giải quyết mục nhập này!"
 
 #: views/oobe.welcome.php:29
 msgid ""
@@ -1597,20 +1617,25 @@ msgid ""
 "answer. If you don't want to answer them at this time, just click Abort, and "
 "no changes will be made to your existing Firewall setup."
 msgstr ""
+"Chúng tôi hi vọng bạn tận hưởng nó! Có một số câu hỏi bổ sung bạn nên trả "
+"lời. Nếu bạn không muốn trả lời vào lúc này, chỉ cần kích vào Abort, và sẽ "
+"không có that đổi nào đến các thiết lập Firewall của bạn."
 
 #: Services.class.php:78
 msgid "Web Management"
-msgstr ""
+msgstr "Quản lý web"
 
 #: Services.class.php:99
 msgid "Web Management (Secure)"
-msgstr ""
+msgstr "Quản lý web ( An ninh)"
 
 #: Services.class.php:80
 msgid ""
 "Web management interface for your PBX. This is the http, not https (secure) "
 "interface."
 msgstr ""
+"Giao diện quản lý web cho PBX của bạn. Đầy là giao diện 9 an ninh) http, "
+"không phải https"
 
 #: Services.class.php:101
 msgid "Web management interface for your PBX. This is the https interface."
