@@ -25,7 +25,7 @@ if (!$smart['responsive']) {
 	$docs = array(
 		_("Responsive Firewall is <strong>enabled</strong>."),
 		_("There is no need to explicitly add definitions for peers, as they are automatically allowed through the firewall after successfully registering."),
-		sprtinf(_("After an endpoint is registered, the source of that endpoint is %s permission to use UCP, if UCP is enabled."),"<strong>"._("automatically granted")."</strong>"),
+		sprintf(_("After an endpoint is registered, the source of that endpoint is %s permission to use UCP, if UCP is enabled."),"<strong>"._("automatically granted")."</strong>"),
 	);
 }
 foreach ($docs as $p) {
