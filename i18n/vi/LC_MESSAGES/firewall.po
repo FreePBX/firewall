@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-25 15:56+0200\n"
+"PO-Revision-Date: 2017-07-25 17:04+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -1084,6 +1084,12 @@ msgid ""
 "192.168.0.0/16, 172.16.0.0/12, and 10.0.0.0/8 and IPv6 networks fc00::/8 and "
 "fd00::/8 to the 'Trusted' zone, and excludes it from all firewalls."
 msgstr ""
+"RFC1918 và RFC4193 là các RFC ( Request for comment- Yêu cầu nhận xét) xác "
+"định không gian địa chỉ mạng nội bộ, dành riêng để sử dụng khi bạn không kết "
+"nối trực tiếp với internet hoặc khi bạn không muốn không gian địa chỉ của "
+"mình có thể định tuyến.Chúng sẽ thêm các mạng IPv4 192.168.0.0/16, "
+"172.16.0.0/12 và 10.0.0.0/8, các mạng IPv6 fc00 :: / 8 và fd00 :: / 8 vào "
+"vùng 'Trusted' và bảo vệ nó khỏi tất cả các tường lửa ."
 
 #: views/view.shortcuts.php:4
 msgid "RFC1918/RFC4193"
@@ -1138,7 +1144,8 @@ msgid ""
 "your machine, while learning and automatically granting permission to "
 "authorized devices, without the need to manually configure them."
 msgstr ""
-"Responsive Firewall  cho phép máy của bạn tự động chặn các tấn công khi đang"
+"Responsive Firewall  cho phép máy của bạn tự động chặn các tấn công khi đang "
+"tiếp nhận và"
 
 #: OOBE.class.php:205
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
@@ -1296,7 +1303,7 @@ msgstr "Dừng Firewall hệ thống"
 #: Console/Firewall.class.php:138 Console/Firewall.class.php:178
 #: Console/Firewall.class.php:234
 msgid "Success!"
-msgstr ""
+msgstr "Thành công!"
 
 #: views/view.registered.php:3
 msgid "Successfully Registered Endpoints"
@@ -1487,6 +1494,10 @@ msgid ""
 "only for previously unknown hosts who have been authorized by Asterisk and "
 "granted access by the firewall."
 msgstr ""
+"Điều này <strong>không</strong> bao gồm các Endpoint đã được gán cho một "
+"Vùng, hoặc, các Endpoint đã <strong>đăng ký</strong> khi Firewaal khởi động "
+"lại, Vì chúng sẽ tự động được cấp quyền truy cập. Điều này cỉ dành cho các "
+"host không xác định được Asterisk cấp quyền và Firewall cho phép truy cập."
 
 #: views/view.shortcuts.php:12
 #, php-format
