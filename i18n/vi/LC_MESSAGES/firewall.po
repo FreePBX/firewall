@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-25 11:42+0200\n"
+"PO-Revision-Date: 2017-07-25 15:56+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -662,6 +662,9 @@ msgid ""
 "will be dropped for a short period of time. If attempts to authenticate "
 "continue without success, the attacking host will be blocked for 24 hours."
 msgstr ""
+"Nếu số lần thử kết nối đến không hợp lệ, lưu lượng từ máy này sẽ bị sụt giảm "
+"trong một khoảng thời gian ngắn. Nếu các lần thử xác thực tiếp tục không "
+"thành công, host tấn công sẽ bị khóa trong 24 tiếng."
 
 #: views/view.smart.php:26
 msgid ""
@@ -834,7 +837,7 @@ msgstr "Hầu hết các giao diện nên được cài đặt về <strong>Inte
 #: views/view.customsvc.php:62
 #, php-format
 msgid "Multiple Ports: %s"
-msgstr ""
+msgstr "Nhiểu Cổng giao tiếp: %s"
 
 #: Services.class.php:489
 msgid "NFS"
@@ -962,17 +965,17 @@ msgid "PJSIP is not available on this machine"
 msgstr "PJSIP không sẵn có trên máy này"
 
 #: Services.class.php:338
-#, fuzzy
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTP provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
 "expose this port to the public internet, as SIP Secrets will be available to "
 "a knowledgable attacker."
 msgstr ""
-"Điện thoại được cấu hình qua Trình quản lý Endpoint để sử dụng tính năng "
-"cung cấp HTTP sẽ sử dụng cổng này để tải xuống cấu hình của nó. KHÔNG CẦN để "
-"lộ cổng này vào internet công cộng, vì SIP Secrets sẽ có sẵn cho một kẻ tấn "
-"công có khả năng hiểu được."
+"Các điện thoại được cấu hình qua Trình quản lý Endpoint để sử dụng tính năng "
+"Dự phòng tài nguyên HTTP,  sẽ sử dụng cổng giao tiếp này để tải xuống cấu "
+"hình của chính nó. KHÔNG NÊN để cổng này tiếp xúc với internet công cộng, vì "
+"các mã bảo mật SIP (SIP Secrets) sẽ có sẵn cho những kẻ tấn công mà những kẻ "
+"này có thể giải được các mật mã đó."
 
 #: Services.class.php:364
 msgid ""
@@ -981,6 +984,11 @@ msgid ""
 "expose this port to the public internet, as SIP Secrets will be available to "
 "a knowledgable attacker."
 msgstr ""
+"Các điện thoại được cấu hình qua Trình quản lý Endpoint để sử dụng tính năng "
+"Dự phòng tài nguyên HTTP,  sẽ sử dụng cổng giao tiếp này để tải xuống cấu "
+"hình của chính nó. KHÔNG NÊN để cổng này tiếp xúc với internet công cộng, vì "
+"các mã bảo mật SIP (SIP Secrets) sẽ có sẵn cho những kẻ tấn công mà những kẻ "
+"này có thể giải được các mật mã đó."
 
 #: OOBE.class.php:168
 msgid ""
@@ -991,8 +999,8 @@ msgstr ""
 "Vui lòng đảm bảo rằng bạn đang không vô tình cho phép những host trái phép "
 "truy cập vào máy của mình. Bạn chỉ chọn 'Yes' nếu bạn \n"
 "Hãy đảm bảo rằng bạn không vô tình cho phép các máy chủ trái phép truy cập "
-"vào máy của bạn. Bạn chỉ nên chọn 'Có' nếu bạn chắc chắbạn chắc chắn mạng ( "
-"nêu trên) không bị các bên thứ ba không rõ truy cập."
+"vào máy của bạn. Bạn chỉ nên chọn 'Có' khi bạn chắc chắn mạng ( nêu trên) "
+"không bị các bên thứ ba không rõ truy cập."
 
 #: views/disabled.php:13
 msgid "Please visit the PBX Wiki for more information on the firewall."
