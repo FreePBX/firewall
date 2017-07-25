@@ -10,21 +10,21 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-24 19:46+0200\n"
+"PO-Revision-Date: 2017-07-25 09:33+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
-"Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
-"firewall/vi/>\n"
+"Language-Team: Vietnamese "
+"<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
+"Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: vi\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.4\n"
 
 #: Services.class.php:586
 #, php-format
 msgid "%s is a web-based call management solution."
-msgstr ""
+msgstr "%s là một giải pháp quản lý cuộc gọi dựa trên nền tảng wed."
 
 #: Services.class.php:582
 #, php-format
@@ -38,6 +38,11 @@ msgid ""
 "hosted clients unrestricted access to your machine! Please use common sense "
 "to make sure that you are only allowing known trusted networks."
 msgstr ""
+"<strong>Cảnh báo quan trọng!</strong> Nếu bạn đang ở trong một môi trường đã "
+"được đưa lên host (ví dụ, AWS) và nếu bạn kích hoạt nó, bạn có thể vô tình "
+"cho phép các máy khách ( đã được đưa lên host) khác truy cập không hạn chế "
+"vào máy tính của bạn! Vui lòng sử dụng như thông thường để đảm bảo bạn chỉ "
+"đang biết các mạng an toàn đã biết."
 
 #: views/view.interfaces.php:11
 msgid ""
@@ -46,6 +51,10 @@ msgid ""
 "interfaces are set to this zone so they can be configured correctly without "
 "interfering with existing traffic."
 msgstr ""
+"Một giao diện 'An toàn' nghĩa là <strong>không có công tác lọc nào</strong> "
+"được áp dụng cho bất cứ lưu lượng đến giao diện này. Những giao diện mới "
+"được khám phá được cài đặt vào vùng này nên chúng có thể được cấu hình chính "
+"xác mà không bị gián đoạn bởi các lưu lượng hiện có."
 
 #: Firewall.class.php:139
 #, php-format
@@ -276,6 +285,9 @@ msgid ""
 "machine. By dropping the packet silently, no response is sent to the "
 "attacker, and they may move on to a different target."
 msgstr ""
+"Bằng cách gửi một Reject packet, kẻ tấn công sẽ biết chúng vừa tìm thấy được "
+"một máy. Bằng cách âm thầm thả packet, sẽ không có bất kỳ phản hồi nào đến "
+"kẻ tấn công và chúng sẽ tiếp tục tìm các mục tiêu khác."
 
 #: Services.class.php:314
 msgid "CHANSIP is not available on this machine"
@@ -328,6 +340,9 @@ msgid ""
 "don't accidentally expose an automatically configured service by using the "
 "same port and protocol."
 msgstr ""
+"Các dịch vụ tùy chỉnh có thể được xác định trên trang này. Vui lòng kiểm tra "
+"để đảm bảo bạn không bị tiếp xúc đột ngột với một dịch vụ được cấu hình tự "
+"động bằng cách sử dụng giao thức và cổng giao típ giống nhau."
 
 #: Services.class.php:139
 msgid "Dedicated UCP access is disabled in Sysadmin Port Management"
@@ -508,7 +523,7 @@ msgstr "Firewall đã bị vô hiệu"
 
 #: Firewall.class.php:114 Firewall.class.php:115
 msgid "Firewall Integrity Failed"
-msgstr ""
+msgstr "Tính toàn vẹn Firewall bị sự cố"
 
 #: Firewall.class.php:74
 msgid "Firewall Service not running!"
@@ -566,7 +581,7 @@ msgstr ""
 
 #: Console/Firewall.class.php:22
 msgid "Force Add/Removal of entry"
-msgstr ""
+msgstr "Bắt buộc Them/Xóa bỏ Mục nhập"
 
 #: OOBE.class.php:200
 msgid "Further information is available at the PBX Wiki."
@@ -574,7 +589,7 @@ msgstr "Các thông tin khác có sẵn tại  PBX Wiki."
 
 #: Services.class.php:336
 msgid "HTTP Provisioning"
-msgstr ""
+msgstr "Dự phòng tài nguyên HTTP"
 
 #: Services.class.php:351
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
@@ -586,7 +601,7 @@ msgstr "Các ứng dụng HTTP REST  bị vô hiệu trong Sysadmin Port Managem
 
 #: Services.class.php:362
 msgid "HTTPS Provisioning"
-msgstr ""
+msgstr "Dự phòng tài nguyên HTTPS"
 
 #: Services.class.php:377
 msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
@@ -654,6 +669,9 @@ msgid ""
 "a 'Known Good' zone, that has permission to use that protocol, and is "
 "additionally granted access to UCP, if UCP is enabled."
 msgstr ""
+"Nếu việc thử đăng ký thành công thì sau đó host từ xa sẽ được thêm vào vùng "
+"'Known Good\". điều này sẽ cho phép sử dụng giao thức đó và được cấp thêm "
+"quyền truy nhập vào UCP nếu UCP được kích hoạt."
 
 #: OOBE.class.php:159
 msgid ""
@@ -669,6 +687,10 @@ msgid ""
 "Extensions, will randomly and unexpectedly change your IP address. Ensure "
 "you add the complete network."
 msgstr ""
+"Nếu bạn đang đến từ mạng IPv6, <strong>Không nên</strong> chỉ thêm mỗi "
+"'host' của bạn, vì những thay đổi địa chỉ MAC hay các máy nhánh an ninh IPv6 "
+"sẽ thay đổi địa chỉ IP của bạn một cách ngẫu nhiên đột ngột. Cần đảm bảo bạn "
+"thêm một mạng đầy đủ."
 
 #: views/view.status.php:7
 msgid ""
@@ -692,6 +714,9 @@ msgid ""
 "red 'X' to remove the block. If the host continues to send invalid data, it "
 "will be automatically re-added."
 msgstr ""
+"Nếu bạn tin và một trong những host mà bạn vừa thêm trong danh sách lỗi, bạn "
+"có thể kích nút đỏ 'X\" để xóa nó khỏi danh sách chặn. Nếu host tiếp tục gửi "
+"những dữ liệu không hợp lệ, nó sẽ tự động được thêm vô lại."
 
 #: views/oobe.welcome.php:22
 msgid ""
@@ -709,14 +734,20 @@ msgid ""
 "distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
 "further information."
 msgstr ""
+"Firewall PBX đã được tích hợp hiện đang làm việc với các phân phối tương "
+"thích của RHEL6 và RHEL 7. Lưu ý: Điều này yêu cầu phải có Sysadmin RPM. Vui "
+"lòng xem wiki để có thêm thông tin."
 
 #: Firewall.class.php:116
-#, fuzzy, php-format
+#, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
 "alterations of iptables, or, an unexpected error. Please restart the "
 "firewall service."
-msgstr "Giao diện %s không nằm trong vùng chính xác. Nguyên"
+msgstr ""
+"Giao diện %s không nằm trong vùng chính xác. Nguyên nhân là do sự thay đổi "
+"thủ công của các iptable, hay một lỗi không mong muốn. Vui lòng khởi động "
+"lại dịch vụ firewall."
 
 #: views/view.interfaces.php:3
 msgid "Interface Name"
@@ -736,6 +767,9 @@ msgid ""
 "opening and closing ports to known trunks (eg, VoIP providers), and allows "
 "you to limit the services this machine provides to clients."
 msgstr ""
+"Nó liên tục giám sát cấu hình máy của bạn, tự động đóng/ mở các cổng giao "
+"tiếp tới các trung kế đã biết ( Ví dụ các nhà cung cấp VoIP), và cho phép "
+"bạn giới hạn các dịch vụ mà máy này cung cấp cho các máy khách."
 
 #: OOBE.class.php:126
 #, php-format
@@ -744,6 +778,8 @@ msgid ""
 "be marked as Trusted. This will ensure that you can not accidentally be "
 "locked out of this server."
 msgstr ""
+"Khuyến cáo rằng máy khách bạn đang sử dụng (%s) nên được đánh dấu là Trusted "
+"( An toàn). Điều này sẽ đảm bảo bạn sẽ không bị máy chủ này khóa đột ngột."
 
 #: OOBE.class.php:199
 msgid "It is recommended to turn this on if you have remote clients."
@@ -751,7 +787,7 @@ msgstr "Nếu bạn có các máy khách từ xa thì khuyến cáo nên bật n
 
 #: views/view.networks.php:3
 msgid "Known Network Definitions"
-msgstr ""
+msgstr "Các định nghĩa mạng đã biết"
 
 #: OOBE.class.php:248
 msgid "Known Networks:"
@@ -880,6 +916,10 @@ msgid ""
 "protocol, this filtering and rate limiting will not be used.  This is only "
 "used when an incoming connection <strong>would normally be blocked</strong>."
 msgstr ""
+"Lưu ý rằng nếu bạn cho phép các kết nối bên ngoài truy cập vào một giao "
+"thức, việc lọc và hạn chế tốc độ (filtering and rate limiting) sẽ không được "
+"sử dụng. Chúng chỉ được sử dụng khi một kết nối đến <strong>bị chặn "
+"</strong>."
 
 #: views/view.services.php:4
 msgid ""
