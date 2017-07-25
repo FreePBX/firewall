@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-24 17:22+0200\n"
+"PO-Revision-Date: 2017-07-24 19:46+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -1634,12 +1634,12 @@ msgid ""
 "Web management interface for your PBX. This is the http, not https (secure) "
 "interface."
 msgstr ""
-"Giao diện quản lý web cho PBX của bạn. Đầy là giao diện 9 an ninh) http, "
-"không phải https"
+"Giao diện quản lý web cho PBX của bạn. Đâyy là giao diện  http, không phải "
+"https ( an ninh)."
 
 #: Services.class.php:101
 msgid "Web management interface for your PBX. This is the https interface."
-msgstr ""
+msgstr "Giao diện quản lý web cho PBX của bạn. Đây là giao diện http."
 
 #: Services.class.php:173
 msgid "WebRTC"
@@ -1650,10 +1650,12 @@ msgid ""
 "WebRTC is used by UCP (and other services) to enable calls to be made via a "
 "web browser."
 msgstr ""
+"WebRTC được sử dụng bởi UCP ( và các dịch vụ khác) để kích hoạt các hoạt gọi "
+"được thực hiện thông qua trình duyệt web."
 
 #: Console/Firewall.class.php:90
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
-msgstr ""
+msgstr "Khi thêm hoặc xóa khỏi một vùng, một hay nhiều ID sẽ được cung cấp."
 
 #: views/view.smart.php:25
 msgid ""
