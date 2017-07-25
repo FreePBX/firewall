@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-25 09:33+0200\n"
+"PO-Revision-Date: 2017-07-25 11:42+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -928,6 +928,10 @@ msgid ""
 "equivalent to turning off access from all zones, unless you are running an "
 "extra Firewall plugin."
 msgstr ""
+"Lưu ý rằng cài đặt 'Reject' chặn hoàn toàn các dịch vụ, và chỉ có thể được "
+"ghi đè bằng cách truy cập từ một Trusted Zone. Đây là chức năng tương đương "
+"với việc tắt truy cập từ tất cả các zone, trừ khi bạn đang chạy một plugin "
+"Firewall bổ sung."
 
 #: views/view.status.php:19
 msgid "Number of Currently Rate-Limited Clients:"
@@ -958,12 +962,17 @@ msgid "PJSIP is not available on this machine"
 msgstr "PJSIP không sẵn có trên máy này"
 
 #: Services.class.php:338
+#, fuzzy
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTP provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
 "expose this port to the public internet, as SIP Secrets will be available to "
 "a knowledgable attacker."
 msgstr ""
+"Điện thoại được cấu hình qua Trình quản lý Endpoint để sử dụng tính năng "
+"cung cấp HTTP sẽ sử dụng cổng này để tải xuống cấu hình của nó. KHÔNG CẦN để "
+"lộ cổng này vào internet công cộng, vì SIP Secrets sẽ có sẵn cho một kẻ tấn "
+"công có khả năng hiểu được."
 
 #: Services.class.php:364
 msgid ""
@@ -979,6 +988,11 @@ msgid ""
 "access to your machine. You should only select 'Yes' if you are sure the "
 "network (above) is not accessible by any unknown third parties."
 msgstr ""
+"Vui lòng đảm bảo rằng bạn đang không vô tình cho phép những host trái phép "
+"truy cập vào máy của mình. Bạn chỉ chọn 'Yes' nếu bạn \n"
+"Hãy đảm bảo rằng bạn không vô tình cho phép các máy chủ trái phép truy cập "
+"vào máy của bạn. Bạn chỉ nên chọn 'Có' nếu bạn chắc chắbạn chắc chắn mạng ( "
+"nêu trên) không bị các bên thứ ba không rõ truy cập."
 
 #: views/disabled.php:13
 msgid "Please visit the PBX Wiki for more information on the firewall."
@@ -986,18 +1000,21 @@ msgstr "Vui lòng xem PBX Wiki để biết thêm thông tin về firewall."
 
 #: views/modal.customsvc.php:27
 msgid "Port Range"
-msgstr ""
+msgstr "Dãy port"
 
 #: views/view.customsvc.php:60
 #, php-format
 msgid "Port Range: %s"
-msgstr ""
+msgstr "Dãy port: %s"
 
 #: views/modal.customsvc.php:32
 msgid ""
 "Port ranges may be either a single number (9898), a selection of numbers "
 "(9898,9777,862), or a range delimited by a colon (9000:9500)"
 msgstr ""
+"Các dãy port có thể là một số đơn ( 9898), gồm nhiều số được chọn "
+"(9898,9777,862) hoặc một dãy được ngăn cách nhau bằng dấu hai chấm "
+"(9000:9500)"
 
 #: views/page.advanced.php:29
 msgid "Port/Service Maps"
@@ -1046,6 +1063,10 @@ msgid ""
 "access via Responsive Firewall are automatically granted access to this "
 "service."
 msgstr ""
+"Các REST Apps được sử dụng cho những điện thoại thông minh để cung cấp một "
+"giao diện tương tác từ chính điện thoại đó. Lưu ý rằng bất cứ thiết bị nào "
+"được cho phép truy cập thông qua Responsive Firewall  đều tự động được cấp "
+"quyền truy cập vào dịch vụ này."
 
 #: views/view.shortcuts.php:5
 msgid ""
@@ -1103,11 +1124,13 @@ msgid "Responsive Firewall"
 msgstr ""
 
 #: views/view.about.php:20
+#, fuzzy
 msgid ""
 "Responsive Firewall allows your machine to automatically block attacks to "
 "your machine, while learning and automatically granting permission to "
 "authorized devices, without the need to manually configure them."
 msgstr ""
+"Responsive Firewall  cho phép máy của bạn tự động chặn các tấn công khi đang"
 
 #: OOBE.class.php:205
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
@@ -1149,15 +1172,14 @@ msgid "SSH"
 msgstr "SSH"
 
 #: Services.class.php:52
-#, fuzzy
 msgid ""
 "SSH is the most commonly used system administration tool. It is also a "
 "common target for hackers. We <strong>strongly recommend</strong> using a "
 "strong password and SSH keys. "
 msgstr ""
 "SSH là công cụ quản trị được sử dụng phổ biến nhất. Nó cũng là một mục tiêu "
-"chung cho các tin tặc (hacker). Chúng tôi strong>strongly recommend</"
-"strong>  khuyến cáo nên sử dụng một mật khẩu và các khóa SSH mạnh. "
+"chung cho các tin tặc (hacker). Chúng tôi strong>strongly recommend</strong>"
+"  khuyến cáo nên sử dụng một mật khẩu và các khóa SSH mạnh. "
 
 #: views/view.settings.php:13
 msgid "Safe Mode"
@@ -1236,7 +1258,7 @@ msgstr "Liệu mạng hiện tại của bạn có an toàn?"
 
 #: Console/Firewall.class.php:23
 msgid "Show help"
-msgstr ""
+msgstr "Đưa ra giúp đỡ"
 
 #: views/view.customsvc.php:65
 #, php-format
@@ -1249,7 +1271,7 @@ msgstr "Khởi động ( bật lên nếu đang bị vô hiệu) Firewall hệ t
 
 #: Firewall.class.php:66
 msgid "Starting up"
-msgstr ""
+msgstr "Khởi động"
 
 #: views/bootnav.php:6
 msgid "Status"
