@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-25 17:04+0200\n"
+"PO-Revision-Date: 2017-07-25 21:54+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -1135,17 +1135,17 @@ msgstr "Cài đặt lại"
 
 #: views/page.about.php:32 views/view.smart.php:3
 msgid "Responsive Firewall"
-msgstr ""
+msgstr "Tường lửa Responsive"
 
 #: views/view.about.php:20
-#, fuzzy
 msgid ""
 "Responsive Firewall allows your machine to automatically block attacks to "
 "your machine, while learning and automatically granting permission to "
 "authorized devices, without the need to manually configure them."
 msgstr ""
 "Responsive Firewall  cho phép máy của bạn tự động chặn các tấn công khi đang "
-"tiếp nhận và"
+"lĩnh hội và tự động cấp phép cho các thiết bị mà không cần tự động cấu hình "
+"chúng."
 
 #: OOBE.class.php:205
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
@@ -1509,6 +1509,11 @@ msgid ""
 "configure your firewall, it is wise to enable this to ensure you don't lock "
 "yourself out of your machine."
 msgstr ""
+"Điều này sẽ cấp phép cho máy đang quản lý dịch vụ firewall. Nếu bạn chọn "
+"'Add Network', nó sẽ thêm một mạng mà máy chủ thấy bạn đến từ mạng đó (%s), "
+"nếu bạn chọn 'Add host' nó sẽ chỉ thêm địa chỉ IP cá nhân (%s). Khi bắt đầu "
+"cấu hình firewall của bạn, nó sẽ kích hoạt điều này để đảm bảo bạn không bị "
+"khóa bởi chính máy của mình."
 
 #: views/view.blacklist.php:1
 msgid ""
@@ -1586,6 +1591,9 @@ msgid ""
 "rebooting your machine without your knowledge. Otherwise it should be left "
 "<strong>Enabled</strong>"
 msgstr ""
+"Nên vô hiệu điều này nếu có những đối tượng độc hại có khả ăng khởi động lại "
+"máy của bạn mà không cho bạn biết. Còn lại, nó nên được để ở chế độ <strong>"
+"Kích hoạt</strong>"
 
 #: views/view.blacklist.php:2
 msgid ""
@@ -1594,6 +1602,10 @@ msgid ""
 "that their traffic has been administratively blocked. They will NOT be "
 "permitted to access the Responsive Firewall service."
 msgstr ""
+"Để giảm nguy cơ bị tấn công, bạn có thể thêm bất kỳ máy chủ hoặc mạng nào "
+"vào đây và bất kỳ lưu lượng truy cập từ các mục nhập này sẽ được gửi một "
+"phản hồi thông báo rằng lưu lượng truy cập của chúng đã bị cấm về mặt hành "
+"chính. Chúng KHÔNG được phép truy cập vào dịch vụ Responsive Firewall."
 
 #: views/oobe.welcome.php:9
 msgid ""
@@ -1650,6 +1662,10 @@ msgid ""
 "their web browsers to make calls through UCP you also need to add WebRTC to "
 "the same zone(s)."
 msgstr ""
+"UCP - User Control Panel -  là một giao diện người dùng chính của PBX, và "
+"cho phép họ có thể điều khiển điện thoại của chính mình. Lưu ý rằng nếu bạn "
+"muốn cho phép người dùng sử dụng các trình duyệt web của họ để thực hiện "
+"cuộc gọi qua UCP bạn phải cần thêm một WebRTC vào cùng những vùng giống nhau."
 
 #: views/modal.customsvc.php:22
 msgid "UDP"
@@ -1680,14 +1696,15 @@ msgid "Warning"
 msgstr "Cảnh báo"
 
 #: Services.class.php:55
-#, fuzzy
 msgid ""
 "Warning: Unable to read /etc/ssh/sshd_config - this port may be incorrect. "
 "This is <strong>expected</strong> when viewing through the Web Interface. "
 "The correct port, as configured, will be used in the firewall service."
 msgstr ""
 "Cảnh báo: Không thể đọc /etc/ssh/sshd_config- Đây là cổng giao tiếp không "
-"chính xác. Đây"
+"chính xác. Điều này<strong>dự kiến </strong>sẽ xảy ra khi bạn xem thông qua "
+"Giao diện Web. Cổng chính xác như đã cấu hình sẽ được sử dụng trong dịch vụ "
+"Firewall."
 
 #: views/view.blacklist.php:19
 msgid "Warning: Unable to resolve this entry!"
@@ -1740,11 +1757,12 @@ msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr "Khi thêm hoặc xóa khỏi một vùng, một hay nhiều ID sẽ được cung cấp."
 
 #: views/view.smart.php:25
+#, fuzzy
 msgid ""
 "When this is enabled, any incoming VoIP connection attempts that would be "
 "otherwise rejected are <strong>not blocked</strong>, and instead allowed a "
 "<strong>very limited</strong> amount of registration attempts."
-msgstr ""
+msgstr "Khi điều này được kích hoạt, bất kỳ lần thử kết nối VoIP đến"
 
 #: Services.class.php:456
 msgid "XMPP"
@@ -1755,22 +1773,25 @@ msgid ""
 "You can add individual hosts and networks to override the default permission "
 "for an interface."
 msgstr ""
+"Bạn có thể thêm các host và các mạng riêng lẻ để ghi đè sự cho phép mặc định "
+"của một giao diện."
 
 #: Firewall.class.php:265
 msgid "You can add the host automatically here."
-msgstr ""
+msgstr "Bạn có thể tự động thêm host ở đây."
 
 #: views/view.about.php:21
 msgid "You can enable Responsive Firewall in the 'Responsive Firewall' tab."
 msgstr ""
+"Bạn có thể kích hoạt Responsive Firewall trong tab 'Responsive Firewall'."
 
 #: views/view.interfaces.php:109
 msgid "You can enter a short description for this interface here."
-msgstr ""
+msgstr "Bạn có thể nhập một mô tả ngắn cho giao diện này ở đây."
 
 #: views/view.networks.php:89
 msgid "You can enter a short description for this network here."
-msgstr ""
+msgstr "Bạn có thể nhập một mô tả ngắn cho mạng này ở đây."
 
 #: OOBE.class.php:236
 msgid ""
@@ -1778,37 +1799,47 @@ msgid ""
 "If you have a non-static IP address, you may need to use a DDNS provider "
 "which will require manual configuration."
 msgstr ""
+"Bạn có thể xác minh những cài đặt này trong  sau khi thuật sĩ này hoàn "
+"thành. Nếu bạn có một địa chỉ IP không cố định, bạn có thể cần sử dụng một "
+"nhà cung cấp DDNS mà yêu cầu phải cấu hình thủ công."
 
 #: views/view.networks.php:8
 msgid ""
 "You may also enter hostnames here (including Dynamic DNS hosts), which will "
 "be automatically monitored and updated."
 msgstr ""
+"Bạn sẽ nhập các hostname ở đây ( bao gồm các host DNS) mà chúng sẽ được cập "
+"nhật và điều khiển tự động."
 
 #: OOBE.class.php:235
 msgid ""
 "You should say 'Yes' to this, unless you have an extremely complex network "
 "with multiple external default gateways."
 msgstr ""
+"Bạn nên cài về 'Yes' trừ khi bạn có một mạng cực kỳ phức tạp với nhiều cổng "
+"mặc định từ bên ngoài."
 
 #: OOBE.class.php:127
+#, fuzzy
 msgid ""
 "You would normally select <strong>Yes</strong> to this question. The only "
 "time you would pick No is if you are not using the client machine you will "
 "be using in the future to manage this system."
 msgstr ""
+"Bạn thông thường sẽ chọn <strong>Yes</strong> cho câu hỏi này. Chỉ có thời "
+"gian ban"
 
 #: views/view.shortcuts.php:11
 msgid "Your Client"
-msgstr ""
+msgstr "Máy khách của bạn"
 
 #: views/page.advanced.php:26
 msgid "Zone Information"
-msgstr ""
+msgstr "Thông tin của Vùng"
 
 #: Services.class.php:187
 msgid "Zulu UC "
-msgstr ""
+msgstr "Zulu UC "
 
 #: Services.class.php:189
 msgid ""
@@ -1819,15 +1850,15 @@ msgstr ""
 
 #: Services.class.php:204
 msgid "Zulu is not not available on this machine"
-msgstr ""
+msgstr "Zulu không sẵn có trên máy này"
 
 #: views/view.about.php:28
 msgid "automatically granted"
-msgstr ""
+msgstr "Tự động cấp"
 
 #: Services.class.php:600
 msgid "iSymphony is not installed on this server."
-msgstr ""
+msgstr "iSymphony không được cài đặt trên máy chủ này."
 
 #: views/view.about.php:9
 msgid ""
@@ -1835,3 +1866,9 @@ msgid ""
 "the remote clients allowed to connect to this machine, and automatically "
 "allows access from valid hosts."
 msgstr ""
+"Là một tường lửa tích hợp hoàn toàn và chặt chẽ liên tục giám sát các máy "
+"khách từ xa được cho phép kết nối với máy tính này và tự động cho phép truy "
+"cập từ các máy chủ hợp lệ.\n"
+"Là một tường lửa kết hợp chặt chẽ và tích hợp đầy đủ để có thể giám sát liên "
+"tục các máy khách từ xa được cho phép kết nối với máy này và tự động cho "
+"phép truy nhập từ các host hợp lệ."
