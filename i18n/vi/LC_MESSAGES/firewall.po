@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-26 21:33+0200\n"
+"PO-Revision-Date: 2017-07-29 16:34+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese "
 "<http://weblate.freepbx.org/projects/freepbx/firewall/vi/>\n"
@@ -802,7 +802,7 @@ msgstr "5 packet gần nhất"
 
 #: Smart.class.php:42
 msgid "Legacy SIP (chan_sip)"
-msgstr "Legacy SIP (chan_sip)"
+msgstr "Giao thức Legacy SIP (chan_sip)"
 
 #: views/view.interfaces.php:69
 #, php-format
@@ -853,7 +853,7 @@ msgstr "Mạng/host"
 
 #: views/page.about.php:38
 msgid "Networks"
-msgstr "Các mạng"
+msgstr "Mạng"
 
 #: Firewall.class.php:126 Firewall.class.php:128
 msgid "New Interface Detected"
@@ -1193,8 +1193,8 @@ msgid ""
 "strong password and SSH keys. "
 msgstr ""
 "SSH là công cụ quản trị được sử dụng phổ biến nhất. Nó cũng là một mục tiêu "
-"chung cho các tin tặc (hacker). Chúng tôi strong>strongly recommend</strong>"
-"  khuyến cáo nên sử dụng một mật khẩu và các khóa SSH mạnh. "
+"chung cho các tin tặc (hacker). Chúng tôi <strong>khuyến cáo</strong>nên sử "
+"dụng một mật khẩu và các khóa SSH mạnh. "
 
 #: views/view.settings.php:13
 msgid "Safe Mode"
@@ -1757,12 +1757,14 @@ msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr "Khi thêm hoặc xóa khỏi một vùng, một hay nhiều ID sẽ được cung cấp."
 
 #: views/view.smart.php:25
-#, fuzzy
 msgid ""
 "When this is enabled, any incoming VoIP connection attempts that would be "
 "otherwise rejected are <strong>not blocked</strong>, and instead allowed a "
 "<strong>very limited</strong> amount of registration attempts."
-msgstr "Khi điều này được kích hoạt, bất kỳ lần thử kết nối VoIP đến"
+msgstr ""
+"Khi điều này được kích hoạt, bất kỳ lần thử kết nối VoIP đến nào bị từ chối "
+"sẽ <strong>không bị chặn</strong>,và thay vào đó lại cho phép số lần thử "
+"đăng ký <strong>rất hạn chế</strong>."
 
 #: Services.class.php:456
 msgid "XMPP"
@@ -1820,14 +1822,14 @@ msgstr ""
 "mặc định từ bên ngoài."
 
 #: OOBE.class.php:127
-#, fuzzy
 msgid ""
 "You would normally select <strong>Yes</strong> to this question. The only "
 "time you would pick No is if you are not using the client machine you will "
 "be using in the future to manage this system."
 msgstr ""
-"Bạn thông thường sẽ chọn <strong>Yes</strong> cho câu hỏi này. Chỉ có thời "
-"gian ban"
+"Bạn thường sẽ chọn <strong>Yes</strong> cho câu hỏi này. Lần duy nhất bạn "
+"chọn No là nếu bạn hiện đang không sử dụng một máy khách để quản lý hệ thống "
+"này mà sẽ sử dụng nó trong tương lai."
 
 #: views/view.shortcuts.php:11
 msgid "Your Client"
@@ -1847,6 +1849,9 @@ msgid ""
 "Zulu port is <strong>automatically opened</strong> to any registered "
 "clients. It is unlikely you need to change this."
 msgstr ""
+"Zulu UC cung cấp Outlook và tích hợp trình duyệt cho PBX. Lưu ý rằng cổng "
+"giao tiếp Zulu <strong>được mở tự động</strong> cho bất cứ máy khách nào đã "
+"đăng ký. Bạn không cần phải thay đổi điều này."
 
 #: Services.class.php:204
 msgid "Zulu is not not available on this machine"
