@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-18 16:57-0400\n"
-"PO-Revision-Date: 2017-07-31 06:58+0800\n"
+"PO-Revision-Date: 2017-07-31 07:20+0800\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese "
 "<http://weblate.freepbx.org/projects/freepbx/findmefollow/zh_CN/>\n"
@@ -76,15 +76,15 @@ msgstr "添加主机"
 
 #: views/view.shortcuts.php:14
 msgid "Add Network"
-msgstr ""
+msgstr "添加网络"
 
 #: views/view.blacklist.php:40 views/view.networks.php:83
 msgid "Add New"
-msgstr ""
+msgstr "添加新规则"
 
 #: Console/Firewall.class.php:78
 msgid "Add the hostname or IP specified to the Trusted Zone"
-msgstr ""
+msgstr "为可信赖域添加主机名或指定地址"
 
 #: Console/Firewall.class.php:81
 msgid "Add to 'zone' the IDs provided."
@@ -92,19 +92,19 @@ msgstr ""
 
 #: views/view.shortcuts.php:7
 msgid "Add to Trusted"
-msgstr ""
+msgstr "添加可信赖的网段"
 
 #: assets/js/views/advanced.js:25
 msgid "Added"
-msgstr ""
+msgstr "已添加"
 
 #: views/bootnav.php:8
 msgid "Advanced"
-msgstr ""
+msgstr "高级"
 
 #: views/page.advanced.php:35 views/view.settings.php:3
 msgid "Advanced Settings"
-msgstr ""
+msgstr "高级设置"
 
 #: views/view.about.php:28
 #, php-format
@@ -119,7 +119,7 @@ msgstr ""
 
 #: Console/Firewall.class.php:254
 msgid "All blacklisted entries."
-msgstr ""
+msgstr "所有黑名单"
 
 #: Console/Firewall.class.php:245
 #, php-format
@@ -226,19 +226,19 @@ msgstr ""
 
 #: views/page.services.php:41
 msgid "Blacklist"
-msgstr ""
+msgstr "黑名单"
 
 #: views/view.blocked.php:16
 msgid "Blocked Attackers"
-msgstr ""
+msgstr "过滤攻击者"
 
 #: views/page.status.php:31
 msgid "Blocked Hosts"
-msgstr ""
+msgstr "过滤主机名"
 
 #: views/modal.customsvc.php:20
 msgid "Both (TCP and UDP)"
-msgstr ""
+msgstr "启用（TCP和UDP）"
 
 #: views/view.settings.php:36
 msgid ""
@@ -249,15 +249,15 @@ msgstr ""
 
 #: Services.class.php:314
 msgid "CHANSIP is not available on this machine"
-msgstr ""
+msgstr "本主机不支持chan_sip "
 
 #: Services.class.php:273
 msgid "CHAN_SIP Protocol"
-msgstr ""
+msgstr "chan_sip 协议"
 
 #: views/view.about.php:53
 msgid "Can not Disable Firewall"
-msgstr ""
+msgstr "不能关闭防火墙"
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
@@ -265,19 +265,19 @@ msgstr "取消"
 
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
-msgstr ""
+msgstr "命令运行"
 
 #: firewall.i18n.php:6
 msgid "Connectivity"
-msgstr ""
+msgstr "连接"
 
 #: views/view.portmaps.php:11 views/view.services.php:2
 msgid "Core Services"
-msgstr ""
+msgstr "核心服务"
 
 #: views/view.customsvc.php:2
 msgid "Create new Service"
-msgstr ""
+msgstr "创建新服务"
 
 #: views/view.status.php:22
 msgid "Cumulative Total of remote clients:"
@@ -305,15 +305,15 @@ msgstr ""
 
 #: Zones.class.php:9
 msgid "Default Firewall"
-msgstr ""
+msgstr "默认防火墙"
 
 #: views/view.interfaces.php:8
 msgid "Default Traffic Zones"
-msgstr ""
+msgstr "默认数据流量域"
 
 #: views/view.interfaces.php:4
 msgid "Default Zone"
-msgstr ""
+msgstr "默认的网络段域"
 
 #: views/view.blacklist.php:9 views/view.customsvc.php:45
 msgid "Delete"
@@ -321,7 +321,7 @@ msgstr "删除"
 
 #: Firewall.class.php:523
 msgid "Delete Selected"
-msgstr ""
+msgstr "已删除选项"
 
 #: Console/Firewall.class.php:82
 msgid "Delete from 'zone' the IDs provided."
@@ -442,43 +442,43 @@ msgstr ""
 
 #: firewall.i18n.php:10 page.firewall.php:6
 msgid "Firewall"
-msgstr ""
+msgstr "防火墙"
 
 #: Firewall.class.php:59
 msgid "Firewall Active"
-msgstr ""
+msgstr "激活防火墙"
 
 #: Firewall.class.php:80
 msgid "Firewall Configuration"
-msgstr ""
+msgstr "防火墙设置"
 
 #: Firewall.class.php:61
 msgid "Firewall Disabled"
-msgstr ""
+msgstr "关闭防火墙"
 
 #: Firewall.class.php:114 Firewall.class.php:115
 msgid "Firewall Integrity Failed"
-msgstr ""
+msgstr "防火墙检测失败"
 
 #: Firewall.class.php:74
 msgid "Firewall Service not running!"
-msgstr ""
+msgstr "防火墙服务没有运行"
 
 #: views/view.about.php:62
 msgid "Firewall Wizard"
-msgstr ""
+msgstr "防火墙快速设置"
 
 #: Firewall.class.php:497
 msgid "Firewall can not be disabled"
-msgstr ""
+msgstr "防火墙不能关闭"
 
 #: Console/Firewall.class.php:21
 msgid "Firewall functions"
-msgstr ""
+msgstr "防火墙功能"
 
 #: views/warning.notready.php:2
 msgid "Firewall has not started yet!"
-msgstr ""
+msgstr "防火墙没有启动"
 
 #: Console/Firewall.class.php:101
 msgid "Firewall is not enabled, can't disable it"
@@ -822,11 +822,11 @@ msgstr ""
 
 #: Services.class.php:388
 msgid "OpenVPN Server"
-msgstr ""
+msgstr "OpenVPN 服务器"
 
 #: Console/Firewall.class.php:25
 msgid "Optional parameter"
-msgstr ""
+msgstr "选项参数"
 
 #: Zones.class.php:11
 msgid "Other"
@@ -838,7 +838,7 @@ msgstr ""
 
 #: Services.class.php:265
 msgid "PJSIP is not available on this machine"
-msgstr ""
+msgstr "本主机不支持PJSIP"
 
 #: Services.class.php:338
 msgid ""
@@ -869,7 +869,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:27
 msgid "Port Range"
-msgstr ""
+msgstr "端口范围"
 
 #: views/view.customsvc.php:60
 #, php-format
@@ -1081,7 +1081,7 @@ msgstr ""
 
 #: views/bootnav.php:7 views/page.services.php:32
 msgid "Services"
-msgstr ""
+msgstr "服务"
 
 #: views/view.services.php:3
 msgid ""
@@ -1116,7 +1116,7 @@ msgstr ""
 
 #: Firewall.class.php:66
 msgid "Starting up"
-msgstr ""
+msgstr "启动"
 
 #: views/bootnav.php:6
 msgid "Status"
@@ -1124,16 +1124,16 @@ msgstr "状态"
 
 #: views/page.status.php:25
 msgid "Status Overview"
-msgstr ""
+msgstr "状态浏览"
 
 #: Console/Firewall.class.php:76
 msgid "Stop the System Firewall"
-msgstr ""
+msgstr "停止系统防火墙"
 
 #: Console/Firewall.class.php:138 Console/Firewall.class.php:178
 #: Console/Firewall.class.php:234
 msgid "Success!"
-msgstr ""
+msgstr "成功"
 
 #: views/view.registered.php:3
 msgid "Successfully Registered Endpoints"
@@ -1141,11 +1141,11 @@ msgstr ""
 
 #: views/view.status.php:3
 msgid "Summary"
-msgstr ""
+msgstr "汇总"
 
 #: Firewall.class.php:54 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
-msgstr ""
+msgstr "系统防火墙"
 
 #: views/modal.customsvc.php:21
 msgid "TCP"
@@ -1395,7 +1395,7 @@ msgstr ""
 
 #: Zones.class.php:13
 msgid "Trusted"
-msgstr ""
+msgstr "可信任的"
 
 #: Firewall.class.php:135 Firewall.class.php:138
 msgid "Trusted Interface Detected"
@@ -1556,7 +1556,7 @@ msgstr ""
 
 #: views/view.shortcuts.php:11
 msgid "Your Client"
-msgstr ""
+msgstr "用户端"
 
 #: views/page.advanced.php:26
 msgid "Zone Information"
@@ -1579,7 +1579,7 @@ msgstr ""
 
 #: views/view.about.php:28
 msgid "automatically granted"
-msgstr ""
+msgstr "自动处理权限"
 
 #: Services.class.php:600
 msgid "iSymphony is not installed on this server."
