@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-18 16:57-0400\n"
+"POT-Creation-Date: 2017-08-14 17:22-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -793,6 +793,10 @@ msgstr ""
 #: Console/Firewall.class.php:50
 #: Console/Firewall.class.php:60
 msgid "No network identifiers supplied"
+msgstr ""
+
+#: assets/js/views/main.js:216
+msgid "No networks selected"
 msgstr ""
 
 #: views/view.settings.php:37

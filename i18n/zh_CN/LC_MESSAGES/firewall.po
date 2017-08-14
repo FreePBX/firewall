@@ -9,15 +9,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-18 16:57-0400\n"
+"POT-Creation-Date: 2017-08-14 17:22-0400\n"
 "PO-Revision-Date: 2017-07-31 07:35+0800\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
-"Language-Team: Simplified Chinese "
-"<http://weblate.freepbx.org/projects/freepbx/framework/zh_CN/>\n"
-"Language: zh_CN\n"
+"Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
+"freepbx/framework/zh_CN/>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.2-dev\n"
 
@@ -785,6 +785,10 @@ msgstr ""
 
 #: Console/Firewall.class.php:50 Console/Firewall.class.php:60
 msgid "No network identifiers supplied"
+msgstr ""
+
+#: assets/js/views/main.js:216
+msgid "No networks selected"
 msgstr ""
 
 #: views/view.settings.php:37
