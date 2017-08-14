@@ -56,7 +56,7 @@ function render_network($name, $current, $desc, $counter, $zones) {
 	// If name is not empty, render a normal line.
 	if ($name) {
 		print "<td><input data-counter='$counter' type='checkbox' class='checkbox'></td>";
-		print "<td><tt counter='$counter'>".htmlentities($name, ENT_QUOTES)."</tt></td>";
+		print "<td><tt counter='$counter'>".htmlentities($name, ENT_QUOTES,"UTF-8")."</tt></td>";
 		print "<td><select class='form-control' name='zone-$counter' data-rowid='$counter' data-type='net'>";
 		$newentry = "";
 
