@@ -171,7 +171,7 @@ class Services {
 
 		$retarr = array(
 			"name" => _("WebRTC"),
-			"defzones" => array("reject"),
+			"defzones" => array("internal"),
 			"descr" => _("WebRTC is used by UCP (and other services) to enable calls to be made via a web browser."),
 			"fw" => array(
 				array("protocol" => "tcp", "port" => $websocket),
