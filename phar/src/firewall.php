@@ -23,7 +23,6 @@ if (posix_geteuid() !== 0) {
 }
 
 $fwconf = getSettings();
-
 if (!$fwconf['active']) {
 	// Don't need to log this
 	// print "Not active. Shutting down\n";
@@ -157,6 +156,7 @@ foreach ($known as $int => $conf) {
 
 // Same for our known networks
 $nets = array();
+$fwconf = getSettings();
 if (!empty($fwconf['networkmaps'])) {
 	$nets = @json_decode($fwconf['networkmaps'], true);
 }
