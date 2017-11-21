@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-09 20:33+0000\n"
+"POT-Creation-Date: 2017-11-21 21:43+0000\n"
 "PO-Revision-Date: 2017-07-31 07:35+0800\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -787,7 +787,7 @@ msgstr ""
 msgid "No network identifiers supplied"
 msgstr ""
 
-#: assets/js/views/main.js:216
+#: assets/js/views/main.js:217
 msgid "No networks selected"
 msgstr ""
 

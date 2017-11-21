@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-09 20:33+0000\n"
+"POT-Creation-Date: 2017-11-21 21:43+0000\n"
 "PO-Revision-Date: 2017-03-06 02:23+0200\n"
 "Last-Translator: hammer125 <auswertung@aon.at>\n"
 "Language-Team: German <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -805,7 +805,7 @@ msgstr "Keine Hosts!"
 msgid "No network identifiers supplied"
 msgstr ""
 
-#: assets/js/views/main.js:216
+#: assets/js/views/main.js:217
 msgid "No networks selected"
 msgstr ""
 

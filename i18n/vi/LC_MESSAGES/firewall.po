@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-09 20:33+0000\n"
+"POT-Creation-Date: 2017-11-21 21:43+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -901,7 +901,7 @@ msgstr "Không có host nào!"
 msgid "No network identifiers supplied"
 msgstr "Không có định danh mạng nào được cung cấp"
 
-#: assets/js/views/main.js:216
+#: assets/js/views/main.js:217
 msgid "No networks selected"
 msgstr ""
 
