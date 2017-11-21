@@ -141,8 +141,9 @@ function add_new_network(event) {
 	var zone = $("select[data-rowid='"+c+"']").val();
 
 	// IF there's no netname, error on it
-	var pattern = new RegExp('^([a-zA-Z0-9.:_-]+)$');
+	var pattern = new RegExp('^([a-zA-Z0-9.:_\/\-]+)$');
 	if (typeof netname == "undefined" || netname.trim().length == 0 || !pattern.test(netname.trim())) {
+		console.log("Netname invalid", netname);
 		$("input[name='newentry']").addClass('pulsebg');
 		window.setTimeout(function() { $("input[name='newentry']").removeClass('pulsebg') }, 2000);
 		return;
