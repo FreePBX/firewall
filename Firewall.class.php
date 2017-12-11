@@ -1007,81 +1007,65 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (!is_array($nets)) {
 			return false;
 		}
+
+		// Discover the IP, and guess the network, of the remote client.
 		$thisnet = $this->detectNetwork();
 		$thishost = $this->detectHost();
+
 		foreach ($nets as $n => $zone) {
 			if ($zone !== "trusted") {
 				continue;
 			}
-			// need to do the subnet calculation
-			$dq_host = strtok("$n", "/");
-			$cdr_nmask = strtok("/");
 
-			$bin_nmask = $this->cdrtobin($cdr_nmask);
-			$bin_wmask = $this->binnmtowm($bin_nmask);
+			if ($n === $thishost || $n === $thisnet) {
+				return true;
+			}
 
-			$bin_host = $this->dqtobin($dq_host);
-			$bin_bcast = (str_pad(substr($bin_host,0,$cdr_nmask),32,1));
-			$bin_net = (str_pad(substr($bin_host,0,$cdr_nmask),32,0));
-			$bin_first = (str_pad(substr($bin_net,0,31),32,1));
-			$bin_last = (str_pad(substr($bin_bcast,0,31),32,0));
-
-			$iprange_start = $this->bintodq($bin_first);
-			$iprange_end = $this->bintodq($bin_last);
-			// let us take the thishost to compire with range
-			$client_host_ip = strtok("$thishost", "/");
-			if ($n === $thisnet || (ip2long($iprange_start) <= ip2long($client_host_ip) && ip2long($iprange_end) >= ip2long($client_host_ip) )) {
+			if ($this->inRange($thishost, $n)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	function dqtobin($dqin) {
-        $dq = explode(".",$dqin);
-        for ($i=0; $i<4 ; $i++) {
-			$bin[$i]=str_pad(decbin($dq[$i]), 8, "0", STR_PAD_LEFT);
-		}
-	return implode("",$bin);
-	}
-
-	function binnmtowm($binin){
-		$binin=rtrim($binin, "0");
-		if (!preg_match("/0/",$binin,$matches) ){
-			return str_pad(str_replace("1","0",$binin), 32, "1");
-		} else return "1010101010101010101010101010101010101010";
-	}
-
-	function bintocdr ($binin){
-		return strlen(rtrim($binin,"0"));
-	}
-
-	function bintodq ($binin) {
-		if ($binin=="N/A") return $binin;
-			$binin=explode(".", chunk_split($binin,8,"."));
-			for ($i=0; $i<4 ; $i++) {
-				$dq[$i]=bindec($binin[$i]);
+	public function inRange($ipnet, $range) {
+			$tmparr = explode("/", $range);
+			$network = $tmparr[0];
+			if (!isset($tmparr[1])) {
+				$cidr = "32";
+			} else {
+				$cidr = $tmparr[1];
 			}
-	    return implode(".",$dq) ;
-	}
 
-	function bintoint ($binin){
-		return bindec($binin);
-	}
+			// Our Base CIDR is what is handed to us by detectHost, and from that
+			// we can tell what we need to match against.
+			list ($ip, $basecidr) = explode("/", $ipnet);
 
-	function binwmtonm($binin){
-		$binin=rtrim($binin, "1");
-		if (!preg_match("/1/",$binin,$matches)){
-			return str_pad(str_replace("0","1",$binin), 32, "0");
-		} else return "1010101010101010101010101010101010101010";
-	}
+			// If it's a single host, it's a simple check.
+			if ($cidr === "32" || $cidr === "128") {
+				if ($network === $ip) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 
-	function cdrtobin ($cdrin){
-		return str_pad(str_pad("", $cdrin, "1"), 32, "0");
-	}
+			// If its ipv6, this needs to be reworked, using net_pton to replace ip2long.
+			if ($cirt === "128") {
+				return false;
+			} else {
+				// IPv4: Convert our IPs to decimals for bitwise operations
+				$ip_dec = ip2long($ip);
+				$net_dec = ip2long($network);
 
-	function inttobin ($intin) {
-		return str_pad(decbin($intin), 32, "0", STR_PAD_LEFT);
+				// Create our bitmap. This creates 1's of the CIDR, 00000000.00000000.00000000.11111111
+				$wildcard = pow( 2, ( $basecidr - $cidr ) ) - 1;
+				// This inverts it, so it's 11111111.11111111.11111111.00000000
+				$netmask = ~ $wildcard;
+
+				// Now, if the relevant bits of the NETWORK match the relevant bits of the HOST, we're good!
+				return ( ( $ip_dec & $netmask ) == ( $net_dec & $netmask ) );
+			}
 	}
 
 	public function rfcNetsAdded() {
