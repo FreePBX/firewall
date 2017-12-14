@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-14 01:12-0300\n"
+"POT-Creation-Date: 2017-12-14 18:24-0300\n"
 "PO-Revision-Date: 2017-07-31 07:35+0800\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -51,7 +51,7 @@ msgid ""
 "interfering with existing traffic."
 msgstr ""
 
-#: Firewall.class.php:140
+#: Firewall.class.php:148
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -59,7 +59,7 @@ msgid ""
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
 
-#: Firewall.class.php:130
+#: Firewall.class.php:138
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -319,7 +319,7 @@ msgstr "默认的网络段域"
 msgid "Delete"
 msgstr "删除"
 
-#: Firewall.class.php:526
+#: Firewall.class.php:534
 msgid "Delete Selected"
 msgstr "已删除选项"
 
@@ -444,23 +444,23 @@ msgstr ""
 msgid "Firewall"
 msgstr "防火墙"
 
-#: Firewall.class.php:60
+#: Firewall.class.php:68
 msgid "Firewall Active"
 msgstr "激活防火墙"
 
-#: Firewall.class.php:81
+#: Firewall.class.php:89
 msgid "Firewall Configuration"
 msgstr "防火墙设置"
 
-#: Firewall.class.php:62
+#: Firewall.class.php:70
 msgid "Firewall Disabled"
 msgstr "关闭防火墙"
 
-#: Firewall.class.php:115 Firewall.class.php:116
+#: Firewall.class.php:123 Firewall.class.php:124
 msgid "Firewall Integrity Failed"
 msgstr "防火墙检测失败"
 
-#: Firewall.class.php:75
+#: Firewall.class.php:83
 msgid "Firewall Service not running!"
 msgstr "防火墙服务没有运行"
 
@@ -468,7 +468,7 @@ msgstr "防火墙服务没有运行"
 msgid "Firewall Wizard"
 msgstr "防火墙快速设置"
 
-#: Firewall.class.php:500
+#: Firewall.class.php:508
 msgid "Firewall can not be disabled"
 msgstr "防火墙不能关闭"
 
@@ -638,7 +638,7 @@ msgid ""
 "further information."
 msgstr ""
 
-#: Firewall.class.php:117
+#: Firewall.class.php:125
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -744,7 +744,7 @@ msgstr ""
 msgid "Networks"
 msgstr ""
 
-#: Firewall.class.php:127 Firewall.class.php:129
+#: Firewall.class.php:135 Firewall.class.php:137
 msgid "New Interface Detected"
 msgstr ""
 
@@ -760,15 +760,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:170
+#: Firewall.class.php:178
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:172
+#: Firewall.class.php:180
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:173
+#: Firewall.class.php:181
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -980,7 +980,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:532
+#: Firewall.class.php:540
 msgid "Reset"
 msgstr "重置"
 
@@ -1064,7 +1064,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:525 Firewall.class.php:533 views/modal.customsvc.php:37
+#: Firewall.class.php:533 Firewall.class.php:541 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr "保存"
@@ -1118,7 +1118,7 @@ msgstr ""
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
-#: Firewall.class.php:67
+#: Firewall.class.php:75
 msgid "Starting up"
 msgstr "启动"
 
@@ -1147,7 +1147,7 @@ msgstr ""
 msgid "Summary"
 msgstr "汇总"
 
-#: Firewall.class.php:55 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:63 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr "系统防火墙"
 
@@ -1175,7 +1175,7 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Firewall.class.php:265
+#: Firewall.class.php:273
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1401,11 +1401,11 @@ msgstr ""
 msgid "Trusted"
 msgstr "可信任的"
 
-#: Firewall.class.php:136 Firewall.class.php:139
+#: Firewall.class.php:144 Firewall.class.php:147
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:168
+#: Firewall.class.php:176
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -1437,7 +1437,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:527
+#: Firewall.class.php:535
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1516,7 +1516,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:266
+#: Firewall.class.php:274
 msgid "You can add the host automatically here."
 msgstr ""
 
