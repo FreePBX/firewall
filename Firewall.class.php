@@ -14,7 +14,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Disable the firewall when it's uninstalled,
 		// so if it is automatically reinstalled at some
 		// point, it doesn't start.
-		$this->setConfig("status", true);
+		$this->setConfig("status", false);
+		@unlink("/etc/asterisk/firewall.enabled");
 		$o = \FreePBX::OOBE()->getConfig("completed");
 		if (is_array($o)) {
 			unset ($o['firewall']);
@@ -487,10 +488,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$nets[$thishost] = "trusted";
 			$this->setConfig("networkmaps", $nets);
 			$this->setConfig("status", true);
+			touch("/etc/asterisk/firewall.enabled");
 			$this->runHook("firewall");
 			return;
 		case 'disablefw':
 			if (!file_exists("/etc/asterisk/firewall.lock")) {
+				@unlink("/etc/asterisk/firewall.enabled");
 				$this->setConfig("status", false);
 				return;
 			} else {
