@@ -8,7 +8,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	private static $services = false;
 
-	public function install() {}
+	public function install() {
+		// Upgrade at 13.0.47 - If the firewall is enabled, create the filesystem
+		// flag to say that it is.
+		if ($this->getConfig("status")) {
+			if (!file_exists("/etc/asterisk/firewall.enabled")) {
+				touch("/etc/asterisk/firewall.enabled");
+			}
+		}
+	}
 
 	public function uninstall() {
 		// Disable the firewall when it's uninstalled,
