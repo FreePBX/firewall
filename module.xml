@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.47.1</version>
+	<version>13.0.47.2</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.47.2* Speed up Status page significantly
 		*13.0.47.1* Don't shut down on a transient database issue.
 		*13.0.46.1* #16272, #16150, #16146 - CIDRs were not able to be added to networks
 		*13.0.46* Make sure startup contains fresh data.
