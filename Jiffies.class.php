@@ -7,13 +7,16 @@ class Jiffies {
 	private $knownjiffies = false;
 
 	public function __construct() {
-		// If there isn't a /proc/timer_list, just blindly assume 1000hz.
-		if (!file_exists("/proc/timer_list")) {
-			$this->knownjiffies = 1000;
-		}
+		// Always assume 1000hz.
+		$this->knownjiffies = 1000;
 	}
 
 	// Calculate the number of jiffies per second.
+	// 
+	// Note - this doesn't get called. We're always assuming that our
+	// clock is at 1000hz. This covers, as far as I can tell, 100% of the
+	// machines running freepbx. If this changes, feel free to open a
+	// ticket.
 	public function calcJiffies($seconds = 5) {
 		// If there isn't a /proc/timer_list, just blindly assume 1000hz.
 		if (!file_exists("/proc/timer_list")) {
@@ -26,7 +29,7 @@ class Jiffies {
 		$jiffies = array();
 		// Run for however many seconds..
 		while ($seconds--)  {
-			$jiffies[] = $this->getCurrentJiffie();
+			$jiffies[] = $this->getCurrentJiffie(true); // Force refresh, don't use cached data.
 			sleep(1);
 		}
 		// Now, loop through them, and make sure they look sane.
@@ -90,18 +93,16 @@ class Jiffies {
 		return $this->knownjiffies;
 	}
 
-	public function getCurrentJiffie() {
-		if (!file_exists("/proc/timer_list")) {
-			return 1000;
-		}
-		exec('grep -i "jiffies:" /proc/timer_list',$jf);
-		// Find the first entry that is 'jiffies: ' and return it
-		foreach ($jf as $l) {
-			if (strpos($l, "jiffies: ") === 0) {
-				$j =  substr($l, 9);
-				return $j;
+	public function getCurrentJiffie($refresh = false) {
+		static $current;
+
+		if (!$current || $refresh) {
+			exec('grep -i "jiffies:" /proc/timer_list',$jf);
+			if (empty($jf[0]) || strpos($jf[0], "jiffies: ") !== 0) {
+				throw new \Exception("/proc/timer_list contains unknown data - '".$jf[0]."'");
 			}
+			$current = substr($jf[0], 9);
 		}
-		throw new \Exception("Couldn't get a jiffie");
+		return $current;
 	}
 }
