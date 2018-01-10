@@ -40,6 +40,8 @@ rmmod_r() {
 
 /usr/sbin/iptables -F
 /usr/sbin/iptables -X
+/usr/sbin/iptables -t nat -F
+/usr/sbin/iptables -t nat -X
 /usr/sbin/ip6tables -F
 /usr/sbin/ip6tables -X
 
