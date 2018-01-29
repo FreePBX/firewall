@@ -523,13 +523,13 @@ class Iptables {
 		unset($output);
 		// If we didn't find the rule, and we need it, add it.
 		if ($foundrule === false && $nat) {
-			$cmd = "/sbin/iptables -w5 -W10000 -t nat -A masq-output $rule";
+			$cmd = "/sbin/iptables ".$this->wlock." -t nat -A masq-output $rule";
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			$current['ipv4']['nat']['masq-output'][] = $rule;
 		} elseif ($foundrule !== false && !$nat) {
 			// We found it, but it shoudn't be there. Delete it.
-			$cmd = "/sbin/iptables -w5 -W10000 -t nat -D masq-output $rule";
+			$cmd = "/sbin/iptables ".$this->wlock." -t nat -D masq-output $rule";
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			array_splice($current['ipv4']['nat']['masq-output'], $foundrule, 1);
@@ -1167,7 +1167,7 @@ class Iptables {
 		);
 
 		foreach ($rules as $r) {
-			exec("/sbin/iptables -w5 -W10000 $r");
+			exec("/sbin/iptables ".$this->wlock." $r");
 		}
 		return true;
 	}
@@ -1446,14 +1446,14 @@ class Iptables {
 		$parsed = $this->parseFilter($arr);
 
 		// IPv4
-		$cmd = "/sbin/iptables -w5 -W10000 -I $chain $parsed";
+		$cmd = "/sbin/iptables ".$this->wlock." -I $chain $parsed";
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		// Add it to our local array
 		array_unshift($this->currentconf['ipv4']['filter'][$chain], $parsed);
 
 		// IPv6
-		$cmd = "/sbin/ip6tables -w5 -W10000 -I $chain $parsed";
+		$cmd = "/sbin/ip6tables ".$this->wlock." -I $chain $parsed";
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		// Add it to our local array
@@ -1477,7 +1477,7 @@ class Iptables {
 		$parsed = $this->parseFilter($arr);
 
 		if ($arr['ipvers'] == 6 || $arr['ipvers'] == "both") {
-			$cmd = "/sbin/ip6tables -w5 -W10000 -A $chain $parsed";
+			$cmd = "/sbin/ip6tables ".$this->wlock." -A $chain $parsed";
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			if ($ret === 0) {
@@ -1485,7 +1485,7 @@ class Iptables {
 			}
 		}
 		if ($arr['ipvers'] == 4 || $arr['ipvers'] == "both") {
-			$cmd = "/sbin/iptables -w5 -W10000 -A $chain $parsed";
+			$cmd = "/sbin/iptables ".$this->wlock." -A $chain $parsed";
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			if ($ret === 0) {
@@ -1519,7 +1519,7 @@ class Iptables {
 		// It doesn't exist.
 
 		// IPv4
-		$cmd = "/sbin/iptables -w5 -W10000 -N ".escapeshellcmd($target);
+		$cmd = "/sbin/iptables ".$this->wlock." -N ".escapeshellcmd($target);
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		if ($ret == 0) {
@@ -1528,7 +1528,7 @@ class Iptables {
 
 		$output = null;
 		// IPv6
-		$cmd = "/sbin/ip6tables -w5 -W10000 -N ".escapeshellcmd($target);
+		$cmd = "/sbin/ip6tables ".$this->wlock." -N ".escapeshellcmd($target);
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		if ($ret == 0) {
