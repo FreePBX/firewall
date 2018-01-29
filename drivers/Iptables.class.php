@@ -1148,7 +1148,7 @@ class Iptables {
 			// unset ($rules[$name]);
 		}
 		// Add MASQ rules. They're hardcoded here, because it's just simpler.
-		// Note we only NAT IPv4, not IPv6.
+		// Note we only NAT IPv4, not IPv6. If you want to nat IPv6, you're doing it wrong.
 		$rules = array(
 			"-t nat -N masq-input",
 			"-t nat -N masq-output",
@@ -1183,6 +1183,8 @@ class Iptables {
 		$retarr['fpbxfirewall'][]= array("other" => "-m pkttype --pkt-type multicast", "jump" => "ACCEPT");
 		// This ensures we can act as a DHCP server if we want to.
 		$retarr['fpbxfirewall'][]= array("proto" => "udp", "dport" => "67:68", "sport" => "67:68", "jump" => "ACCEPT");
+		// IPv6 Link-Local DHCP Traffic must be allowed
+		$retarr['fpbxfirewall'][]= array("ipvers" => 6, "proto" => "udp", "dport" => "546:547", "sport" => "546:547", "src" => "fe80::/64", "jump" => "ACCEPT");
 		// Check if this is RTP traffic. This is a high priority tag, so it's up the top.
 		$retarr['fpbxfirewall'][]= array("jump" => "fpbx-rtp");
 
@@ -1390,10 +1392,12 @@ class Iptables {
 			}
 		}
 		if (isset($arr['src'])) {
-			// TODO: Check with ipv6
-			list($src) = explode(":", $arr['src']); // eg, $src = explode(":", $arr['src'])[0];
-			if (strpos($src, "/") === false) {
-				$src .= "/32";
+			if (filter_var($arr['src'], \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+				$src = $arr['src']."/128";
+			} elseif (filter_var($arr['src'], \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+				$src = $arr['src']."/32";
+			} else {
+				$src = $arr['src'];
 			}
 			$str .= "-s $src ";
 		}
