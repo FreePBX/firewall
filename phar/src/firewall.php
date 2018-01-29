@@ -766,7 +766,12 @@ function importCustomRules() {
 		}
 		// Todo: Writable checks
 		$cmds = file($f, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
-		foreach ($cmds as $cmd) {
+		foreach ($cmds as $id => $cmd) {
+			if (empty($cmd) || strpos($cmd, "#") === 0 || strpos($cmd, ";") === 0) {
+				$lineno = $id + 1;
+				fwLog("Skipping line $lineno in file $f ('$cmd')");
+				continue;
+			}
 			$safecmd = escapeshellcmd($cmd);
 			fwLog("Custom rule: $ipt $safecmd");
 			exec("$ipt $safecmd");

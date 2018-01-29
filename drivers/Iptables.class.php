@@ -99,10 +99,10 @@ class Iptables {
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
 		// them later
 		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-			$ipt = "/sbin/ip6tables";
+			$ipt = "/sbin/ip6tables -w5 -W10000";
 			$nets = &$current['ipv6']['filter']['fpbxnets'];
 		} elseif (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-			$ipt = "/sbin/iptables";
+			$ipt = "/sbin/iptables -w5 -W10000";
 			$nets = &$current['ipv4']['filter']['fpbxnets'];
 		} else {
 			throw new \Exception("Not an IP address $network");
@@ -158,10 +158,10 @@ class Iptables {
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
 		// them later
 		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-			$ipt = "/sbin/ip6tables";
+			$ipt = "/sbin/ip6tables -w5 -W10000";
 			$nets = &$current['ipv6']['filter']['fpbxnets'];
 		} elseif (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-			$ipt = "/sbin/iptables";
+			$ipt = "/sbin/iptables -w5 -W10000";
 			$nets = &$current['ipv4']['filter']['fpbxnets'];
 		} else {
 			throw new \Exception("Not an IP address $network");
@@ -200,12 +200,12 @@ class Iptables {
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
 		// them later
 		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-			$ipt = "/sbin/ip6tables";
+			$ipt = "/sbin/ip6tables -w5 -W10000";
 			$nets = &$current['ipv6']['filter']['fpbxnets'];
 			// Fake CIDR to add later, if we don't have one.
 			$fcidr = "/64";
 		} elseif (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-			$ipt = "/sbin/iptables";
+			$ipt = "/sbin/iptables -w5 -W10000";
 			$nets = &$current['ipv4']['filter']['fpbxnets'];
 			$fcidr = "/32";
 		} else {
@@ -254,7 +254,7 @@ class Iptables {
 		$current = &$this->getCurrentIptables();
 
 		// Create a service!
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 		foreach ($ipvers as $ipv => $ipt) {
 			$changed = false;
 			// Service name is 'fpbxsvc-$service'
@@ -354,7 +354,7 @@ class Iptables {
 
 		// Now flush it completely from iptables, as well
 		$current = &$this->getCurrentIptables();
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 
 		$svc = "fpbxsvc-$service";
 
@@ -383,7 +383,7 @@ class Iptables {
 		$name = "fpbxsvc-$service";
 
 		// Check to make sure we know about this service.
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 		foreach ($ipvers as $ipv => $ipt) {
 			if (!isset($current[$ipv]['filter'][$name])) {
 				throw new \Exception("Can't add a $ipv service for $name, it doesn't exist");
@@ -455,7 +455,7 @@ class Iptables {
 		$p = "-i $iface -j zone-";
 
 		// Remove from both ipv4 and ipv6.
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 		foreach ($ipvers as $ipv => $ipt) {
 			$interfaces = &$current[$ipv]['filter']['fpbxinterfaces'];
 			foreach ($interfaces as $i => $n) {
@@ -515,13 +515,13 @@ class Iptables {
 		unset($output);
 		// If we didn't find the rule, and we need it, add it.
 		if ($foundrule === false && $nat) {
-			$cmd = "/sbin/iptables -t nat -A masq-output $rule";
+			$cmd = "/sbin/iptables -w5 -W10000 -t nat -A masq-output $rule";
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			$current['ipv4']['nat']['masq-output'][] = $rule;
 		} elseif ($foundrule !== false && !$nat) {
 			// We found it, but it shoudn't be there. Delete it.
-			$cmd = "/sbin/iptables -t nat -D masq-output $rule";
+			$cmd = "/sbin/iptables -w5 -W10000 -t nat -D masq-output $rule";
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			array_splice($current['ipv4']['nat']['masq-output'], $foundrule, 1);
@@ -544,7 +544,7 @@ class Iptables {
 		$this->checkTarget("fpbx-rtp");
 		
 		$current = &$this->getCurrentIptables();
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 		foreach ($ipvers as $ipv => $ipt) {
 			$me = &$current[$ipv]['filter']['fpbx-rtp'];
 			$foundrtp = false;
@@ -597,7 +597,7 @@ class Iptables {
 		$this->checkTarget("fpbxsignalling");
 		$ports = $rules['smartports']['signalling'];
 		$current = &$this->getCurrentIptables();
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 		foreach ($ipvers as $ipv => $ipt) {
 			$me = &$current[$ipv]['filter']['fpbxsignalling'];
 			if (!is_array($me)) {
@@ -700,8 +700,8 @@ class Iptables {
 		// And now add or remove them as neccesary. We do a bit of
 		// array mangling so I can avoid code duplication.
 
-		$smarthosts = array("ipv6" => array("ipt" => "/sbin/ip6tables", "targets" => $wanted[6], "prefix" => "128"),
-			"ipv4" => array("ipt" => "/sbin/iptables", "targets" => $wanted[4], "prefix" => "32"),
+		$smarthosts = array("ipv6" => array("ipt" => "/sbin/ip6tables -w5 -W10000", "targets" => $wanted[6], "prefix" => "128"),
+			"ipv4" => array("ipt" => "/sbin/iptables -w5 -W10000", "targets" => $wanted[4], "prefix" => "32"),
 		);
 
 		foreach ($smarthosts as $ipv => $tmparr) {
@@ -788,8 +788,8 @@ class Iptables {
 
 		// And now add or remove them as neccesary. We do a bit of
 		// array mangling so I can avoid code duplication.
-		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables", "targets" => $wanted[6], "prefix" => "128"),
-			"ipv4" => array("ipt" => "/sbin/iptables", "targets" => $wanted[4], "prefix" => "32"),
+		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables -w5 -W10000", "targets" => $wanted[6], "prefix" => "128"),
+			"ipv4" => array("ipt" => "/sbin/iptables -w5 -W10000", "targets" => $wanted[4], "prefix" => "32"),
 		);
 
 		$current = &$this->getCurrentIptables();
@@ -893,8 +893,8 @@ class Iptables {
 
 		// And now add or remove them as neccesary. We do a bit of
 		// array mangling so I can avoid code duplication.
-		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables", "targets" => $wanted[6], "prefix" => "128"),
-			"ipv4" => array("ipt" => "/sbin/iptables", "targets" => $wanted[4], "prefix" => "32"),
+		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables -w5 -W10000", "targets" => $wanted[6], "prefix" => "128"),
+			"ipv4" => array("ipt" => "/sbin/iptables -w5 -W10000", "targets" => $wanted[4], "prefix" => "32"),
 		);
 
 		$current = &$this->getCurrentIptables();
@@ -964,8 +964,8 @@ class Iptables {
 
 		// And now add or remove them as neccesary. We do a bit of
 		// array mangling so I can avoid code duplication.
-		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables", "targets" => $wanted[6], "prefix" => "128"),
-			"ipv4" => array("ipt" => "/sbin/iptables", "targets" => $wanted[4], "prefix" => "32"),
+		$ipvers = array("ipv6" => array("ipt" => "/sbin/ip6tables -w5 -W10000", "targets" => $wanted[6], "prefix" => "128"),
+			"ipv4" => array("ipt" => "/sbin/iptables -w5 -W10000", "targets" => $wanted[4], "prefix" => "32"),
 		);
 
 		$current = &$this->getCurrentIptables();
@@ -1016,7 +1016,7 @@ class Iptables {
 	// Root process
 	public function setRejectMode($drop = false, $log = false) {
 		$current = &$this->getCurrentIptables();
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 		foreach ($ipvers as $v => $iptcmd) {
 			$dropid = 0;
 			// Should we log?
@@ -1159,7 +1159,7 @@ class Iptables {
 		);
 
 		foreach ($rules as $r) {
-			exec("/sbin/iptables $r");
+			exec("/sbin/iptables -w5 -W10000 $r");
 		}
 		return true;
 	}
@@ -1438,14 +1438,14 @@ class Iptables {
 		$parsed = $this->parseFilter($arr);
 
 		// IPv4
-		$cmd = "/sbin/iptables -I $chain $parsed";
+		$cmd = "/sbin/iptables -w5 -W10000 -I $chain $parsed";
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		// Add it to our local array
 		array_unshift($this->currentconf['ipv4']['filter'][$chain], $parsed);
 
 		// IPv6
-		$cmd = "/sbin/ip6tables -I $chain $parsed";
+		$cmd = "/sbin/ip6tables -w5 -W10000 -I $chain $parsed";
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		// Add it to our local array
@@ -1469,7 +1469,7 @@ class Iptables {
 		$parsed = $this->parseFilter($arr);
 
 		if ($arr['ipvers'] == 6 || $arr['ipvers'] == "both") {
-			$cmd = "/sbin/ip6tables -A $chain $parsed";
+			$cmd = "/sbin/ip6tables -w5 -W10000 -A $chain $parsed";
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			if ($ret === 0) {
@@ -1477,7 +1477,7 @@ class Iptables {
 			}
 		}
 		if ($arr['ipvers'] == 4 || $arr['ipvers'] == "both") {
-			$cmd = "/sbin/iptables -A $chain $parsed";
+			$cmd = "/sbin/iptables -w5 -W10000 -A $chain $parsed";
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			if ($ret === 0) {
@@ -1511,7 +1511,7 @@ class Iptables {
 		// It doesn't exist.
 
 		// IPv4
-		$cmd = "/sbin/iptables -N ".escapeshellcmd($target);
+		$cmd = "/sbin/iptables -w5 -W10000 -N ".escapeshellcmd($target);
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		if ($ret == 0) {
@@ -1520,7 +1520,7 @@ class Iptables {
 
 		$output = null;
 		// IPv6
-		$cmd = "/sbin/ip6tables -N ".escapeshellcmd($target);
+		$cmd = "/sbin/ip6tables -w5 -W10000 -N ".escapeshellcmd($target);
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
 		if ($ret == 0) {
@@ -1533,7 +1533,7 @@ class Iptables {
 		$current = &$this->getCurrentIptables();
 
 		// Reject on both ipv6 and ipv4
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 		$svcname = "rejsvc-$name";
 
 		// Make sure our target exists
@@ -1592,7 +1592,7 @@ class Iptables {
 	public function removeFromReject($name) {
 		$current = &$this->getCurrentIptables();
 
-		$ipvers = array("ipv6" => "/sbin/ip6tables", "ipv4" => "/sbin/iptables");
+		$ipvers = array("ipv6" => "/sbin/ip6tables -w5 -W10000", "ipv4" => "/sbin/iptables -w5 -W10000");
 		$svcname = "rejsvc-$name";
 
 		foreach ($ipvers as $ipv => $ipt) {
