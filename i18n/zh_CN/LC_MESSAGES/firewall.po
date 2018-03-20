@@ -10,26 +10,26 @@ msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-14 18:24-0300\n"
-"PO-Revision-Date: 2017-07-31 07:35+0800\n"
+"PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
-"Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
-"freepbx/framework/zh_CN/>\n"
+"Language-Team: Simplified Chinese "
+"<http://weblate.freepbx.org/projects/freepbx/framework/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2.2-dev\n"
+"X-Generator: Weblate 2.4\n"
 
 #: Services.class.php:586
 #, php-format
 msgid "%s is a web-based call management solution."
-msgstr ""
+msgstr "%s 是基于页面的呼叫管理解决方案。"
 
 #: Services.class.php:582
 #, php-format
 msgid "%s is not configured correctly."
-msgstr ""
+msgstr "还没有成功配置%s 。"
 
 #: views/view.shortcuts.php:6
 msgid ""
@@ -57,18 +57,18 @@ msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
 "detected. This is a misconfiguration. To ensure your system is protected "
 "from attacks, please change the default zone of interface '%s'."
-msgstr ""
+msgstr "已经检测到一个已设置到信任的网络接口。这是一个错误的设置。为了确保公司系统能够被安全保护，请修改默认的接口区域设置 '%s'。"
 
 #: Firewall.class.php:138
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
 "interface '%s' to a zone."
-msgstr ""
+msgstr "系统检测到一个新的未设置的网络接口。请设置 '%s' 。"
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
-msgstr ""
+msgstr "关于安全区域设置"
 
 #: views/view.shortcuts.php:15
 msgid "Add Host"
@@ -111,11 +111,11 @@ msgstr "高级设置"
 msgid ""
 "After an endpoint is registered, the source of that endpoint is %s "
 "permission to use UCP, if UCP is enabled."
-msgstr ""
+msgstr "如果UCP已经开启，终端注册以后，终端的源地址 %s可以有权限使用UCP。"
 
 #: views/view.interfaces.php:46
 msgid "All Tunnel Interfaces are automatically set to Local"
-msgstr ""
+msgstr "所有隧道接口已经被自动设置为Local"
 
 #: Console/Firewall.class.php:254
 msgid "All blacklisted entries."
@@ -269,7 +269,7 @@ msgstr "命令运行"
 
 #: firewall.i18n.php:6
 msgid "Connectivity"
-msgstr "连接"
+msgstr "通信接口连接"
 
 #: views/view.portmaps.php:11 views/view.services.php:2
 msgid "Core Services"
