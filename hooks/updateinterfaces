@@ -4,12 +4,6 @@
 
 // This updates the zone of a specified interface. Will not create a new one.
 
-// If the firewall hasn't started yet, don't do anything.
-if (file_exists("/var/run/firewalld.safemode")) {
-	print "Firewall not started. Ignoring\n";
-	exit;
-}
-
 // Make sure we have a param
 if (empty($argv[1])) {
 	throw new \Exception("Needs a param");
