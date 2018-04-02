@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.50</version>
+	<version>13.0.50.1</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.50.1* Fix overly restrictive firewall for Zulu UC.
 		*13.0.50* Allow interface changes while firewall is in safe mode
 		*13.0.49.2* Disable -w flag on older systems
 		*13.0.49* Add -w flag to iptables to avoid races, FREEPBX-16075 - Allow IPv6 DHCP as well as SLAAC.
