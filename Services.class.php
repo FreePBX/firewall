@@ -184,9 +184,10 @@ class Services {
 	private function getSvc_zulu() {
 		// See if Zulu is installed and licenced.
 		$retarr = array(
-			"name" => _("Zulu UC "),
-			"defzones" => array("internal"),
-			"descr" => _("Zulu UC delivers Outlook and browser integration for the PBX. Note that the Zulu port is <strong>automatically opened</strong> to any registered clients. It is unlikely you need to change this."),
+			"name" => _("Zulu UC"),
+			"defzones" => array("external", "other", "internal"),
+			// Taken from https://www.freepbx.org/store/zulu/
+			"descr" => _("Zulu UC Desktop and softphone integration unifies the most popular business communication tools & applications enhancing user productivity and mobility. Zulu uses a token-based secure authentication method and is safe to expose to the public internet."),
 		);
 
 		$zuluport = false;
