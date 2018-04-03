@@ -1306,31 +1306,31 @@ class Iptables {
 		$retarr['fpbxratelimit'][] = array("other" => "-m mark --mark 0x4/0x4", "jump" => "ACCEPT");
 
 		// On a SYN packet, add it to our watch list
-		$retarr['fpbxratelimit'][] = array("other" => "-p tcp -m tcp --tcp-flags SYN,RST,ACK SYN -m recent --set --name REPEAT --rsource");
+		$retarr['fpbxratelimit'][] = array("other" => "-m state --state NEW -m recent --set --name REPEAT --rsource");
 		// Note DISCOVERED is only for the UI
-		$retarr['fpbxratelimit'][] = array("other" => "-p tcp -m tcp --tcp-flags SYN,RST,ACK SYN -m recent --set --name DISCOVERED --rsource");
+		$retarr['fpbxratelimit'][] = array("other" => "-m state --state NEW -m recent --set --name DISCOVERED --rsource");
 
 		$retarr['fpbxratelimit'][] = array("jump" => "LOG");
 		// Has this IP already been marked as an attacker? If so, you're still one, go away.
 		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 1 --name ATTACKER --rsource", "jump" => "fpbxattacker");
 
 		// TCP Packets are a bit more picky. We allow up to 10 connection requests per 60 seconds
-		// before we add them to the short block 
+		// before we add them to the short block. But more than 50 in a 1 hour period, or 100 in
+		// a 24 hour period is an attacker. Seriously, how bad is your network?
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 3600 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxattacker");
 		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name REPEAT --rsource", "jump" => "fpbxshortblock");
 
-		// But more than 50 in a 1 hour period, or 100 in a 24 hour period is an attacker. Seriously, how bad is your network?
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 3600 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxattacker");
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
 
 		// If they made it past here, they're all good.
 		$retarr['fpbxratelimit'][] = array("jump" => "ACCEPT");
 
-		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports
-		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
-		// Remove this IP from any recent tables they may be in (Note that DISCOVERED is only
+		// As this IP is known about, remove it from any tables they may be in (Note that DISCOVERED is only
 		// used for the UI, so don't remove it from that)
-		$retarr['fpbxknownreg'][] = array("other" => "-m recent --name REPEAT --remove");
-		$retarr['fpbxknownreg'][] = array("other" => "-m recent --name ATTACKER --remove");
+		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name REPEAT");
+		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name ATTACKER");
+		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports.
+		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-zulu");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps");
