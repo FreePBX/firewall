@@ -187,7 +187,7 @@ class Services {
 			"name" => _("Zulu UC"),
 			"defzones" => array("external", "other", "internal"),
 			// Taken from https://www.freepbx.org/store/zulu/
-			"descr" => _("Zulu UC Desktop and softphone integration unifies the most popular business communication tools & applications enhancing user productivity and mobility. Zulu uses a token-based secure authentication method and is safe to expose to the public internet."),
+			"descr" => _("Zulu UC Desktop and softphone integration unifies the most popular business communication tools & applications enhancing user productivity and mobility. Zulu uses a token-based secure authentication method and is safe to expose to the public internet, as it rate limits (and then blocks) attackers. Note that rate limits are not applied to clients in the 'Trusted' or 'Internal' zones."),
 		);
 
 		$zuluport = false;
@@ -208,7 +208,7 @@ class Services {
 			return $retarr;
 		}
 
-		$retarr['fw'] = array(array("protocol" => "tcp", "port" => $zuluport));
+		$retarr['fw'] = array(array("protocol" => "tcp", "port" => $zuluport, "ratelimit" => true));
 		return $retarr;
 	}
 

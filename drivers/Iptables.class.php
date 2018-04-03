@@ -284,7 +284,14 @@ class Iptables {
 					foreach ($ports as $tmparr) {
 						$protocol = $tmparr['protocol'];
 						$port = $tmparr['port'];
-						$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+						$ratelimit = isset($tmparr['ratelimit']);
+
+						if ($ratelimit) {
+							$param = "-p $protocol -m $protocol --dport $port -j fpbxratelimit";
+						} else {
+							$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+						}
+
 						if (isset($flipped[$param])) {
 							unset($flipped[$param]);
 						} else {
@@ -321,7 +328,14 @@ class Iptables {
 					foreach ($ports as $arr) {
 						$protocol = $arr['protocol'];
 						$port = $arr['port'];
-						$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+
+						// If this port is rate limited, use that rather than ACCEPT
+						if (isset($arr['ratelimit'])) {
+							$param = "-p $protocol -m $protocol --dport $port -j fpbxratelimit";
+						} else {
+							$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+						}
+
 						$current[$ipv]['filter'][$name][] = $param;
 						$cmd = "$ipt -A $name $param";
 						$this->l($cmd);
@@ -1225,6 +1239,14 @@ class Iptables {
 		// Our 'trusted' zone is always allowed access to everything
 		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
 
+		// Mark traffic that comes in from other zones, so that they can be handled
+		// differently if needed (Rate limiting cares about zone-internal, and checks
+		// for mark 0x4). Nothing else is using it at the moment, but it is left here
+		// for expansion by third parties.
+		$retarr['zone-internal'][] = array("other" => "-m mark --mark 0x4/0x4");
+		$retarr['zone-other'][] = array("other" => "-m mark --mark 0x8/0x8");
+		$retarr['zone-external'][] = array("other" => "-m mark --mark 0x10/0x10");
+
 		// VoIP Rate limiting happens here. If they've made it here, they're an unknown host
 		// sending VoIP *signalling* here. We want to give them a bit of slack, to make sure
 		// it's not a dynamic IP address of a known good client.
@@ -1276,8 +1298,39 @@ class Iptables {
 
 		$retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
+		// TCP Rate limiting. We use REPEAT and DISCOVERED as names, so they are visible
+		// in the UI. Also, we don't want an attacker to try to connect to our SIP ports
+		// after being blocked from another service!
+
+		// If this packet is from an INTERNAL network, don't rate limit it.
+		$retarr['fpbxratelimit'][] = array("other" => "-m mark --mark 0x4/0x4", "jump" => "ACCEPT");
+
+		// On a SYN packet, add it to our watch list
+		$retarr['fpbxratelimit'][] = array("other" => "-p tcp -m tcp --tcp-flags SYN,RST,ACK SYN -m recent --set --name REPEAT --rsource");
+		// Note DISCOVERED is only for the UI
+		$retarr['fpbxratelimit'][] = array("other" => "-p tcp -m tcp --tcp-flags SYN,RST,ACK SYN -m recent --set --name DISCOVERED --rsource");
+
+		$retarr['fpbxratelimit'][] = array("jump" => "LOG");
+		// Has this IP already been marked as an attacker? If so, you're still one, go away.
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 1 --name ATTACKER --rsource", "jump" => "fpbxattacker");
+
+		// TCP Packets are a bit more picky. We allow up to 10 connection requests per 60 seconds
+		// before we add them to the short block 
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name REPEAT --rsource", "jump" => "fpbxshortblock");
+
+		// But more than 50 in a 1 hour period, or 100 in a 24 hour period is an attacker. Seriously, how bad is your network?
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 3600 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
+
+		// If they made it past here, they're all good.
+		$retarr['fpbxratelimit'][] = array("jump" => "ACCEPT");
+
 		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports
 		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
+		// Remove this IP from any recent tables they may be in (Note that DISCOVERED is only
+		// used for the UI, so don't remove it from that)
+		$retarr['fpbxknownreg'][] = array("other" => "-m recent --name REPEAT --remove");
+		$retarr['fpbxknownreg'][] = array("other" => "-m recent --name ATTACKER --remove");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-zulu");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps");
