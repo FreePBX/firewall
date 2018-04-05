@@ -543,7 +543,13 @@ class Smart {
 		}
 
 		// Now we are sure that zulu is running, we can trust(ish) data in the zulu table.
-		$tmparr = $this->db->query("SELECT DISTINCT(client_ip) from zulu_tokens")->fetchAll(\PDO::FETCH_COLUMN);
+		try {
+			// This is only present in Zulu 3.
+			$tmparr = $this->db->query("SELECT DISTINCT(client_ip) from zulu_tokens")->fetchAll(\PDO::FETCH_COLUMN);
+		} catch (\Exception $e) {
+			// If zulu 3 isn't installed, return an empty array
+			$tmparr = array();
+		}
 		foreach ($tmparr as $ip) {
 			$contacts[$ip] = true;
 		}
