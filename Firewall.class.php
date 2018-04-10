@@ -207,13 +207,41 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// So this is the hook I want to run
 		$filename = "$basedir/firewall.$hookname";
 
+		// If we have a modern sysadmin_rpm, we can put the params
+		// INSIDE the hook file, rather than as part of the filename
+		if (file_exists("/etc/sysadmin_contents_max")) {
+			$fh = fopen("/etc/sysadmin_contents_max", "r");
+			if ($fh) {
+				$max = (int) fgets($fh);
+				fclose($fh);
+			}
+		} else {
+			$max = false;
+		}
+
+		if ($max > 65535 || $max < 128) {
+			$max = false;
+		}
+
 		// Do I have any params?
 		if ($params) {
 			// Oh. I do. If it's an array, json encode and base64
 			if (is_array($params)) {
 				$b = base64_encode(gzcompress(json_encode($params)));
-				// Note we derp the base64, changing / to _, because filepath.
-				$filename .= ".".str_replace('/', '_', $b);
+				// Note we derp the base64, changing / to _, because this may be used as a filepath.
+				if ($max) {
+					if (strlen($b) > $max) {
+						throw new \Exception("Contents too big for current sysadmin-rpm. This is possibly a bug!");
+					}
+					$contents = $b;
+					$filename .= ".CONTENTS";
+				} else {
+					$contents = "";
+					$filename .= ".".str_replace('/', '_', $b);
+					if (strlen($filename) > 200) {
+						throw new \Exception("Too much data, and old sysadmin rpm. Please run 'yum update'");
+					}
+				}
 			} elseif (is_object($params)) {
 				throw new \Exception("Can't pass objects to hooks");
 			} else {
@@ -228,6 +256,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			// WTF, unable to create file?
 			throw new \Exception("Unable to create hook trigger '$filename'");
 		}
+
+		// Put our contents there, if there are any.
+		fwrite($fh, $contents);
 
 		// As soon as we close it, incron does its thing.
 		fclose($fh);
