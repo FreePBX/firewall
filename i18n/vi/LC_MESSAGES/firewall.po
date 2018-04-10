@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-03 00:03-0300\n"
+"POT-Creation-Date: 2018-04-09 21:35-0300\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -364,7 +364,7 @@ msgstr "Mặc định Vùng (Zone)"
 msgid "Delete"
 msgstr "Xóa"
 
-#: Firewall.class.php:534
+#: Firewall.class.php:565
 msgid "Delete Selected"
 msgstr "Xóa những gì được chọn"
 
@@ -533,7 +533,7 @@ msgstr "Dịch vụ Firewall không chạy!"
 msgid "Firewall Wizard"
 msgstr "Thuật sĩ Firewall"
 
-#: Firewall.class.php:508
+#: Firewall.class.php:539
 msgid "Firewall can not be disabled"
 msgstr "Không thể vô hiệu Firewall"
 
@@ -1133,7 +1133,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr "Đã xóa %s ra khỏi Danh sách đen."
 
-#: Firewall.class.php:540
+#: Firewall.class.php:571
 msgid "Reset"
 msgstr "Cài đặt lại"
 
@@ -1230,7 +1230,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall hiện đã kích hoạt!"
 
-#: Firewall.class.php:533 Firewall.class.php:541 views/modal.customsvc.php:37
+#: Firewall.class.php:564 Firewall.class.php:572 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr "Lưu"
@@ -1345,7 +1345,7 @@ msgstr "TFTP thường được dử dụng cho việc cung cấp và nâng cấ
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr "Cảm ơn vì đã sử dụng Sangoma Smart Firewall!"
 
-#: Firewall.class.php:273
+#: Firewall.class.php:304
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1687,7 +1687,7 @@ msgstr "Các cổng UDP:"
 msgid "Unknown entry!"
 msgstr "Mục nhập không xác định!"
 
-#: Firewall.class.php:535
+#: Firewall.class.php:566
 msgid "Update Interfaces"
 msgstr "Cập nhật các giao diện"
 
@@ -1782,7 +1782,7 @@ msgstr ""
 "Bạn có thể thêm các host và các mạng riêng lẻ để ghi đè sự cho phép mặc định "
 "của một giao diện."
 
-#: Firewall.class.php:274
+#: Firewall.class.php:305
 msgid "You can add the host automatically here."
 msgstr "Bạn có thể tự động thêm host ở đây."
 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-03 00:03-0300\n"
+"POT-Creation-Date: 2018-04-09 21:35-0300\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -315,7 +315,7 @@ msgstr ""
 msgid "Delete"
 msgstr "削除"
 
-#: Firewall.class.php:534
+#: Firewall.class.php:565
 msgid "Delete Selected"
 msgstr ""
 
@@ -464,7 +464,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Firewall.class.php:508
+#: Firewall.class.php:539
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -976,7 +976,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:540
+#: Firewall.class.php:571
 msgid "Reset"
 msgstr "リセット"
 
@@ -1060,7 +1060,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:533 Firewall.class.php:541 views/modal.customsvc.php:37
+#: Firewall.class.php:564 Firewall.class.php:572 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -1171,7 +1171,7 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Firewall.class.php:273
+#: Firewall.class.php:304
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1433,7 +1433,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:535
+#: Firewall.class.php:566
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1512,7 +1512,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:274
+#: Firewall.class.php:305
 msgid "You can add the host automatically here."
 msgstr ""
 
