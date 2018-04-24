@@ -98,12 +98,12 @@ function run_monitoring($ppid) {
 function getAMICreds() {
 	$amifile = "/etc/asterisk/manager_additional.conf";
 	if (!file_exists($amifile)) {
-		wall("Can't read/find $amifile. Firewall monitoring broken!");
+		wall("Can't read/find $amifile. Firewall monitoring broken! (Did you forget to click 'Reload'?)");
 		return array();
 	}
 	$creds = @parse_ini_file($amifile, true, INI_SCANNER_RAW);
 	if (!isset($creds['firewall'])) {
-		wall("Can't find 'firewall' user in $amifile. Firewall monitoring broken!");
+		wall("Can't find 'firewall' user in $amifile. Firewall monitoring broken! (Did you forget to click 'Reload'?)");
 		return array();
 	}
 	return $creds['firewall'];
