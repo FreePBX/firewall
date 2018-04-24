@@ -73,6 +73,7 @@ function fwLog($str) {
 	$lfstat = @stat("/tmp/firewall.log");
 	if (is_array($lfstat) && $lfstat['size'] > 1048576) {
 		// Logfile is over 1mb
+		print time().": Rotating Log\n";
 		@unlink("/tmp/firewall.log.old");
 		rename("/tmp/firewall.log", "/tmp/firewall.log.old");
 		// This is so hacky.
@@ -80,11 +81,15 @@ function fwLog($str) {
 			fclose($STDIN);
 			fclose($STDOUT);
 			fclose($STDERR);
-			$STDIN = fopen('/dev/null', 'r');
-			$STDOUT = fopen('/tmp/firewall.log', 'ab');
-			$STDERR = fopen('/tmp/firewall.err', 'ab');
+		} else {
+			fclose(STDIN);
+			fclose(STDOUT);
+			fclose(STDERR);
 		}
-		print "Rotated Log\n";
+		$STDIN = fopen('/dev/null', 'r');
+		$STDOUT = fopen('/tmp/firewall.log', 'ab');
+		$STDERR = fopen('/tmp/firewall.err', 'ab');
+		print time().": Rotated Log\n";
 	}
 	print time().": $str\n";
 	// No need to write to the logfile, as we're sending it there already by the print
