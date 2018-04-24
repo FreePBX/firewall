@@ -55,7 +55,7 @@ function run_monitoring($ppid) {
 		// crashes)
 		$restartafter = time() + 3600;
 
-		$ami = new AGI_AsteriskManager(null, array("log_level" => 1));
+		$ami = new AGI_AsteriskManager(null, array("log_level" => 0));
 		$ami->connect("127.0.0.1", "firewall", $creds['secret']);
 		$allow_timeout = true;
 		$return_on_event = true;
@@ -122,8 +122,20 @@ function successfulauth_handler($e, $params, $server, $port) {
 }
 
 function userevent_handler($e, $params, $server, $port) {
-	print "Ooh, A Userevent!\n";
-	var_dump($e, $params);
+	if (!isset($params['UserEvent']) || $params['UserEvent'] !== 'authentication-success') {
+		// Nothing to do with firewall
+		return;
+	}
+
+	// Someone authenticated, and we need to add them to the whitelist, just in case.
+	if (isset($params['ip'])) {
+		$ip = $params['ip'];
+		if (strpos($ip, '127') === 0 || strpos($ip, 'fe') === 0) {
+			// Localhost. Ignore.
+			return;
+		}
+		good_remote($ip);
+	}
 }
 
 function failed_handler($e, $params, $server, $port) {
@@ -156,7 +168,7 @@ function bad_remote($ip) {
 }
 
 function good_remote($ip) {
-	print "I think $ip is good\n";
+	print "Firewall-Monitoring - $ip reported as good, adding to whitelist.\n";
 	// This IP has successfully authenticated to this machine. So, remove it from any
 	// recent chains it may be a member of. Note we don't remove from DISCOVERED, as
 	// that's only used in the GUI.
