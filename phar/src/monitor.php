@@ -35,7 +35,9 @@ function start_monitor($fork = true) {
 	}
 
 	if (!$titlechanged) {
-		setproctitle($newtitle);
+		if (function_exists('setproctitle')) {
+			setproctitle($newtitle);
+		}
 	}
 
 	run_monitoring($ppid);
