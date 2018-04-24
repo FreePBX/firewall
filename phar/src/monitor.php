@@ -139,14 +139,13 @@ function userevent_handler($e, $params, $server, $port) {
 }
 
 function failed_handler($e, $params, $server, $port) {
-	print "Something failed!\n";
 	// We should have a 'RemoteAddress' in the event.
-	if (!isset($e['RemoteAddress'])) {
+	if (!isset($params['RemoteAddress'])) {
 		// No, we don't.
 		return;
 	}
 
-	$tmparr = explode("/", $e['RemoteAddress']);
+	$tmparr = explode("/", $params['RemoteAddress']);
 	// This will be something like [ IPV4, UDP, 46.17.47.197, 5210 ]
 	// (Yes. That's a valid IP that was scanning my system when I was
 	// writing this)
@@ -154,7 +153,7 @@ function failed_handler($e, $params, $server, $port) {
 	// If it's link-local, or, 127.*, this is bad, and we should wall
 	// about it.
 	if (strpos($tmparr[2], '127') === 0 || strpos($tmparr[2], 'fe') === 0) {
-		wall("Local machine failing auth - Something is misconfigured! Event ".json_encode($e));
+		wall("Local machine failing auth - Something is misconfigured! Event ".json_encode($params));
 		return;
 	}
 
@@ -164,6 +163,7 @@ function failed_handler($e, $params, $server, $port) {
 function bad_remote($ip) {
 	// TODO: Manage attackers. At the moment, we just use the
 	// existing RFW code, so there's nothing to do here.
+	print "Firewall-Monitoring - Auth failure from $ip detected\n";
 	return;
 }
 
