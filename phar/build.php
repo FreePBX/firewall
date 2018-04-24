@@ -7,7 +7,7 @@
 // service.
 
 $apps = array(
-	"voipfirewalld" => array("firewall.php", "common.php", array(__DIR__."/../hooks/validator.php", "validator.php"), array(__DIR__."/../Lock.class.php", "lock.php"), "modprobe.php"),
+	"voipfirewalld" => array("firewall.php", "common.php", array(__DIR__."/../hooks/validator.php", "validator.php"), array(__DIR__."/../Lock.class.php", "lock.php"), "modprobe.php", "asmanager.php", "monitor.php"),
 );
 
 $dst = __DIR__."/../hooks/";

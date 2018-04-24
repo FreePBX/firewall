@@ -1251,6 +1251,11 @@ class Iptables {
 		// sending VoIP *signalling* here. We want to give them a bit of slack, to make sure
 		// it's not a dynamic IP address of a known good client.
 
+		// Before we do anything, if this has already been discovered by the monitoring
+		// daemon, let it access this port for up to 90 seconds. This is enough time for the
+		// firewall daemon to discover it in asterisk and add it to the proper tables.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 90 --hitcount 1 --name WHITELIST --rsource", "jump" => "ACCEPT");
+
 		// To start with, we ensure that we keep track of ALL rfw attempts.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
 		// This is purely for displaying the Registered Endpoints
@@ -1304,6 +1309,11 @@ class Iptables {
 
 		// If this packet is from an INTERNAL network, don't rate limit it.
 		$retarr['fpbxratelimit'][] = array("other" => "-m mark --mark 0x4/0x4", "jump" => "ACCEPT");
+
+		// If this has already been discovered by the monitoring daemon, let it access this
+		// port for up to 90 seconds. This is enough time for the firewall daemon to discover
+		// it in asterisk and add it to the proper tables.
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 90 --hitcount 1 --name WHITELIST --rsource", "jump" => "ACCEPT");
 
 		// On a SYN packet, add it to our watch list
 		$retarr['fpbxratelimit'][] = array("other" => "-m state --state NEW -m recent --set --name REPEAT --rsource");
