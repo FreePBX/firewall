@@ -65,7 +65,25 @@ function run_monitoring($ppid) {
 		$ami->add_event_handler("failedauth", "failed_handler");
 		$ami->add_event_handler("failedacl", "failed_handler");
 
+		$currentsec = time();
+		$loopcount = 0;
+
 		while (1) {
+			// Avoid loops - If we've been hit more than 100 times in the current
+			// second, then something is severely broken. Exit, and we'll be
+			// restarted.
+			if ($currentsec == time()) {
+				$loopcount++;
+			} else {
+				$loopcount = 0;
+				$currentsec = time();
+			}
+
+			if ($loopcount > 100) {
+				wall("Loop detected in monitoring script. Dying!");
+				exit;
+			}
+
 			// This will wait for a max of 30 seconds (when allow_timeout = true)
 			$result = $ami->wait_response($allow_timeout, $return_on_event);
 
