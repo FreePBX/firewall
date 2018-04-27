@@ -69,7 +69,7 @@ function run_monitoring($ppid) {
 		$loopcount = 0;
 
 		while (1) {
-			// Avoid loops - If we've been hit more than 100 times in the current
+			// Avoid loops - If we've been hit more than 500 times in the current
 			// second, then something is severely broken. Exit, and we'll be
 			// restarted.
 			if ($currentsec == time()) {
@@ -79,8 +79,8 @@ function run_monitoring($ppid) {
 				$currentsec = time();
 			}
 
-			if ($loopcount > 100) {
-				wall("Loop detected in monitoring script. Dying!");
+			if ($loopcount > 500) {
+				wall("Loop detected in monitoring script. Issue with Asterisk? Restarting!");
 				exit;
 			}
 
