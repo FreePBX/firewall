@@ -69,7 +69,7 @@ function run_monitoring($ppid) {
 		$loopcount = 0;
 
 		while (1) {
-			// Avoid loops - If we've been hit more than 500 times in the current
+			// Avoid loops - If we've been hit more than 5000 times in the current
 			// second, then something is severely broken. Exit, and we'll be
 			// restarted.
 			if ($currentsec == time()) {
@@ -79,25 +79,30 @@ function run_monitoring($ppid) {
 				$currentsec = time();
 			}
 
-			if ($loopcount > 500) {
+			// 5000 events in a second is unrealistic, right?
+			if ($loopcount > 5000) {
+				print time().": Loop detected in monitoring script. Issue with Asterisk? Restarting!\n";
 				wall("Loop detected in monitoring script. Issue with Asterisk? Restarting!");
 				exit;
 			}
 
 			// This will wait for a max of 30 seconds (when allow_timeout = true)
 			$result = $ami->wait_response($allow_timeout, $return_on_event);
+			if (file_exists("/tmp/firewall.debug")) {
+				print time().": Event debugging - ".json_encode($result)."\n";
+			}
 
 			// Is our parent still alive?
 			$cppid = posix_getppid();
 			if ($ppid !== $cppid) {
-				print "Parent died. Shutting Down!\n";
+				print time().": Parent died. Shutting Down!\n";
 				exit;
 			}
 
 			// If result of wait_response is bool false, something went wrong.
 			// Sleep 30 seconds and restart.
 			if ($result === false) {
-				print "wait_response returned false. Restarting\n";
+				print time().": wait_response returned false. Restarting\n";
 				sleep(30);
 				break;
 			}
@@ -180,15 +185,26 @@ function failed_handler($e, $params, $server, $port) {
 	bad_remote($tmparr[2]);
 }
 
-function bad_remote($ip) {
+function bad_remote($ip, $event) {
+	if (file_exists("/tmp/firewall.debug")) {
+		$debug = " Event Debugging: ".json_encode($event);
+	} else {
+		$debug = "";
+	}
 	// TODO: Manage attackers. At the moment, we just use the
 	// existing RFW code, so there's nothing to do here.
-	print "Firewall-Monitoring - Auth failure from $ip detected\n";
+	print time().": Firewall-Monitoring - Auth failure from $ip detected.$debug\n";
 	return;
 }
 
-function good_remote($ip) {
-	print "Firewall-Monitoring - $ip reported as good, adding to whitelist.\n";
+function good_remote($ip, $event) {
+	if (file_exists("/tmp/firewall.debug")) {
+		$debug = " Event Debugging: ".json_encode($event);
+	} else {
+		$debug = "";
+	}
+
+	print time().": Firewall-Monitoring - $ip reported as good, adding to whitelist.$debug\n";
 	// This IP has successfully authenticated to this machine. So, remove it from any
 	// recent chains it may be a member of. Note we don't remove from DISCOVERED, as
 	// that's only used in the GUI.
