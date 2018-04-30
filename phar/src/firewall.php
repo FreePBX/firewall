@@ -9,7 +9,6 @@ use \FreePBX\modules\Firewall\Lock;
 
 if (!Lock::canLock($thissvc)) {
 	print "Firewall Service already running, not restarting...\n";
-	syslog(LOG_WARNING|LOG_LOCAL0, "Firewall Service already running, not restarting...");
 	exit;
 }
 

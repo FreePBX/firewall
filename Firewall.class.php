@@ -16,6 +16,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				touch("/etc/asterisk/firewall.enabled");
 			}
 		}
+		// 13.0.54 - Add cronjob to restart it if it crashes
+		$this->addCronJob();
 	}
 
 	public function uninstall() {
@@ -30,6 +32,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			\FreePBX::OOBE()->setConfig("completed", $o);
 			$this->setConfig("oobeanswered", array());
 		}
+		$this->removeCronJob();
 	}
 
 	public function backup() {}
@@ -1244,6 +1247,22 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("advancedsettings", $current);
 		}
 		return $current;
+	}
+
+	// Create a cron job that runs every 15 mins that tries to restart firewall
+	// if it's not running when it should be.
+	public function addCronJob() {
+		$cron = \FreePBX::Cron();
+		$hookfile = "/var/spool/asterisk/incron/firewall.firewall";
+		$line = "*/15 * * * * [ -e /etc/asterisk/firewall.enabled ] && touch $hookfile";
+		$cron->add($line);
+	}
+
+	public function removeCronJob() {
+		$cron = \FreePBX::Cron();
+		$hookfile = "/var/spool/asterisk/incron/firewall.firewall";
+		$line = "*/15 * * * * [ -e /etc/asterisk/firewall.enabled ] && touch $hookfile";
+		$cron->remove($line);
 	}
 
 	// Hooks
