@@ -53,9 +53,8 @@ function run_monitoring($ppid) {
 			continue;
 		}
 
-		// Recreate and reconnect to astman each loop (every 60 mins, max, or if something
-		// crashes)
-		$restartafter = time() + 3600;
+		// Recreate and reconnect to astman each 24 hours
+		$restartafter = time() + 86400;
 
 		$ami = new AGI_AsteriskManager(null, array("log_level" => 0));
 		$ami->connect("127.0.0.1", "firewall", $creds['secret']);
@@ -75,14 +74,14 @@ function run_monitoring($ppid) {
 			// Is our parent still alive?
 			$cppid = posix_getppid();
 			if ($ppid !== $cppid) {
-				print time().": Parent died. Shutting Down!\n";
+				print time().": Monitoring parent (voipfirewalld) died. Shutting down!\n";
 				exit;
 			}
 
 			// If result of wait_response is bool false, something went wrong.
 			// Sleep 30 seconds and restart.
 			if ($result === false) {
-				print time().": wait_response returned false. Restarting\n";
+				print time().": wait_response returned false. Restarting monitoring thread.\n";
 				sleep(30);
 				break;
 			}
@@ -92,7 +91,8 @@ function run_monitoring($ppid) {
 				break;
 			}
 		}
-		print time().": Monitoring - Reconnecting to AMI\n";
+		// The monitoring daemon has been running for 24 hours, or Asterisk
+		// has closed the connection for some reason. Reconnect!
 	}
 }
 
