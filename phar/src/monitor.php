@@ -65,27 +65,7 @@ function run_monitoring($ppid) {
 		$ami->add_event_handler("failedauth", "failed_handler");
 		$ami->add_event_handler("failedacl", "failed_handler");
 
-		$currentsec = time();
-		$loopcount = 0;
-
 		while (1) {
-			// Avoid loops - If we've been hit more than 5000 times in the current
-			// second, then something is severely broken. Exit, and we'll be
-			// restarted.
-			if ($currentsec == time()) {
-				$loopcount++;
-			} else {
-				$loopcount = 0;
-				$currentsec = time();
-			}
-
-			// 5000 events in a second is unrealistic, right?
-			if ($loopcount > 5000) {
-				print time().": Loop detected in monitoring script. Issue with Asterisk? Restarting!\n";
-				wall("Loop detected in monitoring script. Issue with Asterisk? Restarting!");
-				exit;
-			}
-
 			// This will wait for a max of 30 seconds (when allow_timeout = true)
 			$result = $ami->wait_response($allow_timeout, $return_on_event);
 			if (file_exists("/tmp/firewall.debug")) {
@@ -112,8 +92,7 @@ function run_monitoring($ppid) {
 				break;
 			}
 		}
-
-		exit;
+		print time().": Monitoring - Reconnecting to AMI\n";
 	}
 }
 
@@ -142,7 +121,7 @@ function successfulauth_handler($e, $params, $server, $port) {
 			// Localhost. Ignore.
 			return;
 		}
-		good_remote($tmparr[2]);
+		good_remote($tmparr[2], $params);
 	}
 }
 
@@ -159,7 +138,7 @@ function userevent_handler($e, $params, $server, $port) {
 			// Localhost. Ignore.
 			return;
 		}
-		good_remote($ip);
+		good_remote($ip, $params);
 	}
 }
 
@@ -182,7 +161,7 @@ function failed_handler($e, $params, $server, $port) {
 		return;
 	}
 
-	bad_remote($tmparr[2]);
+	bad_remote($tmparr[2], $params);
 }
 
 function bad_remote($ip, $event) {
@@ -204,18 +183,95 @@ function good_remote($ip, $event) {
 		$debug = "";
 	}
 
-	print time().": Firewall-Monitoring - $ip reported as good, adding to whitelist.$debug\n";
-	// This IP has successfully authenticated to this machine. So, remove it from any
-	// recent chains it may be a member of. Note we don't remove from DISCOVERED, as
-	// that's only used in the GUI.
-	$chains = array("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING");
-	$line = "-$ip\n";
-	foreach ($chains as $c) {
-		@file_put_contents("/proc/net/xt_recent/$c", $line);
-	}
+	if (needs_whitelist($ip)) {
+		print time().": Firewall-Monitoring - $ip reported as good, adding to whitelist.$debug\n";
 
-	// Add it to the whitelist which lets it bypass RFW for 90 seconds.
-	@file_put_contents("/proc/net/xt_recent/WHITELIST", "+$ip\n");
+		// Add it to the whitelist which lets it bypass RFW for 90 seconds.
+		@file_put_contents("/proc/net/xt_recent/WHITELIST", "+$ip\n");
+
+		// Now remove it from any recent chains it may be a member of. Note
+		// we don't remove from DISCOVERED, as that's only used in the GUI.
+		$chains = array("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING");
+		$line = "-$ip\n";
+		foreach ($chains as $c) {
+			@file_put_contents("/proc/net/xt_recent/$c", $line);
+		}
+
+	}
 }
 
+function get_iptables() {
+	$ipt = array("ipv4" => array(), "ipv6" => array());
+	exec("/usr/sbin/iptables-save 2>/dev/null", $ipt['ipv4'], $ret);
+	exec("/usr/sbin/ip6tables-save 2>/dev/null", $ipt['ipv6'], $ret);
+	// Cache the result for 10 seconds
+	$expires = time() + 10;
+	return $ipt;
+}
+
+function get_registered($iptables) {
+	static $cache;
+
+	if (!$cache) {
+		$cache = array("expires" => 0, "registered" => array());
+	}
+
+	if ($cache['expires'] < time()) {
+
+		// If this returns an empty ipv4 array, only cache it for 5 seconds. Otherwise,
+		// cache it for 60 seconds.
+		$ipt = get_iptables();
+		if (!$ipt['ipv4']) {
+			$cache['expires'] = time() + 5;
+		} else {
+			$cache['expires'] = time() + 60;
+		}
+
+		$retarr = array();
+
+		foreach ($ipt['ipv4'] as $line) {
+			if (strpos($line, '-A fpbxregistrations -s ') === 0) {
+				$tmparr = explode(" ", $line);
+				$net = explode("/", $tmparr[3]);
+				$retarr[$net[0]] = $net[0];
+			}
+		}
+
+		foreach ($ipt['ipv6'] as $line) {
+			if (strpos($line, '-A fpbxregistrations -s ') === 0) {
+				$tmparr = explode(" ", $line);
+				$net = explode("/", $tmparr[3]);
+				$retarr[$net[0]] = $net[0];
+			}
+		}
+
+		$cache['registered'] = $retarr;
+	}
+	return $cache['registered'];
+}
+
+function needs_whitelist($ip) {
+	static $cache = array();
+
+	// Have we seen this IP recently? If so, we don't need to check again.
+	if (!empty($cache[$ip])) {
+		$expires = $cache[$ip];
+		if ($expires > time()) {
+			return false;
+		}
+	}
+
+	// We don't know if this is in the fpbxregistrations table, or if it's already been whitelisted,
+	// but it will be after this. Either way, don't look again for 5 mins.
+	$cache[$ip] = time() + 3600;
+
+	// Is this IP address already known about in fpbxregistrations?
+	$registered = get_registered();
+	if (isset($registered[$ip])) {
+		return false;
+	}
+
+	// OK, it needs to be added to the temporary whitelist
+	return true;
+}
 
