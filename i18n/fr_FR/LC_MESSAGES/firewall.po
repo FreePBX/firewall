@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 21:35-0300\n"
+"POT-Creation-Date: 2018-04-30 21:02-0300\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -47,7 +47,7 @@ msgid ""
 "interfering with existing traffic."
 msgstr ""
 
-#: Firewall.class.php:148
+#: Firewall.class.php:151
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -55,7 +55,7 @@ msgid ""
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
 
-#: Firewall.class.php:138
+#: Firewall.class.php:141
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -113,11 +113,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
 
-#: Console/Firewall.class.php:254
+#: Console/Firewall.class.php:255
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:245
+#: Console/Firewall.class.php:246
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -197,17 +197,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:136
+#: Console/Firewall.class.php:137
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:157
+#: Console/Firewall.class.php:158
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:206
+#: Console/Firewall.class.php:207
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -317,7 +317,7 @@ msgstr ""
 msgid "Delete"
 msgstr "Supprimer"
 
-#: Firewall.class.php:565
+#: Firewall.class.php:568
 msgid "Delete Selected"
 msgstr "Supprimer les entrées sélectionnées"
 
@@ -395,11 +395,11 @@ msgstr ""
 msgid "Error!"
 msgstr ""
 
-#: Console/Firewall.class.php:198
+#: Console/Firewall.class.php:199
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:141
+#: Console/Firewall.class.php:142
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
@@ -434,7 +434,7 @@ msgid ""
 "as additional data."
 msgstr ""
 
-#: Console/Firewall.class.php:168
+#: Console/Firewall.class.php:169
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -442,23 +442,23 @@ msgstr ""
 msgid "Firewall"
 msgstr ""
 
-#: Firewall.class.php:68
+#: Firewall.class.php:71
 msgid "Firewall Active"
 msgstr ""
 
-#: Firewall.class.php:89
+#: Firewall.class.php:92
 msgid "Firewall Configuration"
 msgstr ""
 
-#: Firewall.class.php:70
+#: Firewall.class.php:73
 msgid "Firewall Disabled"
 msgstr ""
 
-#: Firewall.class.php:123 Firewall.class.php:124
+#: Firewall.class.php:126 Firewall.class.php:127
 msgid "Firewall Integrity Failed"
 msgstr ""
 
-#: Firewall.class.php:83
+#: Firewall.class.php:86
 msgid "Firewall Service not running!"
 msgstr ""
 
@@ -466,7 +466,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Firewall.class.php:539
+#: Firewall.class.php:542
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -537,7 +537,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Console/Firewall.class.php:198
+#: Console/Firewall.class.php:199
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -636,7 +636,7 @@ msgid ""
 "further information."
 msgstr ""
 
-#: Firewall.class.php:125
+#: Firewall.class.php:128
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -742,7 +742,7 @@ msgstr ""
 msgid "Networks"
 msgstr ""
 
-#: Firewall.class.php:135 Firewall.class.php:137
+#: Firewall.class.php:138 Firewall.class.php:140
 msgid "New Interface Detected"
 msgstr ""
 
@@ -758,15 +758,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:178
+#: Firewall.class.php:181
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:180
+#: Firewall.class.php:183
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:181
+#: Firewall.class.php:184
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -973,12 +973,12 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:202
+#: Console/Firewall.class.php:203
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:571
+#: Firewall.class.php:574
 msgid "Reset"
 msgstr "Reset"
 
@@ -1062,7 +1062,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:564 Firewall.class.php:572 views/modal.customsvc.php:37
+#: Firewall.class.php:567 Firewall.class.php:575 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -1116,7 +1116,7 @@ msgstr ""
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
-#: Firewall.class.php:75
+#: Firewall.class.php:78
 msgid "Starting up"
 msgstr ""
 
@@ -1132,8 +1132,8 @@ msgstr ""
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:138 Console/Firewall.class.php:178
-#: Console/Firewall.class.php:234
+#: Console/Firewall.class.php:139 Console/Firewall.class.php:179
+#: Console/Firewall.class.php:235
 msgid "Success!"
 msgstr ""
 
@@ -1145,7 +1145,7 @@ msgstr ""
 msgid "Summary"
 msgstr "Sommaire"
 
-#: Firewall.class.php:63 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:66 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr ""
 
@@ -1173,7 +1173,7 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Firewall.class.php:304
+#: Firewall.class.php:307
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1399,11 +1399,11 @@ msgstr ""
 msgid "Trusted"
 msgstr ""
 
-#: Firewall.class.php:144 Firewall.class.php:147
+#: Firewall.class.php:147 Firewall.class.php:150
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:176
+#: Firewall.class.php:179
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -1431,11 +1431,11 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: Console/Firewall.class.php:227
+#: Console/Firewall.class.php:228
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:566
+#: Firewall.class.php:569
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1514,7 +1514,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:305
+#: Firewall.class.php:308
 msgid "You can add the host automatically here."
 msgstr ""
 
