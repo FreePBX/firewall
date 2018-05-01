@@ -8,7 +8,8 @@ include_once 'lock.php';
 use \FreePBX\modules\Firewall\Lock;
 
 if (!Lock::canLock($thissvc)) {
-	print "Firewall Service already running, not restarting...\n";
+	// No need to output this
+	// print "Firewall Service already running, not restarting...\n";
 	exit;
 }
 
