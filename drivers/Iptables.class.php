@@ -507,10 +507,9 @@ class Iptables {
 			}
 		}
 
-		// If nat isn't enabled, there's nothing else to do.
-		if (!is_array($current['ipv4']['nat'])) {
-			print "Nat disabled, error\n";
-			return;
+		// If nat isn't enabled, fix it.
+		if (empty($current['ipv4']['nat']) || !is_array($current['ipv4']['nat'])) {
+			$current['ipv4']['nat'] = array();
 		}
 
 		// If this is an 'INTERNET' (external) zone, mark packets that are
@@ -526,6 +525,11 @@ class Iptables {
 
 		$foundrule = false;
 		$rule = "-o $iface -j MARK --set-xmark 0x2/0x2";
+
+		// If there's no masq-output entries, it won't exist.
+		if (empty($current['ipv4']['nat']['masq-output'])) {
+			$current['ipv4']['nat']['masq-output'] = array();
+		}
 
 		foreach ($current['ipv4']['nat']['masq-output'] as $lineno => $line) {
 			if ($line == $rule) {
@@ -1181,7 +1185,9 @@ class Iptables {
 		);
 
 		foreach ($rules as $r) {
-			exec("/sbin/iptables ".$this->wlock." $r");
+			$cmd = "/sbin/iptables ".$this->wlock." $r";
+			$this->l($cmd);
+			exec($cmd);
 		}
 		return true;
 	}
