@@ -13,6 +13,12 @@ if (!Lock::canLock($thissvc)) {
 	exit;
 }
 
+// Regen fail2ban conf, if we can
+if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
+	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
+	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
+}
+
 include_once 'common.php';
 
 // Load our validator
