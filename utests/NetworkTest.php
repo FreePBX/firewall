@@ -40,4 +40,12 @@ class NetworkTest extends PHPUnit_Framework_TestCase {
 		$this->assertTrue(isset($parsed['eth4']), "eth4 not discovered");
 		$this->assertEquals(count($parsed['eth4']['addresses']), 2, "Didn't find 2 addresses on eth4");
 	}
+
+	// Reported by artyx via IRC
+	public function testNoprefixrouteffset() {
+		$ipoutput = file(__DIR__."/ipoutput.3");
+		$parsed = self::$n->parseIpOutput($ipoutput);
+		$this->assertFalse(isset($parsed['noprefixroute']), "Wrong interface name 'noprefixroute' returned");
+	}
+
 }
