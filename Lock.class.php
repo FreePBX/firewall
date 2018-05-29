@@ -7,6 +7,11 @@ class Lock {
 	private static $locks;
 
 	public static function getLockDir() {
+		// Change this to be smarter in 15. For the moment, stick with only using /tmp
+		return "/tmp";
+
+		// The following code is unused.
+		/*
 		static $dir = false;
 
 		if (!$dir) {
@@ -32,6 +37,7 @@ class Lock {
 
 		// If /tmp doesn't exist, we have worse problems than firewall breaking.
 		return $dir;
+		 */
 	}
 
 	public static function canLock($lockname = false) {
