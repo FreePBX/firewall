@@ -10,16 +10,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-12-14 18:24-0300\n"
-"PO-Revision-Date: 2018-02-16 16:47+0200\n"
-"Last-Translator: Nils <Nils@heckenkamp.info>\n"
-"Language-Team: German "
-"<http://weblate.freepbx.org/projects/freepbx/firewall/de_DE/>\n"
+"PO-Revision-Date: 2018-07-18 19:14+0000\n"
+"Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
+"Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.4\n"
+"X-Generator: Weblate 2.19.1\n"
 
 #: Services.class.php:586
 #, php-format
@@ -1463,11 +1462,11 @@ msgstr ""
 
 #: assets/js/views/advanced.js:20
 msgid "Updating..."
-msgstr ""
+msgstr "Aktualisiere..."
 
 #: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
 msgid "Warning"
-msgstr ""
+msgstr "Warnung"
 
 #: Services.class.php:55
 msgid ""
