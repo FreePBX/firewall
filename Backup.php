@@ -7,7 +7,7 @@ class Backup Extends Base\BackupBase{
         $kvstoreids[] = 'noid';
         $settings = [];
         foreach ($kvstoreids as $value) {
-            $settings[$value] = $this->FreePBX->Filestore->getAll($value);
+            $settings[$value] = $this->FreePBX->Firewall->getAll($value);
         }
         $this->addConfigs($settings);
     }
