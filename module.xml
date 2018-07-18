@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.50</version>
+	<version>13.0.56</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,20 @@
 	<candisable>no</candisable>
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*13.0.56* FREEPBX-17657 - Better OpenVZ compatibility
+		*13.0.55.3* Hardcode /tmp as the lockfile directory
+		*13.0.55.2* Fix incorrect network name 'noprefixroute' being returned
+		*13.0.55.1* Ensure Fail2Ban isn't accidentally restarted
+		*13.0.54.3* Require Manager module (for AMI connection)
+		*13.0.54.2* Refactor monitoring so it is gentler on heavily loaded systems
+		*13.0.54.1* Restart firewall automatically if it crashes unexpectedly
+		*13.0.53.4* Be less sensitive about loops in monitoring
+		*13.0.53.3* Avoid potential infinite loop in monitoring daemon
+		*13.0.53.2* Actively listen for successful connections
+		*13.0.52* Support new sysadmin-rpm for longer interface descriptions
+		*13.0.51.1* Fix Zulu issues causing crash
+		*13.0.51* Add TCP rate limiting
+		*13.0.50.1* Fix overly restrictive firewall for Zulu UC.
 		*13.0.50* Allow interface changes while firewall is in safe mode
 		*13.0.49.2* Disable -w flag on older systems
 		*13.0.49* Add -w flag to iptables to avoid races, FREEPBX-16075 - Allow IPv6 DHCP as well as SLAAC.
@@ -71,6 +85,7 @@
 	<depends>
 		<file>/usr/lib/sysadmin/includes.php</file>
 		<module>sipsettings ge 13.0.23.1</module>
+		<module>manager ge 13.0.2.5</module>
 	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>

@@ -108,6 +108,7 @@ class Firewall extends Command {
 		if (!$fw->isEnabled()) {
 			$output->writeln("<error>"._("Enabling Firewall.")."</error>");
 			$fw->setConfig("status", true);
+			touch("/etc/asterisk/firewall.enabled");
 		}
 		return $fw->startFirewall();
 	}

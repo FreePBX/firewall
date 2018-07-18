@@ -33,6 +33,14 @@ class Network {
 				continue;
 			}
 
+			// FREEPBX-17657 - OpenVZ produces lines like this: 
+			//    "2: venet0    inet 127.0.0.1/32 scope host venet0"
+			// which are useless. They don't have an 8th param, so we can just skip them
+
+			if (!isset($vals[8])) {
+				continue;
+			}
+
 			if (preg_match("/(.+?)(?:@.+)?:$/", $vals[1], $res)) { // Matches vlans, which are eth0.100@eth0
 				// It's a network definition.
 				// This won't clobber an exsiting one, as it always comes
@@ -57,7 +65,7 @@ class Network {
 			} else {
 				if ($vals[7] == "global") {
 					// FREEPBX-13396 - This may be 'dynamic', not ACTUALLY the real name.
-					if ($vals[8] == "dynamic") {
+					if ($vals[8] === "dynamic" || $vals[8] === "noprefixroute") {
 						$intname = $vals[9];
 					} else {
 						$intname = $vals[8];

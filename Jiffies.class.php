@@ -74,6 +74,9 @@ class Jiffies {
 
 	public function getUtimeFromJiffy($jiffies) {
 		$now = $this->getCurrentJiffie();
+		if ($now === 0) {
+			return time();
+		}
 		$seconds = ($now - $jiffies)/$this->getKnownJiffies();
 		$utime = time() - $seconds;
 		return (int) $utime;
@@ -95,6 +98,10 @@ class Jiffies {
 
 	public function getCurrentJiffie($refresh = false) {
 		static $current;
+
+		if (!file_exists("/proc/timer_list")) {
+			return 0;
+		}
 
 		if (!$current || $refresh) {
 			exec('grep -i "jiffies:" /proc/timer_list',$jf);

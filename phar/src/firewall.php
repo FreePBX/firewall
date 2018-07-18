@@ -8,9 +8,15 @@ include_once 'lock.php';
 use \FreePBX\modules\Firewall\Lock;
 
 if (!Lock::canLock($thissvc)) {
-	print "Firewall Service already running, not restarting...\n";
-	syslog(LOG_WARNING|LOG_LOCAL0, "Firewall Service already running, not restarting...");
+	// No need to output this
+	// print "Firewall Service already running, not restarting...\n";
 	exit;
+}
+
+// Regen fail2ban conf, if we can
+if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
+	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
+	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
 }
 
 include_once 'common.php';
@@ -101,6 +107,10 @@ while (!$ready) {
 	sleep(5);
 }
 wall("Firewall service now starting.\n\n");
+
+// Fork off the monitor process
+include_once 'monitor.php';
+$monitorpid = start_monitor();
 
 // Delete our safemode flag if it exists.
 @unlink("/var/run/firewalld.safemode");
@@ -204,6 +214,10 @@ while(true) {
 		wall("Firewall has been disabled. Shutting down.");
 		shutdown();
 	}
+	
+	// If monitor has stopped for some reason, restart it.
+	$monitorpid = checkMonitor($monitorpid);
+
 	checkPhar();
 	$runafter = $lastfin + $fwconf['period'];
 	if ($runafter < time()) {
@@ -214,7 +228,21 @@ while(true) {
 	} else {
 		// Sleep until we're ready to go again.
 		sigSleep($fwconf['period']/10);
+
 	}
+}
+
+function checkMonitor($monitorpid) {
+	// If our monitor process is missing, we need to restart it.
+
+	// This makes sure we reap any child processes before checking if they exist!
+	pcntl_waitpid($monitorpid, $status, WNOHANG);
+
+	if (!is_dir("/proc/$monitorpid")) {
+		fwLog("Monitor process $monitorpid missing - restarting!");
+		return start_monitor();
+	}
+	return $monitorpid;
 }
 
 function getSettings() {

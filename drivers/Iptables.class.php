@@ -284,7 +284,14 @@ class Iptables {
 					foreach ($ports as $tmparr) {
 						$protocol = $tmparr['protocol'];
 						$port = $tmparr['port'];
-						$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+						$ratelimit = isset($tmparr['ratelimit']);
+
+						if ($ratelimit) {
+							$param = "-p $protocol -m $protocol --dport $port -j fpbxratelimit";
+						} else {
+							$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+						}
+
 						if (isset($flipped[$param])) {
 							unset($flipped[$param]);
 						} else {
@@ -321,7 +328,14 @@ class Iptables {
 					foreach ($ports as $arr) {
 						$protocol = $arr['protocol'];
 						$port = $arr['port'];
-						$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+
+						// If this port is rate limited, use that rather than ACCEPT
+						if (isset($arr['ratelimit'])) {
+							$param = "-p $protocol -m $protocol --dport $port -j fpbxratelimit";
+						} else {
+							$param = "-p $protocol -m $protocol --dport $port -j ACCEPT";
+						}
+
 						$current[$ipv]['filter'][$name][] = $param;
 						$cmd = "$ipt -A $name $param";
 						$this->l($cmd);
@@ -493,10 +507,9 @@ class Iptables {
 			}
 		}
 
-		// If nat isn't enabled, there's nothing else to do.
-		if (!is_array($current['ipv4']['nat'])) {
-			print "Nat disabled, error\n";
-			return;
+		// If nat isn't enabled, fix it.
+		if (empty($current['ipv4']['nat']) || !is_array($current['ipv4']['nat'])) {
+			$current['ipv4']['nat'] = array();
 		}
 
 		// If this is an 'INTERNET' (external) zone, mark packets that are
@@ -512,6 +525,11 @@ class Iptables {
 
 		$foundrule = false;
 		$rule = "-o $iface -j MARK --set-xmark 0x2/0x2";
+
+		// If there's no masq-output entries, it won't exist.
+		if (empty($current['ipv4']['nat']['masq-output'])) {
+			$current['ipv4']['nat']['masq-output'] = array();
+		}
 
 		foreach ($current['ipv4']['nat']['masq-output'] as $lineno => $line) {
 			if ($line == $rule) {
@@ -1167,7 +1185,9 @@ class Iptables {
 		);
 
 		foreach ($rules as $r) {
-			exec("/sbin/iptables ".$this->wlock." $r");
+			$cmd = "/sbin/iptables ".$this->wlock." $r";
+			$this->l($cmd);
+			exec($cmd);
 		}
 		return true;
 	}
@@ -1225,9 +1245,22 @@ class Iptables {
 		// Our 'trusted' zone is always allowed access to everything
 		$retarr['zone-trusted'][] = array("jump" => "ACCEPT");
 
+		// Mark traffic that comes in from other zones, so that they can be handled
+		// differently if needed (Rate limiting cares about zone-internal, and checks
+		// for mark 0x4). Nothing else is using it at the moment, but it is left here
+		// for expansion by third parties.
+		$retarr['zone-internal'][] = array("other" => "-m mark --mark 0x4/0x4");
+		$retarr['zone-other'][] = array("other" => "-m mark --mark 0x8/0x8");
+		$retarr['zone-external'][] = array("other" => "-m mark --mark 0x10/0x10");
+
 		// VoIP Rate limiting happens here. If they've made it here, they're an unknown host
 		// sending VoIP *signalling* here. We want to give them a bit of slack, to make sure
 		// it's not a dynamic IP address of a known good client.
+
+		// Before we do anything, if this has already been discovered by the monitoring
+		// daemon, let it access this port for up to 90 seconds. This is enough time for the
+		// firewall daemon to discover it in asterisk and add it to the proper tables.
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 90 --hitcount 1 --name WHITELIST --rsource", "jump" => "ACCEPT");
 
 		// To start with, we ensure that we keep track of ALL rfw attempts.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
@@ -1276,7 +1309,43 @@ class Iptables {
 
 		$retarr['fpbxlogdrop'][] = array("jump" => "REJECT");
 
-		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports
+		// TCP Rate limiting. We use REPEAT and DISCOVERED as names, so they are visible
+		// in the UI. Also, we don't want an attacker to try to connect to our SIP ports
+		// after being blocked from another service!
+
+		// If this packet is from an INTERNAL network, don't rate limit it.
+		$retarr['fpbxratelimit'][] = array("other" => "-m mark --mark 0x4/0x4", "jump" => "ACCEPT");
+
+		// If this has already been discovered by the monitoring daemon, let it access this
+		// port for up to 90 seconds. This is enough time for the firewall daemon to discover
+		// it in asterisk and add it to the proper tables.
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 90 --hitcount 1 --name WHITELIST --rsource", "jump" => "ACCEPT");
+
+		// On a SYN packet, add it to our watch list
+		$retarr['fpbxratelimit'][] = array("other" => "-m state --state NEW -m recent --set --name REPEAT --rsource");
+		// Note DISCOVERED is only for the UI
+		$retarr['fpbxratelimit'][] = array("other" => "-m state --state NEW -m recent --set --name DISCOVERED --rsource");
+
+		$retarr['fpbxratelimit'][] = array("jump" => "LOG");
+		// Has this IP already been marked as an attacker? If so, you're still one, go away.
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 1 --name ATTACKER --rsource", "jump" => "fpbxattacker");
+
+		// TCP Packets are a bit more picky. We allow up to 10 connection requests per 60 seconds
+		// before we add them to the short block. But more than 50 in a 1 hour period, or 100 in
+		// a 24 hour period is an attacker. Seriously, how bad is your network?
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 3600 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name REPEAT --rsource", "jump" => "fpbxshortblock");
+
+
+		// If they made it past here, they're all good.
+		$retarr['fpbxratelimit'][] = array("jump" => "ACCEPT");
+
+		// As this IP is known about, remove it from any tables they may be in (Note that DISCOVERED is only
+		// used for the UI, so don't remove it from that)
+		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name REPEAT");
+		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name ATTACKER");
+		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports.
 		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-zulu");
