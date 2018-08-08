@@ -227,6 +227,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 
 		// Do I have any params?
+		$contents = "";
 		if ($params) {
 			// Oh. I do. If it's an array, json encode and base64
 			if (is_array($params)) {
@@ -239,7 +240,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$contents = $b;
 					$filename .= ".CONTENTS";
 				} else {
-					$contents = "";
 					$filename .= ".".str_replace('/', '_', $b);
 					if (strlen($filename) > 200) {
 						throw new \Exception("Too much data, and old sysadmin rpm. Please run 'yum update'");
@@ -250,7 +250,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			} else {
 				// Cast it to a string if it's anything else, and then make sure
 				// it doesn't have any spaces.
-				$filename .= ".".preg_replace("/[[:blank:]]+/", (string) $params);
+				$filename .= ".".preg_replace("/[[:blank:]]+/", "", (string) $params);
 			}
 		}
 
