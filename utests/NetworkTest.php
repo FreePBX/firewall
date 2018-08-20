@@ -48,4 +48,11 @@ class NetworkTest extends PHPUnit_Framework_TestCase {
 		$this->assertFalse(isset($parsed['noprefixroute']), "Wrong interface name 'noprefixroute' returned");
 	}
 
+	// FREEPBX-17657 - OpenVZ has a strange 'ip -o addr' output.
+	public function testOpenVZ() {
+		$ipoutput = file(__DIR__."/ipoutput.4");
+		$parsed = self::$n->parseIpOutput($ipoutput);
+		$this->assertEquals([], $parsed['venet0']['addresses'], "venet0 should not have any addresses");
+		$this->assertEquals("66.111.111.111", $parsed['venet0:0']['addresses'][0][0], "venet0:0 address not returned");
+	}
 }
