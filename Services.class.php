@@ -10,7 +10,7 @@ class Services {
 
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
-		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc");
+		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt");
 		$this->extraservices = array("zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
@@ -178,6 +178,33 @@ class Services {
 				array("protocol" => "tcp", "port" => $tlssocket),
 			),
 		);
+		return $retarr;
+	}
+
+	private function getSvc_letsencrypt() {
+
+		$retarr = array(
+			"name" => _("Lets Encrypt"),
+			"descr" => _("This will allow access to the LetsEncrypt service on Port 80, when it is enabled."),
+			"fw" => array(),
+			"defzones" => array(),
+			"disabled" => true,
+		);
+
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+		} catch (\Exception $e) {
+			$ports = [ "leport" => "999" ];
+		}
+
+		if (isset($ports['leport']) && $ports['leport'] == "80") {
+			$retarr["descr"] = _("This exposes the LetsEncrypt service on Port 80. This MUST be allowed access from the 'Internet' zone.");
+			$retarr['fw'] = array(
+				array("protocol" => "tcp", "port" => 80),
+			);
+			$retarr['defzones'] = array("external");
+			unset($retarr['disabled']);
+		}
 		return $retarr;
 	}
 
