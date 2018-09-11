@@ -194,7 +194,7 @@ class Services {
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 		} catch (\Exception $e) {
-			$ports = [ "leport" => "999" ];
+			$ports = array( "leport" => "999" );
 		}
 
 		if (isset($ports['leport']) && $ports['leport'] == "80") {
