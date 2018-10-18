@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-08 08:34+0000\n"
-"PO-Revision-Date: 2018-07-28 08:00+0000\n"
+"PO-Revision-Date: 2018-10-19 15:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
 "Language: de_DE\n"
@@ -1112,18 +1112,20 @@ msgid ""
 "Services that are assigned to zones <strong>are accessible</strong> to "
 "connections matching the zones."
 msgstr ""
+"Auf Dienste, die Zonen zugewiesen sind, kann über Verbindungen, die mit "
+"diesen Zonen übereinstimmen <strong>zugegriffen werden</strong>."
 
 #: views/page.about.php:29
 msgid "Settings"
-msgstr "Einstellung"
+msgstr "Einstellungen"
 
 #: OOBE.class.php:124
 msgid "Should the client you're using be trusted?"
-msgstr ""
+msgstr "Soll dem Rechner, den Sie verwenden, vertraut werden?"
 
 #: OOBE.class.php:153
 msgid "Should your current network be trusted?"
-msgstr ""
+msgstr "Soll Ihrem momentanen Netzwerk vertraut werden?"
 
 #: Console/Firewall.class.php:23
 msgid "Show help"
@@ -1132,15 +1134,15 @@ msgstr "Hilfe anzeigen"
 #: views/view.customsvc.php:65
 #, php-format
 msgid "Single Port: %s"
-msgstr ""
+msgstr "Einzelner Port: %s"
 
 #: Console/Firewall.class.php:77
 msgid "Start (and enable, if disabled) the System Firewall"
-msgstr ""
+msgstr "Die Systemfirewall starten (und aktivieren, falls sie deaktiviert ist)"
 
 #: Firewall.class.php:78
 msgid "Starting up"
-msgstr ""
+msgstr "Starte"
 
 #: views/bootnav.php:6
 msgid "Status"
@@ -1148,20 +1150,20 @@ msgstr "Status"
 
 #: views/page.status.php:25
 msgid "Status Overview"
-msgstr ""
+msgstr "Statusübersicht"
 
 #: Console/Firewall.class.php:76
 msgid "Stop the System Firewall"
-msgstr ""
+msgstr "Die Systemfirewall anhalten"
 
 #: Console/Firewall.class.php:139 Console/Firewall.class.php:179
 #: Console/Firewall.class.php:235
 msgid "Success!"
-msgstr ""
+msgstr "Erfolg!"
 
 #: views/view.registered.php:3
 msgid "Successfully Registered Endpoints"
-msgstr ""
+msgstr "Endpunkte erfolgreich registriert"
 
 #: views/view.status.php:3
 msgid "Summary"
@@ -1169,7 +1171,7 @@ msgstr "Zusammenfassung"
 
 #: Firewall.class.php:66 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
-msgstr ""
+msgstr "Systemfirewall"
 
 #: views/modal.customsvc.php:21
 msgid "TCP"
@@ -1177,23 +1179,25 @@ msgstr "TCP"
 
 #: views/view.portmaps.php:65
 msgid "TCP Port:"
-msgstr ""
+msgstr "TCP-Port:"
 
 #: views/view.portmaps.php:68
 msgid "TCP Ports:"
-msgstr ""
+msgstr "TCP-Ports:"
 
 #: Services.class.php:504
 msgid "TFTP"
-msgstr ""
+msgstr "TFTP"
 
 #: Services.class.php:506
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
+"TFTP wird normalerweise für die Provisionierung und Aktualisierung von "
+"Geräten verwendet."
 
 #: views/oobe.welcome.php:28
 msgid "Thanks for using Sangoma Smart Firewall!"
-msgstr ""
+msgstr "Danke, dass Sie die Sangoma Smart Firewall verwenden!"
 
 #: Firewall.class.php:307
 #, php-format
