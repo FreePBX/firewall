@@ -106,7 +106,8 @@ class Jiffies {
 		if (!$current || $refresh) {
 			exec('grep -i "jiffies:" /proc/timer_list',$jf);
 			if (empty($jf[0]) || strpos($jf[0], "jiffies: ") !== 0) {
-				throw new \Exception("/proc/timer_list contains unknown data - '".$jf[0]."'");
+				// If we didn't get anything, then we're probably in a restricted container
+				return 0;
 			}
 			$current = substr($jf[0], 9);
 		}
