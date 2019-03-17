@@ -364,7 +364,7 @@ class Services {
 			"name" => _("HTTP Provisioning"),
 			"defzones" => array("other", "internal"),
 			"descr" => _("Phones that are configured via Endpoint Manager to use HTTP provisioning will use this port to download its configuration. It is NOT ADVISED to expose this port to the public internet, as SIP Secrets will be available to a knowledgable attacker."),
-			"fw" => array(array("protocol" => "tcp", "port" => 84)),
+			"fw" => array(array("protocol" => "tcp", "port" => 84, "ratelimit" => true))
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
@@ -372,7 +372,7 @@ class Services {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 			$retarr['fw'] = array();
 			if (isset($ports['hpro']) && $ports['hpro'] !== 'disabled' && $ports['hpro'] >= 80) {
-				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['hpro']);
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['hpro'], "ratelimit" => true);
 			}
 			if (!$retarr['fw']) {
 				// No port are assigned to restapps, it's not enabled in sysadmin
@@ -390,7 +390,7 @@ class Services {
 			"name" => _("HTTPS Provisioning"),
 			"defzones" => array("other", "internal"),
 			"descr" => _("Phones that are configured via Endpoint Manager to use HTTPS provisioning will use this port to download its configuration. It is NOT ADVISED to expose this port to the public internet, as SIP Secrets will be available to a knowledgable attacker."),
-			"fw" => array(array("protocol" => "tcp", "port" => 1443)),
+			"fw" => array(array("protocol" => "tcp", "port" => 1443, "ratelimit" => true))
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
@@ -398,7 +398,7 @@ class Services {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 			$retarr['fw'] = array();
 			if (isset($ports['sslhpro']) && $ports['sslhpro'] !== 'disabled' && $ports['sslhpro'] >= 80) {
-				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslhpro']);
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslhpro'], "ratelimit" => true);
 			}
 			if (!$retarr['fw']) {
 				// No port are assigned to restapps, it's not enabled in sysadmin
