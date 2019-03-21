@@ -1249,9 +1249,9 @@ class Iptables {
 		// differently if needed (Rate limiting cares about zone-internal, and checks
 		// for mark 0x4). Nothing else is using it at the moment, but it is left here
 		// for expansion by third parties.
-		$retarr['zone-internal'][] = array("other" => "-m mark --mark 0x4/0x4");
-		$retarr['zone-other'][] = array("other" => "-m mark --mark 0x8/0x8");
-		$retarr['zone-external'][] = array("other" => "-m mark --mark 0x10/0x10");
+		$retarr['zone-internal'][] = array("other" => "-j MARK --set-xmark 0x4/0x4");
+		$retarr['zone-other'][] = array("other" => "-j MARK --set-xmark 0x8/0x8");
+		$retarr['zone-external'][] = array("other" => "-j MARK --set-xmark 0x10/0x10");
 
 		// VoIP Rate limiting happens here. If they've made it here, they're an unknown host
 		// sending VoIP *signalling* here. We want to give them a bit of slack, to make sure
@@ -1313,7 +1313,7 @@ class Iptables {
 		// in the UI. Also, we don't want an attacker to try to connect to our SIP ports
 		// after being blocked from another service!
 
-		// If this packet is from an INTERNAL network, don't rate limit it.
+		// If this packet is from an INTERNAL network, or registered host, don't rate limit it.
 		$retarr['fpbxratelimit'][] = array("other" => "-m mark --mark 0x4/0x4", "jump" => "ACCEPT");
 
 		// If this has already been discovered by the monitoring daemon, let it access this
@@ -1345,8 +1345,11 @@ class Iptables {
 		// used for the UI, so don't remove it from that)
 		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name REPEAT");
 		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name ATTACKER");
-		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports.
+		// Mark this as a known-good host, so it's not rate limited.
+		$retarr['fpbxknownreg'][] = array("other" => "-j MARK --set-xmark 0x4/0x4");
+		// If this is a signaling packet, we can just accept it without further checks.
 		$retarr['fpbxknownreg'][] = array("other" => "-m mark --mark 0x1/0x1", "jump" => "ACCEPT");
+		// Known Registrations are allowed to access signalling, UCP, Zulu, and Provisioning ports.
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-ucp");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-zulu");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps");
