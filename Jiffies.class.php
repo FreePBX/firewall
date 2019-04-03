@@ -18,6 +18,7 @@ class Jiffies {
 	// machines running freepbx. If this changes, feel free to open a
 	// ticket.
 	public function calcJiffies($seconds = 5) {
+		return 1000;
 		// If there isn't a /proc/timer_list, just blindly assume 1000hz.
 		if (!file_exists("/proc/timer_list")) {
 			return 1000;
