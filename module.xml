@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>15.0.3</version>
+	<version>15.0.4</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,7 +10,8 @@
 	<candisable>no</candisable>
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
-		*15.0.3* fixing legacy restore 
+		*15.0.4* Use lazy loading console commands
+		*15.0.3* fixing legacy restore
 		*15.0.2* Packaging of ver 15.0.2
 		*15.0.1* Impliment Backup 15
 	</changelog>
@@ -18,6 +19,7 @@
 		<file>/usr/lib/sysadmin/includes.php</file>
 		<module>sipsettings ge 13.0.23.1</module>
 		<module>manager ge 13.0.2.5</module>
+		<version>15.0.6.18</version>
 	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>
@@ -27,6 +29,11 @@
 	<supported>
 		<version>15.0</version>
 	</supported>
+	<console>
+		<command>
+			<name>firewall</name>
+		</command>
+	</console>
 	<hooks>
 		<dashboard class="Overview" namespace="FreePBX\modules\Dashboard\Sections">
 			<method callingMethod="getSummary" class="Firewall" namespace="FreePBX\modules">dashboardService</method>
