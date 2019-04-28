@@ -1332,10 +1332,10 @@ class Iptables {
 
 		// TCP Packets logic:
 		//   Allow up to 50 unauthed connections from a single IP within 60 seconds
-		//   Allow up to 100 unauthed connections from a single IP within 90 seconds
+		//   Allow up to 100 unauthed connections from a single IP within 5 minutes
 		//   Any more than 200 unauthed connections from a single IP within a day is a hardblock
 		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 200 --name REPEAT --rsource", "jump" => "fpbxattacker");
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 90 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 300 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
 		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxshortblock");
 
 		// If they made it past here, they're all good.
