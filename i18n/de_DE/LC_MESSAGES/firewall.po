@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-08 08:34+0000\n"
-"PO-Revision-Date: 2018-10-19 15:00+0000\n"
+"PO-Revision-Date: 2019-05-03 14:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
 "Language: de_DE\n"
@@ -58,6 +58,10 @@ msgid ""
 "detected. This is a misconfiguration. To ensure your system is protected "
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
+"Es wurde eine Netzwerkschnittstelle entdeckt, die der Zone „Vertrauenswürdig“"
+" zugewiesen wurde. Dies ist eine Fehlkonfiguration. Um sicherzustellen, dass "
+"Ihr System vor Angriffen geschützt ist, ändern Sie bitte die Standardzone "
+"der Schnittstelle „%s“."
 
 #: Firewall.class.php:141
 #, php-format
@@ -65,6 +69,8 @@ msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
 "interface '%s' to a zone."
 msgstr ""
+"Es wurde eine neue, unkonfigurierte Netzwerkschnittstelle entdeckt. Bitte "
+"weisen Sie die Schnittstelle „%s“ einer Zone zu."
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
@@ -97,7 +103,7 @@ msgstr "Zu Vertrauenswürdigen hinzufügen"
 
 #: assets/js/views/advanced.js:25
 msgid "Added"
-msgstr ""
+msgstr "Hinzugefügt"
 
 #: views/bootnav.php:8
 msgid "Advanced"
@@ -116,7 +122,7 @@ msgstr ""
 
 #: views/view.interfaces.php:46
 msgid "All Tunnel Interfaces are automatically set to Local"
-msgstr ""
+msgstr "Alle Tunnel-Schnittstellen werden automatisch auf „Lokal“ gestellt"
 
 #: Console/Firewall.class.php:255
 msgid "All blacklisted entries."
@@ -125,7 +131,7 @@ msgstr ""
 #: Console/Firewall.class.php:246
 #, php-format
 msgid "All entries in zone '%s':"
-msgstr ""
+msgstr "Alle Einträge in Zone „%s“:"
 
 #: views/view.interfaces.php:9
 msgid ""
@@ -133,6 +139,10 @@ msgid ""
 "this interface, unless overridden in Networks, will have access to the "
 "services available to this zone."
 msgstr ""
+"Alle Schnittstellen müssen einer Standardzone zugewiesen werden. Der "
+"Verkehr, der auf dieser Schnittstelle ankommt hat automatisch Zugriff auf "
+"alle Dienste, die in dieser Zone verfügbar sind, sofern die "
+"Netzwerkkonfiguration dies nicht übersteuert."
 
 #: Zones.class.php:13
 msgid ""
@@ -200,12 +210,13 @@ msgstr ""
 
 #: views/view.networks.php:15
 msgid "Assigned Zone"
-msgstr ""
+msgstr "Zugewiesene Zone"
 
 #: views/oobe.welcome.php:23
 msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
+"Beim Abschließen des Assistenten wird die Firewall automatisch aktiviert."
 
 #: Console/Firewall.class.php:137
 #, php-format
@@ -215,12 +226,12 @@ msgstr ""
 #: Console/Firewall.class.php:158
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
-msgstr ""
+msgstr "Versuche, „%s“ zur Zone „%s“ hinzuzufügen… "
 
 #: Console/Firewall.class.php:207
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
-msgstr ""
+msgstr "Versuche, „%s“ aus der Zone „%s“ zu entfernen… "
 
 #: OOBE.class.php:232
 msgid "Automatically configure Asterisk IP Settings?"
@@ -365,6 +376,11 @@ msgid ""
 "filtered at all, so this disables the firewall for any traffic arriving at "
 "that interface). The zones you can use are:"
 msgstr ""
+"Jede Netzwerkschnittstelle Ihres Systems muss einer Zone zugeordnet werden. "
+"Beachten Sie, dass standardmäßig alle Schnittstellen als „vertrauenswürdig“ "
+"eingestuft werden (vertrauenswürdige Netzwerke werden nicht gefiltert, also "
+"ist die Firewall für den gesamten Verkehr auf dieser Schnittstelle "
+"deaktiviert). Sie können diese Zonen verwenden:"
 
 #: views/view.customsvc.php:44
 msgid "Edit"
@@ -888,6 +904,8 @@ msgstr ""
 #: views/disabled.php:13
 msgid "Please visit the PBX Wiki for more information on the firewall."
 msgstr ""
+"Bitte besuchen Sie das PBX-Wiki, um weitere Informationen über die Firewall "
+"zu erhalten."
 
 #: views/modal.customsvc.php:27
 msgid "Port Range"
@@ -963,7 +981,7 @@ msgstr ""
 
 #: views/view.shortcuts.php:4
 msgid "RFC1918/RFC4193"
-msgstr ""
+msgstr "RFC1918/RFC4193"
 
 #: views/view.blocked.php:6
 msgid "Rate Limited Hosts"
@@ -983,11 +1001,11 @@ msgstr "Ablehnen"
 
 #: views/view.settings.php:33
 msgid "Reject Packets"
-msgstr ""
+msgstr "Pakete ablehnen"
 
 #: Zones.class.php:12
 msgid "Reject incoming traffic"
-msgstr ""
+msgstr "Eingehenden Verkehr ablehnen"
 
 #: Console/Firewall.class.php:79
 msgid "Remove the hostname or IP specified from the Trusted Zone"
@@ -1047,6 +1065,8 @@ msgstr "SMB/CIFS (Samba) ist auf dieser Maschine nicht Installiert"
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
+"SMB/CIFS wird verwendet, um von Windows- oder Mac-Systemen auf Dateien auf "
+"diesem Server zuzugreifen."
 
 #: Services.class.php:50
 msgid "SSH"
@@ -1058,6 +1078,9 @@ msgid ""
 "common target for hackers. We <strong>strongly recommend</strong> using a "
 "strong password and SSH keys. "
 msgstr ""
+"SSH ist das am häufigsten verwendete Werkzeug zur Systemverwaltung. Es ist "
+"aber auch ein gängiges Angriffsziel für Hacker. Wir <strong>raten dringend "
+"dazu</strong>, ein sicheres Passwort und SSH-Schküssel zu verwenden. "
 
 #: views/view.settings.php:13
 msgid "Safe Mode"
@@ -1069,6 +1092,9 @@ msgid ""
 "misconfiguration by temporarily disabling the firewall if the machine is "
 "rebooted two times in succession."
 msgstr ""
+"Der abgesicherte Modus bietet Ihnen die Möglcihkeit, um eine versehentliche "
+"Fehlkonfiguration zu beheben, indem die Firewall deaktiviert wird, wenn das "
+"System zweimal hintereinander neugestartet wird."
 
 #: OOBE.class.php:34
 msgid "Sangoma Smart Firewall"
@@ -1098,6 +1124,8 @@ msgid ""
 "Selecting 'Yes' will update your current configuration. Selecting 'No' will "
 "not change your current settings."
 msgstr ""
+"Wenn Sie „Ja“ wählen, wird Ihre momentane Konfiguration aktualisiert. Wählen "
+"Sie „Nein“, werden Ihre momentanen Einstellungen nicht geändert."
 
 #: views/view.portmaps.php:39
 msgid "Service unavailable"
@@ -1217,7 +1245,7 @@ msgstr ""
 
 #: views/disabled.php:7
 msgid "The firewall module is not enabled!"
-msgstr ""
+msgstr "Das Firewall-Modul ist nicht aktiviert!"
 
 #: OOBE.class.php:158
 #, php-format
@@ -1600,7 +1628,7 @@ msgstr ""
 
 #: views/page.advanced.php:26
 msgid "Zone Information"
-msgstr ""
+msgstr "Zoneninformation"
 
 #: Services.class.php:214
 msgid "Zulu UC"
@@ -1618,7 +1646,7 @@ msgstr ""
 
 #: Services.class.php:232
 msgid "Zulu is not not available on this machine"
-msgstr ""
+msgstr "Zulu ist auf diesem System nicht verfügbar"
 
 #: views/view.about.php:28
 msgid "automatically granted"
@@ -1626,7 +1654,7 @@ msgstr ""
 
 #: Services.class.php:628
 msgid "iSymphony is not installed on this server."
-msgstr ""
+msgstr "iSymphony ist auf diesem Server nicht installiert."
 
 #: views/view.about.php:9
 msgid ""
