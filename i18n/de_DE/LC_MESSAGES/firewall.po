@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-09-08 08:34+0000\n"
-"PO-Revision-Date: 2019-05-03 14:00+0000\n"
+"PO-Revision-Date: 2019-05-10 10:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
 "Language: de_DE\n"
@@ -418,20 +418,20 @@ msgstr ""
 
 #: views/view.networks.php:65
 msgid "Enter new IP or Hostname here"
-msgstr ""
+msgstr "Geben Sie hier eine neue IP oder einen Hostnamen ein"
 
 #: Console/Firewall.class.php:50 Console/Firewall.class.php:60
 msgid "Error!"
-msgstr ""
+msgstr "Fehler!"
 
 #: Console/Firewall.class.php:199
 msgid "Error:"
-msgstr ""
+msgstr "Fehler:"
 
 #: Console/Firewall.class.php:142
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
-msgstr ""
+msgstr "Fehler: Kann „%s“ nicht zu der unbekannten Zone „%s“ hinzufügen"
 
 #: views/view.networks.php:6
 msgid ""
@@ -442,7 +442,7 @@ msgstr ""
 
 #: Zones.class.php:13
 msgid "Excluded from Firewall"
-msgstr ""
+msgstr "Von der Firewall ausgenommen"
 
 #: OOBE.class.php:247
 #, php-format
@@ -462,10 +462,14 @@ msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
 msgstr ""
+"FTP wird von der Endpunktverwaltung verwendet, um Firmware-Images und "
+"weitere Daten an Telefone zu senden."
 
 #: Console/Firewall.class.php:169
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
+"Fehlgeschlagen! Konnte den Eintrag nicht validieren. Bitte versuchen Sie es "
+"erneut."
 
 #: firewall.i18n.php:10 page.firewall.php:6
 msgid "Firewall"
@@ -519,7 +523,7 @@ msgstr ""
 
 #: Console/Firewall.class.php:92
 msgid "For example:"
-msgstr ""
+msgstr "Zum Beispiel:"
 
 #: Zones.class.php:10
 msgid ""
