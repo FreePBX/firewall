@@ -315,7 +315,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return load_view(__DIR__."/views/disabled.php", array("fw" => $this));
 	}
 
-	public function showBootnav($page) {
+	public function getRightNav($page) {
 		return load_view(__DIR__."/views/bootnav.php", array("fw" => $this, "thispage" => $page));
 	}
 
