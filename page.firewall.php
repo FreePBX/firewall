@@ -24,8 +24,6 @@ if (!$fw->isEnabled()) {
 		$page = "about";
 	}
 	print $fw->showPage($page);
-	print "</div>"; // col-sm-9
-	print "<div class='col-sm-3 hidden-xs bootnav'>".$fw->showBootnav($page)."</div>";
 }
 ?>
   </div> <!-- /row -->

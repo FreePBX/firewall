@@ -12,12 +12,14 @@ $rawnames = array(
 $names = \FreePBX::Firewall()->getNameHooks($rawnames);
 
 // Get our list of pages
-$known = array("about" => $names['about']);
 foreach ($names as $name => $p) {
-	if ($thispage == $name) {
+	if ($thispage["page"] == $name){
 		$active = "active";
 	} else {
 		$active = "";
+	}
+	if(empty($thispage["page"]) && $name == "about" ){
+		$active = "active";
 	}
 	echo "  <a href='?display=firewall&page=$name' class='list-group-item $active'>$p</a>\n";
 }
