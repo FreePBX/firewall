@@ -176,6 +176,8 @@ class Firewall extends Command {
 
 		$nets[$param] = $zone;
 		$fw->setConfig("networkmaps", $nets);
+		$params = array($zone => array("$param"));
+		$fw->runHook('addnetwork', $params);
 		$output->writeln("<info>"._("Success!")."</info>");
 	}
 
@@ -232,6 +234,7 @@ class Firewall extends Command {
 		}
 		unset($nets[$param]);
 		$fw->setConfig("networkmaps", $nets);
+		$fw->runHook("removenetwork", array("network" => $param, "zone" => $zone));
 		$output->writeln("<info>"._("Success!")."</info>");
 	}
 
