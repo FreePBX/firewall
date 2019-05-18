@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-10 23:48+0530\n"
+"POT-Creation-Date: 2019-05-17 21:52-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -112,11 +112,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
 
-#: Console/Firewall.class.php:255
+#: Console/Firewall.class.php:258
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:246
+#: Console/Firewall.class.php:249
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -140,7 +140,7 @@ msgid ""
 "firewall is started."
 msgstr ""
 
-#: views/view.blocked.php:17
+#: views/view.blocked.php:19
 msgid ""
 "Any hosts in this section have been classified as an attacker. All traffic "
 "from them will be ignored until they cease attempting to contact the server "
@@ -204,7 +204,7 @@ msgstr ""
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:207
+#: Console/Firewall.class.php:209
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -223,7 +223,7 @@ msgstr ""
 msgid "Blacklist"
 msgstr ""
 
-#: views/view.blocked.php:16
+#: views/view.blocked.php:18
 msgid "Blocked Attackers"
 msgstr ""
 
@@ -398,7 +398,7 @@ msgstr ""
 msgid "Error!"
 msgstr ""
 
-#: Console/Firewall.class.php:199
+#: Console/Firewall.class.php:201
 msgid "Error:"
 msgstr ""
 
@@ -543,7 +543,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Console/Firewall.class.php:199
+#: Console/Firewall.class.php:201
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -622,7 +622,7 @@ msgid ""
 "work correctly, if at all."
 msgstr ""
 
-#: views/view.blocked.php:18
+#: views/view.blocked.php:20
 msgid ""
 "If you believe one of the hosts has been added in error, you can click the "
 "red 'X' to remove the block. If the host continues to send invalid data, it "
@@ -790,8 +790,8 @@ msgstr ""
 msgid "No custom services currently defined."
 msgstr ""
 
-#: views/view.blocked.php:10
-#: views/view.blocked.php:20
+#: views/view.blocked.php:12
+#: views/view.blocked.php:23
 msgid "No hosts!"
 msgstr ""
 
@@ -827,6 +827,11 @@ msgid ""
 "can only be overridden by access from a Trusted Zone. This is functionally "
 "equivalent to turning off access from all zones, unless you are running an "
 "extra Firewall plugin."
+msgstr ""
+
+#: views/view.blocked.php:9
+#: views/view.blocked.php:21
+msgid "Note that timestamps may not be accurate, and are indicative only."
 msgstr ""
 
 #: views/view.status.php:19
@@ -990,7 +995,7 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:203
+#: Console/Firewall.class.php:205
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
@@ -1154,8 +1159,8 @@ msgid "Stop the System Firewall"
 msgstr ""
 
 #: Console/Firewall.class.php:139
-#: Console/Firewall.class.php:179
-#: Console/Firewall.class.php:235
+#: Console/Firewall.class.php:181
+#: Console/Firewall.class.php:238
 msgid "Success!"
 msgstr ""
 
@@ -1224,11 +1229,11 @@ msgid ""
 "as Trusted."
 msgstr ""
 
-#: views/view.blocked.php:11
+#: views/view.blocked.php:13
 msgid "There are no hosts that are currently being rate limited."
 msgstr ""
 
-#: views/view.blocked.php:21
+#: views/view.blocked.php:24
 msgid "There are no hosts that have been detected as attacking this server."
 msgstr ""
 
@@ -1471,7 +1476,7 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: Console/Firewall.class.php:228
+#: Console/Firewall.class.php:230
 msgid "Unknown entry!"
 msgstr ""
 
