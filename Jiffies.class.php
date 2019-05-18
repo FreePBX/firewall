@@ -18,6 +18,7 @@ class Jiffies {
 	// machines running freepbx. If this changes, feel free to open a
 	// ticket.
 	public function calcJiffies($seconds = 5) {
+		return 1000;
 		// If there isn't a /proc/timer_list, just blindly assume 1000hz.
 		if (!file_exists("/proc/timer_list")) {
 			return 1000;
@@ -106,9 +107,18 @@ class Jiffies {
 		if (!$current || $refresh) {
 			exec('grep -i "jiffies:" /proc/timer_list',$jf);
 			if (empty($jf[0]) || strpos($jf[0], "jiffies: ") !== 0) {
-				throw new \Exception("/proc/timer_list contains unknown data - '".$jf[0]."'");
+				// If we didn't get anything, then we're probably in a restricted container.
+				// We'll guess by getting the highest jiffy amount from xt_recent, and crossing
+				// our fingers that that's close enough to accurate.
+				exec('sort -k5 -r /proc/self/net/xt_recent/* | cut -d\  -f 5 | head -1', $xt);
+				if (empty($xt[0]) || !is_numeric($xt[0])) {
+					return 0;
+				} else {
+					$current = trim($xt[0]);
+				}
+			} else {
+				$current = substr($jf[0], 9);
 			}
-			$current = substr($jf[0], 9);
 		}
 		return $current;
 	}
