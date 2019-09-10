@@ -2,7 +2,7 @@
 namespace FreePBX\modules\Firewall;
 use FreePBX\modules\Backup as Base;
 class Restore Extends Base\RestoreBase{
-	public function runRestore($jobid){
+	public function runRestore(){
 		$settings = $this->getConfigs();
 		$this->importKVStore($settings);
 	}
