@@ -285,7 +285,15 @@ function getSettings() {
 
 	$retarr = array();
 	foreach ($res as $row) {
-		$retarr[$row['key']] = $row['val'];
+		if ($row['type'] == 'blob') {
+			//get it from kvblobstore
+			$sth = $pdo->prepare('SELECT content FROM `kvblobstore` where uuid = "'.$row['val'].'"');
+			$sth->execute();
+			$blob = $sth->fetch();
+			$retarr[$row['key']] = $blob['content'];
+		} else {
+			$retarr[$row['key']] = $row['val'];
+		}
 	}
 
 	// Should we be running?
