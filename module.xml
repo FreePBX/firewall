@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>15.0.6.3</version>
+	<version>15.0.6.4</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,6 +10,7 @@
 	<candisable>no</candisable>
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
+		*15.0.6.4* FREEI-958 kvblobstore fetch added 
 		*15.0.6.3* Related to FREEPBX-20414: removed $jobid from runRestore() 
 		*15.0.6.2* FREEPBX-18511 - Add networks from cli.
 		*15.0.6.1* Fine tune TCP ratelimiting
