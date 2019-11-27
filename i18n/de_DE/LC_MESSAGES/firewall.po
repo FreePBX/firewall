@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-17 21:50-0400\n"
-"PO-Revision-Date: 2019-05-10 10:00+0000\n"
+"PO-Revision-Date: 2019-06-26 14:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
 "Language: de_DE\n"
@@ -50,6 +50,11 @@ msgid ""
 "interfaces are set to this zone so they can be configured correctly without "
 "interfering with existing traffic."
 msgstr ""
+"Wird eine Schnittstelle als ‘vertrauenswürdig‘ eingestuft, wird der "
+"eingehende Verkehr auf dieser Schnittstelle <strong>nicht gefiltert</strong>"
+". Neu erkannte Schnittstellen werden automatisch dieser Zone zugewiesen, "
+"damit sie korrekt konfiguriert werden können, ohne dass der laufende Verkehr "
+"beeinflusst wird."
 
 #: Firewall.class.php:151
 #, php-format
@@ -182,6 +187,10 @@ msgid ""
 "RTP traffic, but no other ports are listening by default. You rarely want to "
 "use this."
 msgstr ""
+"Sämtliche ankommenden Netzwerkpakete werden abgewiesen. Beachten Sie, dass "
+"diese Zone dennoch RTP-Verkehr akzeptiert, standardmäßig sind aber keine "
+"anderen Ports geöffnet. Sie werden diese Zone in den seltensten Fällen "
+"nutzen wollen."
 
 #: views/modal.customsvc.php:13
 msgid "Any name"
@@ -194,12 +203,19 @@ msgid ""
 "zone, as that has been set to be the default zone for traffic arriving at "
 "that interface."
 msgstr ""
+"Sämtlicher Verkehr auf eth0, der von 203.55.66.88 (oder jedem anderen nicht-"
+"definierten Host oder Netzwerk) wird ausschließlich auf Dienste  zugreifen "
+"können, die in der 'Internet'-Zone verfügbar sind, da dies die Standardzone "
+"für den ankommenden Verkehr auf dieser Schnittstelle ist."
 
 #: views/warning.notready.php:3
 msgid ""
 "As this machine has recently been rebooted, the firewall is "
 "<strong>temporarily</strong> running in Safe Mode, with no rules applied."
 msgstr ""
+"Da dieses System kürzlich neugestartet wurde, läuft die Firewall "
+"<strong>vorübergehend</strong> im abgesicherten Modus, es werden keine "
+"Regeln angewendet."
 
 #: OOBE.class.php:164
 msgid ""
@@ -221,7 +237,7 @@ msgstr ""
 #: Console/Firewall.class.php:137
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
-msgstr ""
+msgstr "Versuche '%s' zur Sperrliste hinzuzufügen… "
 
 #: Console/Firewall.class.php:158
 #, php-format
@@ -247,7 +263,7 @@ msgstr ""
 
 #: views/page.services.php:41
 msgid "Blacklist"
-msgstr ""
+msgstr "Sperrliste"
 
 #: views/view.blocked.php:18
 msgid "Blocked Attackers"
@@ -306,7 +322,7 @@ msgstr "Kumulative Anzahl der Remote-Clients:"
 
 #: views/view.settings.php:27
 msgid "Custom Firewall Rules"
-msgstr ""
+msgstr "Benutzerdefinierte Firewallregeln"
 
 #: views/page.services.php:38 views/view.customsvc.php:4
 #: views/view.portmaps.php:23
@@ -319,6 +335,10 @@ msgid ""
 "don't accidentally expose an automatically configured service by using the "
 "same port and protocol."
 msgstr ""
+"Auf dieser Seite können benutzerdefinierte Dienste definiert werden. Bitte "
+"stellen Sie sicher, dass Sie nicht versehentlich einen automatisch "
+"konfigurierten Dienst  veröffentlichen, indem Sie den selben Port und "
+"dasselbe Protokoll verwenden."
 
 #: Services.class.php:139
 msgid "Dedicated UCP access is disabled in Sysadmin Port Management"
@@ -326,7 +346,7 @@ msgstr ""
 
 #: Zones.class.php:9
 msgid "Default Firewall"
-msgstr ""
+msgstr "Standardfirewall"
 
 #: views/view.interfaces.php:8
 msgid "Default Traffic Zones"
@@ -334,7 +354,7 @@ msgstr ""
 
 #: views/view.interfaces.php:4
 msgid "Default Zone"
-msgstr ""
+msgstr "Standardzone"
 
 #: views/view.blacklist.php:9 views/view.customsvc.php:45
 msgid "Delete"
@@ -342,11 +362,11 @@ msgstr "Löschen"
 
 #: Firewall.class.php:568
 msgid "Delete Selected"
-msgstr ""
+msgstr "Auswahl löschen"
 
 #: Console/Firewall.class.php:82
 msgid "Delete from 'zone' the IDs provided."
-msgstr ""
+msgstr "Die angegebenen IDs aus 'Zone' löschen."
 
 #: views/modal.customsvc.php:11
 msgid "Description"
@@ -439,6 +459,10 @@ msgid ""
 "'203.55.66.77' to the 'Local' zone on this page. Any traffic arriving from "
 "203.55.66.77 will be granted access to services usable by 'Local' zone."
 msgstr ""
+"Beispiel: Die Schnittstelle eth0 ist der Zone 'Internet' zugeordnet und Sie "
+"ordnen auf dieser Seite '203.55.66.77' der Zone 'Lokal' zu. Sämtlicher "
+"Verkehr, der von '203.55.66.77' ankommt, erhält dadurch Zugriff auf Dienste "
+"die in der Zone 'Lokal' bereitgestellt werden."
 
 #: Zones.class.php:13
 msgid "Excluded from Firewall"
@@ -520,6 +544,8 @@ msgid ""
 "Firewall should now auto-detect and configure External IP settings. This "
 "will assist with NAT or Translation issues."
 msgstr ""
+"Die Firewall sollte nun die externen IP-Einstellungen automatisch erkennen "
+"und konfigurieren. Dies hilft bei NAT oder Übersetzungsproblemen."
 
 #: Console/Firewall.class.php:92
 msgid "For example:"
@@ -530,6 +556,8 @@ msgid ""
 "For use on internal networks. You mostly trust the other computers on the "
 "networks to not harm your computer."
 msgstr ""
+"Zur Verwendung in internen Netzen. Sie gehen in der Regel davon aus, dass "
+"Computer in diesen Netzen Ihrem Computer keinen Schaden zufügen."
 
 #: Zones.class.php:11
 msgid ""
@@ -537,6 +565,10 @@ msgid ""
 "a DMZ, or OpenVPN network). You mostly trust the other computers on the "
 "networks to not harm your computer."
 msgstr ""
+"Zur Verwendung bei vertrauenswürdigen externen Netzwerken oder anderen "
+"bekannten Netzen (wie z.B. eine DMZ oder ein OpenVPN-Netzwerk). Sie gehen in "
+"der Regel davon aus, dass Computer in diesen Netzen Ihrem Computer keinen "
+"Schaden zufügen."
 
 #: Console/Firewall.class.php:22
 msgid "Force Add/Removal of entry"
@@ -575,7 +607,7 @@ msgstr "HTTPS-REST-Apps sind beim Port-Management im System-Admin deaktiviert"
 #: Console/Firewall.class.php:201
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
-msgstr ""
+msgstr "Host '%s' steht momentan nicht auf der Sperrliste."
 
 #: views/oobe.welcome.php:30
 msgid ""
@@ -592,10 +624,12 @@ msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
 msgstr ""
+"IAX steht für Inter Asterisk eXchange. Es ist bandbreitenschonender als SIP, "
+"wird aber nur von wenigen Anbietern unterstützt."
 
 #: Console/Firewall.class.php:26
 msgid "IDs to add or remove from a zone"
-msgstr ""
+msgstr "IDs, die einer Zone zugewiesen oder von ihr entfernt werden sollen"
 
 #: views/view.interfaces.php:89
 msgid "IP Address: "
@@ -610,6 +644,8 @@ msgid ""
 "If fail2ban is enabled and configured on this machine, fail2ban will send "
 "you email alerts when this happens."
 msgstr ""
+"Fall fail2ban auf diesem System aktiviert und konfiguriert ist, sendet "
+"fail2ban Ihnen E-Mail-Benachrichtigungen, wenn dies passiert."
 
 #: views/view.smart.php:27
 msgid ""
@@ -1599,10 +1635,11 @@ msgstr ""
 #: views/view.interfaces.php:109
 msgid "You can enter a short description for this interface here."
 msgstr ""
+"Hier können Sie eine kurze Beschreibung für diese Schnittstelle eintragen."
 
 #: views/view.networks.php:89
 msgid "You can enter a short description for this network here."
-msgstr ""
+msgstr "Hier können Sie eine kurze Beschreibung für dieses Netzwerk eintragen."
 
 #: OOBE.class.php:236
 msgid ""
