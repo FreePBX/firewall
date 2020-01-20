@@ -788,7 +788,7 @@ function getServices() {
 }
 
 function importCustomRules() {
-	$files = array("/sbin/iptables" => "/etc/firewall-4.rules", "/sbin/ip6tables" => "/etc/firewall-6.rules");
+	$files = array("/usr/sbin/iptables" => "/etc/firewall-4.rules", "/usr/sbin/ip6tables" => "/etc/firewall-6.rules");
 	foreach ($files as $ipt => $f) {
 		// Validate file
 		if (!file_exists($f)) {
