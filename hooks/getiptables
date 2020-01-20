@@ -18,8 +18,8 @@ chmod($out, 0777);
 
 function getIptables() {
 	// Parse iptables-save output
-	exec('/sbin/iptables-save 2>&1', $ipv4, $ret);
-	exec('/sbin/ip6tables-save 2>&1', $ipv6, $ret);
+	exec('/usr/sbin/iptables-save 2>&1', $ipv4, $ret);
+	exec('/usr/sbin/ip6tables-save 2>&1', $ipv6, $ret);
 	$conf = array(
 		"ipv4" => parseIptablesOutput($ipv4),
 		"ipv6" => parseIptablesOutput($ipv6),
