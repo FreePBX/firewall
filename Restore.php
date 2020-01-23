@@ -8,27 +8,51 @@ class Restore Extends Base\RestoreBase{
 
 		$files = $this->getFiles();
 		$nfiles = 0;
+		$nfiles_err = 0;
 		foreach($files as $file){
 			if($file->getType() != 'firewall rules') { 
 				continue;
 			}
 
-			$dest = $file->getPathTo().'/'.$file->getFilename();
+			$filename=$file->getFilename();
+			$dest = $file->getPathTo().'/'.$filename;
 			$source = $this->tmpdir.'/files'.$dest;
 
 			if(file_exists($source)){
-				if(file_exists($dest)) {
-					$dest_old = $dest."_".date('YmdHisu');
-					rename($dest, $dest_old);
-					$this->log(sprintf(_("The destine file exist, save backup file: %s"), $dest_old),'INFO');
+				if(file_exists($dest) and is_readable($dest)) {
+					$path_back="/etc/asterisk/backup";
+					$file_backup = $path_back."/".$filename.".bk.".date('YmdHisu');
+					if (! is_dir($path_back)) {
+						mkdir($path_back);
+					}
+					copy($dest, $file_backup);
+					$this->log(sprintf(_("The file exists, a backup copy is saved in: %s"), $file_backup),'INFO');
 				}
-				copy($source, $dest);
-				chown($dest, "root");
-				chmod($dest, 0644);
-				$nfiles++;
+				
+				if (!@copy($source, $dest)) {
+					$errors= error_get_last();
+					if ($errors['type'] == 2) {
+						$this->log(sprintf(_("Error!! Permission denied copy rules: %s"), $dest),'ERROR');
+						if (!file_exists($dest)) {
+							$this->log(sprintf(_("**FIX** Action Manual Needed:\n # touch %s\n # chmod 666 %s\n"), $dest, $dest),'ERROR');
+						} 
+						else if(!is_writable($dest)) {
+							$this->log(sprintf(_("**FIX** Action Manual Needed:\n # chmod 666 %s\n"), $dest, $dest),'ERROR');
+						}
+					} else {
+						$this->log(sprintf(_("** Error!!!\n Type: %s\n Message: %s\n File: %s\n"), $errors['type'], $errors['message'], $dest),'ERROR');
+					}
+					$nfiles_err++;
+				} else {
+					$this->log(sprintf(_("Firewall recovery rules: %s"), $dest),'INFO');
+					$nfiles++;
+				}
 			}
 		}
-		$this->log(sprintf(_("%s Files Restored"), $nfiles++),'INFO');
+		$this->log(sprintf(_("%s Files Restored OK"), $nfiles++),'INFO');
+		if ($nfiles_err > 0) {
+			$this->log(sprintf(_("%s Files Not Restored by Error!!"), $nfiles++),'INFO');	
+		}
 	}
 
 	public function processLegacy($pdo, $data, $tables, $unknownTables){
