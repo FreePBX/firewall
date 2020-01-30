@@ -33,12 +33,7 @@ class Restore Extends Base\RestoreBase{
 					$errors= error_get_last();
 					if ($errors['type'] == 2) {
 						$this->log(sprintf(_("Error!! Permission denied copy rules: %s"), $dest),'ERROR');
-						if (!file_exists($dest)) {
-							$this->log(sprintf(_("**FIX** Action Manual Needed:\n # touch %s\n # chmod 666 %s\n"), $dest, $dest),'ERROR');
-						} 
-						else if(!is_writable($dest)) {
-							$this->log(sprintf(_("**FIX** Action Manual Needed:\n # chmod 666 %s\n"), $dest, $dest),'ERROR');
-						}
+						$this->log(_("**FIX** Action Manual Needed:\n # fwconsole firewall fix_custom_rules\n"),'ERROR');
 					} else {
 						$this->log(sprintf(_("** Error!!!\n Type: %s\n Message: %s\n File: %s\n"), $errors['type'], $errors['message'], $dest),'ERROR');
 					}
