@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-17 21:50-0400\n"
-"PO-Revision-Date: 2019-06-26 14:00+0000\n"
-"Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
+"PO-Revision-Date: 2020-02-01 19:00+0000\n"
+"Last-Translator: hammer125 <auswertung@mariner.at>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -131,7 +131,7 @@ msgstr "Alle Tunnel-Schnittstellen werden automatisch auf „Lokal“ gestellt"
 
 #: Console/Firewall.class.php:258
 msgid "All blacklisted entries."
-msgstr ""
+msgstr "Alle Einträge auf der Blacklist."
 
 #: Console/Firewall.class.php:249
 #, php-format
@@ -180,6 +180,9 @@ msgid ""
 "Any hosts in this section have been rate limited, because they have sent too "
 "much data to this machine without successfully registering."
 msgstr ""
+"Alle Hosts in diesem Bereich sind bandbreitenlimitiert, weil sie zuviel "
+"Daten an diese Maschine gesendet haben, ohne sich erfolgreich zu "
+"registrieren."
 
 #: Zones.class.php:12
 msgid ""
@@ -223,6 +226,9 @@ msgid ""
 "strong> to add this network, as IPv6 security extensions may unexpectedly "
 "change your IP address."
 msgstr ""
+"Da man sich von einem IPv6-Netzwerk aus verbindet, ist es <strong>stark "
+"empfohlen</strong>, dieses Netzwerk hinzuzufügen, da IPv6 Sicherheits-"
+"Extensions unerwartet die IP-Adresse ändern können."
 
 #: views/view.networks.php:15
 msgid "Assigned Zone"
@@ -350,7 +356,7 @@ msgstr "Standardfirewall"
 
 #: views/view.interfaces.php:8
 msgid "Default Traffic Zones"
-msgstr ""
+msgstr "Standard Datenverkehrszonen"
 
 #: views/view.interfaces.php:4
 msgid "Default Zone"
@@ -614,6 +620,8 @@ msgid ""
 "However, if you continue, your machine and firewall will be automatically "
 "updated with the latest settings!"
 msgstr ""
+"Wenn Sie weitermachen werden ihre Maschine und ihre Firewall automatisch mit "
+"den letzten Einstellungen aktualisiert!"
 
 #: Services.class.php:350 Smart.class.php:43
 msgid "IAX Protocol"
@@ -665,6 +673,8 @@ msgstr ""
 msgid ""
 "If this is a known secure network, you should add it to the Trusted zone"
 msgstr ""
+"Wenn das ein bekanntes sicheres Netzwerk ist, sollten Sie es der "
+"vertrauenswürdigen Zone hinzufügen"
 
 #: views/view.shortcuts.php:13
 msgid ""
