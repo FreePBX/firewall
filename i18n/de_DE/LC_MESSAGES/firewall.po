@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-17 21:52-0400\n"
+"POT-Creation-Date: 2020-02-07 19:07+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -20,6 +20,34 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 3.0.1\n"
 
+#: Console/Firewall.class.php:282
+#, php-format
+msgid " - Error Message: %s"
+msgstr ""
+
+#: Console/Firewall.class.php:281
+#, php-format
+msgid " - Error Type: %s"
+msgstr ""
+
+#: Console/Firewall.class.php:280
+msgid " Error!"
+msgstr ""
+
+#: Console/Firewall.class.php:285 Console/Firewall.class.php:292
+msgid " OK!"
+msgstr ""
+
+#: Restore.php:49
+#, php-format
+msgid "%s Files Not Restored by Error!!"
+msgstr ""
+
+#: Restore.php:47
+#, php-format
+msgid "%s Files Restored OK"
+msgstr ""
+
 #: Services.class.php:614
 #, php-format
 msgid "%s is a web-based call management solution."
@@ -29,6 +57,29 @@ msgstr "%s ist eine web-basierte Lösung zur Anrufverwaltung."
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s ist nicht richtig konfiguriert."
+
+#: Restore.php:38
+#, php-format
+msgid ""
+"** Error!!!\n"
+" Type: %s\n"
+" Message: %s\n"
+" File: %s\n"
+msgstr ""
+
+#: Restore.php:36
+msgid ""
+"**FIX** Action Manual Needed:\n"
+" # fwconsole firewall fix_custom_rules\n"
+msgstr ""
+
+#: Console/Firewall.class.php:289
+msgid "- Adjusting owner and permissions..."
+msgstr ""
+
+#: Console/Firewall.class.php:276
+msgid "- Does not exist, creating file..."
+msgstr ""
 
 #: views/view.shortcuts.php:6
 msgid ""
@@ -82,12 +133,12 @@ msgstr "Netzwerk hinzufügen"
 msgid "Add New"
 msgstr "Neue hinzufügen"
 
-#: Console/Firewall.class.php:78
+#: Console/Firewall.class.php:80
 msgid "Add the hostname or IP specified to the Trusted Zone"
 msgstr ""
 "Fügen Sie den Hostnamen oder die IP-Adresse zur vertrauenswürdigen Zone hinzu"
 
-#: Console/Firewall.class.php:81
+#: Console/Firewall.class.php:83
 msgid "Add to 'zone' the IDs provided."
 msgstr ""
 
@@ -118,11 +169,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
 
-#: Console/Firewall.class.php:258
+#: Console/Firewall.class.php:260
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:249
+#: Console/Firewall.class.php:251
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -207,17 +258,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:137
+#: Console/Firewall.class.php:139
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:158
+#: Console/Firewall.class.php:160
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:209
+#: Console/Firewall.class.php:211
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -273,6 +324,11 @@ msgstr "Kann die Firewall nicht deaktivieren"
 msgid "Cancel"
 msgstr "Abbrechen"
 
+#: Console/Firewall.class.php:274
+#, php-format
+msgid "Check file '%s'"
+msgstr ""
+
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
 msgstr "Befehl zum Ausführen (siehe --Hilfe)"
@@ -288,6 +344,12 @@ msgstr "Standard Services"
 #: views/view.customsvc.php:2
 msgid "Create new Service"
 msgstr "Neuen Service erstellen"
+
+#: Console/Firewall.class.php:86
+msgid ""
+"Create the files for the custom rules if they don't exist and set the "
+"permissions and owners correctly."
+msgstr ""
 
 #: views/view.status.php:22
 msgid "Cumulative Total of remote clients:"
@@ -333,7 +395,7 @@ msgstr "Löschen"
 msgid "Delete Selected"
 msgstr ""
 
-#: Console/Firewall.class.php:82
+#: Console/Firewall.class.php:84
 msgid "Delete from 'zone' the IDs provided."
 msgstr ""
 
@@ -349,7 +411,7 @@ msgstr "Deaktivieren"
 msgid "Disable Firewall"
 msgstr "Firewall deaktivieren"
 
-#: Console/Firewall.class.php:75
+#: Console/Firewall.class.php:77
 msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
 "Deaktivieren Sie die Systemfirewall. Dadurch wird es sauber heruntergefahren."
@@ -390,7 +452,7 @@ msgid ""
 "attacker that their traffic has been intercepted."
 msgstr ""
 
-#: Console/Firewall.class.php:109
+#: Console/Firewall.class.php:111
 msgid "Enabling Firewall."
 msgstr "Aktivieren der Firewall."
 
@@ -408,11 +470,16 @@ msgstr ""
 msgid "Error!"
 msgstr ""
 
-#: Console/Firewall.class.php:201
+#: Restore.php:35
+#, php-format
+msgid "Error!! Permission denied copy rules: %s"
+msgstr ""
+
+#: Console/Firewall.class.php:203
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:142
+#: Console/Firewall.class.php:144
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
@@ -447,7 +514,7 @@ msgid ""
 "as additional data."
 msgstr ""
 
-#: Console/Firewall.class.php:169
+#: Console/Firewall.class.php:171
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -491,9 +558,14 @@ msgstr "Firewall-Funktionen"
 msgid "Firewall has not started yet!"
 msgstr "Die Firewall ist noch nicht gestartet!"
 
-#: Console/Firewall.class.php:101
+#: Console/Firewall.class.php:103
 msgid "Firewall is not enabled, can't disable it"
 msgstr "Kann die Firewall nicht deaktivieren, da sie nicht aktiviert ist"
+
+#: Restore.php:42
+#, php-format
+msgid "Firewall recovery rules: %s"
+msgstr ""
 
 #: OOBE.class.php:234
 msgid ""
@@ -501,7 +573,7 @@ msgid ""
 "will assist with NAT or Translation issues."
 msgstr ""
 
-#: Console/Firewall.class.php:92
+#: Console/Firewall.class.php:94
 msgid "For example:"
 msgstr ""
 
@@ -552,7 +624,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTPS-REST-Apps sind beim Port-Management im System-Admin deaktiviert"
 
-#: Console/Firewall.class.php:201
+#: Console/Firewall.class.php:203
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -715,7 +787,7 @@ msgstr ""
 msgid "Linked to Interface %s"
 msgstr ""
 
-#: Console/Firewall.class.php:80
+#: Console/Firewall.class.php:82
 msgid "List all entries in zone 'zone'"
 msgstr ""
 
@@ -993,13 +1065,13 @@ msgstr ""
 msgid "Reject incoming traffic"
 msgstr ""
 
-#: Console/Firewall.class.php:79
+#: Console/Firewall.class.php:81
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 "Entfernen Sie den Hostname oder die IP-Adresse aus der vertrauenswürdigen "
 "Zone"
 
-#: Console/Firewall.class.php:205
+#: Console/Firewall.class.php:207
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
@@ -1138,7 +1210,7 @@ msgstr "Hilfe anzeigen"
 msgid "Single Port: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:77
+#: Console/Firewall.class.php:79
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
@@ -1154,12 +1226,12 @@ msgstr "Status"
 msgid "Status Overview"
 msgstr ""
 
-#: Console/Firewall.class.php:76
+#: Console/Firewall.class.php:78
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:139 Console/Firewall.class.php:181
-#: Console/Firewall.class.php:238
+#: Console/Firewall.class.php:141 Console/Firewall.class.php:183
+#: Console/Firewall.class.php:240 Console/Firewall.class.php:294
 msgid "Success!"
 msgstr ""
 
@@ -1207,6 +1279,11 @@ msgid ""
 "to add this client to your Trusted Zone to avoid accidental lockouts."
 msgstr ""
 
+#: Restore.php:29
+#, php-format
+msgid "The file exists, a backup copy is saved in: %s"
+msgstr ""
+
 #: views/view.settings.php:29
 msgid ""
 "The files /etc/firewall-4.rules and /etc/firewall-6.rules (for IPv4 and IPv6 "
@@ -1247,7 +1324,7 @@ msgid ""
 "invalid data, they will be classified as an Attacker."
 msgstr ""
 
-#: Console/Firewall.class.php:91
+#: Console/Firewall.class.php:93
 msgid "These may be IP addresses, hostnames, or networks."
 msgstr ""
 
@@ -1469,7 +1546,12 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: Console/Firewall.class.php:230
+#: Backup.php:13
+#, php-format
+msgid "Unable to read file: %s"
+msgstr ""
+
+#: Console/Firewall.class.php:232
 msgid "Unknown entry!"
 msgstr ""
 
@@ -1531,7 +1613,7 @@ msgid ""
 "web browser."
 msgstr ""
 
-#: Console/Firewall.class.php:90
+#: Console/Firewall.class.php:92
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr ""
 
