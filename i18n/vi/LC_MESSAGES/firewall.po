@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-07 18:41+0000\n"
+"POT-Creation-Date: 2020-03-24 00:29+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -21,34 +21,6 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.4\n"
 
-#: Console/Firewall.class.php:282
-#, php-format
-msgid " - Error Message: %s"
-msgstr ""
-
-#: Console/Firewall.class.php:281
-#, php-format
-msgid " - Error Type: %s"
-msgstr ""
-
-#: Console/Firewall.class.php:280
-msgid " Error!"
-msgstr ""
-
-#: Console/Firewall.class.php:285 Console/Firewall.class.php:292
-msgid " OK!"
-msgstr ""
-
-#: Restore.php:49
-#, php-format
-msgid "%s Files Not Restored by Error!!"
-msgstr ""
-
-#: Restore.php:47
-#, php-format
-msgid "%s Files Restored OK"
-msgstr ""
-
 #: Services.class.php:614
 #, php-format
 msgid "%s is a web-based call management solution."
@@ -58,29 +30,6 @@ msgstr "%s là một giải pháp quản lý cuộc gọi dựa trên nền tả
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s không được cấu hình chính xác."
-
-#: Restore.php:38
-#, php-format
-msgid ""
-"** Error!!!\n"
-" Type: %s\n"
-" Message: %s\n"
-" File: %s\n"
-msgstr ""
-
-#: Restore.php:36
-msgid ""
-"**FIX** Action Manual Needed:\n"
-" # fwconsole firewall fix_custom_rules\n"
-msgstr ""
-
-#: Console/Firewall.class.php:289
-msgid "- Adjusting owner and permissions..."
-msgstr ""
-
-#: Console/Firewall.class.php:276
-msgid "- Does not exist, creating file..."
-msgstr ""
 
 #: views/view.shortcuts.php:6
 msgid ""
@@ -143,11 +92,11 @@ msgstr "Thêm Mạng"
 msgid "Add New"
 msgstr "Thêm mới"
 
-#: Console/Firewall.class.php:80
+#: Console/Firewall.class.php:78
 msgid "Add the hostname or IP specified to the Trusted Zone"
 msgstr "Thêm hostname hoặc IP được chỉ định vào Trusted Zone ( Vùng an toàn)"
 
-#: Console/Firewall.class.php:83
+#: Console/Firewall.class.php:81
 msgid "Add to 'zone' the IDs provided."
 msgstr "Thêm vào 'zone' những ID được cung cấp."
 
@@ -180,11 +129,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr "Tất cả các giao diện Tunnel được tự động cài đặt về Local"
 
-#: Console/Firewall.class.php:260
+#: Console/Firewall.class.php:258
 msgid "All blacklisted entries."
 msgstr "Tất cả các mục nhập được liệt vào danh sách đen."
 
-#: Console/Firewall.class.php:251
+#: Console/Firewall.class.php:249
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr "Tất cả các mục nhập trong  vùng '%s':"
@@ -287,17 +236,17 @@ msgid ""
 msgstr ""
 "Khi wizard ( thuật sĩ) này hoàn thành, tường lửa sẽ được kích hoạt tự động."
 
-#: Console/Firewall.class.php:139
+#: Console/Firewall.class.php:137
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr "Đang cố thêm %s vào Blacklist... "
 
-#: Console/Firewall.class.php:160
+#: Console/Firewall.class.php:158
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr "Đang cố thêm '%s' vào Vùng '%s'... "
 
-#: Console/Firewall.class.php:211
+#: Console/Firewall.class.php:209
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr "Đang cố xóa %s khỏi Vùng '%s\"... "
@@ -356,11 +305,6 @@ msgstr "Không thể vô hiệu Firewall"
 msgid "Cancel"
 msgstr "Hủy"
 
-#: Console/Firewall.class.php:274
-#, php-format
-msgid "Check file '%s'"
-msgstr ""
-
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
 msgstr "Lệnh chạy (see--help)"
@@ -376,12 +320,6 @@ msgstr "Các dịch vụ chính"
 #: views/view.customsvc.php:2
 msgid "Create new Service"
 msgstr "Tạo một Dịch vụ mới"
-
-#: Console/Firewall.class.php:86
-msgid ""
-"Create the files for the custom rules if they don't exist and set the "
-"permissions and owners correctly."
-msgstr ""
 
 #: views/view.status.php:22
 msgid "Cumulative Total of remote clients:"
@@ -430,7 +368,7 @@ msgstr "Xóa"
 msgid "Delete Selected"
 msgstr "Xóa những gì được chọn"
 
-#: Console/Firewall.class.php:84
+#: Console/Firewall.class.php:82
 msgid "Delete from 'zone' the IDs provided."
 msgstr "Xóa các ID được cung cấp khỏi 'zone'."
 
@@ -446,7 +384,7 @@ msgstr "Vô hiệu"
 msgid "Disable Firewall"
 msgstr "Vô hiệu Firewall"
 
-#: Console/Firewall.class.php:77
+#: Console/Firewall.class.php:75
 msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
 "Vô hiệu Firewall Hệ thống. Điều này sễ tắt Firewall hệ thống hoàn toàn."
@@ -496,7 +434,7 @@ msgstr ""
 "packet, không để lại bất cứ dấu hiệu nào cho kẻ tấn công biết lưu lượng truy "
 "cập của chúng đã bị chặn."
 
-#: Console/Firewall.class.php:111
+#: Console/Firewall.class.php:109
 msgid "Enabling Firewall."
 msgstr "Đang kích hoạt Firewall."
 
@@ -517,16 +455,11 @@ msgstr "Nhập một IP mới hoặc Hostname ở đây"
 msgid "Error!"
 msgstr "Lỗi!"
 
-#: Restore.php:35
-#, php-format
-msgid "Error!! Permission denied copy rules: %s"
-msgstr ""
-
-#: Console/Firewall.class.php:203
+#: Console/Firewall.class.php:201
 msgid "Error:"
 msgstr "Lỗi:"
 
-#: Console/Firewall.class.php:144
+#: Console/Firewall.class.php:142
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr "Lỗi: Không thể thêm '%s' vào vùng không xác định '%s'"
@@ -567,7 +500,7 @@ msgstr ""
 "FTP được sử dụng bởi trình quản lý Endpoint để gửi các hình ảnh của firmware "
 "tới các điện thoại, cũng như các dữ liệu bổ sung."
 
-#: Console/Firewall.class.php:171
+#: Console/Firewall.class.php:169
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 "Không thành công! Không thể hợp lệ hóa mục nhập. Vui lòng thử lại lần nữa."
@@ -612,14 +545,9 @@ msgstr "Các chức năng của Firewall"
 msgid "Firewall has not started yet!"
 msgstr "Firewall vãn chưa được khởi động!"
 
-#: Console/Firewall.class.php:103
+#: Console/Firewall.class.php:101
 msgid "Firewall is not enabled, can't disable it"
 msgstr "Firewall không được kích hoạt, không thể vô hiệu hóa nó"
-
-#: Restore.php:42
-#, php-format
-msgid "Firewall recovery rules: %s"
-msgstr ""
 
 #: OOBE.class.php:234
 msgid ""
@@ -629,7 +557,7 @@ msgstr ""
 "Hiện tại, Firewall tự động phát hiện và cấu hình các cài đặt IP bên ngoài. "
 "Điều này sẽhỗ trợ NAT và các vấn đề về dịch."
 
-#: Console/Firewall.class.php:94
+#: Console/Firewall.class.php:92
 msgid "For example:"
 msgstr "Ví dụ:"
 
@@ -683,7 +611,7 @@ msgstr "HTTPS Provisioning bị vô hiệu trong Sysadmin Port Management"
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTPS REST  bị vô hiệu trong Sysadmin Port Management"
 
-#: Console/Firewall.class.php:203
+#: Console/Firewall.class.php:201
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr "Host '%s' hiện không thuộc danh sách đen."
@@ -885,7 +813,7 @@ msgstr ""
 msgid "Linked to Interface %s"
 msgstr "Được kết nối tới giao diện %s"
 
-#: Console/Firewall.class.php:82
+#: Console/Firewall.class.php:80
 msgid "List all entries in zone 'zone'"
 msgstr "Danh sách các mục nhập trong vùng 'zone'"
 
@@ -1203,12 +1131,12 @@ msgstr "Từ chối các Packet"
 msgid "Reject incoming traffic"
 msgstr "Từ chối các lưu lượng đến"
 
-#: Console/Firewall.class.php:81
+#: Console/Firewall.class.php:79
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 "Xóa hostname hoặc IP được chỉ định ra khỏi Trusted Zone ( Vùng an toàn)"
 
-#: Console/Firewall.class.php:207
+#: Console/Firewall.class.php:205
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr "Đã xóa %s ra khỏi Danh sách đen."
@@ -1364,7 +1292,7 @@ msgstr "Đưa ra giúp đỡ"
 msgid "Single Port: %s"
 msgstr "Công giao tiếp đơn (single port):%s"
 
-#: Console/Firewall.class.php:79
+#: Console/Firewall.class.php:77
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr "Khởi động ( bật lên nếu đang bị vô hiệu) Firewall hệ thống"
 
@@ -1380,12 +1308,12 @@ msgstr "Trạng thái"
 msgid "Status Overview"
 msgstr "Tổng quan tình trạng"
 
-#: Console/Firewall.class.php:78
+#: Console/Firewall.class.php:76
 msgid "Stop the System Firewall"
 msgstr "Dừng Firewall hệ thống"
 
-#: Console/Firewall.class.php:141 Console/Firewall.class.php:183
-#: Console/Firewall.class.php:240 Console/Firewall.class.php:294
+#: Console/Firewall.class.php:139 Console/Firewall.class.php:181
+#: Console/Firewall.class.php:238
 msgid "Success!"
 msgstr "Thành công!"
 
@@ -1436,11 +1364,6 @@ msgstr ""
 "không<strong>phải</strong> là một thành viên của Vùng an toàn ( Trusted "
 "Zone). Khuyến cao nên them máy khách này vào Trusted one để tránh các trường "
 "hợp bị khóa đột ngột."
-
-#: Restore.php:29
-#, php-format
-msgid "The file exists, a backup copy is saved in: %s"
-msgstr ""
 
 #: views/view.settings.php:29
 msgid ""
@@ -1493,7 +1416,7 @@ msgstr ""
 "của chúng sẽ hoàn toàn bị xóa bỏ trong 60 giây. Nếu chúng tiếp tục gửi các "
 "dữ liệu không hợp lệ, chúng sẽ bị phân loại là một kẻ tấn công."
 
-#: Console/Firewall.class.php:93
+#: Console/Firewall.class.php:91
 msgid "These may be IP addresses, hostnames, or networks."
 msgstr "Đây có thể là các địa chỉ IP, Hostname hoặc các mạng."
 
@@ -1780,12 +1703,7 @@ msgstr "Cổng UDP:"
 msgid "UDP Ports:"
 msgstr "Các cổng UDP:"
 
-#: Backup.php:13
-#, php-format
-msgid "Unable to read file: %s"
-msgstr ""
-
-#: Console/Firewall.class.php:232
+#: Console/Firewall.class.php:230
 msgid "Unknown entry!"
 msgstr "Mục nhập không xác định!"
 
@@ -1858,7 +1776,7 @@ msgstr ""
 "WebRTC được sử dụng bởi UCP ( và các dịch vụ khác) để kích hoạt các hoạt gọi "
 "được thực hiện thông qua trình duyệt web."
 
-#: Console/Firewall.class.php:92
+#: Console/Firewall.class.php:90
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr "Khi thêm hoặc xóa khỏi một vùng, một hay nhiều ID sẽ được cung cấp."
 
