@@ -64,8 +64,6 @@ class Firewall extends Command {
 				$this->removeFromZone($output, $input->getArgument('opt'), $id);
 			}
 			return true;
-		case "fix_custom_rules":
-			return $this->customRulesFix($output);
 		default:
 			$output->writeln($this->showHelp());
 		}
@@ -83,7 +81,7 @@ class Firewall extends Command {
 			"add [zone] [id id id..]" => _("Add to 'zone' the IDs provided."),
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
-			"fix_custom_rules" => _("Create the files for the custom rules if they don't exist and set the permissions and owners correctly."),
+
 		);
 		foreach ($commands as $o => $t) {
 			$help .= "<info>$o</info> : <comment>$t</comment>\n";
@@ -266,31 +264,5 @@ class Firewall extends Command {
 				}
 			}
 		}
-	}
-
-	private function customRulesFix($output) {
-		$l_files = array('/etc/firewall-4.rules', '/etc/firewall-6.rules');
-		foreach ($l_files as $file) {
-			$output->writeln("<info>".sprintf(_("Check file '%s'"), $file)."</info>");
-			if (! file_exists($file)) {
-				$output->write("<info>"._("- Does not exist, creating file...")."</info>");
-				$new_file = fopen($file,"w+");
-				if($new_file == false) {
-					$errors= error_get_last();
-					$output->writeln("<error>"._(" Error!")."</error>");
-					$output->writeln("<error>".sprintf(_(" - Error Type: %s"), $errors['type'])."</error>");
-					$output->writeln("<error>".sprintf(_(" - Error Message: %s"), $errors['message'])."</error>");
-					return false;
-				} else {
-					$output->writeln("<info>"._(" OK!")."</info>");
-				}
-				fclose($new_file);
-			}
-			$output->write("<info>"._("- Adjusting owner and permissions...")."</info>");
-			chmod($file, 0666);
-			chown($file, "root");
-			$output->writeln("<info>"._(" OK!")."</info>");
-		}
-		$output->writeln("<info>"._("Success!")."</info>");
 	}
 }
