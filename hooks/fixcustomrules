@@ -1,0 +1,59 @@
+#!/usr/bin/env php
+<?php
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+
+// ///////////////////////////////////// //
+// BOILERPLATE SECURITY VALIDATION CODE: // 
+// ------------------------------------- //
+// Ensure this is run before including   //
+// any files from the module. If you're  //
+// including a file IN the module, check //
+// to see if the class exists...         //
+// ///////////////////////////////////// //
+/*
+// Now we've passed the first checks, we can load the fake (root-owned-file) FreePBX and GPG objects
+require '/usr/lib/sysadmin/includes.php';
+$g = new \Sysadmin\GPG();
+$sigfile = \Sysadmin\FreePBX::Config()->get('AMPWEBROOT')."/admin/modules/firewall/module.sig";
+$sig = $g->checkSig($sigfile);
+if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
+	throw new \Exception("Invalid sig file.. Hash is not sha256 - check $sigfile");
+}
+
+// Check the hash of the validator, before we include it
+if (empty($sig['hashes']['hooks/validator.php'])) {
+	throw new \Exception("Validator not part of module.sig");
+}
+
+$vhash = hash_file('sha256', __DIR__."/validator.php");
+if ($vhash !== $sig['hashes']['hooks/validator.php']) {
+	throw new \Exception("Validator tampered");
+} else {
+	include __DIR__."/validator.php";
+}
+
+// Yay! We instantiate it now so that the Driver loader
+// knows we're running as root, and we have our hashes
+// preloaded.
+$v = new \FreePBX\modules\Firewall\Validator($sig);
+
+// /////////////////////////////////// //
+// END BOILERPLATE SECURITY VALIDATION //
+// /////////////////////////////////// //
+
+
+$v->secureInclude('Firewall.class.php');
+$fw = new \FreePBX\modules\Firewall;
+$fw->check_custom_rules_files();
+*/
+
+/*
+#!/bin/bash
+#fwconsole firewall fix_custom_rules  
+*/
+
+
+$file_tmp = "/tmp/mod_firewall_hook_fixcustomrules";
+exec("fwconsole firewall fix_custom_rules");
+touch($file_tmp);
+chmod($file_tmp, 0666);

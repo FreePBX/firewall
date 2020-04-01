@@ -64,6 +64,8 @@ class Firewall extends Command {
 				$this->removeFromZone($output, $input->getArgument('opt'), $id);
 			}
 			return true;
+		case "fix_custom_rules":
+			return $this->customRulesFix($output);
 		default:
 			$output->writeln($this->showHelp());
 		}
@@ -81,7 +83,7 @@ class Firewall extends Command {
 			"add [zone] [id id id..]" => _("Add to 'zone' the IDs provided."),
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
-
+			"fix_custom_rules" => _("Create the files for the custom rules if they don't exist and set the permissions and owners correctly."),
 		);
 		foreach ($commands as $o => $t) {
 			$help .= "<info>$o</info> : <comment>$t</comment>\n";
@@ -263,6 +265,19 @@ class Firewall extends Command {
 					$output->writeln("\t$id");
 				}
 			}
+		}
+	}
+
+	private function customRulesFix($output) {
+		$fw = \FreePBX::Firewall();
+		list($detect_error, $log) = $fw->check_custom_rules_files();
+		if (! empty($log)) {
+			foreach ($log as $log_line) {
+				$output->writeln($log_line);
+			}
+		}
+		if ($detect_error) {
+			return false;
 		}
 	}
 }
