@@ -76,7 +76,7 @@ class Restore Extends Base\RestoreBase{
 			$timeout = $timeoutDef;
 			$completed = false;
 			while ( True ):
-				if ( $fw->is_exist_custom_rules_files() ) {
+				if ( ( $fw->is_exist_custom_rules_files() ) && ( $fw->is_good_owner_perms_custom_rules_files() ) ) {
 					$completed = true;
 					break;
 				}
@@ -103,7 +103,7 @@ class Restore Extends Base\RestoreBase{
 			$this->log('INFO: Not detected module Sysadmin.');
 
 			//TODO: Pending check chown + chmod
-			if ( ! $fw->is_exist_custom_rules_files() ) {
+			if ( ( ! $fw->is_exist_custom_rules_files() ) || ( ! $fw->is_good_owner_perms_custom_rules_files() ) ) {
 				$this->log('ERROR: Files required for custom rules are missing, run the following command for manual repair !!!');
 				$this->log('# fwconsole firewall fix_custom_rules');
 				return false;
