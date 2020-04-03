@@ -64,12 +64,6 @@ class Restore Extends Base\RestoreBase{
 		$fw = \FreePBX::Firewall();
 
 		if(\FreePBX::Modules()->checkStatus("sysadmin")) {
-			$file_tmp = "/tmp/mod_firewall_hook_fixcustomrules";
-			if (file_exists($file_tmp)) {
-				@unlink($file_tmp);
-			}
-
-
 			$this->log('Check Custrom Rules...');
 			$hookfile = "/var/spool/asterisk/incron/firewall.fixcustomrules";
 			if (file_exists($hookfile)) {
@@ -80,11 +74,11 @@ class Restore Extends Base\RestoreBase{
 
 			$timeoutDef = 10;
 			$timeout = $timeoutDef;
+			$completed = false;
 			while ( True ):
 				if ( $fw->is_exist_custom_rules_files() ) {
-					if (file_exists($file_tmp)) {
-						break;
-					}
+					$completed = true;
+					break;
 				}
 
 				if ( 0 >= $timeout ) {
@@ -98,9 +92,7 @@ class Restore Extends Base\RestoreBase{
 				sleep(1);
 			endwhile;
 
-			if (file_exists($file_tmp)) {
-				@unlink($file_tmp);
-			} else {
+			if (!$completed) {
 				$this->log('ERROR: Custom rule recovery process aborted, timeout exceeded!!!');
 				$this->log('ERROR: Requires manual execution of the following command:');
 				$this->log('# fwconsole firewall fix_custom_rules');
