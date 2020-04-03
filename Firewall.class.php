@@ -65,6 +65,26 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $data_return;
 	}
 
+	public function is_good_owner_perms_custom_rules_files() {
+		$data_return = true;
+		foreach (self::$filesCustomRules as $file) {
+			if (! file_exists($file)) {
+				$data_return = false;
+			} else {
+				$owner_file = fileowner($file);
+				$perms_file = fileperms($file);
+				/*
+				 * chown > 0     = root
+				 * chmod > 33206 = 0666 (-rw-rw-rw-)
+				 */
+				if ( ( $owner_file != 0 ) || ( $perms_file != 33206 ) ) {
+					$data_return = false;
+				}
+			}
+		}
+		return $data_return;
+	}
+
 	public function check_custom_rules_files() {
 		$detect_error = false;
 		foreach (self::$filesCustomRules as $file) {
