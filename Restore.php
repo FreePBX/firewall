@@ -65,32 +65,24 @@ class Restore Extends Base\RestoreBase{
 
 		if(\FreePBX::Modules()->checkStatus("sysadmin")) {
 			$this->log(_('Check Custrom Rules...'));
-			$hookfile = "/var/spool/asterisk/incron/firewall.fixcustomrules";
-			if (file_exists($hookfile)) {
-				@unlink($hookfile);
-			}
-			@fclose(@fopen($hookfile, "w"));
-
+			//Run Hook
+			$fw->fixCustomRules();
 
 			$timeoutDef = 10;
-			$timeout = $timeoutDef;
 			$completed = false;
-			while ( True ):
-				if ( ( $fw->is_exist_custom_rules_files() ) && ( $fw->is_good_owner_perms_custom_rules_files() ) ) {
-					$completed = true;
-					break;
-				}
+			while ( $i >= 0 ) {
+				$completed = $fw->check_custom_rules_files();
+				if ( $completed ) { break; }
 
-				if ( 0 >= $timeout ) {
-					break;
-				} elseif ($timeout === ($timeoutDef - 1 ) )  {
+				if ( is_null($i) )  {
+					$i = $timeoutDef;
 					$this->log(_('Waiting...'));
-				} elseif ($timeout < ($timeoutDef - 1 ) )  {
-					$this->log(sprintf(_("Timeout in %s seconds!"), $timeout));
+				} else {
+					$this->log(sprintf(_("Timeout in %s seconds!"), $i));
 				}
-				$timeout -= 1;
+				$i--;
 				sleep(1);
-			endwhile;
+			}
 
 			if (!$completed) {
 				$this->log(_('ERROR: Custom rule recovery process aborted, timeout exceeded!!!'));
@@ -102,18 +94,17 @@ class Restore Extends Base\RestoreBase{
 		} else {
 			$this->log(_('INFO: Not detected module Sysadmin.'));
 
-			//TODO: Pending check chown + chmod
-			if ( ( ! $fw->is_exist_custom_rules_files() ) || ( ! $fw->is_good_owner_perms_custom_rules_files() ) ) {
+			if ( ! $fw->check_custom_rules_files() ) {
 				$this->log(_('ERROR: Files required for custom rules are missing, run the following command for manual repair !!!'));
 				$this->log('# fwconsole firewall fix_custom_rules');
 				return false;
 			} else {
-				$this->log(_('WARNING: If custom firewall rules are not retrieved correctly, run the following command to force manual repair of the necessary files.'));
+				$this->log(_('Info: If custom firewall rules are not retrieved correctly, run the following command to force manual repair of the necessary files.'));
 				$this->log('# fwconsole firewall fix_custom_rules');
 			}
 		}
 
 		return true;
 	}
-
+	
 }

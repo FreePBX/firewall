@@ -1,0 +1,9 @@
+#!/usr/bin/php -q
+<?php
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+
+include __DIR__."/../Firewall.class.php";
+$fw = new \FreePBX\modules\Firewall;
+if (! $fw->remove_custom_rules_files()) {
+    throw new \Exception(_("Remove files for custom rules firewall failed!"));
+}

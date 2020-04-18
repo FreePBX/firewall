@@ -375,6 +375,11 @@ function getDbHandle($mysettings) {
 			} else {
 				$conn = "host=".$mysettings['AMPDBHOST'];
 			}
+			if (empty($mysettings['AMPDBPORT'])) {
+				$conn .= ";port=3306";
+			} else {
+				$conn .= ";port=".$mysettings['AMPDBPORT'];
+			}
 		} else {
 			$conn = "unix_socket=".$mysettings['AMPDBSOCK'];
 		}
@@ -461,7 +466,7 @@ function updateFirewallRules($firstrun = false) {
 	// Make sure the rules haven't been disturbed, and aren't corrupt
 	if (!$firstrun && !$driver->validateRunning()) {
 		// This is bad.
-		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in /tmp/firewall.log\n");
+		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in /var/spool/asterisk/tmp/firewall.log\n");
 		Lock::unLock($thissvc);
 		`service fail2ban stop`;
 		$f = $v->checkFile("bin/clean-iptables");

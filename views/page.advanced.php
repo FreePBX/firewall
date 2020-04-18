@@ -5,20 +5,25 @@ if (!isset($_REQUEST['tab'])) {
 	$tab = $_REQUEST['tab'];
 }
 
-$zoneinfo = $services = $shortcuts = $settings = "";
+$zoneinfo = $services = $shortcuts = $settings = $advanced_customrules ="";
 
 switch ($tab) {
 case 'services':
 case 'shortcuts':
 case 'settings':
+case 'advanced_customrules':
 	${$tab} = "active";
-	break;
+  break;
+
 default:
 	$zoneinfo = "active";
 }
 ?>
 
 <script type='text/javascript' src='modules/firewall/assets/js/views/advanced.js'></script>
+<script type='text/javascript' src='modules/firewall/assets/js/extras/codemirror.js'></script>
+<script type='text/javascript' src='modules/firewall/assets/js/extras/codemirror-addon/simplescrollbars.js'></script>
+<script type='text/javascript' src='modules/firewall/assets/js/extras/codemirror-addon/fullscreen.js'></script>
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
@@ -33,6 +38,9 @@ default:
       </li>
       <li role="presentation" data-name="settings" class="<?php echo $settings; ?>">
         <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><?php echo _("Advanced Settings")?> </a>
+      </li>
+      <li role="presentation" data-name="advanced_customrules" class="<?php echo $advanced_customrules; ?>">
+        <a href="#advanced_customrules" aria-controls="advanced_customrules" role="tab" data-toggle="tab"><?php echo _("Advanced Custom Rules")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
@@ -49,6 +57,9 @@ default:
       </div>
       <div role="tabpanel" id="settings" class="tab-pane <?php echo $settings; ?>">
         <?php echo load_view(__DIR__."/view.settings.php", array("fw" => $fw)); ?>
+      </div>
+      <div role="tabpanel" id="advanced_customrules" class="tab-pane <?php echo $advanced_customrules; ?>">
+        <?php echo load_view(__DIR__."/view.advanced_customrules.php", array("fw" => $fw)); ?>
       </div>
     </div>
   </div>

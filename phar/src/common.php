@@ -70,12 +70,12 @@ function pharChanged() {
 function fwLog($str) {
 	global $STDIN, $STDOUT, $STDERR;
 
-	$lfstat = @stat("/tmp/firewall.log");
+	$lfstat = @stat("/var/spool/asterisk/tmp/firewall.log");
 	if (is_array($lfstat) && $lfstat['size'] > 1048576) {
 		// Logfile is over 1mb
 		print time().": Rotating Log\n";
-		@unlink("/tmp/firewall.log.old");
-		rename("/tmp/firewall.log", "/tmp/firewall.log.old");
+		@unlink("/var/spool/asterisk/tmp/firewall.log.old");
+		rename("/var/spool/asterisk/tmp/firewall.log", "/var/spool/asterisk/tmp/firewall.log.old");
 		// This is so hacky.
 		if (is_resource($STDIN)) {
 			fclose($STDIN);
@@ -87,13 +87,13 @@ function fwLog($str) {
 			fclose(STDERR);
 		}
 		$STDIN = fopen('/dev/null', 'r');
-		$STDOUT = fopen('/tmp/firewall.log', 'ab');
-		$STDERR = fopen('/tmp/firewall.err', 'ab');
+		$STDOUT = fopen('/var/spool/asterisk/tmp/firewall.log', 'ab');
+		$STDERR = fopen('/var/spool/asterisk/tmp/firewall.err', 'ab');
 		print time().": Rotated Log\n";
 	}
 	print time().": $str\n";
 	// No need to write to the logfile, as we're sending it there already by the print
-	// $fh = fopen("/tmp/firewall.log", "a");
+	// $fh = fopen("/var/spool/asterisk/tmp/firewall.log", "a");
 	// fwrite($fh, time().": $str\n");
 	syslog(LOG_WARNING|LOG_LOCAL0, $str);
 }

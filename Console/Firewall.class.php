@@ -270,14 +270,15 @@ class Firewall extends Command {
 
 	private function customRulesFix($output) {
 		$fw = \FreePBX::Firewall();
-		list($detect_error, $log) = $fw->check_custom_rules_files();
-		if (! empty($log)) {
+		$log = array();
+		// We pass the array $log as a reference to get the events. 
+		// The data in $log will not overwrite, the new events will be added to the array.
+		$return_fix = $fw->fix_custom_rules_files($log);
+		if ( (! empty($log) ) && ( is_array($log) ) ) {
 			foreach ($log as $log_line) {
 				$output->writeln($log_line);
 			}
 		}
-		if ($detect_error) {
-			return false;
-		}
+		return $return_fix;
 	}
 }

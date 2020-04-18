@@ -5,8 +5,9 @@ namespace FreePBX\modules;
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public static $dbDefaults 		= array("status" => false);
-	public static $filesCustomRules = array('/etc/firewall-4.rules', '/etc/firewall-6.rules');
-
+	public static $filesCustomRules = array('ipv4' => '/etc/firewall-4.rules', 'ipv6' => '/etc/firewall-6.rules');
+	public static $filesLog 		= array('err' => '/var/spool/asterisk/tmp/firewall.err', 'out' => '/var/spool/asterisk/tmp/firewall.log');
+	
 	private static $services = false;
 
 	public function install() {
@@ -19,6 +20,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
+		// Run hook create files custom rules, root access required.
+		$this->fixCustomRules();
 	}
 
 	public function uninstall() {
@@ -34,13 +37,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("oobeanswered", array());
 		}
 		$this->removeCronJob();
+		// Run hook uninstall, actions with special root permissions.
+		$this->uninstallHook();
 	}
 
 	public function backup() {}
 	public function restore($backup) {}
 
 	public function chownFreepbx() {
-		$this->check_custom_rules_files();
+		$this->fix_custom_rules_files();
 		$files = array(
 			array('type' => 'execdir',
 			'path' => __DIR__."/hooks",
@@ -55,29 +60,43 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $files;
 	}
 
-	public function is_exist_custom_rules_files() {
-		$data_return = true;
-		foreach (self::$filesCustomRules as $file) {
-			if (! file_exists($file)) {
-				$data_return = false;
+
+	public function read_file($file, &$data) {
+		$data_return = false;
+		if (! empty($file)) {
+			if ( ( file_exists($file) ) && ( is_readable($file) ) ) {
+				if($fh = fopen($file,"r"))
+				{
+					while (($bufer = fgets($fh, 4096)) !== false) {
+						$data[] = $bufer;
+					}
+					fclose($fh);
+					$data_return = true;
+				}
 			}
 		}
 		return $data_return;
 	}
-
-	public function is_good_owner_perms_custom_rules_files() {
+	
+	// INI - Advanced Custom Rules
+	public function check_protocol_custom_rules($protocolType=Null, $allow_empty=True) {
 		$data_return = true;
-		foreach (self::$filesCustomRules as $file) {
-			if (! file_exists($file)) {
-				$data_return = false;
-			} else {
-				$owner_file = fileowner($file);
-				$perms_file = fileperms($file);
-				/*
-				 * chown > 0     = root
-				 * chmod > 33206 = 0666 (-rw-rw-rw-)
-				 */
-				if ( ( $owner_file != 0 ) || ( $perms_file != 33206 ) ) {
+		if ( ( empty($protocolType) ) && ( ! $allow_empty ) ) {
+			$data_return = false;
+		} else if ( ! empty($protocolType)) {
+			$data_return = array_key_exists($protocolType, self::$filesCustomRules);
+		}
+		return $data_return;
+	}
+
+	public function is_exist_custom_rules_files($protocolType=Null) {
+		$data_return = $this->check_protocol_custom_rules($protocolType);
+		if ($data_return) {
+			foreach (self::$filesCustomRules as $type => $file) {
+				if ( ( ! empty($protocolType) ) && ( strtolower($type) != strtolower($protocolType) ) ) {
+					continue;
+				}
+				if (! file_exists($file)) {
 					$data_return = false;
 				}
 			}
@@ -85,7 +104,65 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $data_return;
 	}
 
-	public function check_custom_rules_files() {
+	public function is_good_owner_perms_custom_rules_files($protocolType=Null) {
+		$data_return = $this->check_protocol_custom_rules($protocolType);
+		if ($data_return) { 
+			foreach (self::$filesCustomRules as $type => $file) {
+				if ( ( ! empty($protocolType) ) && ( strtolower($type) != strtolower($protocolType) ) ) {
+					continue;
+				}
+				if (! file_exists($file)) {
+					$data_return = false;
+				} else {
+					$owner_file = fileowner($file);
+					$perms_file = fileperms($file);
+					/*
+					* chown > 0     = root
+					* chmod > 33206 = 0666 (-rw-rw-rw-)
+					*/
+					if ( ( $owner_file != 0 ) || ( $perms_file != 33206 ) ) {
+						$data_return = false;
+					}
+				}
+			}
+		}
+		return $data_return;
+	}
+
+	public function read_file_custom_rules($protocolType=Null) {
+		$data_return = array();
+		if ( ( $this->check_protocol_custom_rules($protocolType, False) ) && ( $this->is_exist_custom_rules_files($protocolType) ) ) { 
+			$file = self::$filesCustomRules[strtolower($protocolType)];
+			$this->read_file($file, $data_return);
+		}
+		return $data_return;
+	}
+
+	public function save_file_custom_rules($protocolType=Null, $data = "") {
+		$data_return = false;
+		if ( ( $this->check_protocol_custom_rules($protocolType, False) ) && ( $this->is_exist_custom_rules_files($protocolType) ) ) { 
+			$file = self::$filesCustomRules[strtolower($protocolType)];
+			if (is_writable($file)) {
+				if($fh = fopen($file,"w"))
+				{
+					if (fwrite($fh, $data) !== FALSE) {
+						$data_return = true;
+					}
+					fclose($fh);
+				}
+			}
+		}
+		return $data_return;
+	}
+
+	public function check_custom_rules_files($protocolType=Null) {
+		if ( (! $this->is_exist_custom_rules_files($protocolType) ) || (! $this->is_good_owner_perms_custom_rules_files($protocolType) ) ) {
+			return false;
+		}
+		return true;
+	}
+
+	public function fix_custom_rules_files(&$log=Null) {
 		$detect_error = false;
 		foreach (self::$filesCustomRules as $file) {
 			$output[] = "<info>".sprintf(_("Check file '%s'"), $file)."</info>";
@@ -128,8 +205,160 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				$output[] = "<error>".sprintf(_("- Adjusting owner... ERROR!\n >> Error Message: %s"), $err_chown['message'])."</error>";
 			}
 		}
-		return array($detect_error , $output);
+
+		if (! is_null($log) ) {
+			if ( is_array($log) ) {
+				$log = array_merge($log, $output);
+			} 
+			elseif (! empty($log) ) {
+				$log = array_merge(array($log), $output);
+			}
+			else {
+				$log = $output;
+			}
+		}
+
+		return !$detect_error;
 	}
+
+	public function read_file_custom_rules_ajax($protocolType) {
+		$data_return = array();
+		$data_return['status'] = false;
+		$data_return['protocol'] = "";
+		if ( isset($protocolType) ) {
+			$data_return['protocol'] = $protocolType;
+
+			if ($this->check_protocol_custom_rules($protocolType, False)) {
+				$data_return['status'] = true;
+				$data_return['data'] = $this->read_file_custom_rules($protocolType);
+			} else {
+				$data_return['code'] = 2;
+				$data_return['message'] = _("Protocol not valid!");
+			}
+		} else {
+			$data_return['code'] = 1;
+			$data_return['message'] = _("Protocol not selected!");
+		}
+		return $data_return;
+	}
+
+	public function save_file_custom_rules_ajax($protocolType, $data) {
+		$data_return = array();
+		$data_return['status'] = false;
+		$data_return['protocol'] = "";
+		if ( isset($protocolType) ) {
+			$data_return['protocol'] = $protocolType;
+			if ($this->check_protocol_custom_rules($protocolType, False)) {
+				if ( isset($data) ) { 
+					if ( $this->save_file_custom_rules($protocolType, $data) ) {
+						$data_return['status'] = true;
+					} else {
+						$data_return['code'] = 4;
+						$data_return['message'] = _("Error saving data!");
+					}
+				}
+				else {
+					$data_return['code'] = 3;
+					$data_return['message'] = _("New rules unsent!");
+				}
+			} else {
+				$data_return['code'] = 2;
+				$data_return['message'] = _("Protocol not valid!");
+			}
+		} else {
+			$data_return['code'] = 1;
+			$data_return['message'] = _("Protocol not selected!");
+		}
+		return $data_return;
+	}
+
+	public function remove_custom_rules_files() {
+		$detect_error = false;
+		foreach (self::$filesCustomRules as $file) {
+			$err_unlink = null;
+			if (file_exists($file)) {
+				if (! @unlink($file)) {
+					$err_unlink = error_get_last();
+					freepbx_log(FPBX_LOG_ERROR, sprintf(_("Module Firewall - Remove File Rules - Error detected by deleting the file '%s'!. Error Message: %s"), $file, $err_chmod['message']));
+					$detect_error = true;
+				} else {
+					freepbx_log(FPBX_LOG_INFO, sprintf(_("Module Firewall - Remove File Rules - File '%s' deleted successfully."), $file));
+				}
+			}
+		}
+		return !$detect_error;
+	}
+	// END - Advanced Custom Rules
+
+
+	// INI - Logs
+	public function read_logs() {
+		$data_return = array();
+		foreach (self::$filesLog as $type => $file) {
+			$data_file = array();
+			$data_return [] = sprintf("<div class='line-%s-file'>%s</div>", "init", str_pad(" BEGINNING OF FILE (".strtoupper($type).") ", 100, "=", STR_PAD_BOTH));
+			if ( $this->read_file($file, $data_file) ) {
+				if (count($data_file) == 0) {
+					$data_return [] = "<div class='type_msg_info'>"._("No records found.")."</div>";
+				} else {
+					//We will reverse order of records so that the last events are at the beginning.
+					foreach (array_reverse($data_file) as $line) {
+						$new_line = null;
+						$line_data = explode(":", $line, 2);
+
+						//detect timestamp and convert format.
+						if (count($line_data) == 2) {
+							if (is_numeric ($line_data[0])) {
+								//1587214309: Wall: 'Firewall service now starting.
+								$timestamp = gmdate('Y-m-d H:i:s', trim($line_data[0]) );
+								$msg = trim($line_data[1]);
+								$new_line = sprintf("[%s] - %s", $timestamp, $msg);
+							}
+						}
+
+						//msg without timestamp
+						if ( is_null($new_line) ) {
+							$new_line = trim($line);
+						}
+
+						//apply styles
+						$new_line_lowercase = strtolower($new_line);
+						switch(true) {
+							case strpos( $new_line_lowercase , "error"):
+							case strpos( $new_line_lowercase , "exception"):
+								$new_line = sprintf("<span class='red'>%s</span>", htmlentities($new_line, ENT_QUOTES | ENT_HTML401, "UTF-8") );
+								break;
+
+							case strpos( $new_line_lowercase , "custom rule:"):
+								$new_line = sprintf("<span class='lime'>%s</span>", htmlentities($new_line, ENT_QUOTES | ENT_HTML401, "UTF-8") );
+								break;
+
+							case strpos( $new_line_lowercase , "/sbin/iptables"):
+							case strpos( $new_line_lowercase , "/sbin/ip6tables"):
+								$new_line = sprintf("<span class='green'>%s</span>", htmlentities($new_line, ENT_QUOTES | ENT_HTML401, "UTF-8") );
+								break;
+
+							default:
+								$new_line = sprintf("<span class='cyan'>%s</span>", htmlentities($new_line, ENT_QUOTES | ENT_HTML401, "UTF-8") );
+						}
+
+						//add type msg (OUT or ERR)
+						$new_line = sprintf("<div class='line type_msg_%s'>%s >>> %s</div>", $type, strtoupper($type), $new_line);
+
+						//replace \n to <br>
+						//$new_line = nl2br($new_line);
+
+						$data_return[] = $new_line;
+					}
+				}
+			} else {
+				$data_return [] = "<div class='type_msg_warn'>"._("The file does not exist or cannot be read.")."</div>";
+			}
+			$data_return [] = sprintf("<div class='line-%s-file'>%s</div>", "end", str_pad(" END OF FILE (".strtoupper($type).") ", 100, "=", STR_PAD_BOTH));
+		}
+		return $data_return;
+	}
+	// END - Logs
 
 	public function oobeHook() {
 		include __DIR__.'/OOBE.class.php';
@@ -157,10 +386,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return array($status);
 		}
 
-		// We're meant to be running, check that the firewall service is.
-		exec("pgrep -f hooks/voipfirewalld", $out, $ret);
 		// Clobber the $status if it's not running
-		if ($ret != 0) {
+		// We're meant to be running, check that the firewall service is running.
+		if (! $this->isRunning()) {
 			$status = array_merge($status, $this->Dashboard()->genStatusIcon('error', _("Firewall Service not running!")));
 			$status['order'] = 1;
 		}
@@ -369,6 +597,24 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->runHook("stopfirewall");
 	}
 
+	public function fixCustomRules($tiemout = 0) {
+		$this->runHook("fixcustomrules");
+		if ($tiemout > 0) {
+			$completed = false;
+			while ( $i <= $timeout ) {
+				$completed = $this->check_custom_rules_files();
+				if ( $completed ) { break; }
+				$i++;
+				sleep(1);
+			}
+			return $completed;
+		}
+	}
+
+	public function uninstallHook() {
+		$this->runHook("uninstall");
+	}
+
 	public function isEnabled() {
 		return $this->getConfig("status");
 	}
@@ -376,6 +622,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	// If the machine is currently in safe mode, return true.
 	public function isNotReady() {
 		return file_exists("/var/run/firewalld.safemode");
+	}
+
+	// If the firewall service is running, it returns true.
+	public function isRunning() {
+		exec("pgrep -f hooks/voipfirewalld", $out, $ret);
+		return $ret == 0 ? true : false;
 	}
 
 	public function showLockoutWarning() {
@@ -418,6 +670,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	// Ajax calls
 	public function ajaxRequest($req, &$settings) {
+		// ** Allow remote consultation with Postman **
+		// ********************************************
+		//$settings['authenticate'] = false;
+		//$settings['allowremote'] = true;
+		// ********************************************
 		return true;
 	}
 
@@ -569,6 +826,37 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("oobeanswered", array());
 			$this->setConfig("abortoobe", false);
 			return;
+
+		// Advanced Custom Rules
+		case "advanced_custom_rule_read_file":
+			$protocoltype = isset($_REQUEST['protocoltype']) ? $_REQUEST['protocoltype'] : null;
+			return $this->read_file_custom_rules_ajax($protocoltype);
+
+		case "advanced_custom_rule_save":
+			$protocoltype = isset($_REQUEST['protocoltype']) ? $_REQUEST['protocoltype'] : null;
+			$newrules 	  = isset($_REQUEST['newrules']) ? $_REQUEST['newrules'] : null;
+			$return_save = $this->save_file_custom_rules_ajax($protocoltype, $newrules);
+			if ($return_save['status']) {
+				if ($this->isRunning()){
+					//TODO: Actualizar reglas nuevas
+				}
+			}
+			return $return_save;
+
+		case "advanced_custom_rule_status":
+			return $advanced = $this->getAdvancedSettings()['customrules'];
+
+		case "advanced_custom_check_files":
+			$protocoltype = isset($_REQUEST['protocoltype']) ? $_REQUEST['protocoltype'] : null;
+			if ( $this->check_custom_rules_files($protocoltype) ) {
+				return "ok";
+			} else {
+				return "error";
+			}
+			
+		// Logs
+		case "read_logs":
+			return $this->read_logs();
 
 		default:
 			throw new \Exception("Sad Panda - ".$_REQUEST['command']);

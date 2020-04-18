@@ -1,3 +1,7 @@
+@import url('extras/codemirror.css');
+@import url('extras/simplescrollbars.css');
+@import url('extras/fullscreen.css');
+
 label.btn {
 	margin: 0;
 }
@@ -41,3 +45,120 @@ tr[zone='other']>td { background-color: #ede7f6; }
 
 // Dont' display the action bar unless we've explictly asked for it.
 #action-bar{ display: none; }
+
+
+
+
+/*
+  Section Advanced > advanced_customrules
+*/
+
+#advanced_customrules textarea[name=text_rules] {
+  width: 100%;
+}
+
+#advanced_customrules .hide-element {
+  display: none;
+}
+
+.CodeMirror { 
+  height: auto;
+  border: 1px solid #ddd; 
+  background-color:rgb(255, 255, 203);
+}
+
+.CodeMirror pre { 
+  padding-left: 7px; 
+  line-height: 1.25; 
+}
+
+.CodeMirror-fullscreen {
+  /* skip menu */
+  top: 34px;
+}
+
+
+/*
+  Section Logs
+*/
+
+.brown{color:brown;}
+.cyan{color:cyan;}
+.black{color:black;}
+.red{color:red;}
+.orange{color:orange;}
+.green{color:lightgreen;}
+.yellow{color:yellow;}
+.blue{color:blue;}
+.magenta{color:magenta;}
+.white{color:white;}
+.pink{color:hotpink;}
+.lime{color:lime;}
+.silver{color:silver;}
+.seagreen{color:lightseagreen;}
+.beige{color:beige;}
+.bold{font-weight: bold;}
+.underline{text-decoration:underline;}
+
+#logfiles_header{
+	height: 75px;
+}
+
+#log_view.pre {
+	font-family:"Courier New", Courier, monospace;
+	font-size:0.85em;
+	/*overflow: auto;*/
+	background-color: #0f192a;
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+  min-height: 100px;
+  
+  
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /*max-height: 600px;*/
+}
+
+#log_view .highlightLog {
+  background-color: beige;
+  font-weight: bold;
+  color: black;
+
+  padding-left: 5px;
+  padding-right: 5px;
+
+  border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border: 1px solid #000000;
+}
+
+#log_view.pre .type_msg_err {
+  color: yellow;
+}
+
+#log_view.pre .type_msg_out {
+  color: beige;
+}
+
+#log_view.pre .type_msg_warn {
+  color: orange;
+}
+
+#log_view.pre .type_msg_info {
+  color: cyan;
+}
+
+#log_view.pre .line-init-file, #log_view.pre .line-end-file {
+  width: 100%;
+  text-align: center;
+}
+
+#log_view.pre .line-init-file {
+  margin: 5px 0px 5px 0px;
+}
+
+#log_view.pre .line-end-file {
+  margin: 5px 0px 40px 0px;
+}
