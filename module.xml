@@ -53,6 +53,9 @@
 		<framework class="Stop" namespace="FreePBX\Console\Command">
 			<method callingMethod="postAsteriskHooks" class="Firewall" namespace="FreePBX\modules">stopFirewall</method>
 		</framework>
+		<framework class="Restart" namespace="FreePBX\Console\Command">
+			<method callingMethod="preAsteriskHooks" class="Firewall" namespace="FreePBX\modules">restartFirewall</method>
+		</framework>
 		<framework class="Chown" namespace="FreePBX\Console\Command">
 			<method callingMethod="fwcChownFiles" class="Firewall" namespace="FreePBX\modules">chownFreepbx</method>
 		</framework>

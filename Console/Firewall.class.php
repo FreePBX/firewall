@@ -35,6 +35,10 @@ class Firewall extends Command {
 			return $this->stopFirewall($output);
 		case "start":
 			return $this->startFirewall($output);
+		case "restart":
+			$this->disableFirewall($output);
+			$this->stopFirewall($output);
+			return $this->startFirewall($output);
 		case "disable":
 			$this->disableFirewall($output);
 			return $this->stopFirewall($output);
@@ -77,6 +81,7 @@ class Firewall extends Command {
 			"disable" => _("Disable the System Firewall. This will shut it down cleanly."),
 			"stop" => _("Stop the System Firewall"),
 			"start" => _("Start (and enable, if disabled) the System Firewall"),
+			"restart" => _("Restart the System Firewall"),
 			"trust" => _("Add the hostname or IP specified to the Trusted Zone"),
 			"untrust" => _("Remove the hostname or IP specified from the Trusted Zone"),
 			"list [zone]" => _("List all entries in zone 'zone'"),
