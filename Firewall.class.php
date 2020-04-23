@@ -545,7 +545,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		// Advanced Settings
 		case "updateadvanced":
-			return $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
+			$pre = $this->getAdvancedSettings();
+			$current = $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
+			if($_REQUEST['option'] == "lefilter" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
+				$this->restartFirewall();
+			}
+			return $current;
 
 		// OOBE
 		case "getoobequestion":
@@ -591,6 +596,30 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $j;
 	}
 
+	public function restartFirewall(){
+		// Disable FW
+		$this->setConfig("status", false);
+
+		// Stop FW
+		$this->stopFirewall();
+
+		// Start FW
+		$this->preEnableFW();
+		$this->startFirewall();
+	}
+
+	public function preEnableFW(){
+		$thishost = $this->detectHost();
+		$nets = $this->getConfig("networkmaps");
+		if (!is_array($nets)) {
+			$nets = array();
+		}
+		$nets[$thishost] = "trusted";
+		$this->setConfig("networkmaps", $nets);
+		$this->setConfig("status", true);
+		touch("/etc/asterisk/firewall.enabled");
+	}
+
 	// Now comes the real code. Let's catch the POST and see if there's an action
 	public function doConfigPageInit($display) {
 		$action = $this->getReq('action');
@@ -600,15 +629,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case 'enablefw':
 			// Make sure that whoever enabled the firewall has access
 			// to configure it!
-			$thishost = $this->detectHost();
-			$nets = $this->getConfig("networkmaps");
-			if (!is_array($nets)) {
-				$nets = array();
-			}
-			$nets[$thishost] = "trusted";
-			$this->setConfig("networkmaps", $nets);
-			$this->setConfig("status", true);
-			touch("/etc/asterisk/firewall.enabled");
+			$this->preEnableFW();
 			$this->runHook("firewall");
 			return;
 		case 'disablefw':
@@ -1296,7 +1317,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function getAdvancedSettings() {
-		$defaults = array("safemode" => "enabled", "masq" => "enabled", "customrules" => "disabled", "rejectpackets" => "disabled");
+		$defaults = array("safemode" => "enabled", "masq" => "enabled", "lefilter" => "enabled", "customrules" => "disabled", "rejectpackets" => "disabled");
 		$settings = $this->getConfig("advancedsettings");
 		if (!is_array($settings)) {
 			$settings = $defaults;
