@@ -1,20 +1,20 @@
 
 <div class='container-fluid'>
-<h3><?php echo _("Known Network Definitions"); ?></h3>
+	<h3><?php echo _("Known Network Definitions"); ?></h3>
 
-<p><?php echo _("You can add individual hosts and networks to override the default permission for an interface."); ?></p>
-<p><?php echo _("Example: Interface eth0 is assigned to the 'Internet' zone, and you then add '203.55.66.77' to the 'Local' zone on this page. Any traffic arriving from 203.55.66.77 will be granted access to services usable by 'Local' zone."); ?></p>
-<p><?php echo _("Any traffic arriving at eth0 from 203.55.66.88 (or any other undefined host or network) will only have access to services available to the 'Internet' zone, as that has been set to be the default zone for traffic arriving at that interface."); ?></p>
-<p><?php echo _("You may also enter hostnames here (including Dynamic DNS hosts), which will be automatically monitored and updated."); ?></p>
-</div>
-<table class="table" id='networkstable'>
-  <thead>
-    <tr>
-      <th><input type='checkbox' id='toggleall'></th>
-      <th><?php echo _("Network/Host"); ?></th>
-      <th><?php echo _("Assigned Zone"); ?></th>
-    </tr>
-  </thead>
+	<p><?php echo _("You can add individual hosts and networks to override the default permission for an interface."); ?></p>
+	<p><?php echo _("Example: Interface eth0 is assigned to the 'Internet' zone, and you then add '203.55.66.77' to the 'Local' zone on this page. Any traffic arriving from 203.55.66.77 will be granted access to services usable by 'Local' zone."); ?></p>
+	<p><?php echo _("Any traffic arriving at eth0 from 203.55.66.88 (or any other undefined host or network) will only have access to services available to the 'Internet' zone, as that has been set to be the default zone for traffic arriving at that interface."); ?></p>
+	<p><?php echo _("You may also enter hostnames here (including Dynamic DNS hosts), which will be automatically monitored and updated."); ?></p>
+
+	<table class="table" id='networkstable'>
+		<thead>
+			<tr>
+			<th><input type='checkbox' id='toggleall'></th>
+			<th><?php echo _("Network/Host"); ?></th>
+			<th><?php echo _("Assigned Zone"); ?></th>
+			</tr>
+		</thead>
 
 <?php
 $nets = $fw->getConfig("networkmaps");
@@ -47,7 +47,8 @@ foreach ($nets as $net => $currentzone) {
 	render_network($net, $currentzone, $desc, $counter, $z);
 }
 ?>
-</table>
+	</table>
+</div>
 <?php
 
 // Render the interface select
