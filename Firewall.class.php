@@ -1352,5 +1352,26 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $names;
 		}
 	}
+
+	public function postrestorehook($restoreid,$backupinfo){
+		$db = \FreePBX::Database();
+		$defaults = array(
+			"name" => "firewall",
+			"secret" => "fpbxfirewall*secret",
+			"deny" => "0.0.0.0/0.0.0.0",
+			"permit" => "127.0.0.1/255.255.255.0",
+			"read" => "all",
+			"write" => "user",
+			"writetimeout" => 100
+			);
+
+		// See if the firewall manager user exists
+		$m = $db->query('SELECT * FROM `manager` WHERE `name`="firewall"')->fetchAll();
+		if (!$m) {
+			$p = $db->prepare('INSERT INTO `manager` (`name`, `secret`, `deny`, `permit`, `read`, `write`, `writetimeout`) values (:name, :secret, :deny, :permit, :read, :write, :writetimeout)');
+			$p->execute($defaults);
+		}
+		return;
+	}
 }
 

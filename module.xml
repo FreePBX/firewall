@@ -56,6 +56,9 @@
 		<framework class="Chown" namespace="FreePBX\Console\Command">
 			<method callingMethod="fwcChownFiles" class="Firewall" namespace="FreePBX\modules">chownFreepbx</method>
 		</framework>
+		<Backup class="Backup" namespace="FreePBX\modules">
+			<method callingMethod="postrestoreModulehook" class="Firewall" namespace="FreePBX\modules">postrestorehook</method>
+		</Backup>
 	</hooks>
 	<oobe method="oobeHook" priority="200"/>
 </module>
