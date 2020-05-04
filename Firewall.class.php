@@ -4,7 +4,8 @@ namespace FreePBX\modules;
 
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
-	public static $dbDefaults = array("status" => false);
+	public static $dbDefaults 		= array("status" => false);
+	public static $filesCustomRules = array('/etc/firewall-4.rules', '/etc/firewall-6.rules');
 
 	private static $services = false;
 
@@ -39,6 +40,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function restore($backup) {}
 
 	public function chownFreepbx() {
+		$this->check_custom_rules_files();
 		$files = array(
 			array('type' => 'execdir',
 			'path' => __DIR__."/hooks",
@@ -51,6 +53,82 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			'perms' => 0755)
 		);
 		return $files;
+	}
+
+	public function is_exist_custom_rules_files() {
+		$data_return = true;
+		foreach (self::$filesCustomRules as $file) {
+			if (! file_exists($file)) {
+				$data_return = false;
+			}
+		}
+		return $data_return;
+	}
+
+	public function is_good_owner_perms_custom_rules_files() {
+		$data_return = true;
+		foreach (self::$filesCustomRules as $file) {
+			if (! file_exists($file)) {
+				$data_return = false;
+			} else {
+				$owner_file = fileowner($file);
+				$perms_file = fileperms($file);
+				/*
+				 * chown > 0     = root
+				 * chmod > 33206 = 0666 (-rw-rw-rw-)
+				 */
+				if ( ( $owner_file != 0 ) || ( $perms_file != 33206 ) ) {
+					$data_return = false;
+				}
+			}
+		}
+		return $data_return;
+	}
+
+	public function check_custom_rules_files() {
+		$detect_error = false;
+		foreach (self::$filesCustomRules as $file) {
+			$output[] = "<info>".sprintf(_("Check file '%s'"), $file)."</info>";
+			if (! file_exists($file)) {
+				$new_file = @fopen($file,"w+");
+				if($new_file == false) {
+					$errors= error_get_last();
+					freepbx_log(FPBX_LOG_ERROR, sprintf(_("Module Firewall - Check Rules - File '%s' not exist, error creating. Error Message: %s"), $file, $errors['message']));
+					$output[] = "<error>".sprintf(_("- Does not exist, creating file... ERROR!!\n >> Error Message: %s"), $errors['message'])."</error>";
+					continue;
+				} else {
+					freepbx_log(FPBX_LOG_INFO, sprintf(_("Module Firewall - Check Rules - File '%s' not exist, created OK!"), $file));
+					$output[] = "<info>"._("- Does not exist, creating file... OK!")."</info>";
+				}
+				fclose($new_file);
+			} else {
+				freepbx_log(FPBX_LOG_INFO, sprintf(_("Module Firewall - Check Rules - File '%s' exist... OK!"), $file));
+			}
+			
+			$err_chmod = NULL;
+			$err_chown = NULL;
+			if (! @chmod($file, 0666)) {
+				$err_chmod = error_get_last();
+			}
+			if (! @chown($file, "root")) {
+				$err_chown = error_get_last();
+			}	
+			if ((is_null($err_chmod)) && (is_null($err_chown))) {
+				freepbx_log(FPBX_LOG_INFO, sprintf(_("Module Firewall - Check Rules - Adjusting owner and permissions in file '%s'... OK!"), $file));
+				$output[] = "<info>"._("- Adjusting owner and permissions... OK!")."</info>";
+			}
+			if (! is_null($err_chmod)) {
+				$detect_error = true;
+				freepbx_log(FPBX_LOG_ERROR, sprintf(_("Module Firewall - Check Rules - Error adjusting permissions in file '%s'. Error Message: %s"), $file, $err_chmod['message']) );
+				$output[] = "<error>".sprintf(_("- Adjusting permissions... ERROR!\n >> Error Message: %s"), $err_chmod['message'])."</error>";
+			}
+			if (! is_null($err_chown)) {
+				$detect_error = true;
+				freepbx_log(FPBX_LOG_ERROR, sprintf(_("Module Firewall - Check Rules - Error adjusting owner in file '%s'. Error Message: %s"), $file, $err_chown['message']) );
+				$output[] = "<error>".sprintf(_("- Adjusting owner... ERROR!\n >> Error Message: %s"), $err_chown['message'])."</error>";
+			}
+		}
+		return array($detect_error , $output);
 	}
 
 	public function oobeHook() {
@@ -1273,6 +1351,27 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		} else {
 			return $names;
 		}
+	}
+
+	public function postrestorehook($restoreid,$backupinfo){
+		$db = \FreePBX::Database();
+		$defaults = array(
+			"name" => "firewall",
+			"secret" => "fpbxfirewall*secret",
+			"deny" => "0.0.0.0/0.0.0.0",
+			"permit" => "127.0.0.1/255.255.255.0",
+			"read" => "all",
+			"write" => "user",
+			"writetimeout" => 100
+			);
+
+		// See if the firewall manager user exists
+		$m = $db->query('SELECT * FROM `manager` WHERE `name`="firewall"')->fetchAll();
+		if (!$m) {
+			$p = $db->prepare('INSERT INTO `manager` (`name`, `secret`, `deny`, `permit`, `read`, `write`, `writetimeout`) values (:name, :secret, :deny, :permit, :read, :write, :writetimeout)');
+			$p->execute($defaults);
+		}
+		return;
 	}
 }
 
