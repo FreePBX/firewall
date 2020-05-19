@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-13 03:43+0000\n"
+"POT-Creation-Date: 2020-05-19 13:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -126,7 +126,7 @@ msgid "Add Network"
 msgstr ""
 
 #: views/view.blacklist.php:40
-#: views/view.networks.php:83
+#: views/view.networks.php:84
 msgid "Add New"
 msgstr ""
 
@@ -146,7 +146,7 @@ msgstr ""
 msgid "Added"
 msgstr ""
 
-#: views/bootnav.php:8
+#: views/bootnav.php:7
 msgid "Advanced"
 msgstr ""
 
@@ -472,7 +472,7 @@ msgid ""
 "this server without explicitly whitelisting them."
 msgstr ""
 
-#: views/view.networks.php:65
+#: views/view.networks.php:66
 msgid "Enter new IP or Hostname here"
 msgstr ""
 
@@ -822,7 +822,7 @@ msgstr ""
 msgid "Local trusted traffic"
 msgstr ""
 
-#: views/bootnav.php:5
+#: views/bootnav.php:4
 msgid "Main"
 msgstr ""
 
@@ -1241,7 +1241,7 @@ msgstr ""
 msgid "Service unavailable"
 msgstr ""
 
-#: views/bootnav.php:7
+#: views/bootnav.php:6
 #: views/page.services.php:32
 msgid "Services"
 msgstr ""
@@ -1281,7 +1281,7 @@ msgstr ""
 msgid "Starting up"
 msgstr ""
 
-#: views/bootnav.php:6
+#: views/bootnav.php:5
 msgid "Status"
 msgstr ""
 
@@ -1733,7 +1733,7 @@ msgstr ""
 msgid "You can enter a short description for this interface here."
 msgstr ""
 
-#: views/view.networks.php:89
+#: views/view.networks.php:90
 msgid "You can enter a short description for this network here."
 msgstr ""
 

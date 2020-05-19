@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-07 03:46+0000\n"
+"POT-Creation-Date: 2020-05-19 13:21+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -142,7 +142,7 @@ msgstr "Thêm Host"
 msgid "Add Network"
 msgstr "Thêm Mạng"
 
-#: views/view.blacklist.php:40 views/view.networks.php:83
+#: views/view.blacklist.php:40 views/view.networks.php:84
 msgid "Add New"
 msgstr "Thêm mới"
 
@@ -162,7 +162,7 @@ msgstr "Thêm vào Trusted"
 msgid "Added"
 msgstr "Đã thêm"
 
-#: views/bootnav.php:8
+#: views/bootnav.php:7
 msgid "Advanced"
 msgstr "Nâng cao"
 
@@ -530,7 +530,7 @@ msgstr ""
 "đăng ký một cách an toàn với máy chủ này mà không cần phải whitelisting "
 "chúng."
 
-#: views/view.networks.php:65
+#: views/view.networks.php:66
 msgid "Enter new IP or Hostname here"
 msgstr "Nhập một IP mới hoặc Hostname ở đây"
 
@@ -927,7 +927,7 @@ msgstr "Tại chỗ"
 msgid "Local trusted traffic"
 msgstr "Lưu lượng an toàn tại chỗ"
 
-#: views/bootnav.php:5
+#: views/bootnav.php:4
 msgid "Main"
 msgstr "Chính"
 
@@ -1394,7 +1394,7 @@ msgstr ""
 msgid "Service unavailable"
 msgstr "Dịch vụ không khả dụng"
 
-#: views/bootnav.php:7 views/page.services.php:32
+#: views/bootnav.php:6 views/page.services.php:32
 msgid "Services"
 msgstr "Các dịch vụ"
 
@@ -1435,7 +1435,7 @@ msgstr "Khởi động ( bật lên nếu đang bị vô hiệu) Firewall hệ t
 msgid "Starting up"
 msgstr "Khởi động"
 
-#: views/bootnav.php:6
+#: views/bootnav.php:5
 msgid "Status"
 msgstr "Trạng thái"
 
@@ -1975,7 +1975,7 @@ msgstr ""
 msgid "You can enter a short description for this interface here."
 msgstr "Bạn có thể nhập một mô tả ngắn cho giao diện này ở đây."
 
-#: views/view.networks.php:89
+#: views/view.networks.php:90
 msgid "You can enter a short description for this network here."
 msgstr "Bạn có thể nhập một mô tả ngắn cho mạng này ở đây."
 
