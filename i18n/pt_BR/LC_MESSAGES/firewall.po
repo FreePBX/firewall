@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-07 03:46+0000\n"
+"POT-Creation-Date: 2020-05-19 13:21+0000\n"
 "PO-Revision-Date: 2017-03-13 19:49+0200\n"
 "Last-Translator: Kingvoice <suporte@kingvoice.com.br>\n"
 "Language-Team: Portuguese (Brazil) <http://weblate.freepbx.org/projects/"
@@ -138,7 +138,7 @@ msgstr "Adicionar Host"
 msgid "Add Network"
 msgstr "Adicionar Rede"
 
-#: views/view.blacklist.php:40 views/view.networks.php:83
+#: views/view.blacklist.php:40 views/view.networks.php:84
 msgid "Add New"
 msgstr "Adicionar Novo"
 
@@ -158,7 +158,7 @@ msgstr "Adicionar aos Confiáveis"
 msgid "Added"
 msgstr ""
 
-#: views/bootnav.php:8
+#: views/bootnav.php:7
 msgid "Advanced"
 msgstr ""
 
@@ -507,7 +507,7 @@ msgstr ""
 "de forma segura neste servidor sem incluí-los explicitamente nas listas "
 "brancas."
 
-#: views/view.networks.php:65
+#: views/view.networks.php:66
 msgid "Enter new IP or Hostname here"
 msgstr ""
 
@@ -855,7 +855,7 @@ msgstr ""
 msgid "Local trusted traffic"
 msgstr ""
 
-#: views/bootnav.php:5
+#: views/bootnav.php:4
 msgid "Main"
 msgstr ""
 
@@ -1265,7 +1265,7 @@ msgstr ""
 msgid "Service unavailable"
 msgstr ""
 
-#: views/bootnav.php:7 views/page.services.php:32
+#: views/bootnav.php:6 views/page.services.php:32
 msgid "Services"
 msgstr ""
 
@@ -1304,7 +1304,7 @@ msgstr ""
 msgid "Starting up"
 msgstr ""
 
-#: views/bootnav.php:6
+#: views/bootnav.php:5
 msgid "Status"
 msgstr "Estado"
 
@@ -1747,7 +1747,7 @@ msgstr ""
 msgid "You can enter a short description for this interface here."
 msgstr ""
 
-#: views/view.networks.php:89
+#: views/view.networks.php:90
 msgid "You can enter a short description for this network here."
 msgstr ""
 
