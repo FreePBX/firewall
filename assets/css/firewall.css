@@ -2,6 +2,14 @@
 @import url('extras/simplescrollbars.css');
 @import url('extras/fullscreen.css');
 
+#floating-nav-bar .bootnav > .list-group {
+  margin-top: 20px;
+}
+
+.nav-container {
+  margin-bottom: 44px;
+}
+
 label.btn {
 	margin: 0;
 }
