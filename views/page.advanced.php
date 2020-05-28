@@ -21,9 +21,9 @@ default:
 ?>
 
 <script type='text/javascript' src='modules/firewall/assets/js/views/advanced.js'></script>
-<script type='text/javascript' src='modules/firewall/assets/js/extras/codemirror.js'></script>
-<script type='text/javascript' src='modules/firewall/assets/js/extras/codemirror-addon/simplescrollbars.js'></script>
-<script type='text/javascript' src='modules/firewall/assets/js/extras/codemirror-addon/fullscreen.js'></script>
+<script type='text/javascript' src='modules/firewall/vendor/npm-asset/codemirror/lib/codemirror.js'></script>
+<script type='text/javascript' src='modules/firewall/vendor/npm-asset/codemirror/addon/scroll/simplescrollbars.js'></script>
+<script type='text/javascript' src='modules/firewall/vendor/npm-asset/codemirror/addon/display/fullscreen.js'></script>
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">

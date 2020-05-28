@@ -1,7 +1,3 @@
-@import url('extras/codemirror.css');
-@import url('extras/simplescrollbars.css');
-@import url('extras/fullscreen.css');
-
 #floating-nav-bar .bootnav > .list-group {
   margin-top: 20px;
 }
@@ -67,22 +63,6 @@ tr[zone='other']>td { background-color: #ede7f6; }
 
 #advanced_customrules .hide-element {
   display: none;
-}
-
-.CodeMirror { 
-  height: auto;
-  border: 1px solid #ddd; 
-  background-color:rgb(255, 255, 203);
-}
-
-.CodeMirror pre { 
-  padding-left: 7px; 
-  line-height: 1.25; 
-}
-
-.CodeMirror-fullscreen {
-  /* skip menu */
-  top: 34px;
 }
 
 

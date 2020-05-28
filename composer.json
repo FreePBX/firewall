@@ -1,0 +1,14 @@
+{
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ],
+    "require": {
+        "npm-asset/codemirror": "5.54.0"
+    },
+    "config": {
+		"optimize-autoloader": true
+	}
+}

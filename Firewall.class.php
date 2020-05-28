@@ -2,6 +2,8 @@
 // vim: set ai ts=4 sw=4 ft=php:
 namespace FreePBX\modules;
 
+include __DIR__."/vendor/autoload.php";
+
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public static $dbDefaults 		= array("status" => false);
