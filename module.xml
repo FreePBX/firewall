@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.60.5</version>
+	<version>13.0.60.3</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -10,8 +10,6 @@
 	<candisable>no</candisable>
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
 	<changelog>
-		*13.0.60.5* Adding rebuilt voipfirewalld 
-		*13.0.60.4* Use SQL prepared statement 
 		*13.0.60.3* FREEI-958 kvblobstore fetch added 
 		*13.0.60.2* FREEPBX-18511 - Add networks from cli.
 		*13.0.60.1* Fine tune TCP ratelimiting
@@ -119,6 +117,9 @@
 		</framework>
 		<framework class="Stop" namespace="FreePBX\Console\Command">
 			<method callingMethod="postAsteriskHooks" class="Firewall" namespace="FreePBX\modules">stopFirewall</method>
+		</framework>
+		<framework class="Restart" namespace="FreePBX\Console\Command">
+			<method callingMethod="preAsteriskHooks" class="Firewall" namespace="FreePBX\modules">restartFirewall</method>
 		</framework>
 		<framework class="Chown" namespace="FreePBX\Console\Command">
 			<method callingMethod="fwcChownFiles" class="Firewall" namespace="FreePBX\modules">chownFreepbx</method>
