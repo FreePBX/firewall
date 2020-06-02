@@ -845,7 +845,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$return_save = $this->save_file_custom_rules_ajax($protocoltype, $newrules);
 			if ($return_save['status']) {
 				if ($this->isRunning()){
-					//TODO: Actualizar reglas nuevas
+					$this->restartFirewall();
 				}
 			}
 			return $return_save;
