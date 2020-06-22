@@ -1,0 +1,30 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "83214e72b2d28e674b7081640d8bb66f",
+    "packages": [
+        {
+            "name": "npm-asset/codemirror",
+            "version": "5.54.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/codemirror/-/codemirror-5.54.0.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
