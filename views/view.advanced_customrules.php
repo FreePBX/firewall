@@ -64,8 +64,13 @@
             echo "          <p>"._("Press F11 when cursor is in the editor to toggle full screen editing. ESC can also be used to exit full screen editing.")."</p>";
             echo "      </div>";
             echo "      <div class='panel-footer clearfix'>";
-            echo "          <button type='button' class='btn btn-default pull-right btn-reload-custom-rules'>"._("Reload Rules")."</button>";
-            echo "          <button type='button' class='btn btn-default pull-right btn-save-custom-rules'>"._("Save Rules")."</button>";
+            echo "          <div class='pull-right'>";
+            echo "              <div class='btn-group' role='group'>";
+            echo "                  <button type='button' class='btn btn-secondary btn-save-custom-rules'>"._("Save")."</button>";
+            echo "                  <button type='button' class='btn btn-secondary btn-save-apply-custom-rules'>"._("Save and Apply")."</button>";
+            echo "                  <button type='button' class='btn btn-danger btn-reload-custom-rules'>"._("Reload")."</button>";
+            echo '              </div>';
+            echo '          </div>';
             echo '      </div>';
             echo '  </div>';
             echo "</form>";
