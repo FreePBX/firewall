@@ -298,7 +298,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$data_return = array();
 		foreach (self::$filesLog as $type => $file) {
 			$data_file = array();
-			$data_return [] = sprintf("<div class='line-%s-file'>%s</div>", "init", str_pad(" BEGINNING OF FILE (".strtoupper($type).") ", 100, "=", STR_PAD_BOTH));
 			if ( $this->read_file($file, $data_file) ) {
 				if (count($data_file) == 0) {
 					$data_return [] = "<div class='type_msg_info'>"._("No records found.")."</div>";
@@ -346,17 +345,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 						//add type msg (OUT or ERR)
 						$new_line = sprintf("<div class='line type_msg_%s'>%s >>> %s</div>", $type, strtoupper($type), $new_line);
-
-						//replace \n to <br>
-						//$new_line = nl2br($new_line);
-
-						$data_return[] = $new_line;
 					}
 				}
 			} else {
-				$data_return [] = "<div class='type_msg_warn'>"._("The file does not exist or cannot be read.")."</div>";
+				freepbx_log(FPBX_LOG_NOTICE, sprintf(_("Module Firewall - read_logs - The file '%s' does not exist or cannot be read."), $file));
 			}
-			$data_return [] = sprintf("<div class='line-%s-file'>%s</div>", "end", str_pad(" END OF FILE (".strtoupper($type).") ", 100, "=", STR_PAD_BOTH));
 		}
 		return $data_return;
 	}
