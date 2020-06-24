@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-22 14:40+0530\n"
+"POT-Creation-Date: 2020-06-24 04:22+0000\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -36,12 +36,12 @@ msgid ""
 "        && (stream.peek() == "
 msgstr ""
 
-#: assets/js/views/advanced.js:492
+#: assets/js/views/advanced.js:494
 #, perl-format
 msgid "# %s (%s)"
 msgstr ""
 
-#: assets/js/views/advanced.js:491
+#: assets/js/views/advanced.js:493
 #, perl-format
 msgid "# %s: %s\\n"
 msgstr ""
@@ -180,7 +180,7 @@ msgstr ""
 msgid "Add to Trusted"
 msgstr ""
 
-#: assets/js/views/advanced.js:571
+#: assets/js/views/advanced.js:573
 msgid "Added"
 msgstr ""
 
@@ -283,11 +283,11 @@ msgid ""
 "that interface."
 msgstr ""
 
-#: assets/js/views/advanced.js:455
+#: assets/js/views/advanced.js:457
 msgid "Are you sure to reload the rules? changes will be lost."
 msgstr ""
 
-#: assets/js/views/advanced.js:516
+#: assets/js/views/advanced.js:518
 msgid "Are you sure to save the data?"
 msgstr ""
 
@@ -460,7 +460,7 @@ msgstr ""
 msgid "Delete"
 msgstr "Supprimer"
 
-#: Firewall.class.php:959
+#: Firewall.class.php:964
 msgid "Delete Selected"
 msgstr "Supprimer les entrées sélectionnées"
 
@@ -552,16 +552,16 @@ msgstr ""
 msgid "Enter new IP or Hostname here"
 msgstr ""
 
-#: assets/js/views/advanced.js:473
+#: assets/js/views/advanced.js:475
 #, perl-format
 msgid "Error (%s): %s"
 msgstr ""
 
-#: assets/js/views/advanced.js:386
+#: assets/js/views/advanced.js:388
 msgid "Error Checking Status!"
 msgstr ""
 
-#: assets/js/views/advanced.js:424
+#: assets/js/views/advanced.js:426
 #, perl-format
 msgid "Error checking protocol file (%s)!"
 msgstr ""
@@ -663,7 +663,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Firewall.class.php:933
+#: Firewall.class.php:938
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -1056,7 +1056,7 @@ msgstr ""
 msgid "New rules unsent!"
 msgstr ""
 
-#: assets/js/views/advanced.js:456 assets/js/views/advanced.js:517
+#: assets/js/views/advanced.js:458 assets/js/views/advanced.js:519
 msgid "No"
 msgstr ""
 
@@ -1091,7 +1091,7 @@ msgstr ""
 msgid "No custom services currently defined."
 msgstr ""
 
-#: assets/js/views/advanced.js:512
+#: assets/js/views/advanced.js:514
 #, perl-format
 msgid ""
 "No hace falta guardar nada, los datos de (%s) son los cargados inicialmente."
@@ -1238,12 +1238,12 @@ msgstr ""
 msgid "Protocol"
 msgstr ""
 
-#: assets/js/views/advanced.js:478
+#: assets/js/views/advanced.js:480
 #, perl-format
 msgid "Protocol data (%s) loaded successfully."
 msgstr ""
 
-#: assets/js/views/advanced.js:526
+#: assets/js/views/advanced.js:528
 #, perl-format
 msgid "Protocol data (%s) saved successfully."
 msgstr ""
@@ -1329,8 +1329,8 @@ msgstr ""
 msgid "Reject incoming traffic"
 msgstr ""
 
-#: views/view.advanced_customrules.php:67
-msgid "Reload Rules"
+#: views/view.advanced_customrules.php:71
+msgid "Reload"
 msgstr ""
 
 #: Console/Firewall.class.php:89
@@ -1342,7 +1342,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:965
+#: Firewall.class.php:970
 msgid "Reset"
 msgstr "Reset"
 
@@ -1430,13 +1430,13 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:958 Firewall.class.php:966 views/modal.customsvc.php:37
-#: views/view.customsvc.php:43
+#: Firewall.class.php:963 Firewall.class.php:971 views/modal.customsvc.php:37
+#: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
 
-#: views/view.advanced_customrules.php:68
-msgid "Save Rules"
+#: views/view.advanced_customrules.php:70
+msgid "Save and Apply"
 msgstr ""
 
 #: assets/js/views/logs.js:44
@@ -1865,11 +1865,11 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:960
+#: Firewall.class.php:965
 msgid "Update Interfaces"
 msgstr ""
 
-#: assets/js/views/advanced.js:566
+#: assets/js/views/advanced.js:568
 msgid "Updating..."
 msgstr "En cours de mise à jour..."
 
@@ -1947,7 +1947,7 @@ msgstr ""
 msgid "XMPP"
 msgstr ""
 
-#: assets/js/views/advanced.js:456 assets/js/views/advanced.js:517
+#: assets/js/views/advanced.js:458 assets/js/views/advanced.js:519
 msgid "Yes"
 msgstr ""
 
