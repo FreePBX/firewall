@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-24 04:23+0000\n"
+"POT-Creation-Date: 2020-06-24 04:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -134,7 +134,7 @@ msgid ""
 "interfering with existing traffic."
 msgstr ""
 
-#: Firewall.class.php:459
+#: Firewall.class.php:452
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -142,7 +142,7 @@ msgid ""
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
 
-#: Firewall.class.php:449
+#: Firewall.class.php:442
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -461,7 +461,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: Firewall.class.php:964
+#: Firewall.class.php:957
 msgid "Delete Selected"
 msgstr ""
 
@@ -637,24 +637,24 @@ msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
 #: firewall.i18n.php:10
-#: page.firewall.php:6
+#: page.firewall.php:12
 msgid "Firewall"
 msgstr ""
 
-#: Firewall.class.php:380
+#: Firewall.class.php:373
 msgid "Firewall Active"
 msgstr ""
 
-#: Firewall.class.php:400
+#: Firewall.class.php:393
 msgid "Firewall Configuration"
 msgstr ""
 
-#: Firewall.class.php:382
+#: Firewall.class.php:375
 msgid "Firewall Disabled"
 msgstr ""
 
-#: Firewall.class.php:434
-#: Firewall.class.php:435
+#: Firewall.class.php:427
+#: Firewall.class.php:428
 msgid "Firewall Integrity Failed"
 msgstr ""
 
@@ -662,7 +662,7 @@ msgstr ""
 msgid "Firewall Logs"
 msgstr ""
 
-#: Firewall.class.php:394
+#: Firewall.class.php:387
 msgid "Firewall Service not running!"
 msgstr ""
 
@@ -670,7 +670,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Firewall.class.php:938
+#: Firewall.class.php:931
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -868,7 +868,7 @@ msgid ""
 "further information."
 msgstr ""
 
-#: Firewall.class.php:436
+#: Firewall.class.php:429
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -1034,6 +1034,12 @@ msgstr ""
 msgid "Module Firewall - Remove File Rules - File '%s' deleted successfully."
 msgstr ""
 
+#: Firewall.class.php:351
+#, php-format
+msgid ""
+"Module Firewall - read_logs - The file '%s' does not exist or cannot be read."
+msgstr ""
+
 #: views/view.interfaces.php:10
 msgid "Most interfaces should be set to <strong>Internet</strong>."
 msgstr ""
@@ -1059,8 +1065,8 @@ msgstr ""
 msgid "Networks"
 msgstr ""
 
-#: Firewall.class.php:446
-#: Firewall.class.php:448
+#: Firewall.class.php:439
+#: Firewall.class.php:441
 msgid "New Interface Detected"
 msgstr ""
 
@@ -1085,15 +1091,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:489
+#: Firewall.class.php:482
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:491
+#: Firewall.class.php:484
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:492
+#: Firewall.class.php:485
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -1124,7 +1130,7 @@ msgstr ""
 msgid "No networks selected"
 msgstr ""
 
-#: Firewall.class.php:304
+#: Firewall.class.php:303
 msgid "No records found."
 msgstr ""
 
@@ -1362,7 +1368,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:970
+#: Firewall.class.php:963
 msgid "Reset"
 msgstr ""
 
@@ -1451,8 +1457,8 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:963
-#: Firewall.class.php:971
+#: Firewall.class.php:956
+#: Firewall.class.php:964
 #: views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69
 #: views/view.customsvc.php:43
@@ -1521,7 +1527,7 @@ msgstr ""
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
-#: Firewall.class.php:387
+#: Firewall.class.php:380
 msgid "Starting up"
 msgstr ""
 
@@ -1551,7 +1557,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: Firewall.class.php:375
+#: Firewall.class.php:368
 #: firewall.i18n.php:4
 #: views/view.about.php:3
 msgid "System Firewall"
@@ -1587,16 +1593,12 @@ msgid ""
 "they will not be applied."
 msgstr ""
 
-#: Firewall.class.php:639
+#: Firewall.class.php:632
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
 "<strong>not</strong> a member of the Trusted zone. It is highly recommended "
 "to add this client to your Trusted Zone to avoid accidental lockouts."
-msgstr ""
-
-#: Firewall.class.php:357
-msgid "The file does not exist or cannot be read."
 msgstr ""
 
 #: Restore.php:34
@@ -1855,12 +1857,12 @@ msgstr ""
 msgid "Trusted"
 msgstr ""
 
-#: Firewall.class.php:455
-#: Firewall.class.php:458
+#: Firewall.class.php:448
+#: Firewall.class.php:451
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:487
+#: Firewall.class.php:480
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -1897,7 +1899,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:965
+#: Firewall.class.php:958
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1992,7 +1994,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:640
+#: Firewall.class.php:633
 msgid "You can add the host automatically here."
 msgstr ""
 
