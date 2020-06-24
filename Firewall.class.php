@@ -345,6 +345,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 						//add type msg (OUT or ERR)
 						$new_line = sprintf("<div class='line type_msg_%s'>%s >>> %s</div>", $type, strtoupper($type), $new_line);
+
+						$data_return[] = $new_line;
 					}
 				}
 			} else {
