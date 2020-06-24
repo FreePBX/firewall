@@ -280,7 +280,9 @@ $(document).ready(function() {
 	});
 
 	$(".btn-reload-custom-rules").click(function(e) { advanced_custom_rules_read_file(e.target); });
-	$(".btn-save-custom-rules").click(function(e) { advanced_custom_rules_save_file(e.target); });
+	$(".btn-save-custom-rules").click(function(e) { advanced_custom_rules_save_file(e.target, "no"); });
+	$(".btn-save-apply-custom-rules").click(function(e) { advanced_custom_rules_save_file(e.target, "yes"); });
+	
 
 	// Advanced Custom Rules - Detect Change Tab
 	mod_firewall_control.start_update();
@@ -503,7 +505,7 @@ function advanced_custom_rules_read_file(e) {
 	);
 }
 
-function advanced_custom_rules_save_file(e) {
+function advanced_custom_rules_save_file(e, restart_firewall) {
 	var form = e.form;
 	var protocol = $("input[name='protocol']", form).val();
 	var e_textarea = form.querySelector('.CodeMirror').CodeMirror;
@@ -520,7 +522,7 @@ function advanced_custom_rules_save_file(e) {
 				advanced_custom_rules_form_disable(form, true);
 
 				var data_send = e_textarea.getValue();
-				$.post(window.FreePBX.ajaxurl, { 'module': 'firewall',  'command': 'advanced_custom_rule_save', 'protocoltype': protocol, 'newrules': data_send})
+				$.post(window.FreePBX.ajaxurl, { 'module': 'firewall', 'command': 'advanced_custom_rule_save', 'restart_firewall': restart_firewall, 'protocoltype': protocol, 'newrules': data_send})
 				.done(function(data) {
 					if (data.status == true) {
 						fpbxToast(sprintf(_('Protocol data (%s) saved successfully.'), protocol), '', 'success');

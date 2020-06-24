@@ -840,12 +840,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return $this->read_file_custom_rules_ajax($protocoltype);
 
 		case "advanced_custom_rule_save":
-			$protocoltype = isset($_REQUEST['protocoltype']) ? $_REQUEST['protocoltype'] : null;
-			$newrules 	  = isset($_REQUEST['newrules']) ? $_REQUEST['newrules'] : null;
-			$return_save = $this->save_file_custom_rules_ajax($protocoltype, $newrules);
+			$restart_firewall = isset($_REQUEST['restart_firewall']) ? $_REQUEST['restart_firewall'] : "no";
+			$protocoltype 	  = isset($_REQUEST['protocoltype']) ? $_REQUEST['protocoltype'] : null;
+			$newrules 	  	  = isset($_REQUEST['newrules']) ? $_REQUEST['newrules'] : null;
+			$return_save 	  = $this->save_file_custom_rules_ajax($protocoltype, $newrules);
 			if ($return_save['status']) {
 				if ($this->isRunning()){
-					$this->restartFirewall();
+					if ($restart_firewall == "yes") {
+						$this->restartFirewall();
+					}
 				}
 			}
 			return $return_save;
@@ -889,12 +892,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function restartFirewall($skip = "on"){
 		// Disable FW
 		$this->setConfig("status", false);
-
+		
 		// Stop FW
 		$this->stopFirewall();
 
-		// Start FW
+		// Enabled FW
 		$this->preEnableFW($skip);
+		
+		// Start FW
 		$this->startFirewall();
 	}
 
@@ -906,7 +911,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				$nets = array();
 			}
 			$nets[$thishost] = "trusted";
-			$this->setConfig("networkmaps", $nets);			
+			$this->setConfig("networkmaps", $nets);
 		}
 		$this->setConfig("status", true);
 		touch("/etc/asterisk/firewall.enabled");
