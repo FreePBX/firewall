@@ -1,0 +1,16 @@
+[
+    {
+        "name": "npm-asset/codemirror",
+        "version": "5.54.0",
+        "version_normalized": "5.54.0.0",
+        "dist": {
+            "type": "tar",
+            "url": "https://registry.npmjs.org/codemirror/-/codemirror-5.54.0.tgz"
+        },
+        "type": "npm-asset",
+        "installation-source": "dist",
+        "license": [
+            "MIT"
+        ]
+    }
+]

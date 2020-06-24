@@ -5,6 +5,7 @@
 		"status" => _("Status"),
 		"services" => _("Services"),
 		"advanced" => _("Advanced"),
+		"logs" => _("Logs"),
 	);
 
 	// Let other modules hook into our array

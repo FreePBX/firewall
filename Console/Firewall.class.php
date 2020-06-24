@@ -35,6 +35,12 @@ class Firewall extends Command {
 			return $this->stopFirewall($output);
 		case "start":
 			return $this->startFirewall($output);
+		case "restart":
+			$this->disableFirewall($output);
+			$this->stopFirewall($output);
+			return $this->startFirewall($output);
+		case "lerules":
+			return $this->lerules($output, $input->getArgument('opt'));
 		case "disable":
 			$this->disableFirewall($output);
 			return $this->stopFirewall($output);
@@ -77,6 +83,8 @@ class Firewall extends Command {
 			"disable" => _("Disable the System Firewall. This will shut it down cleanly."),
 			"stop" => _("Stop the System Firewall"),
 			"start" => _("Start (and enable, if disabled) the System Firewall"),
+			"restart" => _("Restart the System Firewall"),
+			"lerules [enable] or [disable]" => _("Enable or disable Lets Encrypt rules."),
 			"trust" => _("Add the hostname or IP specified to the Trusted Zone"),
 			"untrust" => _("Remove the hostname or IP specified from the Trusted Zone"),
 			"list [zone]" => _("List all entries in zone 'zone'"),
@@ -118,6 +126,53 @@ class Firewall extends Command {
 	private function stopFirewall() {
 		$fw = \FreePBX::Firewall();
 		$fw->stopFirewall();
+	}
+	
+	private function lerules($output, $param) {
+		if(empty($param)){
+			$output->writeln("<error>"._("Error: Missing argument. Expected 'enable' or 'disable'.")."</error>");
+			return;
+		}
+
+		switch ($param){
+			case "enable":
+				$fw = \FreePBX::Firewall();
+				$as = $fw->getAdvancedSettings();
+				if(!empty($as['lefilter']) && $as['lefilter'] == "disabled"){
+					$res = $fw->setAdvancedSetting('lefilter', 'enabled');
+					if(!empty($res['lefilter']) && $res['lefilter'] == 'enabled'){
+						$output->writeln("<info>"._("Lets Encrypt rules enabled successfully. Restarting Firewall...")."</info>");	
+						$fw->restartFirewall("off");
+					}
+					else{
+						$output->writeln("<error>"._("An error has occurred!")."</error>");
+					}					
+				}
+				else{
+					$output->writeln("<info>"._("Lets Encrypt rules already enabled. Nothing to do")."</info>");
+				}
+				break;
+			case "disable" :
+				$fw = \FreePBX::Firewall();
+				$as = $fw->getAdvancedSettings();
+				if(!empty($as['lefilter']) && $as['lefilter'] == "enabled"){
+					$res = $fw->setAdvancedSetting('lefilter', 'disabled');
+					if(!empty($res['lefilter']) && $res['lefilter'] == 'disabled'){
+						$output->writeln("<info>"._("Lets Encrypt rules disabled successfully. Restarting Firewall...")."</info>");	
+						$fw->restartFirewall("off");
+					}
+					else{
+						$output->writeln("<error>"._("An error has occurred!")."</error>");
+					}				
+				}
+				else{
+					$output->writeln("<info>"._("Lets Encrypt rules already disabled. Nothing to do.")."</info>");
+				}
+				break;
+			default:
+				$output->writeln("<error>".sprintf(_("Error: Unknown option '%s'. Expected 'enable or 'disable'."), $param)."</error>");
+		}
+		return;
 	}
 
 	private function trustEntry($output, $param) {
@@ -270,14 +325,15 @@ class Firewall extends Command {
 
 	private function customRulesFix($output) {
 		$fw = \FreePBX::Firewall();
-		list($detect_error, $log) = $fw->check_custom_rules_files();
-		if (! empty($log)) {
+		$log = array();
+		// We pass the array $log as a reference to get the events. 
+		// The data in $log will not overwrite, the new events will be added to the array.
+		$return_fix = $fw->fix_custom_rules_files($log);
+		if ( (! empty($log) ) && ( is_array($log) ) ) {
 			foreach ($log as $log_line) {
 				$output->writeln($log_line);
 			}
 		}
-		if ($detect_error) {
-			return false;
-		}
+		return $return_fix;
 	}
 }
