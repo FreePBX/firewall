@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-24 06:57+0000\n"
+"POT-Creation-Date: 2020-06-25 15:44+0530\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -1213,12 +1213,6 @@ msgstr ""
 msgid "No custom services currently defined."
 msgstr "Hiện không có dịch vụ tùy chỉnh nào xác định."
 
-#: assets/js/views/advanced.js:514
-#, perl-format
-msgid ""
-"No hace falta guardar nada, los datos de (%s) son los cargados inicialmente."
-msgstr ""
-
 #: views/view.blocked.php:12 views/view.blocked.php:23
 msgid "No hosts!"
 msgstr "Không có host nào!"
@@ -1272,6 +1266,11 @@ msgstr ""
 
 #: views/view.blocked.php:9 views/view.blocked.php:21
 msgid "Note that timestamps may not be accurate, and are indicative only."
+msgstr ""
+
+#: assets/js/views/advanced.js:514
+#, perl-format
+msgid "Nothing to save here. No change for rules in (%s)."
 msgstr ""
 
 #: views/view.status.php:19

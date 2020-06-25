@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-24 06:57+0000\n"
+"POT-Creation-Date: 2020-06-25 15:44+0530\n"
 "PO-Revision-Date: 2017-03-13 19:49+0200\n"
 "Last-Translator: Kingvoice <suporte@kingvoice.com.br>\n"
 "Language-Team: Portuguese (Brazil) <http://weblate.freepbx.org/projects/"
@@ -1138,12 +1138,6 @@ msgstr ""
 msgid "No custom services currently defined."
 msgstr ""
 
-#: assets/js/views/advanced.js:514
-#, perl-format
-msgid ""
-"No hace falta guardar nada, los datos de (%s) son los cargados inicialmente."
-msgstr ""
-
 #: views/view.blocked.php:12 views/view.blocked.php:23
 msgid "No hosts!"
 msgstr ""
@@ -1187,6 +1181,11 @@ msgstr ""
 
 #: views/view.blocked.php:9 views/view.blocked.php:21
 msgid "Note that timestamps may not be accurate, and are indicative only."
+msgstr ""
+
+#: assets/js/views/advanced.js:514
+#, perl-format
+msgid "Nothing to save here. No change for rules in (%s)."
 msgstr ""
 
 #: views/view.status.php:19

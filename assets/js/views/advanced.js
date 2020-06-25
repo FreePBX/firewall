@@ -511,7 +511,7 @@ function advanced_custom_rules_save_file(e, restart_firewall) {
 	var e_textarea = form.querySelector('.CodeMirror').CodeMirror;
 
 	if (e_textarea.isClean() == true) {
-		fpbxToast(sprintf(_('No hace falta guardar nada, los datos de (%s) son los cargados inicialmente.'), protocol), '', 'info');
+		fpbxToast(sprintf(_('Nothing to save here. No change for rules in (%s).'), protocol), '', 'info');
 	}
 	else {
 		fpbxConfirm(
