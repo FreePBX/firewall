@@ -3,10 +3,12 @@
 // vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
 
 require '/usr/lib/sysadmin/includes.php';
-$g = new \Sysadmin\GPG();
-$sigfile = __DIR__."/../module.sig";
+include '/etc/freepbx.conf';
+$restrict_mods	= array('firewall' => true);
+$g 				= new \Sysadmin\GPG();
+$sigfile 		= __DIR__."/../module.sig";
+$astspooldir 	= FreePBX::Config()->get('ASTSPOOLDIR');
 try {
-
 	$sig = $g->checkSig($sigfile);
 	if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
 		throw new \Exception("Invalid sig file.. Hash is not sha256 - check $sigfile");
@@ -26,10 +28,11 @@ try {
 } catch (\Exception $e) {
 	print "Error: ".$e->getMessage().". Sleeping for 10 seconds and retrying start.\n";
 	sleep(10);
-	touch("/var/spool/asterisk/incron/firewall.firewall");
+	touch($astspooldir."/incron/firewall.firewall");
 	exit;
 }
 
 // Start the daemon
 chmod($fd, 0755);
-exec("nohup $fd &>> /var/spool/asterisk/tmp/firewall.log &");
+exec("nohup $fd &>> $astspooldir/tmp/firewall.log &");
+chown("$astspooldir/tmp/firewall.log", "asterisk");
