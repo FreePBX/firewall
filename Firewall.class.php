@@ -801,7 +801,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "updateadvanced":
 			$pre = $this->getAdvancedSettings();
 			$current = $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
-			if($_REQUEST['option'] == "lefilter" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
+			$options_require_restart = array("lefilter", "customrules");
+			if ( in_array($_REQUEST['option'], $options_require_restart ) && $pre[$_REQUEST['option']] != $_REQUEST['val']) {
 				$this->restartFirewall();
 			}
 			return $current;

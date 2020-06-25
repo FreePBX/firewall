@@ -580,12 +580,15 @@ function advanced_button_click(e) {
 	var setting = t.getAttribute('name');
 	// Set them to disabled while we ajax
 	$(".advsetting[name='"+setting+"']").attr('disabled', true);
-	$.ajax({
-		url: window.FreePBX.ajaxurl,
-		data: { command: "updateadvanced", module: 'firewall', option: setting, val: $(t).val() },
-		complete: function() { 
-			$(".advsetting[name='"+setting+"']").attr('disabled', false);
-		}
+	$.post(window.FreePBX.ajaxurl, { command: "updateadvanced", module: 'firewall', option: setting, val: $(t).val() })
+	.done(function(data) {
+		fpbxToast(_('State Change Successful'), '', 'success');
+	})
+	.fail(function(e) {
+		fpbxToast(_("Failed State Change!"), '', 'error');
+	})
+	.always(function() {
+		$(".advsetting[name='"+setting+"']").attr('disabled', false);
 	});
 }
 
