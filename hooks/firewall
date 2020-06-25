@@ -33,3 +33,4 @@ try {
 // Start the daemon
 chmod($fd, 0755);
 exec("nohup $fd &>> /tmp/firewall.log &");
+chown("/tmp/firewall.log","asterisk");

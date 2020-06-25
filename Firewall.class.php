@@ -14,6 +14,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if ($this->getConfig("status")) {
 			if (!file_exists("/etc/asterisk/firewall.enabled")) {
 				touch("/etc/asterisk/firewall.enabled");
+				chown("/etc/asterisk/firewall.enabled", "asterisk");
 			}
 		}
 		// 13.0.54 - Add cronjob to restart it if it crashes
