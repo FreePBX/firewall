@@ -27,3 +27,30 @@ function updateQuery(key, value) {
 		}
 	}
 }
+
+$("[name='lefilter']").click(function() {
+	$( function() {
+		$( "#fwreload" ).dialog({
+			open: function() { $(".ui-dialog-titlebar-close").hide(); $(".ui-dialog-titlebar").hide();},
+			resizable: false,
+			modal: true,
+		});
+	  } );
+	  
+	window.data_result = 'false';
+	window.wait = setInterval(function(){
+		$.ajax({
+			async: false,
+			type: 'POST',
+			url: window.FreePBX.ajaxurl,
+			data: { command: 'get_status', module: 'firewall'}
+		}).success(function(data) {
+			window.data_result = data["message"];
+			if(window.data_result == 'true'){
+				$("#fwreload" ).dialog('close')
+				fpbxToast(_('Rules reloaded!'));
+				clearInterval(window.wait);
+			}
+		});
+	}, 1000);	
+});

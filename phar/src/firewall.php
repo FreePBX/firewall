@@ -740,6 +740,11 @@ function updateFirewallRules($firstrun = false) {
 	if ($firstrun && $getservices['advancedsettings']['customrules'] === "enabled") {
 		importCustomRules();
 	}
+	
+	if(!file_exists("/var/spool/asterisk/tmp/fwloaded")){
+		touch("/var/spool/asterisk/tmp/fwloaded");
+		chown("/var/spool/asterisk/tmp/fwloaded","asterisk");		
+	}
 }
 
 function sigSleep($secs = 10) {

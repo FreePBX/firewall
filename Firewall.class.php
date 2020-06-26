@@ -850,7 +850,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		case "advanced_custom_rule_status":
 			return $advanced = $this->getAdvancedSettings()['customrules'];
-
 		case "advanced_custom_check_files":
 			$protocoltype = isset($_REQUEST['protocoltype']) ? $_REQUEST['protocoltype'] : null;
 			if ( $this->check_custom_rules_files($protocoltype) ) {
@@ -860,6 +859,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 			
 		// Logs
+		case "get_status":
+			$logfile = "/var/spool/asterisk/tmp/fwloaded";
+			if(file_exists($logfile)){
+				return 'true';
+			}
+			return 'false';
 		case "read_logs":
 			return $this->read_logs();
 
@@ -887,6 +892,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function restartFirewall($skip = "on"){
 		// Disable FW
 		$this->setConfig("status", false);
+		if(file_exists("/var/spool/asterisk/tmp/fwloaded")){
+			unlink("/var/spool/asterisk/tmp/fwloaded"); 
+		}		
 		
 		// Stop FW
 		$this->stopFirewall();
