@@ -1,7 +1,7 @@
 <div class='container-fluid'>
 <h2 class='s1'><?php echo _("Sangoma Smart Firewall is now enabled!"); ?></h2>
 <div class='row s1'>
-  <div class='col-sm-12'>
+  <div class='col-sm-12' align="center">
     <img src='modules/firewall/assets/firewall-logo.png' class='img-responsive'>
   </div>
   <div class='col-sm-12'>
