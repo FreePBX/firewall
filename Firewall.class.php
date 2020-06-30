@@ -800,11 +800,20 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Advanced Settings
 		case "updateadvanced":
 			$pre = $this->getAdvancedSettings();
-			$current = $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
-			if($_REQUEST['option'] == "lefilter" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
-				$this->restartFirewall();
+			
+			if(file_exists("/var/spool/asterisk/tmp/fwloaded") && $_REQUEST['option'] == "lefilter"){
+				$current = $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
+				if($_REQUEST['option'] == "lefilter" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
+					$this->restartFirewall();
+				}
+				return $current;
 			}
-			return $current;
+
+			if(!file_exists("/var/spool/asterisk/tmp/fwloaded") && $_REQUEST['option'] == "lefilter"){
+				return $pre;
+			}	
+
+			return $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
 
 		// OOBE
 		case "getoobequestion":
@@ -842,7 +851,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if ($return_save['status']) {
 				if ($this->isRunning()){
 					if ($restart_firewall == "yes") {
-						$this->restartFirewall();
+						if($this->restartFirewall() == false){
+							return array("status" => false, "message" => _("Firewall restarting... Please try again later."));
+						}
 					}
 				}
 			}
@@ -890,20 +901,26 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function restartFirewall($skip = "on"){
-		// Disable FW
-		$this->setConfig("status", false);
+		/**
+		 * We restart Firewall only if rules have been loaded.
+		 */
 		if(file_exists("/var/spool/asterisk/tmp/fwloaded")){
 			unlink("/var/spool/asterisk/tmp/fwloaded"); 
-		}		
-		
-		// Stop FW
-		$this->stopFirewall();
 
-		// Enabled FW
-		$this->preEnableFW($skip);
-		
-		// Start FW
-		$this->startFirewall();
+			// Disable FW
+			$this->setConfig("status", false);
+
+			// Stop FW
+			$this->stopFirewall();
+
+			// Enabled FW
+			$this->preEnableFW($skip);
+			
+			// Start FW
+			$this->startFirewall();
+			return true;
+		}
+		return false;
 	}
 
 	public function preEnableFW($skip = "on"){

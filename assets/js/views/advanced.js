@@ -583,9 +583,13 @@ function advanced_button_click(e) {
 	$.ajax({
 		url: window.FreePBX.ajaxurl,
 		data: { command: "updateadvanced", module: 'firewall', option: setting, val: $(t).val() },
+		success: function(d){
+			if(setting == "lefilter"){
+				$("#"+setting+"_"+d[setting]).selected(true);
+			}			
+		},
 		complete: function() { 
 			$(".advsetting[name='"+setting+"']").attr('disabled', false);
 		}
 	});
 }
-

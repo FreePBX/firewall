@@ -23,7 +23,6 @@ default:
 <script type='text/javascript' src='modules/firewall/vendor/npm-asset/codemirror/lib/codemirror.js'></script>
 <script type='text/javascript' src='modules/firewall/vendor/npm-asset/codemirror/addon/scroll/simplescrollbars.js'></script>
 <script type='text/javascript' src='modules/firewall/vendor/npm-asset/codemirror/addon/display/fullscreen.js'></script>
-<div id="fwreload" class="text-center" title="" style="display: none;"><p><h1>Firewall reloading</h1><h1>Please wait....</h1></p></div>
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
