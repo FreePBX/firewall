@@ -871,8 +871,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			
 		// Logs
 		case "get_status":
-			$logfile = "/var/spool/asterisk/tmp/fwloaded";
-			if(file_exists($logfile)){
+			if(file_exists("/var/spool/asterisk/tmp/fwloaded")){
 				return 'true';
 			}
 			return 'false';
