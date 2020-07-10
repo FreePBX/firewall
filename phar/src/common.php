@@ -5,6 +5,9 @@ global $v;
 // Startup stats
 global $startup;
 
+$setting = getSettings();
+$astlogdir = !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
+$astspooldir = !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
 error_reporting(E_ALL);
 
 $thisphar = \Phar::running(false);
@@ -68,14 +71,14 @@ function pharChanged() {
 }
 
 function fwLog($str) {
-	global $STDIN, $STDOUT, $STDERR;
+	global $STDIN, $STDOUT, $STDERR, $astlogdir;
 
-	$lfstat = @stat("/var/spool/asterisk/tmp/firewall.log");
+	$lfstat = @stat($astlogdir."/firewall.log");
 	if (is_array($lfstat) && $lfstat['size'] > 1048576) {
 		// Logfile is over 1mb
 		print time().": Rotating Log\n";
-		@unlink("/var/spool/asterisk/tmp/firewall.log.old");
-		rename("/var/spool/asterisk/tmp/firewall.log", "/var/spool/asterisk/tmp/firewall.log.old");
+		@unlink($astlogdir."/firewall.log.old");
+		rename($astlogdir."/firewall.log", $astlogdir."/firewall.log.old");
 		// This is so hacky.
 		if (is_resource($STDIN)) {
 			fclose($STDIN);
@@ -87,14 +90,11 @@ function fwLog($str) {
 			fclose(STDERR);
 		}
 		$STDIN = fopen('/dev/null', 'r');
-		$STDOUT = fopen('/var/spool/asterisk/tmp/firewall.log', 'ab');
-		$STDERR = fopen('/var/spool/asterisk/tmp/firewall.err', 'ab');
+		$STDOUT = fopen($astlogdir.'/firewall.log', 'ab');
+		$STDERR = fopen($astlogdir.'/firewall.err', 'ab');
 		print time().": Rotated Log\n";
 	}
 	print time().": $str\n";
-	// No need to write to the logfile, as we're sending it there already by the print
-	// $fh = fopen("/var/spool/asterisk/tmp/firewall.log", "a");
-	// fwrite($fh, time().": $str\n");
 	syslog(LOG_WARNING|LOG_LOCAL0, $str);
 }
 
@@ -111,6 +111,7 @@ function isValidZone($zone = false) {
 }
 
 function wall($msg = false) {
+	global $astspooldir;
 	if (!$msg) {
 		// wat.
 		fwLog("Asked to wall a blank message?");
@@ -119,7 +120,7 @@ function wall($msg = false) {
 	// Open a process handle to wall
 	$fds = array(0 => array("pipe", "r"), 1 => array("file", "/dev/null", "a"), 2 => array("file", "/dev/null", "a"));
 	$pipes = array();
-	$ph = proc_open("/usr/bin/wall", $fds, $pipes, "/tmp");
+	$ph = proc_open("/usr/bin/wall", $fds, $pipes, $astspooldir."/tmp");
 	fwrite($pipes[0], $msg);
 	fclose($pipes[0]);
 	$ret = proc_close($ph);
