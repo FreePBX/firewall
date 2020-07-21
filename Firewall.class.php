@@ -569,8 +569,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// As soon as we close it, incron does its thing.
 		fclose($fh);
 
-		// Wait for up to 5 seconds and make sure it's been deleted.
-		$maxloops = 10;
+		// Wait for up to 10 seconds and make sure it's been deleted.
+		$maxloops = 20;
 		$deleted = false;
 		while ($maxloops--) {
 			if (!file_exists($filename)) {
@@ -581,7 +581,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 
 		if (!$deleted) {
-			throw new \Exception("Hook file '$filename' was not picked up by Incron after 5 seconds. Is it not running?");
+			throw new \Exception("Hook file '$filename' was not picked up by Incron after 10 seconds. Is it not running?");
 		}
 		return true;
 	}
