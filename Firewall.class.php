@@ -360,7 +360,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		foreach (self::$filesLog as $type => $file) {
 			if (file_exists($file)) {
 				if (! is_writable($file)) {
-					freepbx_log(FPBX_LOG_ERROR, sprintf(_("Module Firewall - clean_logs - The file '%s' cannot be write."), $file));
+					freepbx_log(FPBX_LOG_ERROR, sprintf(_("Module Firewall - clean_logs - The file '%s' cannot be written."), $file));
 					$data_return = false;
 				} else {
 					file_put_contents($file, "");
