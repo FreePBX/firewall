@@ -22,8 +22,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
-		// Run hook create files custom rules, root access required.
-		$this->fixCustomRules();
 	}
 
 	public function uninstall() {
