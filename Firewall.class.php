@@ -12,7 +12,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->db = $freepbx->Database;
 		$this->astspooldir  = $this->FreePBX->Config->get("ASTSPOOLDIR"); 
 		$this->astetcdir  = $this->FreePBX->Config->get("ASTETCDIR"); 
-		$this->astlogdir  = $this->FreePBX->Config->get("ASTSPOOLDIR"); 
+		$this->astlogdir  = $this->FreePBX->Config->get("ASTLOGDIR"); 
 		$this->webuser = $this->FreePBX->Config->get('AMPASTERISKWEBUSER');
 	        $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
 	}
@@ -34,7 +34,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public static $filesLog 		= Null;	
 	
 	public static function logfile_init() {
-		self::$filesLog = array('err' => $this->get_astlogdir().'/firewall.err', 'out' => $this->get_astlogdir().'/firewall.log');
+		$astlogdir  = \FreePBX::Config()->get("ASTLOGDIR");
+		self::$filesLog = array('err' => $astlogdir.'/firewall.err', 'out' => $astlogdir.'/firewall.log');
 	}
 	
 	private static $services = false;
