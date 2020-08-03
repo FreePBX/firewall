@@ -55,7 +55,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
 	}
-
+	
 	public function uninstall() {
 		// Disable the firewall when it's uninstalled,
 		// so if it is automatically reinstalled at some
