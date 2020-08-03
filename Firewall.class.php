@@ -331,7 +331,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$data_file = array();
 			if ( $this->read_file($file, $data_file) ) {
 				if (count($data_file) == 0) {
-					$data_return [] = "<div class='type_msg_info'>"._("No records found.")."</div>";
+					$data_return[] = sprintf("<div class='line type_msg_%s'>%s >>> <span class='cyan'>"._("No records found.")."</span></div>", $type, strtoupper($type));
 				} else {
 					//We will reverse order of records so that the last events are at the beginning.
 					foreach (array_reverse($data_file) as $line) {
@@ -376,7 +376,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 						//add type msg (OUT or ERR)
 						$new_line = sprintf("<div class='line type_msg_%s'>%s >>> %s</div>", $type, strtoupper($type), $new_line);
-
 						$data_return[] = $new_line;
 					}
 				}
@@ -386,6 +385,22 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 		return $data_return;
 	}
+
+	public function clean_logs () {
+		$data_return = true;
+		foreach (self::$filesLog as $type => $file) {
+			if (file_exists($file)) {
+				if (! is_writable($file)) {
+					freepbx_log(FPBX_LOG_ERROR, sprintf(_("Module Firewall - clean_logs - The file '%s' cannot be written."), $file));
+					$data_return = false;
+				} else {
+					file_put_contents($file, "");
+				}
+			}
+		}
+		return $data_return;
+	}
+
 	// END - Logs
 
 	public function oobeHook() {
@@ -893,6 +908,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Logs
 		case "read_logs":
 			return $this->read_logs();
+
+		case "clean_logs":
+			return $this->clean_logs();
 
 		default:
 			throw new \Exception("Sad Panda - ".$_REQUEST['command']);
