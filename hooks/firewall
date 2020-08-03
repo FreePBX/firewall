@@ -8,10 +8,10 @@ $g 		= new \Sysadmin\GPG();
 $sigfile	= __DIR__."/../module.sig";
 $cfg		= \Sysadmin\FreePBX::Config();
 $astspooldir	= $cfg->get('ASTSPOOLDIR');
-$astlogdir	= $cfg->get('ASTLOGDIR');
+$astlogdir	= '/var/log/asterisk';//$cfg->get('ASTLOGDIR');
 $logfile 	= $astlogdir."/firewall.log";
-$webuser 	= $cfg->get('AMPASTERISKWEBUSER');
-$webgroup 	= $cfg->get("AMPASTERISKWEBGROUP");
+$webuser 	= 'asterisk';//$cfg->get('AMPASTERISKWEBUSER');
+$webgroup 	= 'asterisk'; //$cfg->get("AMPASTERISKWEBGROUP");
 try {
 	$sig = $g->checkSig($sigfile);
 	if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
