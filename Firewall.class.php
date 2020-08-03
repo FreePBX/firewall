@@ -388,6 +388,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function clean_logs () {
+		$this->logfile_init();
 		$data_return = true;
 		foreach (self::$filesLog as $type => $file) {
 			if (file_exists($file)) {
