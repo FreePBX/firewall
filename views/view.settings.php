@@ -1,7 +1,3 @@
-<div class='container-fluid'>
-
-<h3><?php echo _("Advanced Settings"); ?></h3>
-
 <?php
 // i18n common things
 $ena = _("Enabled");
@@ -43,29 +39,45 @@ $sections = array(
 	),
 );
 
+
+?>
+
+<div class='container-fluid'>
+	<h3><?php echo _("Advanced Settings"); ?></h3>
+
+<?php
 foreach ($sections as $key => $tmparr) {
 	if (!isset($advanced[$key])) {
 		throw new \Exception("Advanced setting '$key' is unknown");
 	}
 	$current = $advanced[$key];
 
-	print "<div class='well'><h4>".$tmparr['desc']."</h4>";
+	print "<div class='well'>";
+	print "		<h4>".$tmparr['desc']."</h4>";
 	foreach ($tmparr['docs'] as $row) {
-		print "<p>$row</p>";
+		print "	<p>$row</p>";
 	}
-	print "<div class='row'><div class='form-horizontal clearfix'><div class='col-sm-4'>";
-	print "<label class='control-label' for='$key'>".$tmparr['desc']."</label></div>";
-	print "<div class='col-sm-8'><span class='radioset'>";
+	print "		<div class='row'>";
+	print "			<div class='form-horizontal clearfix'>";
+	print "				<div class='col-sm-4'>";
+	print "					<label class='control-label' for='$key'>".$tmparr['desc']."</label>";
+	print "				</div>";
+	print "				<div class='col-sm-8'>";
+	print "					<span class='radioset'>";
 	foreach ($tmparr['values'] as $k => $v) {
 		if ($current === $k) {
 			$checked = "checked";
 		} else {
 			$checked = "";
 		}
-		print "<input $checked type='radio' class='advsetting $key' name='$key' id='${key}_$k' value='$k' ><label for='${key}_$k'>$v</label>";
+		print "					<input $checked type='radio' class='advsetting $key' name='$key' id='${key}_$k' value='$k' ><label for='${key}_$k'>$v</label>";
 	}
-	print "</span> </div> </div> </div> </div>";
+	print "					</span>";
+	print "				</div>";
+	print "			</div>";
+	print "		</div>";
+	print "</div>";
 }
+?>
 
-print "</div>";
-
+</div>
