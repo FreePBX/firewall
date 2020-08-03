@@ -2,6 +2,9 @@
 
 include_once 'asmanager.php';
 
+$setting = getSettings();
+$astlogdir = !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
+
 if (!isset($thissvc)) {
 	// We're running from the command line
 	start_monitor(false);
@@ -45,6 +48,7 @@ function start_monitor($fork = true) {
 
 function run_monitoring($ppid) {
 	// Loop forever
+	global $astlogdir;
 	while (1) {
 		$creds = getAMICreds();
 		// If we don't have any, sleep for 60 seconds and start again.
@@ -67,7 +71,7 @@ function run_monitoring($ppid) {
 		while (1) {
 			// This will wait for a max of 30 seconds (when allow_timeout = true)
 			$result = $ami->wait_response($allow_timeout, $return_on_event);
-			if (file_exists("/tmp/firewall.debug")) {
+			if (file_exists($astlogdir."/firewall.debug")){
 				print time().": Event debugging - ".json_encode($result)."\n";
 			}
 
@@ -165,7 +169,8 @@ function failed_handler($e, $params, $server, $port) {
 }
 
 function bad_remote($ip, $event) {
-	if (file_exists("/tmp/firewall.debug")) {
+	global $astlogdir;
+	if (file_exists($astlogdir."/firewall.debug")) {
 		$debug = " Event Debugging: ".json_encode($event);
 	} else {
 		$debug = "";
@@ -177,7 +182,8 @@ function bad_remote($ip, $event) {
 }
 
 function good_remote($ip, $event) {
-	if (file_exists("/tmp/firewall.debug")) {
+	global $astlogdir;
+	if (file_exists($astlogdir."/firewall.debug")) {
 		$debug = " Event Debugging: ".json_encode($event);
 	} else {
 		$debug = "";
