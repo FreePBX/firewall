@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-03 03:11+0000\n"
+"POT-Creation-Date: 2020-08-03 07:39+0000\n"
 "PO-Revision-Date: 2017-03-13 19:49+0200\n"
 "Last-Translator: Kingvoice <suporte@kingvoice.com.br>\n"
 "Language-Team: Portuguese (Brazil) <http://weblate.freepbx.org/projects/"
@@ -142,7 +142,7 @@ msgid ""
 "interfering with existing traffic."
 msgstr ""
 
-#: Firewall.class.php:485
+#: Firewall.class.php:500
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -153,7 +153,7 @@ msgstr ""
 "configuração errada. Para garantir que seu sistema esteja protegido de "
 "ataques, mude a zona padrão da interface '%s'."
 
-#: Firewall.class.php:475
+#: Firewall.class.php:490
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -251,7 +251,11 @@ msgstr ""
 msgid "An error has occurred!"
 msgstr ""
 
-#: assets/js/views/logs.js:115
+#: assets/js/views/logs.js:141
+msgid "An error occurred while cleaning the logs!"
+msgstr ""
+
+#: assets/js/views/logs.js:121
 msgid "An error occurred while loading the logs!"
 msgstr ""
 
@@ -411,6 +415,18 @@ msgstr ""
 msgid "Check file '%s'"
 msgstr ""
 
+#: views/page.logs.php:12
+msgid "Clean Log"
+msgstr ""
+
+#: assets/js/views/logs.js:137
+msgid "Cleaning the log successfully completed."
+msgstr ""
+
+#: assets/js/views/logs.js:133
+msgid "Cleaning..."
+msgstr ""
+
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
 msgstr "Comando a ser executado (consulte --help)"
@@ -489,7 +505,7 @@ msgstr ""
 msgid "Delete"
 msgstr "Apagar"
 
-#: Firewall.class.php:990
+#: Firewall.class.php:1008
 msgid "Delete Selected"
 msgstr ""
 
@@ -608,6 +624,7 @@ msgid "Error saving data!"
 msgstr ""
 
 #: Console/Firewall.class.php:56 Console/Firewall.class.php:66
+#: assets/js/views/logs.js:122 assets/js/views/logs.js:142
 msgid "Error!"
 msgstr ""
 
@@ -674,19 +691,19 @@ msgstr ""
 msgid "Firewall"
 msgstr "Firewall"
 
-#: Firewall.class.php:406
+#: Firewall.class.php:421
 msgid "Firewall Active"
 msgstr "Firewall Ativo"
 
-#: Firewall.class.php:426
+#: Firewall.class.php:441
 msgid "Firewall Configuration"
 msgstr "Configuração de Firewall"
 
-#: Firewall.class.php:408
+#: Firewall.class.php:423
 msgid "Firewall Disabled"
 msgstr "Firewall Desabilitado"
 
-#: Firewall.class.php:460 Firewall.class.php:461
+#: Firewall.class.php:475 Firewall.class.php:476
 msgid "Firewall Integrity Failed"
 msgstr "Integridade do Firewall Falhou"
 
@@ -694,7 +711,7 @@ msgstr "Integridade do Firewall Falhou"
 msgid "Firewall Logs"
 msgstr ""
 
-#: Firewall.class.php:420
+#: Firewall.class.php:435
 msgid "Firewall Service not running!"
 msgstr "Serviço de Firewall não está funcionando!"
 
@@ -702,7 +719,7 @@ msgstr "Serviço de Firewall não está funcionando!"
 msgid "Firewall Wizard"
 msgstr "Assistente de Firewall"
 
-#: Firewall.class.php:964
+#: Firewall.class.php:982
 msgid "Firewall can not be disabled"
 msgstr "O Firewall não pode ser desabilitado"
 
@@ -780,7 +797,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: views/page.logs.php:24
+#: views/page.logs.php:28
 msgid "Highlight..."
 msgstr ""
 
@@ -901,7 +918,7 @@ msgid ""
 "further information."
 msgstr ""
 
-#: Firewall.class.php:462
+#: Firewall.class.php:477
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -989,8 +1006,8 @@ msgstr ""
 msgid "List all entries in zone 'zone'"
 msgstr ""
 
-#: views/page.logs.php:36 views/view.blocked.php:2 views/view.registered.php:15
-#: views/view.status.php:15 assets/js/views/logs.js:98
+#: views/page.logs.php:40 views/view.blocked.php:2 views/view.registered.php:15
+#: views/view.status.php:15 assets/js/views/logs.js:106
 msgid "Loading..."
 msgstr "Carregando..."
 
@@ -1002,7 +1019,7 @@ msgstr ""
 msgid "Local trusted traffic"
 msgstr ""
 
-#: assets/js/views/logs.js:112
+#: assets/js/views/logs.js:118
 msgid "Log loading completed successfully."
 msgstr ""
 
@@ -1064,7 +1081,12 @@ msgstr ""
 msgid "Module Firewall - Remove File Rules - File '%s' deleted successfully."
 msgstr ""
 
-#: Firewall.class.php:384
+#: Firewall.class.php:394
+#, php-format
+msgid "Module Firewall - clean_logs - The file '%s' cannot be written."
+msgstr ""
+
+#: Firewall.class.php:383
 #, php-format
 msgid ""
 "Module Firewall - read_logs - The file '%s' does not exist or cannot be read."
@@ -1095,7 +1117,7 @@ msgstr ""
 msgid "Networks"
 msgstr "Redes"
 
-#: Firewall.class.php:472 Firewall.class.php:474
+#: Firewall.class.php:487 Firewall.class.php:489
 msgid "New Interface Detected"
 msgstr ""
 
@@ -1119,15 +1141,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:515
+#: Firewall.class.php:530
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:517
+#: Firewall.class.php:532
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:518
+#: Firewall.class.php:533
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -1151,6 +1173,7 @@ msgid "No networks selected"
 msgstr ""
 
 #: Firewall.class.php:334
+#, php-format
 msgid "No records found."
 msgstr ""
 
@@ -1196,7 +1219,7 @@ msgstr ""
 msgid "Number of currently blocked Attackers:"
 msgstr ""
 
-#: views/page.logs.php:19
+#: views/page.logs.php:23
 msgid "Only Highlighted"
 msgstr ""
 
@@ -1355,8 +1378,8 @@ msgstr ""
 msgid "Re-Run Wizard"
 msgstr ""
 
-#: views/page.logs.php:10
-msgid "Refres Log"
+#: views/page.logs.php:11
+msgid "Refresh"
 msgstr ""
 
 #: views/page.status.php:28
@@ -1388,7 +1411,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:996
+#: Firewall.class.php:1014
 msgid "Reset"
 msgstr "Reiniciar"
 
@@ -1476,7 +1499,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:989 Firewall.class.php:997 views/modal.customsvc.php:37
+#: Firewall.class.php:1007 Firewall.class.php:1015 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Salvar"
@@ -1485,7 +1508,7 @@ msgstr "Salvar"
 msgid "Save and Apply"
 msgstr ""
 
-#: assets/js/views/logs.js:44
+#: assets/js/views/logs.js:54
 msgid "Searching..."
 msgstr ""
 
@@ -1525,7 +1548,7 @@ msgstr ""
 msgid "Should your current network be trusted?"
 msgstr ""
 
-#: views/page.logs.php:16
+#: views/page.logs.php:20
 msgid "Show All"
 msgstr ""
 
@@ -1542,7 +1565,7 @@ msgstr ""
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
-#: Firewall.class.php:413
+#: Firewall.class.php:428
 msgid "Starting up"
 msgstr ""
 
@@ -1571,7 +1594,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: Firewall.class.php:401 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:416 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr ""
 
@@ -1605,7 +1628,7 @@ msgid ""
 "they will not be applied."
 msgstr ""
 
-#: Firewall.class.php:665
+#: Firewall.class.php:680
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1866,11 +1889,11 @@ msgstr ""
 msgid "Trusted"
 msgstr ""
 
-#: Firewall.class.php:481 Firewall.class.php:484
+#: Firewall.class.php:496 Firewall.class.php:499
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:513
+#: Firewall.class.php:528
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -1907,7 +1930,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:991
+#: Firewall.class.php:1009
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1999,7 +2022,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:666
+#: Firewall.class.php:681
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -2092,7 +2115,7 @@ msgid ""
 "allows access from valid hosts."
 msgstr ""
 
-#: assets/js/views/logs.js:69
+#: assets/js/views/logs.js:79
 msgid "···"
 msgstr ""
 
