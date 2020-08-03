@@ -3,8 +3,15 @@
 // vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
 
 require '/usr/lib/sysadmin/includes.php';
-$g = new \Sysadmin\GPG();
-$sigfile = __DIR__."/../module.sig";
+$restrict_mods  = array('firewall' => true);
+$g 		= new \Sysadmin\GPG();
+$sigfile	= __DIR__."/../module.sig";
+$cfg		= \Sysadmin\FreePBX::Config();
+$astspooldir	= $cfg->get('ASTSPOOLDIR');
+$astlogdir	= $cfg->get('ASTLOGDIR');
+$logfile 	= $astlogdir."/firewall.log";
+$webuser 	= $cfg->get('AMPASTERISKWEBUSER');
+$webgroup 	= $cfg->get("AMPASTERISKWEBGROUP");
 try {
 
 	$sig = $g->checkSig($sigfile);
@@ -26,10 +33,12 @@ try {
 } catch (\Exception $e) {
 	print "Error: ".$e->getMessage().". Sleeping for 10 seconds and retrying start.\n";
 	sleep(10);
-	touch("/var/spool/asterisk/incron/firewall.firewall");
+	touch($astspooldir."/incron/firewall.firewall");
 	exit;
 }
 
 // Start the daemon
 chmod($fd, 0755);
-exec("nohup $fd &>> /tmp/firewall.log &");
+exec("nohup $fd &>> ".$logfile." &");
+chown($logfile, $webuser);
+chgrp($logfile, $webgroup);

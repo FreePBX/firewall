@@ -1089,6 +1089,7 @@ class Iptables {
 	// Driver Specific iptables stuff
 	// Root process
 	public function &getCurrentIptables() {
+		$astspooldir = \Sysadmin\FreePBX::Config()->get('ASTSPOOLDIR');
 		if (!$this->currentconf) {
 			// Am I root?
 			if (posix_getuid() === 0) {
@@ -1105,7 +1106,7 @@ class Iptables {
 				if (is_dir("/run")) {
 					$out = "/run/iptables.out";
 				} else {
-					$out = "/tmp/iptables.out";
+					$out = $astspooldir."/tmp/iptables.out";
 				}
 				@unlink($out);
 				\FreePBX::Firewall()->runHook("getiptables");

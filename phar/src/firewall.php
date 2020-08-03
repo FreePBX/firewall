@@ -1,6 +1,10 @@
 <?php
 
 $debug = true;
+$setting = getSettings();
+$astlogdir = !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
+$astspooldir = !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
+$astrundir = !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk" ;
 
 $thissvc = "firewall";
 // Include once because *sometimes*, on *some machines*, it crashes?
@@ -16,7 +20,7 @@ if (!Lock::canLock($thissvc)) {
 // Regen fail2ban conf, if we can
 if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
 	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
-	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
+	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start $astrundir`;
 }
 
 include_once 'common.php';
@@ -276,7 +280,7 @@ function getSettings() {
 		try {
 			$sth = $pdo->prepare('SELECT * FROM `kvstore` where `module`=? and id="noid"');
 			$sth->execute(array('FreePBX\modules\Firewall'));
-			$res = $sth->fetchAll();
+			$res = $sth->fetchAll(\PDO::FETCH_ASSOC);
 		} catch (\Exception $e) {
 			// Neither new or old table names exist, so there's nothing configured.
 			$res = array();
@@ -288,10 +292,22 @@ function getSettings() {
 		if ($row['type'] == 'blob') {
 			$sth = $pdo->prepare('SELECT content FROM `kvblobstore` where uuid = ?');
 			$sth->execute(array($row['val']));
-			$blob = $sth->fetch();
+			$blob = $sth->fetch(\PDO::FETCH_ASSOC);
 			$retarr[$row['key']] = $blob['content'];
 		} else {
 			$retarr[$row['key']] = $row['val'];
+		}
+	}
+
+	/**
+	 * Need to get location for tmp and log directory
+	 */
+	$sth = $pdo->prepare('SELECT keyword,value FROM `freepbx_settings` where keyword="ASTSPOOLDIR" OR keyword="ASTLOGDIR" OR keyword="ASTRUNDIR"');
+	$sth->execute(array('FreePBX\modules\Firewall'));
+	$res = $sth->fetchAll(\PDO::FETCH_ASSOC);
+	foreach($res as $dir){
+		if(!empty($dir)){
+			$retarr[$dir["keyword"]] = $dir["value"];
 		}
 	}
 
@@ -406,7 +422,7 @@ function getDbHandle($mysettings) {
 }
 
 function checkPhar() {
-	global $thissvc, $v;
+	global $thissvc, $v, $astspooldir;
 
 	// Check to see if we should restart
 	if (pharChanged()) {
@@ -437,7 +453,7 @@ function checkPhar() {
 			// Wait 1/2 a second to give incron a chance to catch up
 			usleep(500000);
 			// Restart me.
-			fclose(fopen("/var/spool/asterisk/incron/firewall.firewall", "a"));
+			fclose(fopen($astspooldir."/incron/firewall.firewall", "a"));
 			exit;
 		} catch(\Exception $e) {
 			fwLog("Firewall tampered.  Not restarting! ".$e->getMessage());
@@ -447,7 +463,7 @@ function checkPhar() {
 
 function updateFirewallRules($firstrun = false) {
 	// Signature validation and firewall driver
-	global $v, $driver, $services, $thissvc, $fwversion, $netobj;
+	global $v, $driver, $services, $thissvc, $fwversion, $netobj, $astspooldir, $astlogdir;
 
 	// Flush cache, read what the system thinks the firewall rules are.
 	$currentrules = $driver->refreshCache();
@@ -460,7 +476,7 @@ function updateFirewallRules($firstrun = false) {
 	// Make sure the rules haven't been disturbed, and aren't corrupt
 	if (!$firstrun && !$driver->validateRunning()) {
 		// This is bad.
-		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in /tmp/firewall.log\n");
+		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in ".$astlogdir."/firewall.log\n");
 		Lock::unLock($thissvc);
 		`service fail2ban stop`;
 		$f = $v->checkFile("bin/clean-iptables");
@@ -468,7 +484,7 @@ function updateFirewallRules($firstrun = false) {
 		// Wait 4 seconds to give incron a chance to catch up
 		sleep(4);
 		// Restart me.
-		fclose(fopen("/var/spool/asterisk/incron/firewall.firewall", "a"));
+		fclose(fopen($astspooldir."/incron/firewall.firewall", "a"));
 		exit;
 	}
 
@@ -491,7 +507,7 @@ function updateFirewallRules($firstrun = false) {
 		// Wait 4 seconds to give incron a chance to catch up
 		sleep(4);
 		// Restart me.
-		fclose(fopen("/var/spool/asterisk/incron/firewall.firewall", "a"));
+		fclose(fopen($astspooldir."/incron/firewall.firewall", "a"));
 		exit;
 	}
 

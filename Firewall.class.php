@@ -4,8 +4,39 @@ namespace FreePBX\modules;
 
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
-	public static $dbDefaults = array("status" => false);
+	public function __construct($freepbx = null) {
+		if ($freepbx == null)
+			throw new \Exception("Not given a FreePBX Object");
 
+		$this->FreePBX = $freepbx;
+		$this->db = $freepbx->Database;
+		$this->astspooldir  = $this->FreePBX->Config->get("ASTSPOOLDIR"); 
+		$this->astetcdir  = $this->FreePBX->Config->get("ASTETCDIR"); 
+		$this->astlogdir  = $this->FreePBX->Config->get("ASTSPOOLDIR"); 
+		$this->webuser = $this->FreePBX->Config->get('AMPASTERISKWEBUSER');
+	        $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
+	}
+
+	public function get_astspooldir() {
+		return $this->astspooldir; 
+	}
+
+	public function get_astetcdir() {
+		return $this->astetcdir; 
+	}
+
+	public function get_astlogdir() {
+		return $this->astlogdir; 
+	}
+
+	public static $dbDefaults 		= array("status" => false);
+	public static $filesCustomRules = array('ipv4' => '/etc/firewall-4.rules', 'ipv6' => '/etc/firewall-6.rules');
+	public static $filesLog 		= Null;	
+	
+	public static function logfile_init() {
+		self::$filesLog = array('err' => $this->get_astlogdir().'/firewall.err', 'out' => $this->get_astlogdir().'/firewall.log');
+	}
+	
 	private static $services = false;
 
 	public function install() {
@@ -19,7 +50,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
 	}
-
+	
 	public function uninstall() {
 		// Disable the firewall when it's uninstalled,
 		// so if it is automatically reinstalled at some
@@ -197,7 +228,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			throw new \Exception("Sysadmin RPM not up to date, or not a known OS. Can not start System Firewall. See http://bit.ly/fpbxfirewall");
 		}
 
-		$basedir = "/var/spool/asterisk/incron";
+		$basedir = $this->get_astspooldir()."/incron";
 		if (!is_dir($basedir)) {
 			throw new \Exception("$basedir is not a directory");
 		}
@@ -1276,15 +1307,17 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	// if it's not running when it should be.
 	public function addCronJob() {
 		$cron = \FreePBX::Cron();
-		$hookfile = "/var/spool/asterisk/incron/firewall.firewall";
-		$line = "*/15 * * * * [ -e /etc/asterisk/firewall.enabled ] && touch $hookfile";
+		$hookfile = $this->get_astspooldir()."/incron/firewall.firewall";
+		$enabledfile = $this->get_astetcdir()."/firewall.enabled";
+		$line = "*/15 * * * * [ -e $enabledfile ] && touch $hookfile";
 		$cron->add($line);
 	}
 
 	public function removeCronJob() {
 		$cron = \FreePBX::Cron();
-		$hookfile = "/var/spool/asterisk/incron/firewall.firewall";
-		$line = "*/15 * * * * [ -e /etc/asterisk/firewall.enabled ] && touch $hookfile";
+		$hookfile = $this->get_astspooldir()."/incron/firewall.firewall";
+		$enabledfile = $this->get_astetcdir()."/firewall.enabled";
+		$line = "*/15 * * * * [ -e $enabledfile ] && touch $hookfile";
 		$cron->remove($line);
 	}
 
