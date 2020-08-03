@@ -1,7 +1,9 @@
 <?php
 
+$setting = getSettings();
+$astspooldir = !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
 define('AST_CONFIG_DIR', '/etc/asterisk');
-define('AST_SPOOL_DIR', '/var/spool/asterisk');
+define('AST_SPOOL_DIR', $astspooldir);
 define('AST_TMP_DIR', AST_SPOOL_DIR . '/tmp/');
 define('DEFAULT_PHPAGI_CONFIG', AST_CONFIG_DIR . '/phpagi.conf');
 

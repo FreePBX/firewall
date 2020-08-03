@@ -6,9 +6,38 @@ include __DIR__."/vendor/autoload.php";
 
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
+	public function __construct($freepbx = null) {
+		if ($freepbx == null)
+			throw new \Exception("Not given a FreePBX Object");
+
+		$this->FreePBX = $freepbx;
+		$this->db = $freepbx->Database;
+		$this->astspooldir  = $this->FreePBX->Config->get("ASTSPOOLDIR"); 
+		$this->astetcdir  = $this->FreePBX->Config->get("ASTETCDIR"); 
+		$this->astlogdir  = $this->FreePBX->Config->get("ASTSPOOLDIR"); 
+		$this->webuser = $this->FreePBX->Config->get('AMPASTERISKWEBUSER');
+	        $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
+	}
+
+	public function get_astspooldir() {
+		return $this->astspooldir; 
+	}
+
+	public function get_astetcdir() {
+		return $this->astetcdir; 
+	}
+
+	public function get_astlogdir() {
+		return $this->astlogdir; 
+	}
+
 	public static $dbDefaults 		= array("status" => false);
 	public static $filesCustomRules = array('ipv4' => '/etc/firewall-4.rules', 'ipv6' => '/etc/firewall-6.rules');
-	public static $filesLog 		= array('err' => '/var/spool/asterisk/tmp/firewall.err', 'out' => '/var/spool/asterisk/tmp/firewall.log');
+	public static $filesLog 		= Null;	
+	
+	public static function logfile_init() {
+		self::$filesLog = array('err' => $this->get_astlogdir().'/firewall.err', 'out' => $this->get_astlogdir().'/firewall.log');
+	}
 	
 	private static $services = false;
 
@@ -22,8 +51,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
-		// Run hook create files custom rules, root access required.
-		$this->fixCustomRules();
 	}
 
 	public function uninstall() {
@@ -296,6 +323,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	// INI - Logs
 	public function read_logs() {
 		$data_return = array();
+		$this->logfile_init();
 		foreach (self::$filesLog as $type => $file) {
 			$data_file = array();
 			if ( $this->read_file($file, $data_file) ) {
@@ -500,7 +528,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			throw new \Exception("Sysadmin RPM not up to date, or not a known OS. Can not start System Firewall. See http://bit.ly/fpbxfirewall");
 		}
 
-		$basedir = "/var/spool/asterisk/incron";
+		$basedir = $this->get_astspooldir()."/incron";
 		if (!is_dir($basedir)) {
 			throw new \Exception("$basedir is not a directory");
 		}
@@ -569,8 +597,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// As soon as we close it, incron does its thing.
 		fclose($fh);
 
-		// Wait for up to 5 seconds and make sure it's been deleted.
-		$maxloops = 10;
+		// Wait for up to 10 seconds and make sure it's been deleted.
+		$maxloops = 20;
 		$deleted = false;
 		while ($maxloops--) {
 			if (!file_exists($filename)) {
@@ -581,7 +609,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 
 		if (!$deleted) {
-			throw new \Exception("Hook file '$filename' was not picked up by Incron after 5 seconds. Is it not running?");
+			throw new \Exception("Hook file '$filename' was not picked up by Incron after 10 seconds. Is it not running?");
 		}
 		return true;
 	}
@@ -1644,15 +1672,17 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	// if it's not running when it should be.
 	public function addCronJob() {
 		$cron = \FreePBX::Cron();
-		$hookfile = "/var/spool/asterisk/incron/firewall.firewall";
-		$line = "*/15 * * * * [ -e /etc/asterisk/firewall.enabled ] && touch $hookfile";
+		$hookfile = $this->get_astspooldir()."/incron/firewall.firewall";
+		$enabledfile = $this->get_astetcdir()."/firewall.enabled";
+		$line = "*/15 * * * * [ -e $enabledfile ] && touch $hookfile";
 		$cron->add($line);
 	}
 
 	public function removeCronJob() {
 		$cron = \FreePBX::Cron();
-		$hookfile = "/var/spool/asterisk/incron/firewall.firewall";
-		$line = "*/15 * * * * [ -e /etc/asterisk/firewall.enabled ] && touch $hookfile";
+		$hookfile = $this->get_astspooldir()."/incron/firewall.firewall";
+		$enabledfile = $this->get_astetcdir()."/firewall.enabled";
+		$line = "*/15 * * * * [ -e $enabledfile ] && touch $hookfile";
 		$cron->remove($line);
 	}
 

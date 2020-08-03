@@ -1,12 +1,15 @@
 #!/usr/bin/env php
 <?php
 
-$iptables = json_encode(getIptables());
+require '/usr/lib/sysadmin/includes.php';
+
+$iptables 		= json_encode(getIptables());
+$astspooldir	= \Sysadmin\FreePBX::Config()->get('ASTSPOOLDIR');
 
 if (is_dir("/run")) {
 	$out = "/run/iptables.out";
 } else {
-	$out = "/tmp/iptables.out";
+	$out = $astspooldir."/tmp/iptables.out";
 }
 
 if (file_exists($out)) {
