@@ -253,6 +253,7 @@ class control_module {
 
 var mod_firewall_control = new control_module("firewall", false);
 mod_firewall_control.onTabChange = function (e, tab_old) {
+	//
 };
 mod_firewall_control.add_tab_control("advanced_customrules", advanced_custom_rules_setfocus, advanced_custom_rules_unsetfocus);
 
@@ -375,9 +376,11 @@ function advanced_custom_rules_status(c, e) {
 			if (data.status == true) {
 				if (data.message == "enabled") {
 					$(".msg-warning-custom-rules-disabled:visible", e).hide("slow");
+					$(".btn-save-apply-custom-rules:hidden", e).show("slow");
 				}
 				else {
 					$(".msg-warning-custom-rules-disabled:hidden", e).show("slow");
+					$(".btn-save-apply-custom-rules:visible", e).hide("slow");
 				}
 			}
 		})
@@ -580,12 +583,15 @@ function advanced_button_click(e) {
 	var setting = t.getAttribute('name');
 	// Set them to disabled while we ajax
 	$(".advsetting[name='"+setting+"']").attr('disabled', true);
-	$.ajax({
-		url: window.FreePBX.ajaxurl,
-		data: { command: "updateadvanced", module: 'firewall', option: setting, val: $(t).val() },
-		complete: function() { 
-			$(".advsetting[name='"+setting+"']").attr('disabled', false);
-		}
+	$.post(window.FreePBX.ajaxurl, { command: "updateadvanced", module: 'firewall', option: setting, val: $(t).val() })
+	.done(function(data) {
+		fpbxToast(_('State Change Successful'), '', 'success');
+	})
+	.fail(function(e) {
+		fpbxToast(_("Failed State Change!"), '', 'error');
+	})
+	.always(function() {
+		$(".advsetting[name='"+setting+"']").attr('disabled', false);
 	});
 }
 
