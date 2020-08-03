@@ -310,7 +310,7 @@ function getSettings() {
 			$retarr[$dir["keyword"]] = $dir["value"];
 		}
 	}
-	
+
 	// Should we be running?
 	if (isset($retarr['status']) && $retarr['status']) {
 		$retarr['active'] = true;

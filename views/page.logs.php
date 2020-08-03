@@ -7,7 +7,11 @@
             <div class="col-sm-12">
                 <nav class="navbar navbar-default bg-primary">
                     <div class="container-fluid">
-                        <button type="button" class="navbar-btn btn btn-default" id="btn_refresh_log"><i class="fa fa-refresh" aria-hidden="true"></i> <?php echo _("Refres Log"); ?></button>
+                        <div class="btn-group" role="group" data-toggle="buttons">
+                            <button type="button" class="navbar-btn btn btn-default" id="btn_refresh_log"><i class="fa fa-refresh" aria-hidden="true"></i> <?php echo _("Refresh"); ?></button>
+                            <button type="button" class="navbar-btn btn btn-danger" id="btn_clean_log"><i class="fa fa-eraser" aria-hidden="true"></i> <?php echo _("Clean Log"); ?></button>
+                        </div>
+
 
                         <div class="nav navbar-form navbar-right" role="highlight" id="box_highlight">
                             <div class="btn-group" data-toggle="buttons">

@@ -71,7 +71,7 @@ function run_monitoring($ppid) {
 		while (1) {
 			// This will wait for a max of 30 seconds (when allow_timeout = true)
 			$result = $ami->wait_response($allow_timeout, $return_on_event);
-			if (file_exists($astlogdir."/firewall.debug")){
+			if (file_exists($astlogdir."/firewall.debug")) {
 				print time().": Event debugging - ".json_encode($result)."\n";
 			}
 
@@ -183,6 +183,7 @@ function bad_remote($ip, $event) {
 
 function good_remote($ip, $event) {
 	global $astlogdir;
+
 	if (file_exists($astlogdir."/firewall.debug")) {
 		$debug = " Event Debugging: ".json_encode($event);
 	} else {
