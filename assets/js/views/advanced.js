@@ -42,7 +42,7 @@ function advanced_button_click(e) {
 		data: { command: "updateadvanced", module: 'firewall', option: setting, val: $(t).val() },
 		complete: function(d) { 
 			result = d.responseJSON;
-			$("#lefilter_"+result["lefilter"]).selected(true);
+			$("#lefilter_"+result[setting]).selected(true);
 			$(".advsetting[name='"+setting+"']").attr('disabled', false);
 		}
 	});
