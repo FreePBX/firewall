@@ -21,6 +21,11 @@ function advancedAdd(cmd, target) {
 	$.ajax({
 		url: window.FreePBX.ajaxurl,
 		data: { command: cmd, module: 'firewall' },
+		success: function(d){
+			if(setting == "lefilter"){
+				$("#"+setting+"_"+d[setting]).selected(true);
+			}			
+		},
 		complete: function(data) { 
 			$(target).text(_("Added"));
 		}
@@ -35,7 +40,9 @@ function advanced_button_click(e) {
 	$.ajax({
 		url: window.FreePBX.ajaxurl,
 		data: { command: "updateadvanced", module: 'firewall', option: setting, val: $(t).val() },
-		complete: function() { 
+		complete: function(d) { 
+			result = d.responseJSON;
+			$("#lefilter_"+result["lefilter"]).selected(true);
 			$(".advsetting[name='"+setting+"']").attr('disabled', false);
 		}
 	});

@@ -27,3 +27,16 @@ function updateQuery(key, value) {
 		}
 	}
 }
+
+$('[name="lefilter"]').click(function() {
+	$.ajax({
+		async: false,
+		type: 'POST',
+		url: window.FreePBX.ajaxurl,
+		data: { command: 'get_status', module: 'firewall'}
+	}).success(function(data) {
+		if(data["status"] == true && data["message"] == "false"){
+			fpbxToast("Firewall restarting... Please try again later.", '', 'error');
+		}
+	});
+});

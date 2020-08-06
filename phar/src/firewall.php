@@ -751,6 +751,11 @@ function updateFirewallRules($firstrun = false) {
 	if ($firstrun && $getservices['advancedsettings']['customrules'] === "enabled") {
 		importCustomRules();
 	}
+
+	if(!file_exists($astspooldir."/tmp/fwloaded")){
+		touch($astspooldir."/tmp/fwloaded");
+		chown($astspooldir."/tmp/fwloaded","asterisk");		
+	}
 }
 
 function sigSleep($secs = 10) {

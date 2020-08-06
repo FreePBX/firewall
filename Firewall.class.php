@@ -14,7 +14,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->astetcdir  = $this->FreePBX->Config->get("ASTETCDIR"); 
 		$this->astlogdir  = $this->FreePBX->Config->get("ASTLOGDIR"); 
 		$this->webuser = $this->FreePBX->Config->get('AMPASTERISKWEBUSER');
-	        $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
+	    $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
 	}
 
 	public function get_astspooldir() {
@@ -503,12 +503,25 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Advanced Settings
 		case "updateadvanced":
 			$pre = $this->getAdvancedSettings();
-			$current = $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
-			if($_REQUEST['option'] == "lefilter" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
-				$this->restartFirewall();
+			
+			if(file_exists($this->astspooldir."/tmp/fwloaded") && $_REQUEST['option'] == "lefilter"){
+				$current = $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
+				if($_REQUEST['option'] == "lefilter" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
+					$this->restartFirewall();
+				}
+				return $current;
 			}
-			return $current;
+			
+			if(!file_exists($this->astspooldir."/tmp/fwloaded") && $_REQUEST['option'] == "lefilter"){
+				return $pre;
+			}	
 
+			return $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
+		case "get_status":
+			if(file_exists($this->astspooldir."/tmp/fwloaded")){
+				return 'true';
+			}
+			return 'false';
 		// OOBE
 		case "getoobequestion":
 			include __DIR__."/OOBE.class.php";
@@ -554,15 +567,26 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function restartFirewall($skip = "on"){
-		// Disable FW
-		$this->setConfig("status", false);
+		/**
+		 * We restart Firewall only if rules have been loaded.
+		 */
+		if(file_exists($this->astspooldir."/tmp/fwloaded")){
+			unlink($this->astspooldir."/tmp/fwloaded"); 
 
-		// Stop FW
-		$this->stopFirewall();
+			// Disable FW
+			$this->setConfig("status", false);
 
-		// Start FW
-		$this->preEnableFW($skip);
-		$this->startFirewall();
+			// Stop FW
+			$this->stopFirewall();
+
+			// Enabled FW
+			$this->preEnableFW($skip);
+			
+			// Start FW
+			$this->startFirewall();
+			return true;
+		}
+		return false;
 	}
 
 	public function preEnableFW($skip = "on"){
