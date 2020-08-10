@@ -748,9 +748,6 @@ function updateFirewallRules($firstrun = false) {
 			$driver->changeInterfaceZone($intname, $zoneshouldbe);
 		}
 	}
-	if ($firstrun && ($lefilter = $getservices['advancedsettings']['lefilter'])) {
-		letsEncrypt_filter($lefilter);
-	}
 	
 	// If this is the first run, import the custom firewall rules, if enabled
 	if ($firstrun && $getservices['advancedsettings']['customrules'] === "enabled") {
@@ -835,34 +832,5 @@ function importCustomRules() {
 			fwLog("Custom rule: $ipt $safecmd");
 			exec("$ipt $safecmd");
 		}
-	}
-}
-
-/**
- * letsEncrypt_filter
- *
- * @param  string $option : enabled or disabled
- * 
- */
-function letsEncrypt_filter($option = ''){
-	switch($option){
-		case "enabled":
-			$rules[] = '-N lefilter';
-			$rules[] = '-D fpbxfirewall -p tcp -m state --state RELATED,ESTABLISHED -j ACCEPT';
-			$rules[] = '-I INPUT -p tcp -m tcp --dport 80 -j lefilter';
-			$rules[] = '-I fpbxfirewall -p tcp ! --dport 80 -m state --state RELATED,ESTABLISHED -j ACCEPT';
-			$rules[] = '-A lefilter -m state --state NEW -j ACCEPT';
-			$rules[] = '-A lefilter -m string --string "GET /.well-known/acme-challenge/" --algo kmp --from 52 --to 53 -j ACCEPT';
-			$rules[] = '-A lefilter -m string --string "GET /.freepbx-known" --algo kmp --from 52 --to 53 -j ACCEPT';
-			$rules[] = '-A lefilter -j RETURN';
-			foreach ($rules as $id => $cmd) {
-				$safecmd = escapeshellcmd($cmd);
-				exec("/sbin/iptables ".$safecmd);
-			}
-			fwLog("LetsEncrypt filter: Enabled");
-			break;
-		case "disabled":
-			fwLog("LetsEncrypt filter: Disabled");
-			break;
 	}
 }

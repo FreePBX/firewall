@@ -1184,7 +1184,8 @@ class Iptables {
 			"-t nat -A POSTROUTING -j masq-output", // sets bit 2 if elegible for masq
 			"-t nat -A POSTROUTING -m mark --mark 0x3/0x3 -j MASQUERADE", // if 1&2 are set, masq
 		);
-
+		// create lefilter ipset
+		`ipset create -exist lefilter bitmap:port range 80-80 timeout 60`;
 		foreach ($rules as $r) {
 			$cmd = "/sbin/iptables ".$this->wlock." $r";
 			$this->l($cmd);
@@ -1202,7 +1203,7 @@ class Iptables {
 		$retarr['fpbxfirewall'][]= array("int" => "lo", "jump" => "ACCEPT");
 		// 2: Allow related/established - TCP all, but udp needs to be managed AFTER
 		// we check for any other traffic we care about.
-		$retarr['fpbxfirewall'][]= array("proto" => "tcp", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
+		$retarr['fpbxfirewall'][]= array("proto" => "tcp", "other" => "-m connmark ! --mark 0x20 -m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
 		// 3: Always allow ICMP (no, really, you always want to allow ICMP, stop thinking blocking
 		// it is a good idea)
 		$retarr['fpbxfirewall'][]= array("ipvers" => 4, "proto" => "icmp", "jump" => "ACCEPT");
@@ -1238,6 +1239,8 @@ class Iptables {
 		// If this is a VoIP Signalling packet from an unknown host, and it's eligible for
 		// RFW, then send it off there.
 		$retarr['fpbxfirewall'][] = array("other" => "-m mark --mark 0x2/0x2", "jump" => "fpbxrfw");
+		// lefilter rarely used, only check on traffic we'd otherwise drop
+		$retarr['fpbxfirewall'][] = array("proto" => "tcp", "other" => "-m set --match-set lefilter dst", "jump" => "lefilter");
 		// Now, it may be other 'related' UDP traffic (tftp, for example)
 		$retarr['fpbxfirewall'][]= array("proto" => "udp", "other" => "-m state --state RELATED,ESTABLISHED", "jump" => "ACCEPT");
 		// Otherwise, log and drop.
@@ -1357,6 +1360,13 @@ class Iptables {
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps_ssl");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-provis");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-provis_ssl");
+		// We tag this IP so that monitoring knows that they were previously blocked. Reject, rather
+		// than drop, for phones.
+		$retarr['lefilter'][] = array("other" => "-m state --state NEW -j CONNMARK --set-mark 0x20");
+		$retarr['lefilter'][] = array("other" => "-m state --state NEW -j ACCEPT");
+		$retarr['lefilter'][] = array("other" => "-m string --string \"GET /.well-known/acme-challenge/\" --algo kmp --from 52 --to 53 -j ACCEPT");
+		$retarr['lefilter'][] = array("other" => "-m string --string \"GET /.freepbx-known/\" --algo kmp --from 52 --to 53 -j ACCEPT");
+		$retarr['lefilter'][] = array("other" => "-j RETURN");
 
 		return $retarr;
 	}
