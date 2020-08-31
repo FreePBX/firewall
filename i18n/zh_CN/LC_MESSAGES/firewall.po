@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-31 04:23+0000\n"
+"POT-Creation-Date: 2020-08-31 10:03+0000\n"
 "PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -198,7 +198,7 @@ msgstr "高级"
 msgid "Advanced Custom Rules"
 msgstr ""
 
-#: views/page.advanced.php:40 views/view.settings.php:48
+#: views/page.advanced.php:40 views/view.settings.php:46
 msgid "Advanced Settings"
 msgstr "高级设置"
 
@@ -213,11 +213,11 @@ msgstr "如果UCP已经开启，终端注册以后，终端的源地址 %s可以
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr "所有隧道接口已经被自动设置为Local"
 
-#: Console/Firewall.class.php:292
+#: Console/Firewall.class.php:316
 msgid "All blacklisted entries."
 msgstr "所有黑名单"
 
-#: Console/Firewall.class.php:283
+#: Console/Firewall.class.php:307
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -233,6 +233,16 @@ msgstr ""
 msgid ""
 "All network connections are accepted. No firewalling is done on this "
 "interface."
+msgstr ""
+
+#: views/view.settings.php:15
+msgid ""
+"Allow full Internet zone access to the Let's Encrypt acme-challenge folder "
+"on port 80."
+msgstr ""
+
+#: Console/Firewall.class.php:149 Console/Firewall.class.php:166
+msgid "An error has occurred!"
 msgstr ""
 
 #: assets/js/views/logs.js:141
@@ -311,17 +321,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:171
+#: Console/Firewall.class.php:195
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:192
+#: Console/Firewall.class.php:216
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:243
+#: Console/Firewall.class.php:267
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -352,7 +362,7 @@ msgstr "过滤主机名"
 msgid "Both (TCP and UDP)"
 msgstr "启用（TCP和UDP）"
 
-#: views/view.settings.php:38
+#: views/view.settings.php:36
 msgid ""
 "By sending a Reject packet, the attacker knows that they have discovered a "
 "machine. By dropping the packet silently, no response is sent to the "
@@ -422,7 +432,7 @@ msgstr ""
 msgid "Cumulative Total of remote clients:"
 msgstr ""
 
-#: views/view.settings.php:29
+#: views/view.settings.php:27
 msgid "Custom Firewall Rules"
 msgstr ""
 
@@ -470,7 +480,7 @@ msgstr "默认的网络段域"
 msgid "Delete"
 msgstr "删除"
 
-#: Firewall.class.php:1019
+#: Firewall.class.php:1011
 msgid "Delete Selected"
 msgstr "已删除选项"
 
@@ -497,10 +507,6 @@ msgstr ""
 #: views/view.settings.php:4 views/view.smart.php:6
 msgid "Disabled"
 msgstr "禁用"
-
-#: Console/Firewall.class.php:146
-msgid "Disabling Lets Encrypt rules..."
-msgstr ""
 
 #: Restore.php:88
 msgid "ERROR: Custom rule recovery process aborted, timeout exceeded!!!"
@@ -544,7 +550,7 @@ msgstr ""
 msgid "Enabled"
 msgstr "启用"
 
-#: views/view.settings.php:37
+#: views/view.settings.php:35
 msgid ""
 "Enabling 'Reject Packets' sends an explicit response to the other machine, "
 "telling them that their traffic has been administratively blocked. Leaving "
@@ -594,11 +600,11 @@ msgstr ""
 msgid "Error!! Permission denied copy rules: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:235
+#: Console/Firewall.class.php:259
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:176
+#: Console/Firewall.class.php:200
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
@@ -607,7 +613,7 @@ msgstr ""
 msgid "Error: Missing argument. Expected 'enable' or 'disable'."
 msgstr ""
 
-#: Console/Firewall.class.php:150
+#: Console/Firewall.class.php:174
 #, php-format
 msgid "Error: Unknown option '%s'. Expected 'enable or 'disable'."
 msgstr ""
@@ -646,7 +652,7 @@ msgstr ""
 msgid "Failed State Change!"
 msgstr ""
 
-#: Console/Firewall.class.php:203
+#: Console/Firewall.class.php:227
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -682,7 +688,7 @@ msgstr "防火墙服务没有运行"
 msgid "Firewall Wizard"
 msgstr "防火墙快速设置"
 
-#: Firewall.class.php:993
+#: Firewall.class.php:985
 msgid "Firewall can not be disabled"
 msgstr "防火墙不能关闭"
 
@@ -762,7 +768,7 @@ msgstr ""
 msgid "Highlight..."
 msgstr ""
 
-#: Console/Firewall.class.php:235
+#: Console/Firewall.class.php:259
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -938,8 +944,24 @@ msgstr ""
 msgid "Lets Encrypt"
 msgstr ""
 
-#: Console/Firewall.class.php:141
-msgid "Lets Encrypt rules enabled for 60 seconds..."
+#: Console/Firewall.class.php:170
+msgid "Lets Encrypt rules already disabled. Nothing to do."
+msgstr ""
+
+#: Console/Firewall.class.php:153
+msgid "Lets Encrypt rules already enabled. Nothing to do"
+msgstr ""
+
+#: Console/Firewall.class.php:162
+msgid "Lets Encrypt rules disabled successfully. Restarting Firewall..."
+msgstr ""
+
+#: Console/Firewall.class.php:145
+msgid "Lets Encrypt rules enabled successfully. Restarting Firewall..."
+msgstr ""
+
+#: views/view.settings.php:14
+msgid "LetsEncrypt Rules"
 msgstr ""
 
 #: views/view.interfaces.php:69
@@ -1122,7 +1144,7 @@ msgstr ""
 msgid "No records found."
 msgstr ""
 
-#: views/view.settings.php:39
+#: views/view.settings.php:37
 msgid ""
 "Normally this should be set to <strong>Disabled</strong> unless you are "
 "debugging network connectivity."
@@ -1335,7 +1357,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: views/view.settings.php:35
+#: views/view.settings.php:33
 msgid "Reject Packets"
 msgstr ""
 
@@ -1351,12 +1373,12 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:239
+#: Console/Firewall.class.php:263
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1025
+#: Firewall.class.php:1017
 msgid "Reset"
 msgstr "重置"
 
@@ -1444,7 +1466,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1018 Firewall.class.php:1026 views/modal.customsvc.php:37
+#: Firewall.class.php:1010 Firewall.class.php:1018 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "保存"
@@ -1530,8 +1552,8 @@ msgstr "状态浏览"
 msgid "Stop the System Firewall"
 msgstr "停止系统防火墙"
 
-#: Console/Firewall.class.php:173 Console/Firewall.class.php:215
-#: Console/Firewall.class.php:272
+#: Console/Firewall.class.php:197 Console/Firewall.class.php:239
+#: Console/Firewall.class.php:296
 msgid "Success!"
 msgstr "成功"
 
@@ -1577,7 +1599,7 @@ msgid ""
 "they will not be applied."
 msgstr ""
 
-#: Firewall.class.php:690
+#: Firewall.class.php:682
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1597,7 +1619,7 @@ msgid ""
 "permissions to fix the problem:"
 msgstr ""
 
-#: views/view.settings.php:31
+#: views/view.settings.php:29
 msgid ""
 "The files /etc/firewall-4.rules and /etc/firewall-6.rules (for IPv4 and IPv6 "
 "rules) must be owned by the 'root' user and not writable by any other user. "
@@ -1654,7 +1676,7 @@ msgid ""
 "This is an inherently secure protocol."
 msgstr ""
 
-#: views/view.settings.php:32
+#: views/view.settings.php:30
 msgid ""
 "This allows expert users to customize the firewall to their specifications. "
 "This should be <strong>Disabled</strong> unless you explicitly know why it "
@@ -1684,13 +1706,13 @@ msgid ""
 "if required, %s on the Networks tab. %s"
 msgstr ""
 
-#: views/view.settings.php:30
+#: views/view.settings.php:28
 msgid ""
 "This authorizes the system to import custom iptables rules after the "
 "firewall has started."
 msgstr ""
 
-#: views/view.settings.php:36
+#: views/view.settings.php:34
 msgid ""
 "This configures what happens when a packet is received by the Firewall that "
 "<strong>will not be allowed</strong> through to the system."
@@ -1875,11 +1897,11 @@ msgstr ""
 msgid "Unable to read file: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:264
+#: Console/Firewall.class.php:288
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1020
+#: Firewall.class.php:1012
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1971,7 +1993,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:691
+#: Firewall.class.php:683
 msgid "You can add the host automatically here."
 msgstr ""
 
