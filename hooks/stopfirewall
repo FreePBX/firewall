@@ -20,6 +20,8 @@ fi
 if [ ! -x /usr/bin/systemctl ]; then
 	service iptables stop
 	service ip6tables stop
+	ipset -F lefilter
+	ipset -X lefilter
 	grep xt_recent /proc/modules >/dev/null && rmmod xt_recent
 	grep ipt_recent /proc/modules >/dev/null && rmmod ipt_recent
 	exit
@@ -64,6 +66,10 @@ rmmod_r() {
 /usr/sbin/iptables -t nat -X
 /usr/sbin/ip6tables -t nat -F
 /usr/sbin/ip6tables -t nat -X
+
+# and remove ipset
+ipset -F lefilter
+ipset -X lefilter
 
 for mod in ${NF_MODULES[*]}; do
 	rmmod_r $mod
