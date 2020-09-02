@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-31 10:03+0000\n"
+"POT-Creation-Date: 2020-09-02 09:13+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -206,7 +206,7 @@ msgstr "Nâng cao"
 msgid "Advanced Custom Rules"
 msgstr ""
 
-#: views/page.advanced.php:40 views/view.settings.php:46
+#: views/page.advanced.php:40 views/view.settings.php:48
 msgid "Advanced Settings"
 msgstr "Các cài đặt nâng cao"
 
@@ -223,11 +223,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr "Tất cả các giao diện Tunnel được tự động cài đặt về Local"
 
-#: Console/Firewall.class.php:316
+#: Console/Firewall.class.php:292
 msgid "All blacklisted entries."
 msgstr "Tất cả các mục nhập được liệt vào danh sách đen."
 
-#: Console/Firewall.class.php:307
+#: Console/Firewall.class.php:283
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr "Tất cả các mục nhập trong  vùng '%s':"
@@ -249,16 +249,6 @@ msgid ""
 msgstr ""
 "Tất cả các kết nối mạng được chấp nhận. Không có phòng chống tường lửa nào "
 "được thực hiện trong giao diện này."
-
-#: views/view.settings.php:15
-msgid ""
-"Allow full Internet zone access to the Let's Encrypt acme-challenge folder "
-"on port 80."
-msgstr ""
-
-#: Console/Firewall.class.php:149 Console/Firewall.class.php:166
-msgid "An error has occurred!"
-msgstr ""
 
 #: assets/js/views/logs.js:141
 msgid "An error occurred while cleaning the logs!"
@@ -356,17 +346,17 @@ msgid ""
 msgstr ""
 "Khi wizard ( thuật sĩ) này hoàn thành, tường lửa sẽ được kích hoạt tự động."
 
-#: Console/Firewall.class.php:195
+#: Console/Firewall.class.php:171
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr "Đang cố thêm %s vào Blacklist... "
 
-#: Console/Firewall.class.php:216
+#: Console/Firewall.class.php:192
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr "Đang cố thêm '%s' vào Vùng '%s'... "
 
-#: Console/Firewall.class.php:267
+#: Console/Firewall.class.php:243
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr "Đang cố xóa %s khỏi Vùng '%s\"... "
@@ -399,7 +389,7 @@ msgstr "Các host đã bị chặn"
 msgid "Both (TCP and UDP)"
 msgstr "Cả hai ( TCP và UDP)"
 
-#: views/view.settings.php:36
+#: views/view.settings.php:38
 msgid ""
 "By sending a Reject packet, the attacker knows that they have discovered a "
 "machine. By dropping the packet silently, no response is sent to the "
@@ -472,7 +462,7 @@ msgstr ""
 msgid "Cumulative Total of remote clients:"
 msgstr "Tổng số tích lũy số máy khách từ xa:"
 
-#: views/view.settings.php:27
+#: views/view.settings.php:29
 msgid "Custom Firewall Rules"
 msgstr "Các nguyên tắc Tùy chỉnh Firewall"
 
@@ -523,7 +513,7 @@ msgstr "Mặc định Vùng (Zone)"
 msgid "Delete"
 msgstr "Xóa"
 
-#: Firewall.class.php:1011
+#: Firewall.class.php:1019
 msgid "Delete Selected"
 msgstr "Xóa những gì được chọn"
 
@@ -551,6 +541,10 @@ msgstr ""
 #: views/view.settings.php:4 views/view.smart.php:6
 msgid "Disabled"
 msgstr "Đã vô hiệu"
+
+#: Console/Firewall.class.php:146
+msgid "Disabling Lets Encrypt rules..."
+msgstr ""
 
 #: Restore.php:88
 msgid "ERROR: Custom rule recovery process aborted, timeout exceeded!!!"
@@ -599,7 +593,7 @@ msgstr ""
 msgid "Enabled"
 msgstr "Đã kích hoạt"
 
-#: views/view.settings.php:35
+#: views/view.settings.php:37
 msgid ""
 "Enabling 'Reject Packets' sends an explicit response to the other machine, "
 "telling them that their traffic has been administratively blocked. Leaving "
@@ -656,11 +650,11 @@ msgstr "Lỗi!"
 msgid "Error!! Permission denied copy rules: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:259
+#: Console/Firewall.class.php:235
 msgid "Error:"
 msgstr "Lỗi:"
 
-#: Console/Firewall.class.php:200
+#: Console/Firewall.class.php:176
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr "Lỗi: Không thể thêm '%s' vào vùng không xác định '%s'"
@@ -669,7 +663,7 @@ msgstr "Lỗi: Không thể thêm '%s' vào vùng không xác định '%s'"
 msgid "Error: Missing argument. Expected 'enable' or 'disable'."
 msgstr ""
 
-#: Console/Firewall.class.php:174
+#: Console/Firewall.class.php:150
 #, php-format
 msgid "Error: Unknown option '%s'. Expected 'enable or 'disable'."
 msgstr ""
@@ -714,7 +708,7 @@ msgstr ""
 msgid "Failed State Change!"
 msgstr ""
 
-#: Console/Firewall.class.php:227
+#: Console/Firewall.class.php:203
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 "Không thành công! Không thể hợp lệ hóa mục nhập. Vui lòng thử lại lần nữa."
@@ -751,7 +745,7 @@ msgstr "Dịch vụ Firewall không chạy!"
 msgid "Firewall Wizard"
 msgstr "Thuật sĩ Firewall"
 
-#: Firewall.class.php:985
+#: Firewall.class.php:993
 msgid "Firewall can not be disabled"
 msgstr "Không thể vô hiệu Firewall"
 
@@ -838,7 +832,7 @@ msgstr "HTTPS REST  bị vô hiệu trong Sysadmin Port Management"
 msgid "Highlight..."
 msgstr ""
 
-#: Console/Firewall.class.php:259
+#: Console/Firewall.class.php:235
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr "Host '%s' hiện không thuộc danh sách đen."
@@ -1053,24 +1047,8 @@ msgstr "Giao thức Legacy SIP (chan_sip)"
 msgid "Lets Encrypt"
 msgstr ""
 
-#: Console/Firewall.class.php:170
-msgid "Lets Encrypt rules already disabled. Nothing to do."
-msgstr ""
-
-#: Console/Firewall.class.php:153
-msgid "Lets Encrypt rules already enabled. Nothing to do"
-msgstr ""
-
-#: Console/Firewall.class.php:162
-msgid "Lets Encrypt rules disabled successfully. Restarting Firewall..."
-msgstr ""
-
-#: Console/Firewall.class.php:145
-msgid "Lets Encrypt rules enabled successfully. Restarting Firewall..."
-msgstr ""
-
-#: views/view.settings.php:14
-msgid "LetsEncrypt Rules"
+#: Console/Firewall.class.php:141
+msgid "Lets Encrypt rules enabled for 60 seconds..."
 msgstr ""
 
 #: views/view.interfaces.php:69
@@ -1256,7 +1234,7 @@ msgstr ""
 msgid "No records found."
 msgstr ""
 
-#: views/view.settings.php:37
+#: views/view.settings.php:39
 msgid ""
 "Normally this should be set to <strong>Disabled</strong> unless you are "
 "debugging network connectivity."
@@ -1507,7 +1485,7 @@ msgstr "Các Endpoint đã đăng ký"
 msgid "Reject"
 msgstr "Từ chối"
 
-#: views/view.settings.php:33
+#: views/view.settings.php:35
 msgid "Reject Packets"
 msgstr "Từ chối các Packet"
 
@@ -1524,12 +1502,12 @@ msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 "Xóa hostname hoặc IP được chỉ định ra khỏi Trusted Zone ( Vùng an toàn)"
 
-#: Console/Firewall.class.php:263
+#: Console/Firewall.class.php:239
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr "Đã xóa %s ra khỏi Danh sách đen."
 
-#: Firewall.class.php:1017
+#: Firewall.class.php:1025
 msgid "Reset"
 msgstr "Cài đặt lại"
 
@@ -1630,7 +1608,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall hiện đã kích hoạt!"
 
-#: Firewall.class.php:1010 Firewall.class.php:1018 views/modal.customsvc.php:37
+#: Firewall.class.php:1018 Firewall.class.php:1026 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Lưu"
@@ -1720,8 +1698,8 @@ msgstr "Tổng quan tình trạng"
 msgid "Stop the System Firewall"
 msgstr "Dừng Firewall hệ thống"
 
-#: Console/Firewall.class.php:197 Console/Firewall.class.php:239
-#: Console/Firewall.class.php:296
+#: Console/Firewall.class.php:173 Console/Firewall.class.php:215
+#: Console/Firewall.class.php:272
 msgid "Success!"
 msgstr "Thành công!"
 
@@ -1767,7 +1745,7 @@ msgid ""
 "they will not be applied."
 msgstr ""
 
-#: Firewall.class.php:682
+#: Firewall.class.php:690
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1791,7 +1769,7 @@ msgid ""
 "permissions to fix the problem:"
 msgstr ""
 
-#: views/view.settings.php:29
+#: views/view.settings.php:31
 msgid ""
 "The files /etc/firewall-4.rules and /etc/firewall-6.rules (for IPv4 and IPv6 "
 "rules) must be owned by the 'root' user and not writable by any other user. "
@@ -1864,7 +1842,7 @@ msgstr ""
 "Điều này cho phép các máy khách kết nối với một máy chủ OpenVPN  trên máy "
 "này. Đây là một giao thức vốn đã an toàn."
 
-#: views/view.settings.php:30
+#: views/view.settings.php:32
 msgid ""
 "This allows expert users to customize the firewall to their specifications. "
 "This should be <strong>Disabled</strong> unless you explicitly know why it "
@@ -1908,7 +1886,7 @@ msgstr ""
 "vào vùng An toàn của mình. Khi bạn đã thêm những lựa chọn của mình, bạn có "
 "thể tinh chỉnh chúng nếu cần, %s trên tab Network. %s"
 
-#: views/view.settings.php:28
+#: views/view.settings.php:30
 msgid ""
 "This authorizes the system to import custom iptables rules after the "
 "firewall has started."
@@ -1916,7 +1894,7 @@ msgstr ""
 "Điều này sẽ cho phép hệ thống có quyền nhập các quy tắc iptable tùy chỉnh  "
 "sau khi firewall được khởi động."
 
-#: views/view.settings.php:34
+#: views/view.settings.php:36
 msgid ""
 "This configures what happens when a packet is received by the Firewall that "
 "<strong>will not be allowed</strong> through to the system."
@@ -2145,11 +2123,11 @@ msgstr "Các cổng UDP:"
 msgid "Unable to read file: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:288
+#: Console/Firewall.class.php:264
 msgid "Unknown entry!"
 msgstr "Mục nhập không xác định!"
 
-#: Firewall.class.php:1012
+#: Firewall.class.php:1020
 msgid "Update Interfaces"
 msgstr "Cập nhật các giao diện"
 
@@ -2257,7 +2235,7 @@ msgstr ""
 "Bạn có thể thêm các host và các mạng riêng lẻ để ghi đè sự cho phép mặc định "
 "của một giao diện."
 
-#: Firewall.class.php:683
+#: Firewall.class.php:691
 msgid "You can add the host automatically here."
 msgstr "Bạn có thể tự động thêm host ở đây."
 
