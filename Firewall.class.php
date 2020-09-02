@@ -656,6 +656,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
+	public function enableLeRules() {
+		$this->runHook("enablelerules");
+	}
+
+	public function disableLeRules() {
+		$this->runHook("disablelerules");
+	}
+
 	public function uninstallHook() {
 		$this->runHook("uninstall");
 	}
