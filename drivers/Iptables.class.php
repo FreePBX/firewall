@@ -1156,7 +1156,7 @@ class Iptables {
 
 	private function loadDefaultRules() {
 		// create lefilter ipset
-		exec('ipset create -exist lefilter bitmap:port range 80-80 timeout 60');
+		exec('ipset create -exist lefilter bitmap:port range 80-65535 timeout 60');
 
 		$defaults = $this->getDefaultRules();
 		// We're here because our first rule isn't there. Insert it.

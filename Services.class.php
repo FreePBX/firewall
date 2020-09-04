@@ -184,8 +184,8 @@ class Services {
 	private function getSvc_letsencrypt() {
 
 		$retarr = array(
-			"name" => _("Lets Encrypt"),
-			"descr" => _("This will allow access to the LetsEncrypt service on Port 80, when it is enabled."),
+			"name" => _("LetsEncrypt"),
+			"descr" => _("This will allow access to the LetsEncrypt service, when it is enabled."),
 			"fw" => array(),
 			"defzones" => array(),
 			"disabled" => true,
@@ -194,16 +194,21 @@ class Services {
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 		} catch (\Exception $e) {
-			$ports = array( "leport" => "999" );
+			$ports = array( "leport" => 0 );
 		}
 
-		if (isset($ports['leport']) && $ports['leport'] == "80") {
-			$retarr["descr"] = _("This exposes the LetsEncrypt service on Port 80. This MUST be allowed access from the 'Internet' zone.");
-			$retarr['fw'] = array(
-				array("protocol" => "tcp", "port" => 80),
-			);
-			$retarr['defzones'] = array("external");
-			unset($retarr['disabled']);
+		if (isset($ports['leport']) && $ports['leport'] >= 80) {
+			if (\FreePBX::Firewall()->getAdvancedSettings()['lefilter'] == "disabled") {
+				$retarr["descr"] = _("This exposes the LetsEncrypt service. This MUST be allowed access from the 'Internet' zone if Responsive LetsEncrypt Rules are not enabled.");
+				$retarr['fw'] = array(
+					array("protocol" => "tcp", "port" => $ports['leport']),
+				);
+				$retarr['defzones'] = array("external");
+				unset($retarr['disabled']);
+			} else {
+				// add link here
+				$retarr["descr"] = _("Access currently managed by <strong>Responsive LetsEncrypt Rules</strong>. Responsive LetsEncrypt Rules settings can be changed on the <em>Firewall->Advanced->Advanced Settings</em> page.");
+			}
 		}
 		return $retarr;
 	}
