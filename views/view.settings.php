@@ -15,10 +15,10 @@ $sections = array(
 		_("This should be disabled if there is the possibility of malicious individuals rebooting your machine without your knowledge. Otherwise it should be left <strong>Enabled</strong>"),
 		),
 	),
-/*	"lefilter" => array( "desc" => _("LetsEncrypt Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
-		_("Allow full Internet zone access to the Let's Encrypt acme-challenge folder on port 80."),
+	"lefilter" => array( "desc" => _("Responsive LetsEncrypt Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Allows <strong>temporary</strong> Internet zone access to the Let's Encrypt acme-challenge folder during update requests."),
+		),
 	),
-),*/
 	/*
 	 * Disabled - unused. Masq is always on, there's no reason to turn it off.
 	"masq" => array( "desc" => _("Outbound Masquerading"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
