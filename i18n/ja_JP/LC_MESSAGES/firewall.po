@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-03 08:37+0000\n"
+"POT-Creation-Date: 2020-09-08 04:09+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -113,11 +113,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
 
-#: Console/Firewall.class.php:314
+#: Console/Firewall.class.php:290
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:305
+#: Console/Firewall.class.php:281
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -139,10 +139,6 @@ msgstr ""
 msgid ""
 "Allow full Internet zone access to the Let's Encrypt acme-challenge folder "
 "on port 80."
-msgstr ""
-
-#: Console/Firewall.class.php:147 Console/Firewall.class.php:164
-msgid "An error has occurred!"
 msgstr ""
 
 #: views/warning.notready.php:5
@@ -205,17 +201,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:193
+#: Console/Firewall.class.php:169
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:214
+#: Console/Firewall.class.php:190
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:265
+#: Console/Firewall.class.php:241
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -325,7 +321,7 @@ msgstr ""
 msgid "Delete"
 msgstr "削除"
 
-#: Firewall.class.php:626
+#: Firewall.class.php:652
 msgid "Delete Selected"
 msgstr ""
 
@@ -351,6 +347,10 @@ msgstr ""
 
 #: views/view.settings.php:8 views/view.smart.php:6
 msgid "Disabled"
+msgstr ""
+
+#: Console/Firewall.class.php:144
+msgid "Disabling Lets Encrypt rules..."
 msgstr ""
 
 #: views/view.zoneinfo.php:4
@@ -407,11 +407,11 @@ msgstr ""
 msgid "Error!"
 msgstr ""
 
-#: Console/Firewall.class.php:257
+#: Console/Firewall.class.php:233
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:198
+#: Console/Firewall.class.php:174
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
@@ -420,7 +420,7 @@ msgstr ""
 msgid "Error: Missing argument. Expected 'enable' or 'disable'."
 msgstr ""
 
-#: Console/Firewall.class.php:172
+#: Console/Firewall.class.php:148
 #, php-format
 msgid "Error: Unknown option '%s'. Expected 'enable or 'disable'."
 msgstr ""
@@ -455,7 +455,7 @@ msgid ""
 "as additional data."
 msgstr ""
 
-#: Console/Firewall.class.php:225
+#: Console/Firewall.class.php:201
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -487,7 +487,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Firewall.class.php:600
+#: Firewall.class.php:626
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -558,7 +558,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Console/Firewall.class.php:257
+#: Console/Firewall.class.php:233
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -716,20 +716,8 @@ msgstr ""
 msgid "Lets Encrypt"
 msgstr ""
 
-#: Console/Firewall.class.php:168
-msgid "Lets Encrypt rules already disabled. Nothing to do."
-msgstr ""
-
-#: Console/Firewall.class.php:151
-msgid "Lets Encrypt rules already enabled. Nothing to do"
-msgstr ""
-
-#: Console/Firewall.class.php:160
-msgid "Lets Encrypt rules disabled successfully. Restarting Firewall..."
-msgstr ""
-
-#: Console/Firewall.class.php:143
-msgid "Lets Encrypt rules enabled successfully. Restarting Firewall..."
+#: Console/Firewall.class.php:139
+msgid "Lets Encrypt rules enabled for 60 seconds..."
 msgstr ""
 
 #: views/view.settings.php:18
@@ -1022,12 +1010,12 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:261
+#: Console/Firewall.class.php:237
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:632
+#: Firewall.class.php:658
 msgid "Reset"
 msgstr "リセット"
 
@@ -1115,7 +1103,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:625 Firewall.class.php:633 views/modal.customsvc.php:37
+#: Firewall.class.php:651 Firewall.class.php:659 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
@@ -1185,8 +1173,8 @@ msgstr ""
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:195 Console/Firewall.class.php:237
-#: Console/Firewall.class.php:294
+#: Console/Firewall.class.php:171 Console/Firewall.class.php:213
+#: Console/Firewall.class.php:270
 msgid "Success!"
 msgstr ""
 
@@ -1226,7 +1214,7 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: Firewall.class.php:342
+#: Firewall.class.php:368
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1496,11 +1484,11 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: Console/Firewall.class.php:286
+#: Console/Firewall.class.php:262
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:627
+#: Firewall.class.php:653
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1579,7 +1567,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:343
+#: Firewall.class.php:369
 msgid "You can add the host automatically here."
 msgstr ""
 

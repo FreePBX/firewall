@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.60.11</version>
+	<version>13.0.60.12</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*13.0.60.12* Packaging of ver 13.0.60.12
 		*13.0.60.11* Packaging of ver 13.0.60.11
 		*13.0.60.10* Packaging of ver 13.0.60.10
 		*13.0.60.9* FREEPBX-21611 Randomly getting touch():Utime failed: Permission denied 
