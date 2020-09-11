@@ -1155,6 +1155,9 @@ class Iptables {
 	}
 
 	private function loadDefaultRules() {
+		// create lefilter ipset
+		exec('ipset create -exist lefilter bitmap:port range 80-80 timeout 60');
+
 		$defaults = $this->getDefaultRules();
 		// We're here because our first rule isn't there. Insert it.
 		$this->insertRule('INPUT', array_shift($defaults['INPUT']));
@@ -1185,8 +1188,6 @@ class Iptables {
 			"-t nat -A POSTROUTING -m mark --mark 0x3/0x3 -j MASQUERADE", // if 1&2 are set, masq
 		);
 
-		// create lefilter ipset
-		`ipset create -exist lefilter bitmap:port range 80-80 timeout 60`;
 
 		foreach ($rules as $r) {
 			$cmd = "/sbin/iptables ".$this->wlock." $r";
@@ -1366,8 +1367,10 @@ class Iptables {
 		// Set up lefilter chain
 		$retarr['lefilter'][] = array("other" => "-m state --state NEW -j CONNMARK --set-mark 0x20");
 		$retarr['lefilter'][] = array("other" => "-m state --state NEW -j ACCEPT");
-		$retarr['lefilter'][] = array("other" => "-m string --string \"GET /.well-known/acme-challenge/\" --algo kmp --from 52 --to 53 -j ACCEPT");
-		$retarr['lefilter'][] = array("other" => "-m string --string \"GET /.freepbx-known/\" --algo kmp --from 52 --to 53 -j ACCEPT");
+		$retarr['lefilter'][] = array("ipvers" => "4", "other" => "-m string --string \"GET /.well-known/acme-challenge/\" --algo kmp --from 52 --to 53 -j ACCEPT");
+	$retarr['lefilter'][] = array("ipvers" => "6", "other" => "-m string --string \"GET /.well-known/acme-challenge/\" --algo kmp --from 72 --to 73 -j ACCEPT");
+	$retarr['lefilter'][] = array("ipvers" => "4", "other" => "-m string --string \"GET /.freepbx-known/\" --algo kmp --from 52 --to 53 -j ACCEPT");
+	$retarr['lefilter'][] = array("ipvers" => "6", "other" => "-m string --string \"GET /.freepbx-known/\" --algo kmp --from 72 --to 73 -j ACCEPT");
 		$retarr['lefilter'][] = array("other" => "-j RETURN");
 
 		return $retarr;
