@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 06:44+0000\n"
+"POT-Creation-Date: 2020-09-14 12:37+0000\n"
 "PO-Revision-Date: 2020-09-02 11:50+0000\n"
 "Last-Translator: Javier Pastor <jpastor@cerebelum.net>\n"
 "Language-Team: Spanish <http://*/projects/freepbx/firewall/es/>\n"
@@ -74,6 +74,12 @@ msgid ""
 msgstr ""
 "Se ha detectado una nueva interfaz de red no configurada. Asigne la interfaz "
 "'%s' a una zona."
+
+#: install.php:6
+msgid ""
+"A required rpm package ipset is not present. We are installing  'yum install "
+"ipset' this may take some time "
+msgstr ""
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
@@ -1555,6 +1561,15 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
+#: install.php:12
+msgid ""
+"Unable to install the required rpm package 'ipset', please install it "
+"manually by running 'yum install ipset -y' from the command line and re-"
+"install the firewall module. Latest firewall module is depends on 'ipset' "
+"package so please install 'ipset' package first and then try to upgrade "
+"firewall module"
+msgstr ""
+
 #: Console/Firewall.class.php:262
 msgid "Unknown entry!"
 msgstr ""
@@ -1712,6 +1727,10 @@ msgstr ""
 
 #: Services.class.php:628
 msgid "iSymphony is not installed on this server."
+msgstr ""
+
+#: install.php:10
+msgid "ipset installed successfully"
 msgstr ""
 
 #: views/view.about.php:9

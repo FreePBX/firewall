@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 06:44+0000\n"
+"POT-Creation-Date: 2020-09-14 12:37+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -75,6 +75,12 @@ msgid ""
 msgstr ""
 "Vừa phát hiện một giao diện mạng mới chưa được cấu hình. Vui lòng gán giao "
 "diện \"%s\" vào một vùng."
+
+#: install.php:6
+msgid ""
+"A required rpm package ipset is not present. We are installing  'yum install "
+"ipset' this may take some time "
+msgstr ""
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
@@ -1728,6 +1734,15 @@ msgstr "Cổng UDP:"
 msgid "UDP Ports:"
 msgstr "Các cổng UDP:"
 
+#: install.php:12
+msgid ""
+"Unable to install the required rpm package 'ipset', please install it "
+"manually by running 'yum install ipset -y' from the command line and re-"
+"install the firewall module. Latest firewall module is depends on 'ipset' "
+"package so please install 'ipset' package first and then try to upgrade "
+"firewall module"
+msgstr ""
+
 #: Console/Firewall.class.php:262
 msgid "Unknown entry!"
 msgstr "Mục nhập không xác định!"
@@ -1913,6 +1928,10 @@ msgstr "Tự động cấp"
 #: Services.class.php:628
 msgid "iSymphony is not installed on this server."
 msgstr "iSymphony không được cài đặt trên máy chủ này."
+
+#: install.php:10
+msgid "ipset installed successfully"
+msgstr ""
 
 #: views/view.about.php:9
 msgid ""
