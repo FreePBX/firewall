@@ -1,5 +1,18 @@
 <?php
-
+//check ipset  installed or not 
+$ipset = `yum list installed | grep ipset`;
+preg_match('/ipset/', $ipset, $output_array);
+if(count($output_array)== 0){
+	outn(_("A required rpm package ipset is not present. We are installing  'yum install ipset' this may take some time "));
+	$res =	`yum install ipset -y`;
+	$output = preg_grep('/Complete!/', explode("\n", $res));
+	if(count($output) == 1){
+		outn(_('ipset installed successfully'));
+	} else {
+		outn(_("Unable to install the required rpm package 'ipset', please install it manually by running 'yum install ipset -y' from the command line and re-install the firewall module. Latest firewall module is depends on 'ipset' package so please install 'ipset' package first and then try to upgrade firewall module"));
+		exit;
+	}
+}
 // There's been reports of empty networkmaps being discovered. This
 // searches for them and deletes them if they exist.
 try {
