@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-08 04:09+0000\n"
+"POT-Creation-Date: 2020-09-14 06:44+0000\n"
 "PO-Revision-Date: 2017-03-13 19:49+0200\n"
 "Last-Translator: Kingvoice <suporte@kingvoice.com.br>\n"
 "Language-Team: Portuguese (Brazil) <http://weblate.freepbx.org/projects/"
@@ -146,12 +146,6 @@ msgid ""
 msgstr ""
 "Todas as conexões de rede são aceitas. Nenhum bloqueio por firewall será "
 "feito nesta interface."
-
-#: views/view.settings.php:19
-msgid ""
-"Allow full Internet zone access to the Let's Encrypt acme-challenge folder "
-"on port 80."
-msgstr ""
 
 #: views/warning.notready.php:5
 msgid ""
@@ -761,10 +755,6 @@ msgstr ""
 
 #: Console/Firewall.class.php:139
 msgid "Lets Encrypt rules enabled for 60 seconds..."
-msgstr ""
-
-#: views/view.settings.php:18
-msgid "LetsEncrypt Rules"
 msgstr ""
 
 #: views/view.interfaces.php:69

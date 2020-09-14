@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-08 04:09+0000\n"
+"POT-Creation-Date: 2020-09-14 06:44+0000\n"
 "PO-Revision-Date: 2020-02-05 10:00+0000\n"
 "Last-Translator: florian alberts <alberts@ar-systems.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -156,12 +156,6 @@ msgid ""
 msgstr ""
 "Alle Netzwerkverbindungen werden akzeptiert. Auf dieser Schnittstelle "
 "arbeitet keine Firewall."
-
-#: views/view.settings.php:19
-msgid ""
-"Allow full Internet zone access to the Let's Encrypt acme-challenge folder "
-"on port 80."
-msgstr ""
 
 #: views/warning.notready.php:5
 msgid ""
@@ -806,10 +800,6 @@ msgstr ""
 
 #: Console/Firewall.class.php:139
 msgid "Lets Encrypt rules enabled for 60 seconds..."
-msgstr ""
-
-#: views/view.settings.php:18
-msgid "LetsEncrypt Rules"
 msgstr ""
 
 #: views/view.interfaces.php:69
