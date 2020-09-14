@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 12:37+0000\n"
+"POT-Creation-Date: 2020-09-14 12:58+0000\n"
 "PO-Revision-Date: 2020-02-05 10:00+0000\n"
 "Last-Translator: florian alberts <alberts@ar-systems.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -76,12 +76,6 @@ msgid ""
 msgstr ""
 "Es wurde eine neue, unkonfigurierte Netzwerkschnittstelle entdeckt. Bitte "
 "weisen Sie die Schnittstelle „%s“ einer Zone zu."
-
-#: install.php:6
-msgid ""
-"A required rpm package ipset is not present. We are installing  'yum install "
-"ipset' this may take some time "
-msgstr ""
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
@@ -794,6 +788,13 @@ msgstr "Bekannte Netzwerke:"
 
 #: assets/js/views/status.js:131
 msgid "Last 5 packets"
+msgstr ""
+
+#: install.php:5
+msgid ""
+"Latest firewall module is depends on 'ipset' utility which is missing so "
+"please install this by either 'yum install ipset -y' for distro(centos) or "
+"equivalent package install command as per your OS and try again."
 msgstr ""
 
 #: Smart.class.php:42
@@ -1647,15 +1648,6 @@ msgstr "UDP Port:"
 msgid "UDP Ports:"
 msgstr ""
 
-#: install.php:12
-msgid ""
-"Unable to install the required rpm package 'ipset', please install it "
-"manually by running 'yum install ipset -y' from the command line and re-"
-"install the firewall module. Latest firewall module is depends on 'ipset' "
-"package so please install 'ipset' package first and then try to upgrade "
-"firewall module"
-msgstr ""
-
 #: Console/Firewall.class.php:262
 msgid "Unknown entry!"
 msgstr "Unbekannter Eintrag!"
@@ -1838,10 +1830,6 @@ msgstr "automatisch gewährt"
 #: Services.class.php:628
 msgid "iSymphony is not installed on this server."
 msgstr "iSymphony ist auf diesem Server nicht installiert."
-
-#: install.php:10
-msgid "ipset installed successfully"
-msgstr ""
 
 #: views/view.about.php:9
 msgid ""

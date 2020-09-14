@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 12:37+0000\n"
+"POT-Creation-Date: 2020-09-14 12:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,12 +57,6 @@ msgstr ""
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
 "interface '%s' to a zone."
-msgstr ""
-
-#: install.php:6
-msgid ""
-"A required rpm package ipset is not present. We are installing  'yum install "
-"ipset' this may take some time "
 msgstr ""
 
 #: views/view.zoneinfo.php:2
@@ -715,6 +709,13 @@ msgstr ""
 
 #: assets/js/views/status.js:131
 msgid "Last 5 packets"
+msgstr ""
+
+#: install.php:5
+msgid ""
+"Latest firewall module is depends on 'ipset' utility which is missing so "
+"please install this by either 'yum install ipset -y' for distro(centos) or "
+"equivalent package install command as per your OS and try again."
 msgstr ""
 
 #: Smart.class.php:42
@@ -1507,15 +1508,6 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: install.php:12
-msgid ""
-"Unable to install the required rpm package 'ipset', please install it "
-"manually by running 'yum install ipset -y' from the command line and re-"
-"install the firewall module. Latest firewall module is depends on 'ipset' "
-"package so please install 'ipset' package first and then try to upgrade "
-"firewall module"
-msgstr ""
-
 #: Console/Firewall.class.php:262
 msgid "Unknown entry!"
 msgstr ""
@@ -1675,10 +1667,6 @@ msgstr ""
 
 #: Services.class.php:628
 msgid "iSymphony is not installed on this server."
-msgstr ""
-
-#: install.php:10
-msgid "ipset installed successfully"
 msgstr ""
 
 #: views/view.about.php:9
