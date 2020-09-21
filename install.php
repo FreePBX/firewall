@@ -3,7 +3,6 @@
 $ipset = fpbx_which("ipset");
 if ($ipset == "") {
 	out( _("Latest firewall module is depends on 'ipset' utility which is missing so please install this by either 'yum install ipset -y' for distro(centos) or equivalent package install command as per your OS and try again.") );
-	exit;
 }
 
 // There's been reports of empty networkmaps being discovered. This
