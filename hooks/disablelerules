@@ -1,0 +1,6 @@
+#!/usr/bin/php -q
+<?php
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+
+exec("ipset -D -! lefilter 80");
+

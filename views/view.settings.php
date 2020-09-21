@@ -33,15 +33,6 @@ $sections = array(
 		"<br>"._("<strong>Legacy</strong>: Intrusion Detection whitelist will work like in the past with no automated synchronization to the whitelist.")
 		),
 	),
-	/*
-	 * Disabled - unused. Masq is always on, there's no reason to turn it off.
-	"masq" => array( "desc" => _("Outbound Masquerading"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
-		_("This enables the 'MASQUERADE' iptables rule for any traffic that is <strong>FORWARDED</strong> through this machine."),
-		_("<strong>This does not enable forwarding!</strong> To enable forwarding, you need to enable the sysctl parameters 'net.ipv4.ip_forward' and 'net.ipv6.ip_forward' manually. If those settings are not enabled, this option has no effect."),
-		_("Masquerading is only done for traffic that is being transmitted out an interface that is assigned to the 'Internet' zone. This setting should be <strong>Enabled</strong> unless you have a complex network environment."),
-		),
-	),
-	 */
 	"customrules" => array( "desc" => _("Custom Firewall Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
 		_("This authorizes the system to import custom iptables rules after the firewall has started."),
 		_("The files /etc/firewall-4.rules and /etc/firewall-6.rules (for IPv4 and IPv6 rules) must be owned by the 'root' user and not writable by any other user. Each line in the file will be given as a parameter to 'iptables' or 'ip6tables, respectively."),
