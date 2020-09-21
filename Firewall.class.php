@@ -10,11 +10,66 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		$this->FreePBX = $freepbx;
 		$this->db = $freepbx->Database;
+		$this->astman 	= $this->FreePBX->astman;
 		$this->astspooldir  = $this->FreePBX->Config->get("ASTSPOOLDIR"); 
 		$this->astetcdir  = $this->FreePBX->Config->get("ASTETCDIR"); 
 		$this->astlogdir  = $this->FreePBX->Config->get("ASTLOGDIR"); 
 		$this->webuser = $this->FreePBX->Config->get('AMPASTERISKWEBUSER');
-	        $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
+	    $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
+	}
+	
+	public function getTrustedZone($from){
+		$networkmaps = \FreePBX::Firewall()->get_networkmaps();
+		$trusted = "";
+		foreach($networkmaps as $ip => $type){
+			if($type == $from){
+				$trusted .= (string) "$ip\n";
+			}
+		}
+		return $trusted;
+	}
+
+	public function intrusion_detection_status() { 
+		exec('pidof -x fail2ban-server', $out, $ret);
+		if ($ret == 0) {
+			return "running";
+		} else {
+			return "stopped";
+		} 
+	} 
+
+	public function getExtRegistered(){
+		/**
+		 * Get all IP addresses of registered extensions.
+		 * Whatever technololgies, SIP, PJSIP, IAX2
+		 */
+		$ip_reg			= array();
+		$sip_driver 	= $this->astman->Command("sip show peers");
+		$pjsip_driver 	= $this->astman->Command("pjsip show endpoints");
+		$iax_driver 	= $this->astman->Command("iax2 show peers");
+		$sip_driver		= (is_array($sip_driver)) && !empty($sip_driver["data"]) 		? explode("\n",$sip_driver["data"]) 	: array();
+		$pjsip_driver	= (is_array($pjsip_driver)) && !empty($pjsip_driver["data"]) 	? explode("\n",$pjsip_driver["data"]) 	: array();
+		$iax_driver		= (is_array($iax_driver)) && !empty($iax_driver["data"]) 		? explode("\n",$iax_driver["data"]) 	: array();
+
+		foreach($sip_driver as $line => $content){
+			if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $content, $ip_match)) {
+				$ip_reg[] = $ip_match[0];
+			 }
+		}
+
+		foreach($pjsip_driver as $line => $content){
+			if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $content, $ip_match)) {
+				$ip_reg[] = $ip_match[0];
+			 }
+		}
+
+		foreach($iax_driver as $line => $content){
+			if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $content, $ip_match) && strpos($content,"OK") !== false) {
+				$ip_reg[] = $ip_match[0];
+			 }
+		}
+
+		return implode("\n", array_unique($ip_reg));
 	}
 
 	public function get_astspooldir() {
@@ -53,6 +108,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
+		$this->addsyncjob();
 	}
 	
 	public function uninstall() {
@@ -68,10 +124,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("oobeanswered", array());
 		}
 		$this->removeCronJob();
+		$this->removesyncjob();
 	}
 
 	public function backup() {}
 	public function restore($backup) {}
+
+	public function get_networkmaps(){
+		return $this->getConfig("networkmaps");
+	}
 
 	public function chownFreepbx() {
 		$files = array(
@@ -95,7 +156,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function dashboardService() {
-
 		// Check to see if Firewall is enabled. Warn if it's not.
 		$status = array(
 			'title' => _("System Firewall"),
@@ -373,13 +433,73 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return load_view($view, array("fw" => $this));
 	}
 
+	public function getipzone($from){
+		switch($from){
+			case "extregips":
+				$result = $this->getExtRegistered();
+			break;
+			case "trusted":
+				$result = $this->getTrustedZone("trusted");
+			break;
+			case "local":
+				$result = $this->getTrustedZone("internal");
+			break;
+			case "other":
+				$result = $this->getTrustedZone("other");
+			break;
+			default:
+				$result = "";				
+		}
+		return preg_replace('!\n+!', chr(10), $result);
+	}
+
+	public function updateWhitelist($wl){
+		/**
+		 * Used by console to syncing / updating the whitelist.
+		 */
+		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
+		$ids = $IDsetting["ids"];
+		$ids["fail2ban_whitelist"] = $wl; 
+		\FreePBX::Sysadmin()->sync_fw($ids);
+	}
+
 	// Ajax calls
 	public function ajaxRequest($req, &$settings) {
 		return true;
 	}
 
 	public function ajaxHandler() {
+		$asfw 		= \FreePBX::Firewall()->getAdvancedSettings();
+		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
 		switch ($_REQUEST['command']) {
+		case "saveids":
+			$this->setConfig("idregextip", $_REQUEST['idregextip']);
+			$this->setConfig("trusted", $_REQUEST['trusted']);
+			$this->setConfig("local", $_REQUEST['local']);
+			$this->setConfig("other", $_REQUEST['other']);
+			$ids["fail2ban_whitelist"] 	= $_REQUEST["whitelist"];
+            $ids["fail2ban_ban_time"] 	= $_REQUEST["ban_time"];
+            $ids["fail2ban_max_retry"] 	= $_REQUEST["max_retry"];
+            $ids["fail2ban_find_time"] 	= $_REQUEST["find_time"];
+			$ids["fail2ban_email"] 		= $_REQUEST["email"];
+			\FreePBX::Sysadmin()->sync_fw($ids);
+			return true;
+		case "stop_id":
+			\FreePBX::Sysadmin()->runHook("fail2ban-stop");
+			while($this->intrusion_detection_status() == "running"){
+				sleep(1);
+			}
+			$this->setConfig("idstatus", "stopped");
+
+			return "stopped";
+		case "start_id":
+			\FreePBX::Sysadmin()->runHook("fail2ban-generate");
+			\FreePBX::Sysadmin()->runHook("fail2ban-start");
+			$this->setConfig("idstatus", "started");
+		break;
+		case "getIPsZone":
+			return $this->getipzone($_REQUEST["from"]);
+		break;
 		case "deletenetworks":
 			// We are handed a JSON string
 			if (!isset($_REQUEST['json'])) {
@@ -389,8 +509,21 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if (!is_array($nets)) {
 				throw new \Exception("Invalid JSON");
 			}
-			foreach ($nets as $net) {
-				$this->removeNetwork($net);
+			$all_net = array();
+
+			if($asfw["id_sync_fw"] == "enabled"){
+				$ids 		= $IDsetting["ids"];
+				foreach ($nets as $net) {
+					$this->removeNetwork($net);
+					$ids["fail2ban_whitelist"] = str_replace($net,"",$ids["fail2ban_whitelist"]);
+				}
+				$ids["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]); // remove double new lines
+				\FreePBX::Sysadmin()->sync_fw($ids);
+			}
+			else{
+				foreach ($nets as $net) {
+					$this->removeNetwork($net);
+				}
 			}
 			return true;
 		case "addnetworktozone":
@@ -409,7 +542,29 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			} else {
 				$descr = trim($_REQUEST['description']);
 			}
-			return $this->addNetworkToZone(trim($_REQUEST['net']), $_REQUEST['zone'], $descr);
+			$network2zone 	= $this->addNetworkToZone(trim($_REQUEST['net']), $_REQUEST['zone'], $descr);
+			$net 			= $_REQUEST['net'];
+			$global_net 	= "";
+			if($asfw["id_sync_fw"] == "enabled"){
+				switch($_REQUEST['zone']){
+					case "trusted":
+						$global_net = ($this->getConfig("trusted") == "true")? $net."\n" : "";
+					break;
+					case "internal":
+						$global_net = ($this->getConfig("local") == "true")? $net."\n" : "";
+					break;
+					case "other":
+						$global_net = ($this->getConfig("other") == "true")? $net."\n" : "";
+					break;
+				}
+				$ids = $IDsetting["ids"];
+				$ids["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]."\n".$global_net);
+			}
+
+			if($asfw["id_sync_fw"] == "enabled"){
+				\FreePBX::Sysadmin()->sync_fw($ids);
+			}
+			return $network2zone;
 		case "updatenetworks":
 			// We are handed a JSON string
 			if (!isset($_REQUEST['json'])) {
@@ -420,7 +575,26 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				throw new \Exception("Invalid JSON");
 			}
 			foreach ($nets as $net => $tmparr) {
+				$global_net = "";
 				$this->changeNetworksZone($net, $tmparr['zone'], $tmparr['description']);
+				if($asfw["id_sync_fw"] == "enabled"){
+					switch($tmparr['zone']){
+						case "trusted":
+							$global_net .= ($this->getConfig("trusted") == "true")? $net."\n" : "";
+						break;
+						case "internal":
+							$global_net .= ($this->getConfig("local") == "true")? $net."\n" : "";
+						break;
+						case "other":
+							$global_net .= ($this->getConfig("other") == "true")? $net."\n" : "";
+						break;
+					}
+					$ids = $IDsetting["ids"];
+					$ids["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]."\n".$global_net);
+				}
+			}
+			if($asfw["id_sync_fw"] == "enabled"){
+				\FreePBX::Sysadmin()->sync_fw($ids);
 			}
 			return true;
 		case "addrfc":
@@ -506,6 +680,25 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$current = $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
 			if($_REQUEST['option'] == "lefilter" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
 				$this->restartFirewall();
+			}
+
+			if($_REQUEST['option'] == "id_service" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
+				switch($_REQUEST['val']){
+					case "enabled":
+						$nt = \FreePBX::Notifications();
+						$nt->delete("firewall", "1");
+						$this->runHook("enable-fail2ban");
+						\FreePBX::Sysadmin()->runHook("fail2ban-stop");
+						\FreePBX::Sysadmin()->runHook("fail2ban-start");
+						$this->setConfig("idstatus","started");
+					break;
+					case "disabled":
+						$nt = \FreePBX::Notifications();
+						$nt->add_security("firewall", "1", _("Intrusion Detection Service Disabled"), _("Intrusion Detection Service will not be run on boot. Please, enable this service using the link below.") , "?display=firewall&page=advanced&tab=settings", $reset=true, $candelete=true);
+						$this->runHook("disable-fail2ban");
+						\FreePBX::Sysadmin()->runHook("fail2ban-stop");
+						$this->setConfig("idstatus","stopped");
+				}
 			}
 			return $current;
 
@@ -610,6 +803,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case 'disablerfw':
 			$this->setConfig('responsivefw', false);
 			return;
+		case 'intrusion_detection':
+			return;
 		default:
 			throw new \Exception("Unknown action $action");
 		}
@@ -625,6 +820,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					"savenets" => array('name' => 'savenets', 'style' => 'display: none', 'id' => 'savenets', 'value' => _("Save")),
 					"delsel" => array('name' => 'delsel', 'style' => 'display: none', 'id' => 'delsel', 'value' => _("Delete Selected")),
 					"saveints" => array('name' => 'saveints', 'style' => 'display: none', 'id' => 'saveints', 'value' => _("Update Interfaces")),
+					"saveids" => array('name' => 'saveids', 'style' => 'display: none', 'id' => 'saveids', 'value' => _("Save Intrusion Detection")),
 				);
 			} elseif ($request['page'] === "services") {
 				return array(
@@ -1276,7 +1472,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function getAdvancedSettings() {
-		$defaults = array("safemode" => "enabled", "masq" => "enabled", "lefilter" => "disabled", "customrules" => "disabled", "rejectpackets" => "disabled");
+		$defaults = array("safemode" => "enabled", "masq" => "enabled", "lefilter" => "disabled", "id_service" => "enabled", "id_sync_fw" => "legacy","customrules" => "disabled", "rejectpackets" => "disabled");
 		$settings = $this->getConfig("advancedsettings");
 		if (!is_array($settings)) {
 			$settings = $defaults;
@@ -1305,6 +1501,18 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("advancedsettings", $current);
 		}
 		return $current;
+	}
+
+	public function addsyncjob(){
+		$cron 		= \FreePBX::Cron();
+		$fwc_path	= $this->FreePBX->Config->get("AMPSBIN")."/fwconsole";
+		$cron->add("*/5 * * * * $fwc_path firewall sync > /dev/null 2>&1");
+	}
+
+	public function removesyncjob(){
+		$cron 		= \FreePBX::Cron();
+		$fwc_path	= $this->FreePBX->Config->get("AMPSBIN")."/fwconsole";
+		$cron->remove("*/5 * * * * $fwc_path firewall sync > /dev/null 2>&1");
 	}
 
 	// Create a cron job that runs every 15 mins that tries to restart firewall

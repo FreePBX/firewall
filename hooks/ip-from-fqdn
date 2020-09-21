@@ -1,0 +1,4 @@
+#!/bin/bash
+if [ "$1" != "" ]; then
+    nslookup $1 > /var/spool/asterisk/tmp/nslookup_result
+fi 

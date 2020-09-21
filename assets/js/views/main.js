@@ -1,12 +1,12 @@
 $(document).ready(function() {
 	// Don't let enter accidentally submit the form, which ends up disabling
 	// the firewall.
-	$("form").on("keypress", function(e) { if (e.keyCode == 13) e.preventDefault(); });
+	$("form").on("keypress", function(e) {if (e.keyCode == 13 &&  e.target.id != "whitelist") e.preventDefault(); });
 
 	// If we're not looking at the network or interface tab on page load, hide the action bar.
 	// This needs work, as it's hacky.
 	update_actionbar();
-	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces") {
+	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces" && $("#page_body li.active").data('name') !== "intrusion_detection") {
 		$("#action-bar").hide();
 	}
 
@@ -28,7 +28,6 @@ $(document).ready(function() {
 	// When someone clicks on 'Update Interfaces', post the form.
 	$("#saveints").on("click", save_interface_zones);
 
-
 	/**** Networks Tab ****/
 	// When someone changes a network select tab, update the zone attr
 	// so the background-colour changes (defined in the CSS selectors)
@@ -49,7 +48,200 @@ $(document).ready(function() {
 
 	// Clicked on 'Delete Selected'?
 	$("#delsel").on("click", delete_all_selected);
+
+	// Clicked on 'Save Intrusion Detection'?
+	$("#saveids").on("click", save_ids);
+
+	// Clicked on Registered Extension IPs
+	$("#idregextip").on("click", function(){
+		$("#whitelist").val(_("Scanning... please wait."));
+		if(typeof $("#idregextip").attr("active") === "undefined"){
+			$("#idregextip").attr("active", true);
+		}
+		else{
+			$("#idregextip").removeAttr("active");
+		}
+		$("#whitelist").val(update_whitelist());
+	});
+
+	// Clicked on id_stop
+	$("#id_stop").on("click", function(){
+		stop_id();
+	});
+
+	// Clicked on id_start
+	$("#id_start").on("click", function(){
+		start_id();
+	});
+
+	// Clicked on id_restart
+	$("#id_restart").on("click", function(){
+		start_id();
+	});
+
+	// Clicked on Refresh
+	$("#idrefresh").on("click", function(){
+		$("#whitelist").val(_("Importing new data... Please wait."));
+		$("#whitelist").val(update_whitelist());
+	});
+
+	// Clicked on Trusted zone
+	$("#idtrustedzone").on("click", function(){
+		$("#whitelist").val(_("Synchronization... Please wait."));
+		if(typeof $("#idtrustedzone").attr("active") === "undefined"){	
+			$("#idtrustedzone").attr("active" ,true);
+		}
+		else{
+			$("#idtrustedzone").removeAttr("active");
+		}
+		$("#whitelist").val(update_whitelist());
+	});
+	
+	// Clicked on Local zone
+	$("#idlocalzone").on("click", function(){
+		$("#whitelist").val(_("Synchronization... Please wait."));
+		if(typeof $("#idlocalzone").attr("active") === "undefined"){
+			$("#idlocalzone").attr("active", true);	
+		}
+		else{
+			$("#idlocalzone").removeAttr("active");	
+		}
+		$("#whitelist").val(update_whitelist());
+	});
+
+	// Clicked on Other zone
+	$("#idotherzone").on("click", function(){
+		$("#whitelist").val(_("Synchronization... Please wait."));
+		if(typeof $("#idotherzone").attr("active") === "undefined"){
+			$("#idotherzone").attr("active" ,true);
+		}
+		else{
+			$("#idotherzone").removeAttr("active");	
+		}
+		$("#whitelist").val(update_whitelist());
+	});
+
+	// Clicked on Clear All
+	$("#clearall").on("click", function(){
+		$("#whitelist").val(_(""));
+		$("#idregextip").removeAttr("active");
+		$("#idtrustedzone").removeAttr("active");
+		$("#idlocalzone").removeAttr("active");
+		$("#idotherzone").removeAttr("active");	
+		$("#whitelist").val(update_whitelist());	
+	});
+
 });
+
+/**** Intrusion Dectection Tab ****/
+function stop_id(){
+	var d = { command: 'stop_id', module: 'firewall'};
+	$("#doing").html('<i class="fa fa-spinner fa-spin"></i></i>'+' '+_("Please wait...."));
+	window.result = "";
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			console.debug(data);
+		}
+	});
+	setTimeout("window.location = window.location.href;",5500);
+	return true; 
+}
+
+function start_id(){
+	var d = { command: 'start_id', module: 'firewall'};
+	$("#doing").html('<i class="fa fa-spinner fa-spin"></i></i> '+' '+_("Please wait...."));
+	window.result = "";
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			console.debug(data);
+		}
+	});
+	setTimeout("window.location = window.location.href;",5500);
+	return true; 
+}
+
+function save_ids(){
+	get_button_status();
+	other 		= window.other == true ? "true": "false";
+	local 		= window.local == true ? "true": "false";
+	trusted 	= window.trusted == true ? "true": "false";
+	idregextip 	= window.idregextip == true ? "true": "false";
+
+	var d = { command: 'saveids', 
+			  module: 'firewall', 
+			  ban_time: $("#ban_time").val(),
+			  max_retry: $("#max_retry").val(),
+			  find_time: $("#find_time").val(),
+			  email: $("#email").val(),
+			  whitelist: $("#whitelist").val(),
+			  idregextip: idregextip,
+			  trusted: trusted,
+			  local: local,
+			  other: other,
+			};
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		complete: function(data) {
+			window.location.href = window.location.href;
+		}
+	});
+}
+
+function get_button_status(){
+	window.idregextip 	= (typeof $("#idregextip").attr("active") === "undefined")? false: true;
+	window.trusted 		= (typeof $("#idtrustedzone").attr("active") === "undefined")? false: true;
+	window.local 		= (typeof $("#idlocalzone").attr("active") === "undefined")? false: true;
+	window.other 		= (typeof $("#idotherzone").attr("active") === "undefined")? false: true;
+}
+
+function update_whitelist(){
+	whitelist	= "";
+	get_button_status();
+
+	if(window.idregextip){
+		whitelist += gettrusted('extregips');
+	}
+
+	if(window.trusted){
+		whitelist += gettrusted('trusted');
+	}
+
+	if(window.local){
+		whitelist += gettrusted('local');
+	}
+
+	if(window.other){
+		whitelist += gettrusted('other');
+	}
+
+	return whitelist;
+}
+
+function gettrusted(from){
+	var d = { command: 'getIPsZone', module: 'firewall', from: from	};
+	window.result = "";
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			$.each(data, function(idx, ip){
+				if(ip !== true){
+					window.result += ip+'\n';	
+				}					
+			});
+		}
+	});
+	
+	return window.result.replace("\n\n","\n");
+}
 
 /**** Responsive Firewall Tab ****/
 function update_rfw(event) {
@@ -228,7 +420,13 @@ function delete_all_selected(ignored) {
 
 function update_actionbar() {
 	// If we're not looking at networks or interfaces, hide it.
-	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces") {
+	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces" && $("#page_body li.active").data('name') !== "intrusion_detection") {
+		$("#action-bar").hide();
+		return;
+	}
+
+	// if Intrusion Detection is stopped
+	if (!$("#ban_time").is(":visible")){
 		$("#action-bar").hide();
 		return;
 	}
@@ -237,7 +435,7 @@ function update_actionbar() {
 	if ($("#page_body li.active").data('name') === "networks") {
 		$("#action-bar").show();
 		$("#savenets,#delsel").show();
-		$("#saveints").hide();
+		$("#saveints,#saveids").hide();
 		return;
 	}
 
@@ -245,14 +443,23 @@ function update_actionbar() {
 	if ($("#page_body li.active").data('name') === "interfaces") {
 		$("#action-bar").show();
 		$("#saveints").show();
+		$("#savenets,#delsel,#saveids").hide();
+		
+		return;
+	}
+
+	// If we're looking at intrusion detection, we only want 'save intrusion detection'
+	if ($("#page_body li.active").data('name') === "intrusion_detection") {
+		$("#action-bar").show();
 		$("#savenets,#delsel").hide();
+		$("#saveints").hide();
+		$("#saveids").show();
 		return;
 	}
 
 	// How did we get here?
 	console.log("error?");
 }
-
 
 function save_interface_zones() {
 	// Ajax setup
