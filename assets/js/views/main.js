@@ -452,7 +452,6 @@ function update_actionbar() {
 		// if Intrusion Detection is stopped
 		if (!$("#ban_time").is(":visible")){
 			$("#action-bar").hide();
-			return;
 		}
 		return;
 	}
