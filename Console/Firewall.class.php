@@ -112,8 +112,8 @@ class Firewall extends Command {
 		$as			= $fw->getAdvancedSettings();
 
 		// need to get F2B status like this way when this one is launch through cron job.
-		exec("ps -ef | grep fail2ban-server",$out, $ret); 
-		if ( $ret == 0 && strpos($out[0], "/usr/bin/python") !== false && count($IDsetting["banned"]) == 0 && trim($as["id_sync_fw"]) != "legacy"){
+		$out = shell_exec("pgrep -f fail2ban-server"); 
+		if (!empty($out) && count($IDsetting["banned"]) == 0 && trim($as["id_sync_fw"]) != "legacy"){
 			$output->writeln("<info>"._("Syncing....")."</info>");
 			
 			$whitelist 	= "";
