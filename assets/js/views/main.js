@@ -425,12 +425,6 @@ function update_actionbar() {
 		return;
 	}
 
-	// if Intrusion Detection is stopped
-	if (!$("#ban_time").is(":visible")){
-		$("#action-bar").hide();
-		return;
-	}
-
 	// If we're looking at networks, we want 'save' and 'delete selected'
 	if ($("#page_body li.active").data('name') === "networks") {
 		$("#action-bar").show();
@@ -454,6 +448,12 @@ function update_actionbar() {
 		$("#savenets,#delsel").hide();
 		$("#saveints").hide();
 		$("#saveids").show();
+		
+		// if Intrusion Detection is stopped
+		if (!$("#ban_time").is(":visible")){
+			$("#action-bar").hide();
+			return;
+		}
 		return;
 	}
 
