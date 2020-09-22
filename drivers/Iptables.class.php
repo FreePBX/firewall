@@ -50,7 +50,6 @@ class Iptables {
 		$current = $this->getCurrentIptables();
 		$ipvers = array("ipv6", "ipv4");
 		foreach ($ipvers as $i) {
-			var_dump($current[$i]['filter']['fpbx-rtp']);
 			if (!isset($current[$i]['filter']['fpbx-rtp'][0])) {
 				print "No fpbx-rtp in $i\n";
 				return false;

@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	// Don't let enter accidentally submit the form, which ends up disabling
 	// the firewall.
-	$("form").on("keypress", function(e) {if (e.keyCode == 13 &&  e.target.id != "whitelist") e.preventDefault(); });
+	$("form").on("keypress", function(e) {if (e.keyCode == 13 &&  (e.target.id != "whitelist" && e.target.id != "custom_whitelist")) e.preventDefault(); });
 
 	// If we're not looking at the network or interface tab on page load, hide the action bar.
 	// This needs work, as it's hacky.
@@ -54,14 +54,14 @@ $(document).ready(function() {
 
 	// Clicked on Registered Extension IPs
 	$("#idregextip").on("click", function(){
-		$("#whitelist").val(_("Scanning... please wait."));
 		if(typeof $("#idregextip").attr("active") === "undefined"){
 			$("#idregextip").attr("active", true);
 		}
 		else{
 			$("#idregextip").removeAttr("active");
 		}
-		$("#whitelist").val(update_whitelist());
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 
 	// Clicked on id_stop
@@ -81,44 +81,48 @@ $(document).ready(function() {
 
 	// Clicked on Refresh
 	$("#idrefresh").on("click", function(){
-		$("#whitelist").val(_("Importing new data... Please wait."));
-		$("#whitelist").val(update_whitelist());
+		//update_whitelist();
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 
 	// Clicked on Trusted zone
 	$("#idtrustedzone").on("click", function(){
-		$("#whitelist").val(_("Synchronization... Please wait."));
 		if(typeof $("#idtrustedzone").attr("active") === "undefined"){	
 			$("#idtrustedzone").attr("active" ,true);
 		}
 		else{
 			$("#idtrustedzone").removeAttr("active");
 		}
-		$("#whitelist").val(update_whitelist());
+		//update_whitelist();
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 	
 	// Clicked on Local zone
 	$("#idlocalzone").on("click", function(){
-		$("#whitelist").val(_("Synchronization... Please wait."));
 		if(typeof $("#idlocalzone").attr("active") === "undefined"){
 			$("#idlocalzone").attr("active", true);	
 		}
 		else{
 			$("#idlocalzone").removeAttr("active");	
 		}
-		$("#whitelist").val(update_whitelist());
+		//update_whitelist();
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 
 	// Clicked on Other zone
 	$("#idotherzone").on("click", function(){
-		$("#whitelist").val(_("Synchronization... Please wait."));
 		if(typeof $("#idotherzone").attr("active") === "undefined"){
 			$("#idotherzone").attr("active" ,true);
 		}
 		else{
 			$("#idotherzone").removeAttr("active");	
 		}
-		$("#whitelist").val(update_whitelist());
+		//update_whitelist();
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 
 	// Clicked on Clear All
@@ -128,12 +132,30 @@ $(document).ready(function() {
 		$("#idtrustedzone").removeAttr("active");
 		$("#idlocalzone").removeAttr("active");
 		$("#idotherzone").removeAttr("active");	
-		$("#whitelist").val(update_whitelist());	
+		$("#whitelisttable").bootstrapTable("removeAll");
 	});
 
+	$("#unbanall").on("click", function(){
+		unbanall();
+	})
+
+	$("#delwl").on("click", function(){
+		del_entire_whitelist();
+	});
 });
 
 /**** Intrusion Dectection Tab ****/
+function del_entire_whitelist(){
+	var d = { command: 'del_entire_whitelist', module: 'firewall'};
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			$('#whitelisttable').bootstrapTable('refresh');
+		}
+	});	
+}
 function stop_id(){
 	var d = { command: 'stop_id', module: 'firewall'};
 	$("#doing").html('<i class="fa fa-spinner fa-spin"></i></i>'+' '+_("Please wait...."));
@@ -150,6 +172,18 @@ function stop_id(){
 	return true; 
 }
 
+function unbanall(){
+	var d = { command: 'unbanall', module: 'firewall'};
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			$('#banlisttable').bootstrapTable('refresh');
+		}
+	});	
+}
+
 function start_id(){
 	var d = { command: 'start_id', module: 'firewall'};
 	$("#doing").html('<i class="fa fa-spinner fa-spin"></i></i> '+' '+_("Please wait...."));
@@ -159,7 +193,7 @@ function start_id(){
 		data: d,
 		async: false,
 		success: function(data) {
-			console.debug(data);
+			// Do something if necessary
 		}
 	});
 	setTimeout("window.location = window.location.href;",5500);
@@ -168,11 +202,6 @@ function start_id(){
 
 function save_ids(){
 	get_button_status();
-	other 		= window.other == true ? "true": "false";
-	local 		= window.local == true ? "true": "false";
-	trusted 	= window.trusted == true ? "true": "false";
-	idregextip 	= window.idregextip == true ? "true": "false";
-
 	var d = { command: 'saveids', 
 			  module: 'firewall', 
 			  ban_time: $("#ban_time").val(),
@@ -180,25 +209,30 @@ function save_ids(){
 			  find_time: $("#find_time").val(),
 			  email: $("#email").val(),
 			  whitelist: $("#whitelist").val(),
-			  idregextip: idregextip,
-			  trusted: trusted,
-			  local: local,
-			  other: other,
+			  idregextip: window.idregextip,
+			  trusted: window.trusted,
+			  local: window.local,
+			  other: window.other,
+			  whitelist: $("#whitelist").val()
 			};
 	$.ajax({
 		url: window.FreePBX.ajaxurl,
 		data: d,
+		success: function(){
+			$("#needApply").hide();
+		},
 		complete: function(data) {
+			
 			window.location.href = window.location.href;
 		}
 	});
 }
 
 function get_button_status(){
-	window.idregextip 	= (typeof $("#idregextip").attr("active") === "undefined")? false: true;
-	window.trusted 		= (typeof $("#idtrustedzone").attr("active") === "undefined")? false: true;
-	window.local 		= (typeof $("#idlocalzone").attr("active") === "undefined")? false: true;
-	window.other 		= (typeof $("#idotherzone").attr("active") === "undefined")? false: true;
+	window.idregextip 	= (typeof $("#idregextip").attr("active") === "undefined")? "false": "true";
+	window.trusted 		= (typeof $("#idtrustedzone").attr("active") === "undefined")? "false": "true";
+	window.local 		= (typeof $("#idlocalzone").attr("active") === "undefined")? "false": "true";
+	window.other 		= (typeof $("#idotherzone").attr("active") === "undefined")? "false": "true";
 }
 
 function update_whitelist(){
@@ -425,12 +459,6 @@ function update_actionbar() {
 		return;
 	}
 
-	// if Intrusion Detection is stopped
-	if (!$("#ban_time").is(":visible")){
-		$("#action-bar").hide();
-		return;
-	}
-
 	// If we're looking at networks, we want 'save' and 'delete selected'
 	if ($("#page_body li.active").data('name') === "networks") {
 		$("#action-bar").show();
@@ -454,6 +482,11 @@ function update_actionbar() {
 		$("#savenets,#delsel").hide();
 		$("#saveints").hide();
 		$("#saveids").show();
+		
+		// if Intrusion Detection is stopped
+		if (!$("#ban_time").is(":visible")){
+			$("#action-bar").hide();
+		}
 		return;
 	}
 

@@ -5,7 +5,6 @@
 <?php
 // i18n common things
 $ena = _("Enabled");
-$dis = _("Disabled");
 $leg = _("Legacy");
 
 
@@ -21,15 +20,14 @@ $sections = array(
 		_("Allow full Internet zone access to the Let's Encrypt acme-challenge folder on port 80."),
 		),
 	),
-	"id_service" => array( "desc" => _("Intrustion Detection Service"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+	"id_service" => array( "desc" => _("Intrusion Detection Service"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
 		_("Enable / Disable Intrusion Detection service on boot.").
 		"<br>"._("<strong>Enabled</strong>: This service will be started on boot.").
 		"<br>"._("<strong>Disabled</strong>: This service will be stopped and Intrusion Detection will not run on boot. Intrusion Detection will be stopped as well."),
 		),
 	),
-	"id_sync_fw" => array( "desc" => _("Intrustion Detection Sync Firewall"), "values" => array("enabled" => $ena, "disabled" => $dis, "legacy" => $leg), "docs" => array(
+	"id_sync_fw" => array( "desc" => _("Intrusion Detection Sync Firewall"), "values" => array("enabled" => $ena, "legacy" => $leg), "docs" => array(
 		_("<strong>Enabled</strong>: Automatically synchronize IPs from specific firewall zones to the whitelist. E.g: When you add to a trusted zone, local or otherwise, they will be added to the Intrusion Detection whitelist.").
-		"<br>"._("<strong>Disabled</strong>: The synchronization will be done manually from the Intrusion Detection tab (except the IP addresses of extensions registered through the cron job). Select what you want to do and save.").
 		"<br>"._("<strong>Legacy</strong>: Intrusion Detection whitelist will work like in the past with no automated synchronization to the whitelist.")
 		),
 	),

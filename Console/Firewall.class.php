@@ -90,6 +90,7 @@ class Firewall extends Command {
 			"list [zone]" => _("List all entries in zone 'zone'"),
 			"add [zone] [id id id..]" => _("Add to 'zone' the IDs provided."),
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
+			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist.")
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
 
 		);
@@ -108,43 +109,16 @@ class Firewall extends Command {
 	public function scan($output){	
 		$fw 		= \FreePBX::Firewall();
 		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
-		$wl			= $IDsetting["ids"]["fail2ban_whitelist"];
 		$as			= $fw->getAdvancedSettings();
 
 		// need to get F2B status like this way when this one is launch through cron job.
-		exec("ps -ef | grep fail2ban-server",$out, $ret); 
-		if ( $ret == 0 && strpos($out[0], "/usr/bin/python") !== false && count($IDsetting["banned"]) == 0 && trim($as["id_sync_fw"]) != "legacy"){
+		$out = shell_exec("pgrep -f fail2ban-server"); 
+		if (!empty($out) && trim($as["id_sync_fw"]) != "legacy"){
 			$output->writeln("<info>"._("Syncing....")."</info>");
-			
-			$whitelist 	= "";
-			if($fw->getConfig("idregextip") == "true"){
-				$whitelist .= "\n".$fw->getipzone("extregips");
-			}
-
-			if($fw->getConfig("trusted") == "true"){
-				$whitelist .= "\n".$fw->getipzone("trusted");
-			}
-
-			if($fw->getConfig("local") == "true"){
-				$whitelist .= "\n".$fw->getipzone("local");
-			}
-
-			if($fw->getConfig("other") == "true"){
-				$whitelist .= "\n".$fw->getipzone("other");
-			}
-
-			if(trim($wl) != trim($whitelist)){
-				// Need to update teh whitelist if there's a difference.
-				$fw->updateWhitelist($whitelist);
-			}
-		}
-		elseif(count($IDsetting["banned"]) >= 1){
-			$output->writeln("<error>"._("The syncing cannot be performed because there's still some banned ips into the blacklist.")."</error>");
-			$output->writeln("<info>"._("Please wait for the ban to complete or restart intrusion detection to flush this blacklist.")."</info>");
+			$fw->updateWhitelist($fw->getipzone("all"));
 		}
 		elseif($as["id_sync_fw"] == "legacy"){
-			$output->writeln("<error>"._("The syncing cannot be performed because, Intrustion Detection Sync Firewall is set with Legacy mode.")."</error>");
-			$output->writeln("<info>"._("Please please select another value in Intrustion Detection, Sync Firewall to Enabled or Disabled")."</info>");
+			$output->writeln("<error>"._("Syncing cannot be performed because the Intrusion Detection Sync Firewall setting is set to Legacy mode.")."</error>");
 		}
 	}
 

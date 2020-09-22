@@ -6,6 +6,8 @@ $astlogdir 		= !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log
 $astspooldir 	= !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
 $astrundir 		= !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk" ;
 $as 			= json_decode($setting["advancedsettings"]);
+$id_service 	= $as->id_service;
+echo("Intrusion Detection = $id_service");
 $thissvc 		= "firewall";
 
 // Include once because *sometimes*, on *some machines*, it crashes?
@@ -19,7 +21,7 @@ if (!Lock::canLock($thissvc)) {
 }
 
 // Regen fail2ban conf, if we can
-if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate") && $as->id_service == "enabled") {
+if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate") && $id_service == "enabled") {
 	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
 	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start $astrundir`;
 }
@@ -125,7 +127,7 @@ $f = $v->checkFile("bin/clean-iptables");
 `$f`;
 
 // Start fail2ban if we can
-if($as->id_service == "enabled"){
+if($id_service == "enabled"){
 	`service fail2ban start`;
 }
 
@@ -338,19 +340,19 @@ function getSettings() {
 }
 
 function shutdown() {
-	global $thissvc, $v;
+	global $thissvc, $v, $id_service;
 
 	Lock::unLock($thissvc);
 
 	// Clean up on exit. Start by stopping fail2ban, if it's running
-	if($as->id_service == "enabled"){
+	if($id_service == "enabled"){
 		`service fail2ban stop`;
 	}
 	// Flush all iptables rules
 	$f = $v->checkFile("bin/clean-iptables");
 	`$f`;
 	
-	if($as->id_service == "enabled"){
+	if($id_service == "enabled"){
 		// If sysadmin is configuring fail2ban, it'll need to regenerate the
 		// conf file
 		if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
@@ -469,7 +471,7 @@ function checkPhar() {
 
 function updateFirewallRules($firstrun = false) {
 	// Signature validation and firewall driver
-	global $v, $driver, $services, $thissvc, $fwversion, $netobj, $astspooldir, $astlogdir;
+	global $v, $driver, $services, $thissvc, $fwversion, $netobj, $astspooldir, $astlogdir, $id_service;
 
 	// Flush cache, read what the system thinks the firewall rules are.
 	$currentrules = $driver->refreshCache();
@@ -484,7 +486,7 @@ function updateFirewallRules($firstrun = false) {
 		// This is bad.
 		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in ".$astlogdir."/firewall.log\n");
 		Lock::unLock($thissvc);
-		if($as->id_service == "enabled"){
+		if($id_service == "enabled"){
 			`service fail2ban stop`;
 		}
 		$f = $v->checkFile("bin/clean-iptables");

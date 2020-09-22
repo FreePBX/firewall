@@ -17,13 +17,11 @@ default:
 	$about = "active";
 }
 
-$ss = $fw->getSmartSettings();
-$sa = FreePBX::Sysadmin();
-$asfw = \FreePBX::Firewall()->getAdvancedSettings();
+$ss     = $fw->getSmartSettings();
+$sa     = FreePBX::Sysadmin();
+$asfw   = $fw->getAdvancedSettings();
+$salic  = false;
 
-$module = module_functions::create();
-$salic = false;
-$module_status = $module->getinfo('sysadmin', MODULE_STATUS_ENABLED);
 if(!empty($module_status)){
   $salic                  = $sa->isActivated(); 
   $indetec                = $sa->getIntrusionDetection();
@@ -31,8 +29,11 @@ if(!empty($module_status)){
   $indetec["trusted"]     = $fw->getConfig("trusted")     == "true"   ? "Active"  : "";
   $indetec["local"]       = $fw->getConfig("local")       == "true"   ? "Active"  : "";
   $indetec["other"]       = $fw->getConfig("other")       == "true"   ? "Active"  : "";
-  $indetec["idstatus"]    = $fw->getConfig("idstatus")    == "stopped"? "style='display: none;'": "";
+  $indetec["idstatus"]    = $indetec["status"]            == "stopped"? "style='display: none;'": "";
   $indetec["legacy"]      = $asfw["id_sync_fw"]           == "legacy" ? "style='display: none;'": "";
+  if($indetec["legacy"] == ""){
+    $indetec["ids"]["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $fw->getConfig("dynamic_whitelist"));
+  }
 }
 ?>
 
