@@ -90,6 +90,7 @@ class Firewall extends Command {
 			"list [zone]" => _("List all entries in zone 'zone'"),
 			"add [zone] [id id id..]" => _("Add to 'zone' the IDs provided."),
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
+			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist.")
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
 
 		);

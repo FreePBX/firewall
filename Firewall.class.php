@@ -52,13 +52,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$iax_driver		= (is_array($iax_driver)) && !empty($iax_driver["data"]) 		? explode("\n",$iax_driver["data"]) 	: array();
 
 		foreach($sip_driver as $line => $content){
-			if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $content, $ip_match)) {
+			if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $content, $ip_match) && strpos($content,"OK") !== false) {
 				$ip_reg[] = $ip_match[0];
 			 }
 		}
 
 		foreach($pjsip_driver as $line => $content){
-			if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $content, $ip_match)) {
+			if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $content, $ip_match) && strpos($content,"Avail") !== false) {
 				$ip_reg[] = $ip_match[0];
 			 }
 		}
