@@ -1,0 +1,2 @@
+#!/bin/bash
+/sbin/chkconfig fail2ban on

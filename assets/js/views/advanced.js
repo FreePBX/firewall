@@ -274,7 +274,17 @@ $(document).ready(function() {
 	// Advanced Settings Page
 	$(".advsetting").on("click", advanced_button_click);
 
-
+	$("input[name=id_sync_fw]").click( function (){
+		var v = $(this).val();
+		$.ajax({
+			url: window.FreePBX.ajaxurl,
+			data: { command: "switchlegacy", module: 'firewall', option: v },
+			success: function() { 
+				// Do something if necessary.
+			}
+		});
+	})
+	
 	// Advanced Custom Rules
 	$(window).resize(function() {
 		fix_codemirror_long_line();
