@@ -17,13 +17,10 @@ default:
 	$about = "active";
 }
 
-$ss = $fw->getSmartSettings();
-$sa = FreePBX::Sysadmin();
-$asfw = \FreePBX::Firewall()->getAdvancedSettings();
-
-$module = module_functions::create();
+$ss     = $fw->getSmartSettings();
+$sa     = FreePBX::Sysadmin();
+$asfw   = $fw->getAdvancedSettings();
 $salic = false;
-$module_status = $module->getinfo('sysadmin', MODULE_STATUS_ENABLED);
 if(!empty($module_status)){
   $salic                  = $sa->isActivated(); 
   $indetec                = $sa->getIntrusionDetection();

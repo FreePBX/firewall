@@ -455,8 +455,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (!file_exists($view)) {
 			throw new \Exception("Can't find page $page");
 		}
+		$module = \module_functions::create();
 
-		return load_view($view, array("fw" => $this));
+		return load_view($view, array("fw" => $this, "module_status" => $module->getinfo('sysadmin', MODULE_STATUS_ENABLED)));
 	}
 
 	public function getipzone($from){
