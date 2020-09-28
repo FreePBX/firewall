@@ -483,10 +483,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		/**
 		 * Used by console to syncing / updating the whitelist.
 		 */
-		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
+		$IDsetting	= $this->FreePBX->Sysadmin->getIntrusionDetection();
 		$ids = $IDsetting["ids"];
 		$ids["fail2ban_whitelist"] = $wl; 
-		\FreePBX::Sysadmin()->sync_fw($ids);
+		$this->FreePBX->Sysadmin->sync_fw($ids);
 	}
 
 	// Ajax calls
@@ -496,7 +496,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function ajaxHandler() {
 		$asfw 		= \FreePBX::Firewall()->getAdvancedSettings();
-		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
+		$IDsetting	= $this->FreePBX->Sysadmin->getIntrusionDetection();
 		switch ($_REQUEST['command']) {
 		case "saveids":
 			$this->setConfig("idregextip", $_REQUEST['idregextip']);
@@ -508,10 +508,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
             $ids["fail2ban_max_retry"] 	= $_REQUEST["max_retry"];
             $ids["fail2ban_find_time"] 	= $_REQUEST["find_time"];
 			$ids["fail2ban_email"] 		= $_REQUEST["email"];
-			\FreePBX::Sysadmin()->sync_fw($ids);
+			$this->FreePBX->Sysadmin->sync_fw($ids);
 			return true;
 		case "stop_id":
-			\FreePBX::Sysadmin()->runHook("fail2ban-stop");
+			$this->FreePBX->Sysadmin->runHook("fail2ban-stop");
 			while($this->intrusion_detection_status() == "running"){
 				sleep(1);
 			}
@@ -519,8 +519,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 			return "stopped";
 		case "start_id":
-			\FreePBX::Sysadmin()->runHook("fail2ban-generate");
-			\FreePBX::Sysadmin()->runHook("fail2ban-start");
+			$this->FreePBX->Sysadmin->runHook("fail2ban-generate");
+			$this->FreePBX->Sysadmin->runHook("fail2ban-start");
 			$this->setConfig("idstatus", "started");
 		break;
 		case "getIPsZone":
@@ -544,7 +544,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$ids["fail2ban_whitelist"] = str_replace($net,"",$ids["fail2ban_whitelist"]);
 				}
 				$ids["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]); // remove double new lines
-				\FreePBX::Sysadmin()->sync_fw($ids);
+				$this->FreePBX->Sysadmin->sync_fw($ids);
 			}
 			else{
 				foreach ($nets as $net) {
@@ -588,7 +588,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 
 			if($asfw["id_sync_fw"] == "enabled"){
-				\FreePBX::Sysadmin()->sync_fw($ids);
+				$this->FreePBX->Sysadmin->sync_fw($ids);
 			}
 			return $network2zone;
 		case "updatenetworks":
@@ -620,7 +620,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				}
 			}
 			if($asfw["id_sync_fw"] == "enabled"){
-				\FreePBX::Sysadmin()->sync_fw($ids);
+				$this->FreePBX->Sysadmin->sync_fw($ids);
 			}
 			return true;
 		case "addrfc":
@@ -714,15 +714,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 						$nt = \FreePBX::Notifications();
 						$nt->delete("firewall", "1");
 						$this->runHook("enable-fail2ban");
-						\FreePBX::Sysadmin()->runHook("fail2ban-stop");
-						\FreePBX::Sysadmin()->runHook("fail2ban-start");
+						$this->FreePBX->Sysadmin->runHook("fail2ban-stop");
+						$this->FreePBX->Sysadmin->runHook("fail2ban-start");
 						$this->setConfig("idstatus","started");
 					break;
 					case "disabled":
 						$nt = \FreePBX::Notifications();
 						$nt->add_security("firewall", "1", _("Intrusion Detection Service Disabled"), _("Intrusion Detection Service will not be run on boot. Please, enable this service using the link below.") , "?display=firewall&page=advanced&tab=settings", $reset=true, $candelete=true);
 						$this->runHook("disable-fail2ban");
-						\FreePBX::Sysadmin()->runHook("fail2ban-stop");
+						$this->FreePBX->Sysadmin->runHook("fail2ban-stop");
 						$this->setConfig("idstatus","stopped");
 				}
 			}
