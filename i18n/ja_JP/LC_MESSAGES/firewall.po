@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 12:58+0000\n"
+"POT-Creation-Date: 2020-10-06 06:29+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -1217,6 +1217,11 @@ msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
 "<strong>not</strong> a member of the Trusted zone. It is highly recommended "
 "to add this client to your Trusted Zone to avoid accidental lockouts."
+msgstr ""
+
+#: phar/build.php:18
+#, php-format
+msgid "The file (%s) could not be found!"
 msgstr ""
 
 #: views/view.settings.php:33
