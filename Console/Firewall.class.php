@@ -109,7 +109,6 @@ class Firewall extends Command {
 	public function scan($output){	
 		$fw 		= \FreePBX::Firewall();
 		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
-		$wl			= $IDsetting["ids"]["fail2ban_whitelist"];
 		$as			= $fw->getAdvancedSettings();
 
 		// need to get F2B status like this way when this one is launch through cron job.
@@ -134,10 +133,7 @@ class Firewall extends Command {
 				$whitelist .= "\n".$fw->getipzone("other");
 			}
 
-			if(trim($wl) != trim($whitelist)){
-				// Need to update teh whitelist if there's a difference.
-				$fw->updateWhitelist($whitelist);
-			}
+			$fw->updateWhitelist($whitelist);
 		}
 		elseif(count($IDsetting["banned"]) >= 1){
 			$output->writeln("<error>"._("The syncing cannot be performed because there's still some banned ips into the blacklist.")."</error>");

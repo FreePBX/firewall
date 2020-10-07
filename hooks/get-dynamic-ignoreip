@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+    if (!@include_once(getenv('FREEPBX_CONF') ? getenv('FREEPBX_CONF') : '/etc/freepbx.conf')) { 
+        include_once('/etc/asterisk/freepbx.conf'); 
+        $restrict_mods = array('firewall' => true);
+    }
+    $fw     = FreePBX::Firewall();
+    $FC     = "/usr/bin/fail2ban-client";
+    $cmd    = "$FC status | grep 'Jail list' | cut -f3 | sed -e 's/ *//g' -e 's/\,/\\n/g'";
+    exec($cmd, $out, $ret);
+    if($ret === 0 && is_array($out)){
+        foreach($out as $jail){
+            exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $out2);
+            $whitelist = implode("\n",$out2);
+            $fw->setConfig("dynamic_whitelist",$whitelist);
+            break;             
+        }
+    }
+    exit();
+?>

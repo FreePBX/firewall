@@ -170,7 +170,7 @@ $ftbhtml = '<!--Ban Time-->
 						<i class="fa fa-refresh" title="'._("Updates the whitelist according to the options chosen.").'"></i>
 					</button> 				 
 					<button id="idregextip" class="btn btn-secondary" type="button" '.$idregextip.'>
-						'. _("Registered Extension IPs").'
+						'. _("Registered Ext. IPs").'
 					</button> 
 					<button id="idtrustedzone" class="btn btn-secondary" type="button" '.$trusted.'>
 						'._("Trusted Zone").'
@@ -196,37 +196,141 @@ $ftbhtml = '<!--Ban Time-->
 </div>
 <!-- End of Sync -->
 <div class="element-container" '.$idstatus.'>
-</div>
-<!--Whitelist-->
-<div class="element-container" '.$idstatus.'>
-	<div class="row">
-		<div class="form-group">
-			<div class="col-md-3">
-				<label class="control-label" for="whitelist">'. _("Whitelist") .'</label>
-				<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
+</div>';
+if($legacy != ""){
+	$ftbhtml.='
+	<!--Whitelist-->
+	<div class="element-container" '.$idstatus.'>
+		<div class="row">
+			<div class="form-group">
+				<div class="col-md-3">
+					<label class="control-label" for="whitelist">'. _("Whitelist") .'</label>
+					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
+				</div>
+				<div class="col-md-9">
+					<textarea class="form-control" id="whitelist" name="whitelist" rows="'.(count($ids['fail2ban_whitelist']) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
+				</div>
 			</div>
-			<div class="col-md-9">
-				<textarea class="form-control" id="whitelist" name="whitelist" rows="'.(count($ids['fail2ban_whitelist']) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
+		</div>
+		<p></p>
+		<div class="row">
+			<div class="col-md-12">
+				<span id="whitelist-help" class="help-block fpbx-help-block">'. _("IP's that can never be banned.").'</span>
 			</div>
 		</div>
 	</div>
-	<p></p>
-	<div class="row">
-		<div class="col-md-12">
-			<span id="whitelist-help" class="help-block fpbx-help-block">'. _("IP's that can never be banned.").'</span>
+	<!--END Whitelist-->	
+	<div class="panel panel-default" '.$idstatus.'>
+	<div class="panel-heading">
+		<h3 class="panel-title">'._("IP's that are currently banned.").'</h3>
+	</div>
+	<div class="panel-body" id="banned-area">
+		'.(!empty($banned)?implode(", ", (array)$banned):_("No Banned IP's")).'
+	</div>
+	</div>
+	';	
+}
+else{
+
+	$ftbhtml.='
+	<!--Whitelist-->
+	<div class="element-container" '.$idstatus.'>
+		<div class="row">
+			<div class="form-group">
+				<div class="col-md-3">
+					<label class="control-label" for="whitelist">'. _("Custom Whitelist") .'</label>
+					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
+				</div>
+				<div class="col-md-9">
+					<textarea class="form-control" id="whitelist" name="whitelist" rows="'.(count($ids['whitelist']) + 1).'"">'.$ids['whitelist'].'</textarea>
+				</div>
+			</div>
+		</div>
+		<p></p>
+		<div class="row">
+			<div class="col-md-12">
+				<span id="whitelist-help" class="help-block fpbx-help-block">'. _("Custom IP's that can never be banned.").'</span>
+			</div>
 		</div>
 	</div>
-</div>
-<!--END Whitelist-->
-<div class="panel panel-default" '.$idstatus.'>
-  <div class="panel-heading">
-    <h3 class="panel-title">'._("IP's that are currently banned.").'</h3>
-  </div>
-  <div class="panel-body">
-    '.(!empty($banned)?implode(", ", (array)$banned):_("No Banned IP's")).'
-  </div>
-</div>
-';
+	<br>
+	<div class="container-fuild">
+		<div class="panel panel-default" '.$idstatus.' >
+			<div class="panel-heading">
+				<h3 class="panel-title">'._("IP's that are currently trusted.").'</h3>
+			</div>
+			<br>
+			<div id="toolbarwl">
+				&nbsp;&nbsp;&nbsp;<button class="btn btn-default" type="button" title="'._("Delete entire custom whitelist").' "id="delwl">'._("Delete Custom Whitelist").' <i class="fa fa-trash"></i></button>
+			</div>
+			<div align="justify" style="width: 100%; ">
+				<table 
+					id="whitelisttable" 
+					data-cache="false" 
+					data-escape="true"
+					data-row-style="rowStyle"
+					data-toolbar="#toolbarwl" 
+					data-url="ajax.php?module=firewall&command=getwhitelist" 
+					data-show-refresh="true" 
+					data-maintain-selected="true" 
+					data-show-columns="true" 
+					data-show-export="true"
+					data-export-types="[\'txt\']"
+					data-show-toggle="true" 
+					data-toggle="table" 
+					data-pagination="true" 
+					data-search="true" 
+					class="table">
+					<thead>
+						<tr>
+							<th data-formatter="actionwlFormatter" data-events="actionwlEvents" data-width="50px" data-field="action" class="text-center">'._("Action").'</th>
+							<th data-width="200px" data-field="source" >'._("Source").'</th>
+							<th data-field="type" >'._("Type").'</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!--END Whitelist-->
+	<br>
+	<div class="container-fuild">
+		<div class="panel panel-default" '.$idstatus.' >
+			<div class="panel-heading">
+				<h3 class="panel-title">'._("IP's that are currently banned.").'</h3>
+			</div>
+			<br>
+			<div id="toolbar">
+				&nbsp;&nbsp;&nbsp;<button class="btn btn-default" type="button" id="unbanall">'._("Unban All").'</button>
+			</div>
+			<div align="justify" style="width: 100%; ">
+				<table 
+					id="banlisttable" 
+					data-cache="false" 
+					data-escape="true"
+					data-url="ajax.php?module=firewall&command=getbannedlist" 
+					data-show-refresh="true" 
+					data-toolbar="#toolbar"
+					data-row-style="rowStyleBan"
+					data-maintain-selected="true" 
+					data-show-columns="true" 
+					data-show-toggle="true" 
+					data-toggle="table" 
+					data-pagination="true" 
+					data-search="true" 
+					class="table table-striped">
+					<thead>
+						<tr>
+							<th data-formatter="actionFormatter" data-events="actionEvents" data-width="50px" data-field="action" class="text-center">'._("Action").'</th>
+							<th data-width="200px" data-field="ip" >'._("IP Banned").'</th>
+							<th data-field="type" >'._("Type").'</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>';
+}
 
 //only show the rest of the options if we have fail2ban installed
 if ($i_d_conf) {
@@ -234,3 +338,151 @@ if ($i_d_conf) {
 }
 ?>
 
+<script>
+  window.actionEvents = {
+    'click .unban': function (e, value, row) {
+		console.log("sdsds");
+		var d = { command: 'unban', module: 'firewall', ip: row.ip};
+		$.ajax({
+			url: window.FreePBX.ajaxurl,
+			data: d,
+			async: false,
+			success: function(data) {
+				// Do something if necessary
+			}
+		});	 
+		$('#banlisttable').bootstrapTable('refresh');
+	},
+	'click .move-to-whitelist': function (e, value, row) {
+		var d = { command: 'move_to_whitelist', module: 'firewall', ip: row.ip};
+		$.ajax({
+			url: window.FreePBX.ajaxurl,
+			data: d,
+			async: false,
+			success: function(data) {
+				// Do something if necessary
+			}
+		});	 
+		$('#banlisttable').bootstrapTable('refresh');
+		$('#whitelisttable').bootstrapTable('refresh');
+	},
+  }
+
+  window.actionwlEvents = {
+	'click .del-custom': function (e, value, row) {
+		var d = { command: 'del_custom', module: 'firewall', ip: row.source};
+		$.ajax({
+			url: window.FreePBX.ajaxurl,
+			data: d,
+			async: false,
+			success: function(data) {
+				// Do something if necessary
+			}
+		});	 
+		$('#whitelisttable').bootstrapTable('refresh');
+	}
+  }
+
+  function actionFormatter(value, row, index) {
+    return [
+      '<i class="fa fa-trash unban" title="'+_("Remove this one.")+'" > <i class="fa fa-share move-to-whitelist" title="'+_("Move this one to the custom whitelist.")+'"></i>'
+    ].join('')
+  }
+
+  function actionwlFormatter(value, row, index) {
+	if(row.type == "Custom"){
+		return [
+		'<i class="fa fa-trash del-custom" title="'+_("Delete this one")+'">'
+		].join('')
+	}
+    return [
+      ''
+    ].join('')
+  }
+
+    function rowStyleBan(row, index) {
+
+	switch(row.type){
+		case "(SIP)":
+			return {
+				css: {
+						background: '#FCDBDB',
+					}
+			}
+		case "(SSH)":
+			return {
+				css: {
+						background: '#FFCECE',
+					}
+			}
+		case "(apache-auth)":
+			return {
+				css: {
+						background: '#FCB9BC',
+					}
+			}
+		case "(FTP)":
+			return {
+				css: {
+						background: '#FFA7AD',
+					}
+			}
+		case "(BadBots)":
+			return {
+				css: {
+						background: '#FF8B90',
+					}
+			}	
+		default:
+			return {
+				css: {
+					background: 'white'
+				}
+			}
+	}
+
+  }
+
+  function rowStyle(row, index) {
+
+	switch(row.type){
+		case "Trusted":
+			return {
+				css: {
+						background: '#A2EDBF',
+					}
+			}
+		case "Local":
+			return {
+				css: {
+						background: '#B4F0C6',
+					}
+			}
+		case "Other":
+			return {
+				css: {
+						background: '#71F098',
+					}
+			}
+		case "Custom":
+			return {
+				css: {
+						background: '#3EE871',
+					}
+			}
+		case "Ext. Regsitered":
+			return {
+				css: {
+						background: '#BCF071',
+					}
+			}	
+		default:
+			return {
+				css: {
+					background: 'white'
+				}
+			}
+	}
+
+  }
+</script>
