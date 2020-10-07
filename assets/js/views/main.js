@@ -218,7 +218,11 @@ function save_ids(){
 	$.ajax({
 		url: window.FreePBX.ajaxurl,
 		data: d,
+		success: function(){
+			$("#needApply").hide();
+		},
 		complete: function(data) {
+			
 			window.location.href = window.location.href;
 		}
 	});

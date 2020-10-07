@@ -190,7 +190,7 @@ $ftbhtml = '<!--Ban Time-->
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<span id="import-help" class="help-block fpbx-help-block">'. _("Import all ip address from different type of sources.").' '._("You can mixe Registered Extension IPs, Trusted, Local, and Other at once. Also, you can Clear all to remove all entries into the whitelist.'").'</span>
+			<span id="import-help" class="help-block fpbx-help-block">'. _("Import all IP addresses from all source types.").' '._("You can select Registered Extension IPs, and various zones at once. Also, you can select Clear All to remove all entries from the whitelist.'").'</span>
 		</div>
 	</div>
 </div>
@@ -215,14 +215,14 @@ if($legacy != ""){
 		<p></p>
 		<div class="row">
 			<div class="col-md-12">
-				<span id="whitelist-help" class="help-block fpbx-help-block">'. _("IP's that can never be banned.").'</span>
+				<span id="whitelist-help" class="help-block fpbx-help-block">'. _("IPs that can never be banned.").'</span>
 			</div>
 		</div>
 	</div>
 	<!--END Whitelist-->	
 	<div class="panel panel-default" '.$idstatus.'>
 	<div class="panel-heading">
-		<h3 class="panel-title">'._("IP's that are currently banned.").'</h3>
+		<h3 class="panel-title">'._("IPs that are currently banned.").'</h3>
 	</div>
 	<div class="panel-body" id="banned-area">
 		'.(!empty($banned)?implode(", ", (array)$banned):_("No Banned IP's")).'
@@ -254,6 +254,10 @@ else{
 		</div>
 	</div>
 	<br>
+	<div class="alert alert-warning alert-dismissible" id="needApply" style="display: none">
+		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Warning!</strong> '._("The changes are not yet applied. They will be applied during the next synchronization. However, you can apply them immediately by clicking the Save button.").'.
+  	</div>
 	<div class="container-fuild">
 		<div class="panel panel-default" '.$idstatus.' >
 			<div class="panel-heading">
@@ -379,6 +383,7 @@ if ($i_d_conf) {
 				// Do something if necessary
 			}
 		});	 
+		$("#needApply").show();
 		$('#whitelisttable').bootstrapTable('refresh');
 	}
   }
@@ -470,7 +475,7 @@ if ($i_d_conf) {
 						background: '#3EE871',
 					}
 			}
-		case "Ext. Regsitered":
+		case "Ext. Registered":
 			return {
 				css: {
 						background: '#BCF071',

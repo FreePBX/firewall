@@ -19,7 +19,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 	
 	public function getTrustedZone($from){
-		$networkmaps = \FreePBX::Firewall()->get_networkmaps();
+		$networkmaps = $this->FreePBX->Firewall->get_networkmaps();
 		$trusted = "";
 		foreach($networkmaps as $ip => $type){
 			if($type == $from){
@@ -346,7 +346,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				// Cast it to a string if it's anything else, and then make sure
 				// it doesn't have any spaces.
 				$filename .= ".".preg_replace("/[[:blank:]]+/", "", (string) $params);
-				dbug($filename);
 			}
 		}
 		
@@ -481,7 +480,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			case "all": 
 				$list = array();
 				if($this->getConfig("idregextip") == "true" ){
-					$list["Ext. Regsitered"] = explode("\n", $this->getipzone("extregips"));
+					$list["Ext. Registered"] = explode("\n", $this->getipzone("extregips"));
 				}
 				if($this->getConfig("trusted") == "true"){
 					$list["Trusted"] = explode("\n", $this->getipzone("trusted"));
@@ -514,6 +513,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function updateWhitelist($wl){
 		/**
 		 * Used by console to syncing / updating the whitelist dynamically.
+		 * Only the difference is used between before and after the synchronisation.
 		 */
 		$this->runHook("get-dynamic-ignoreip");
 		$wl 			 = preg_replace('!\n+!', chr(10), $wl);
@@ -534,10 +534,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 		}
 
+		// Get inet
+		$ifconfig = fpbx_which("ifconfig");
+		exec($ifconfig." -a | grep 'inet' | grep -v 'inet6' | grep -oE '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b'", $inet, $ret);
+
 		// Removing IP from the dynamic whitelist.
 		$todel_ignore = array_diff($previous_ignore, $current_ignore);
 		foreach($todel_ignore as $line){
-			if($line != "127.0.0.1" && $line != "193.107.20.12" ){
+			if(!in_array($line, $inet)){
 				$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => $line ));
 			} 
 		}
@@ -545,7 +549,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// Add IP from the dynamic whitelist.
 		$toadd_ignore = array_diff($current_ignore, $previous_ignore);
 		foreach($toadd_ignore as $line){				
-			if($line != "127.0.0.1" && $line != "193.107.20.12" ){
+			if(!in_array($line, $inet)){
 				$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => $line ));
 			} 
 		}
@@ -563,6 +567,33 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$asfw 		= $this->getAdvancedSettings();
 		$IDsetting	= $this->FreePBX->Sysadmin->getIntrusionDetection();
 		switch ($_REQUEST['command']) {
+		case "switchlegacy":
+			if(!empty($_REQUEST["option"])){
+				switch($_REQUEST["option"]){
+					case "enabled":
+					case "disabled":
+						if($asfw["id_sync_fw"] == "legacy"){
+							// That was legacy to become enabled or disabled
+							$this->setConfig("custom_whitelist", $IDsetting["ids"]["fail2ban_whitelist"]);
+							$this->setConfig("idregextip", "false");
+							$this->setConfig("trusted", "false");
+							$this->setConfig("local", "false");
+							$this->setConfig("other", "false");
+							$this->updateWhitelist($IDsetting["ids"]["fail2ban_whitelist"]);
+						}						
+					break;
+					case "legacy":
+						if($asfw["id_sync_fw"] != "legacy"){
+							 // That was enabled or disabled to become legacy
+							$IDsetting["ids"]["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $this->getConfig("dynamic_whitelist")."\n".$this->getConfig("custom_whitelist")."\n".$this->getExtRegistered());
+							$this->setConfig("custom_whitelist", "");
+							$this->setConfig("dynamic_whitelist", "");
+							$this->FreePBX->Sysadmin->sync_fw($IDsetting["ids"]);
+						}	
+					break;
+				}
+			}
+			return true;
 		case "move_to_whitelist":
 			$custome_wl = $this->getConfig("custom_whitelist");
 			$this->setConfig("custom_whitelist", preg_replace('!\n+!', chr(10),$custome_wl."\n".$_REQUEST["ip"]."\n"));
@@ -578,7 +609,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "getNewWhitelist":
 			$result = array();
 			if($_REQUEST["idregextip"] == "true" ){
-				$list["Ext. Regsitered"] = explode("\n", $this->getipzone("extregips"));
+				$list["Ext. Registered"] = explode("\n", $this->getipzone("extregips"));
 			}
 			if($_REQUEST["trusted"] == "true"){
 				$list["Trusted"] = explode("\n", $this->getipzone("trusted"));
@@ -683,13 +714,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			while($this->intrusion_detection_status() == "running"){
 				sleep(1);
 			}
-			$this->setConfig("idstatus", "stopped");
 
 			return "stopped";
 		case "start_id":
 			$this->FreePBX->Sysadmin->runHook("fail2ban-generate");
 			$this->FreePBX->Sysadmin->runHook("fail2ban-start");
-			$this->setConfig("idstatus", "started");
 		break;
 		case "getIPsZone":
 			return $this->getipzone($_REQUEST["from"]);
@@ -884,14 +913,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 						$this->runHook("enable-fail2ban");
 						$this->FreePBX->Sysadmin->runHook("fail2ban-stop");
 						$this->FreePBX->Sysadmin->runHook("fail2ban-start");
-						$this->setConfig("idstatus","started");
 					break;
 					case "disabled":
 						$nt = \FreePBX::Notifications();
 						$nt->add_security("firewall", "1", _("Intrusion Detection Service Disabled"), _("Intrusion Detection Service will not be run on boot. Please, enable this service using the link below.") , "?display=firewall&page=advanced&tab=settings", $reset=true, $candelete=true);
 						$this->runHook("disable-fail2ban");
 						$this->FreePBX->Sysadmin->runHook("fail2ban-stop");
-						$this->setConfig("idstatus","stopped");
 				}
 			}
 			return $current;
