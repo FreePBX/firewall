@@ -140,8 +140,7 @@ class Firewall extends Command {
 				if(!empty($as['lefilter']) && $as['lefilter'] == "disabled"){
 					$res = $fw->setAdvancedSetting('lefilter', 'enabled');
 					if(!empty($res['lefilter']) && $res['lefilter'] == 'enabled'){
-						$output->writeln("<info>"._("Lets Encrypt rules enabled successfully. Restarting Firewall...")."</info>");	
-						$fw->restartFirewall("off");
+						$output->writeln("<info>"._("Lets Encrypt rules enabled successfully. Restarting Firewall...")."</info>");
 					}
 					else{
 						$output->writeln("<error>"._("An error has occurred!")."</error>");
@@ -157,8 +156,7 @@ class Firewall extends Command {
 				if(!empty($as['lefilter']) && $as['lefilter'] == "enabled"){
 					$res = $fw->setAdvancedSetting('lefilter', 'disabled');
 					if(!empty($res['lefilter']) && $res['lefilter'] == 'disabled'){
-						$output->writeln("<info>"._("Lets Encrypt rules disabled successfully. Restarting Firewall...")."</info>");	
-						$fw->restartFirewall("off");
+						$output->writeln("<info>"._("Lets Encrypt rules disabled successfully. Restarting Firewall...")."</info>");
 					}
 					else{
 						$output->writeln("<error>"._("An error has occurred!")."</error>");
