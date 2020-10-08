@@ -1,6 +1,10 @@
 <?php
 
 include_once 'asmanager.php';
+include_once 'IpUtils.php';
+
+use \Symfony\Component\HttpFoundation\IpUtils;
+
 
 $setting = getSettings();
 $astlogdir = !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
@@ -121,7 +125,7 @@ function successfulauth_handler($e, $params, $server, $port) {
 	// Whitelist it for 90 seconds.
 	if (isset($params['UsingPassword']) && $params['UsingPassword'] === "1") {
 		$tmparr = explode("/", $params['RemoteAddress']);
-		if (strpos($tmparr[2], '127') === 0 || strpos($tmparr[2], 'fe') === 0) {
+		if ( is_IPlocal($tmparr[2]) ) {
 			// Localhost. Ignore.
 			return;
 		}
@@ -138,7 +142,7 @@ function userevent_handler($e, $params, $server, $port) {
 	// Someone authenticated, and we need to add them to the whitelist, just in case.
 	if (isset($params['ip'])) {
 		$ip = $params['ip'];
-		if (strpos($ip, '127') === 0 || strpos($ip, 'fe') === 0) {
+		if ( is_IPlocal($ip) ) {
 			// Localhost. Ignore.
 			return;
 		}
@@ -160,7 +164,7 @@ function failed_handler($e, $params, $server, $port) {
 
 	// If it's link-local, or, 127.*, this is bad, and we should wall
 	// about it.
-	if (strpos($tmparr[2], '127') === 0 || strpos($tmparr[2], 'fe') === 0) {
+	if ( is_IPlocal($tmparr[2]) ) {
 		wall("Local machine failing auth - Something is misconfigured! Event ".json_encode($params));
 		return;
 	}
@@ -282,3 +286,7 @@ function needs_whitelist($ip) {
 	return true;
 }
 
+function is_IPlocal($ip) {
+	$subnet = ["127.0.0.0/8", "169.254.0.0/16", "::1/128", "fe80::/10"];
+	return IpUtils::checkIp($ip, $subnet);
+}
