@@ -16,7 +16,9 @@ $sections = array(
 		),
 	),
 	"lefilter" => array( "desc" => _("Responsive LetsEncrypt Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
-		_("Allows <strong>temporary</strong> Internet zone access to the Let's Encrypt acme-challenge folder during update requests."),
+		_("Allows <strong>temporary</strong> Internet zone access to the LetsEncrypt acme-challenge folder during an active certificate update request."),
+		_("This should be <strong>Enabled</strong> unless you wish to manage LetsEncrypt access manually."),
+		"<span style='font-size:smaller;'>"._("Note: LetsEncrypt will always send challenge queries to port 80.  If this server is not listening on port 80, certificate requests will fail unless an upstream firewall or proxy redirects requests to the server port.")."</span>",
 		),
 	),
 	/*

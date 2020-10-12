@@ -185,7 +185,7 @@ class Services {
 
 		$retarr = array(
 			"name" => _("LetsEncrypt"),
-			"descr" => _("This will allow access to the LetsEncrypt service, when it is enabled."),
+			"descr" => _("This will allow access to the LetsEncrypt service when it is enabled."),
 			"fw" => array(),
 			"defzones" => array(),
 			"disabled" => true,
@@ -198,16 +198,16 @@ class Services {
 		}
 
 		if (isset($ports['leport']) && $ports['leport'] >= 80) {
+			$advancedsettingsurl = "<a href=?display=firewall&page=advanced&tab=settings>";
 			if (\FreePBX::Firewall()->getAdvancedSettings()['lefilter'] == "disabled") {
-				$retarr["descr"] = _("This exposes the LetsEncrypt service. This MUST be allowed access from the 'Internet' zone if Responsive LetsEncrypt Rules are not enabled.");
+				$retarr["descr"] .= "<div class='well'>".sprintf(_("This must be allowed access from the 'Internet' zone unless %s Responsive LetsEncrypt Rules %s are enabled. Enabling %s Responsive LetsEncrypt Rules %s is recommended"), $advancedsettingsurl, "</a>", $advancedsettingsurl, "</a>")."</div>";
 				$retarr['fw'] = array(
 					array("protocol" => "tcp", "port" => $ports['leport']),
 				);
 				$retarr['defzones'] = array("external");
 				unset($retarr['disabled']);
 			} else {
-				// add link here
-				$retarr["descr"] = _("Access currently managed by <strong>Responsive LetsEncrypt Rules</strong>. Responsive LetsEncrypt Rules settings can be changed on the <em>Firewall->Advanced->Advanced Settings</em> page.");
+				$retarr["descr"] .= "<div class='well'>".sprintf( _("This protocol is being managed by %s Responsive LetsEncrypt Rules. %s Disable %s Responsive LetsEncrypt Rules %s to manage access here."), $advancedsettingsurl, "</a>", $advancedsettingsurl, "</a>")."</div>";
 			}
 		}
 		return $retarr;
