@@ -199,7 +199,8 @@ class Services {
 
 		if (isset($ports['leport']) && $ports['leport'] >= 80) {
 			$advancedsettingsurl = "<a href=?display=firewall&page=advanced&tab=settings>";
-			if (\FreePBX::Firewall()->getAdvancedSettings()['lefilter'] == "disabled") {
+			$as = \FreePBX::Firewall()->getAdvancedSettings();
+			if ($as['lefilter'] == "disabled") {
 				$retarr["descr"] .= "<div class='well'>".sprintf(_("This must be allowed access from the 'Internet' zone unless %s Responsive LetsEncrypt Rules %s are enabled. Enabling %s Responsive LetsEncrypt Rules %s is recommended"), $advancedsettingsurl, "</a>", $advancedsettingsurl, "</a>")."</div>";
 				$retarr['fw'] = array(
 					array("protocol" => "tcp", "port" => $ports['leport']),
