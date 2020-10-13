@@ -659,8 +659,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function enableLeRules() {
 		// use sysadmin LetsEncrypt service port if defined
 		// else, we don't know which http service, so open all http
-
-		if (\FreePBX::Firewall()->getAdvancedSettings()['lefilter'] == "disabled") {
+		
+		$as = $this->getAdvancedSettings();
+		if ($as['lefilter'] == "disabled") {
 			return true;
 		}
 
@@ -681,7 +682,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function disableLeRules() {
-		if (\FreePBX::Firewall()->getAdvancedSettings()['lefilter'] == "disabled") {
+		$as = $this->getAdvancedSettings();
+		if ($as['lefilter'] == "disabled") {
 			return true;
 		}
 		return $this->runHook("updateipset", array('ipset' => 'lefilter', 'action' => 'flush'));
