@@ -349,7 +349,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return true;
 		}
 
-		$saports = \FreePBX::Sysadmin()->getPorts();
 		$leports = array();
 		$leservice = $this->getService('letsencrypt');
 
