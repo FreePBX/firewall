@@ -718,11 +718,36 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function enableLeRules() {
-		$this->runHook("enablelerules");
+		// use sysadmin LetsEncrypt service port if defined
+		// else, we don't know which http service, so open all http
+		
+		$as = $this->getAdvancedSettings();
+		if ($as['lefilter'] == "disabled") {
+			return true;
+		}
+
+		$saports = \FreePBX::Sysadmin()->getPorts();
+		$leports = array();
+
+		if (is_numeric($saports['leport'])) {
+			$leports[] = $saports['leport'];
+		} else {
+			foreach ($saports as $service=>$port) {
+				if (substr($service, 0, 3) != 'ssl' && is_numeric($port)) {
+					$leports[] = $port;
+				}
+			}
+		}
+
+		return $this->runHook("updateipset", array('ipset' => 'lefilter', 'action' => 'add', 'ports' => $leports));
 	}
 
 	public function disableLeRules() {
-		$this->runHook("disablelerules");
+		$as = $this->getAdvancedSettings();
+		if ($as['lefilter'] == "disabled") {
+			return true;
+		}
+		return $this->runHook("updateipset", array('ipset' => 'lefilter', 'action' => 'flush'));
 	}
 
 	public function uninstallHook() {
@@ -2060,7 +2085,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function getAdvancedSettings() {
-		$defaults = array("safemode" => "enabled", "masq" => "enabled", "lefilter" => "disabled", "id_service" => "enabled", "id_sync_fw" => "legacy","customrules" => "disabled", "rejectpackets" => "disabled");
+		$defaults = array("safemode" => "enabled", "masq" => "enabled", "lefilter" => "enabled", "customrules" => "disabled", "rejectpackets" => "disabled", "id_service" => "enabled", "id_sync_fw" => "legacy");
 		$settings = $this->getConfig("advancedsettings");
 		if (!is_array($settings)) {
 			$settings = $defaults;
