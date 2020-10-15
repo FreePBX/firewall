@@ -66,6 +66,9 @@ rmmod_r() {
 /usr/sbin/iptables -t nat -X
 /usr/sbin/ip6tables -t nat -F
 /usr/sbin/ip6tables -t nat -X
+# and remove ipset
+/usr/sbin/ipset -F lefilter
+/usr/sbin/ipset -X lefilter
 
 # and remove ipset
 /usr/sbin/ipset -F lefilter
