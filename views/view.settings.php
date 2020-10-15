@@ -11,12 +11,12 @@ $sections = array(
 		_("This should be disabled if there is the possibility of malicious individuals rebooting your machine without your knowledge. Otherwise it should be left <strong>Enabled</strong>"),
 		),
 	),
-	/* Disabled - setting no longer used, LetsEncypt Rules enabled dynamically for updates only
-	"lefilter" => array( "desc" => _("LetsEncrypt Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
-		_("Allow full Internet zone access to the Let's Encrypt acme-challenge folder on port 80."),
+	"lefilter" => array( "desc" => _("Responsive LetsEncrypt Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Allows <strong>temporary</strong> Internet zone access to the LetsEncrypt acme-challenge folder during an active certificate update request."),
+		_("This should be <strong>Enabled</strong> unless you wish to manage LetsEncrypt access manually."),
+		"<span style='font-size:smaller;'>"._("Note: LetsEncrypt will always send challenge queries to port 80.  If this server is not listening on port 80, certificate requests will fail unless an upstream firewall or proxy redirects requests to the server port.")."</span>",
 		),
 	),
-	*/
 	/*
 	 * Disabled - unused. Masq is always on, there's no reason to turn it off.
 	"masq" => array( "desc" => _("Outbound Masquerading"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
