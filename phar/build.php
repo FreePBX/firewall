@@ -6,8 +6,30 @@
 // 'Corresponding Source' of the Firewall module, as it is required to build the
 // service.
 
+
+//Detect correct path library symfony.
+$ipUtils = "/libraries/Composer/vendor/symfony/http-foundation/IpUtils.php";
+if(file_exists(__DIR__."/../../..".$ipUtils)) {
+	$ipUtils = __DIR__."/../../..".$ipUtils;
+}
+elseif(file_exists(__DIR__."/../../framework/amp_conf/htdocs/admin".$ipUtils)) {
+	$ipUtils = __DIR__."/../../framework/amp_conf/htdocs/admin".$ipUtils;
+} else {
+	throw new Exception( sprintf(_("The file (%s) could not be found!"), $ipUtils) );
+	exit(1);
+}
+
 $apps = array(
-	"voipfirewalld" => array("firewall.php", "common.php", array(__DIR__."/../hooks/validator.php", "validator.php"), array(__DIR__."/../Lock.class.php", "lock.php"), "modprobe.php", "asmanager.php", "monitor.php"),
+	"voipfirewalld" => array(
+		"firewall.php",
+		"common.php",
+		array(__DIR__."/../hooks/validator.php", "validator.php"),
+		array(__DIR__."/../Lock.class.php", "lock.php"),
+		"modprobe.php",
+		"asmanager.php",
+		"monitor.php",
+		array($ipUtils, "IpUtils.php")
+	),
 );
 
 $dst = __DIR__."/../hooks/";
