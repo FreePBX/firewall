@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-15 05:58+0000\n"
+"POT-Creation-Date: 2020-10-20 06:46+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -21,12 +21,12 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2.4\n"
 
-#: Services.class.php:620
+#: Services.class.php:618
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr "%s là một giải pháp quản lý cuộc gọi dựa trên nền tảng wed."
 
-#: Services.class.php:616
+#: Services.class.php:614
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s không được cấu hình chính xác."
@@ -299,11 +299,11 @@ msgstr ""
 "một máy. Bằng cách âm thầm thả packet, sẽ không có bất kỳ phản hồi nào đến "
 "kẻ tấn công và chúng sẽ tiếp tục tìm các mục tiêu khác."
 
-#: Services.class.php:348
+#: Services.class.php:346
 msgid "CHANSIP is not available on this machine"
 msgstr "CHANSIP không khả dụng trên máy này"
 
-#: Services.class.php:307
+#: Services.class.php:305
 msgid "CHAN_SIP Protocol"
 msgstr "Giao thức CHAN_SIP"
 
@@ -374,7 +374,7 @@ msgstr "Mặc định Vùng (Zone)"
 msgid "Delete"
 msgstr "Xóa"
 
-#: Firewall.class.php:677
+#: Firewall.class.php:681
 msgid "Delete Selected"
 msgstr "Xóa những gì được chọn"
 
@@ -511,11 +511,11 @@ msgstr "Địa chỉ bên ngoài: %s"
 msgid "Extra Services"
 msgstr "Dịch vụ bổ sung"
 
-#: Services.class.php:500
+#: Services.class.php:498
 msgid "FTP"
 msgstr "FTP"
 
-#: Services.class.php:502
+#: Services.class.php:500
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -556,7 +556,7 @@ msgstr "Dịch vụ Firewall không chạy!"
 msgid "Firewall Wizard"
 msgstr "Thuật sĩ Firewall"
 
-#: Firewall.class.php:651
+#: Firewall.class.php:655
 msgid "Firewall can not be disabled"
 msgstr "Không thể vô hiệu Firewall"
 
@@ -610,27 +610,27 @@ msgstr "Bắt buộc Them/Xóa bỏ Mục nhập"
 msgid "Further information is available at the PBX Wiki."
 msgstr "Các thông tin khác có sẵn tại  PBX Wiki."
 
-#: Services.class.php:370
+#: Services.class.php:368
 msgid "HTTP Provisioning"
 msgstr "Dự phòng tài nguyên HTTP"
 
-#: Services.class.php:385
+#: Services.class.php:383
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
 msgstr "HTTP Provisioning bị vô hiệu trong Sysadmin Port Management"
 
-#: Services.class.php:450
+#: Services.class.php:448
 msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
 msgstr "Các ứng dụng HTTP REST  bị vô hiệu trong Sysadmin Port Management"
 
-#: Services.class.php:396
+#: Services.class.php:394
 msgid "HTTPS Provisioning"
 msgstr "Dự phòng tài nguyên HTTPS"
 
-#: Services.class.php:411
+#: Services.class.php:409
 msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
 msgstr "HTTPS Provisioning bị vô hiệu trong Sysadmin Port Management"
 
-#: Services.class.php:478
+#: Services.class.php:476
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTPS REST  bị vô hiệu trong Sysadmin Port Management"
 
@@ -647,11 +647,11 @@ msgstr ""
 "Tuy nhiên nếu bạn tiếp tục, máy của bạn và tường lửa sẽ được tự động cập "
 "nhật các cài đặt mới nhất!"
 
-#: Services.class.php:356 Smart.class.php:43
+#: Services.class.php:354 Smart.class.php:43
 msgid "IAX Protocol"
 msgstr "Giao thức IAX"
 
-#: Services.class.php:358
+#: Services.class.php:356
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
@@ -889,11 +889,11 @@ msgstr "Hầu hết các giao diện nên được cài đặt về <strong>Inte
 msgid "Multiple Ports: %s"
 msgstr "Nhiểu Cổng giao tiếp: %s"
 
-#: Services.class.php:523
+#: Services.class.php:521
 msgid "NFS"
 msgstr "NFS"
 
-#: Services.class.php:530
+#: Services.class.php:528
 msgid "NFS Services are not available on this machine"
 msgstr "Các dịch vụ NFS không khat dụng trên máy này"
 
@@ -1009,7 +1009,7 @@ msgstr "Số lượng máy khách bị giới hạn tốc độ ở hiện tại
 msgid "Number of currently blocked Attackers:"
 msgstr "Số lượng kẻ tấn công bị khóa ở hiện tại:"
 
-#: Services.class.php:422
+#: Services.class.php:420
 msgid "OpenVPN Server"
 msgstr "Mở VPN Server"
 
@@ -1025,11 +1025,11 @@ msgstr "Khác"
 msgid "Other Traffic"
 msgstr "Lưu lượng khác"
 
-#: Services.class.php:299
+#: Services.class.php:297
 msgid "PJSIP is not available on this machine"
 msgstr "PJSIP không sẵn có trên máy này"
 
-#: Services.class.php:372
+#: Services.class.php:370
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTP provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
@@ -1042,7 +1042,7 @@ msgstr ""
 "các mã bảo mật SIP (SIP Secrets) sẽ có sẵn cho những kẻ tấn công mà những kẻ "
 "này có thể giải được các mật mã đó."
 
-#: Services.class.php:398
+#: Services.class.php:396
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTPS provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
@@ -1117,19 +1117,19 @@ msgstr "Giao thức: TCP và UDP"
 msgid "Protocol: UDP"
 msgstr "Giao thức: UDP"
 
-#: Services.class.php:434
+#: Services.class.php:432
 msgid "REST Apps (HTTP)"
 msgstr "REST Apps-ứng dụng theo cấu trúc REST ( HTTP)"
 
-#: Services.class.php:462
+#: Services.class.php:460
 msgid "REST Apps (HTTPS)"
 msgstr "REST Apps-ứng dụng theo cấu trúc REST ( HTTPS)"
 
-#: Services.class.php:454 Services.class.php:482
+#: Services.class.php:452 Services.class.php:480
 msgid "REST Apps are only available with System Admin"
 msgstr "REST Apps chỉ sẵn có trên System admin (Quản trị hệ thống)"
 
-#: Services.class.php:436 Services.class.php:464
+#: Services.class.php:434 Services.class.php:462
 msgid ""
 "REST Apps are used with intelligent phones to provide an interactive "
 "interface from the phone itself. Note that any devices that are allowed "
@@ -1194,7 +1194,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr "Đã xóa %s ra khỏi Danh sách đen."
 
-#: Firewall.class.php:683
+#: Firewall.class.php:687
 msgid "Reset"
 msgstr "Cài đặt lại"
 
@@ -1232,7 +1232,7 @@ msgstr ""
 msgid "Restart the System Firewall"
 msgstr ""
 
-#: Services.class.php:250
+#: Services.class.php:248
 msgid "SIP Protocol"
 msgstr "Giao thức SIP"
 
@@ -1240,15 +1240,15 @@ msgstr "Giao thức SIP"
 msgid "SIP Protocol (pjsip)"
 msgstr "Giao thức SIP( pjsip)"
 
-#: Services.class.php:580
+#: Services.class.php:578
 msgid "SMB/CIFS"
 msgstr "SMB/CIFS"
 
-#: Services.class.php:586
+#: Services.class.php:584
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr "SMB/CIFS (Samba) không được cài đặt trên máy này"
 
-#: Services.class.php:589
+#: Services.class.php:587
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -1299,7 +1299,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall hiện đã kích hoạt!"
 
-#: Firewall.class.php:676 Firewall.class.php:684 views/modal.customsvc.php:37
+#: Firewall.class.php:680 Firewall.class.php:688 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr "Lưu"
@@ -1402,11 +1402,11 @@ msgstr "Cổng giao tiếp TCP:"
 msgid "TCP Ports:"
 msgstr "Các cổng giao tiếp TCP:"
 
-#: Services.class.php:510
+#: Services.class.php:508
 msgid "TFTP"
 msgstr "TFTP"
 
-#: Services.class.php:512
+#: Services.class.php:510
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr "TFTP thường được dử dụng cho việc cung cấp và nâng cấp các thiết bị."
 
@@ -1414,7 +1414,7 @@ msgstr "TFTP thường được dử dụng cho việc cung cấp và nâng cấ
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr "Cảm ơn vì đã sử dụng Sangoma Smart Firewall!"
 
-#: Firewall.class.php:393
+#: Firewall.class.php:402
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1496,7 +1496,7 @@ msgstr ""
 "tục giám sát và khóa các đối tượng tấn công hệ thống của bạn trong khi cho "
 "phép các lưu lượng hợp lệ đi qua."
 
-#: Services.class.php:424
+#: Services.class.php:422
 msgid ""
 "This allows clients to connect to an OpenVPN server running on this machine. "
 "This is an inherently secure protocol."
@@ -1514,7 +1514,7 @@ msgstr ""
 "họ. Nó nên được <strong>Vô hiệu</strong> trừ khi bạn biết rõ vì sao nó cần "
 "được bật."
 
-#: Services.class.php:533
+#: Services.class.php:531
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -1621,11 +1621,11 @@ msgstr ""
 "tự động cập nhật các quy tắc firewall dựa trên các trung kế hiện tại và các "
 "cấu hình máy nhánh của PBX của bạn."
 
-#: Services.class.php:252
+#: Services.class.php:250
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr "Đây là driver SIP (pjsip). Hầu hết các thiết bị sử dụng SIP."
 
-#: Services.class.php:492
+#: Services.class.php:490
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
@@ -1633,11 +1633,11 @@ msgstr ""
 "Đầy là máy chủ XMPP. Nếu bạn muốn kết nối với nó sử dụng máy khách Jabber "
 "nội bộ, bạn cần mở cổng giao tiếp này."
 
-#: Services.class.php:309
+#: Services.class.php:307
 msgid "This is the legacy chan_sip driver."
 msgstr "Đây là dirver legacy chan_sip."
 
-#: Services.class.php:204
+#: Services.class.php:205
 #, php-format
 msgid ""
 "This must be allowed access from the 'Internet' zone unless %s Responsive "
@@ -1661,14 +1661,14 @@ msgid "This page gives you a summary of the status of the Responsive Firewall."
 msgstr ""
 "Trang này cung cấp cho bạn một tóm tắt trạng thái của Responsive Firewall."
 
-#: Services.class.php:211
+#: Services.class.php:209
 #, php-format
 msgid ""
 "This protocol is being managed by %s Responsive LetsEncrypt Rules. %s "
 "Disable %s Responsive LetsEncrypt Rules %s to manage access here."
 msgstr ""
 
-#: Services.class.php:257 Services.class.php:314 Services.class.php:363
+#: Services.class.php:255 Services.class.php:312 Services.class.php:361
 msgid ""
 "This protocol is being managed by the Responsive Firewall. You "
 "<strong>should not</strong> enable access from the 'Internet' zone, or "
@@ -1786,7 +1786,7 @@ msgstr "Các cổng UDP:"
 msgid "Unknown entry!"
 msgstr "Mục nhập không xác định!"
 
-#: Firewall.class.php:678
+#: Firewall.class.php:682
 msgid "Update Interfaces"
 msgstr "Cập nhật các giao diện"
 
@@ -1869,7 +1869,7 @@ msgstr ""
 "sẽ <strong>không bị chặn</strong>,và thay vào đó lại cho phép số lần thử "
 "đăng ký <strong>rất hạn chế</strong>."
 
-#: Services.class.php:490
+#: Services.class.php:488
 msgid "XMPP"
 msgstr "XMPP"
 
@@ -1881,7 +1881,7 @@ msgstr ""
 "Bạn có thể thêm các host và các mạng riêng lẻ để ghi đè sự cho phép mặc định "
 "của một giao diện."
 
-#: Firewall.class.php:394
+#: Firewall.class.php:403
 msgid "You can add the host automatically here."
 msgstr "Bạn có thể tự động thêm host ở đây."
 
@@ -1942,11 +1942,11 @@ msgstr "Máy khách của bạn"
 msgid "Zone Information"
 msgstr "Thông tin của Vùng"
 
-#: Services.class.php:220
+#: Services.class.php:218
 msgid "Zulu UC"
 msgstr ""
 
-#: Services.class.php:223
+#: Services.class.php:221
 msgid ""
 "Zulu UC Desktop and softphone integration unifies the most popular business "
 "communication tools & applications enhancing user productivity and mobility. "
@@ -1956,7 +1956,7 @@ msgid ""
 "zones."
 msgstr ""
 
-#: Services.class.php:238
+#: Services.class.php:236
 msgid "Zulu is not not available on this machine"
 msgstr "Zulu không sẵn có trên máy này"
 
@@ -1964,7 +1964,7 @@ msgstr "Zulu không sẵn có trên máy này"
 msgid "automatically granted"
 msgstr "Tự động cấp"
 
-#: Services.class.php:634
+#: Services.class.php:632
 msgid "iSymphony is not installed on this server."
 msgstr "iSymphony không được cài đặt trên máy chủ này."
 
