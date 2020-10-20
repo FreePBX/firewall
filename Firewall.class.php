@@ -349,15 +349,24 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return true;
 		}
 
-		$saports = \FreePBX::Sysadmin()->getPorts();
 		$leports = array();
+		$leservice = $this->getService('letsencrypt');
 
-		if (is_numeric($saports['leport'])) {
-			$leports[] = $saports['leport'];
-		} else {
-			foreach ($saports as $service=>$port) {
-				if (substr($service, 0, 3) != 'ssl' && is_numeric($port)) {
-					$leports[] = $port;
+		if (isset($leservice['fw'][0]['port'])) {
+        		$leports[] = $leservice['fw'][0]['port'];
+		} else { 
+			$allservices = $this->getServices();
+			unset($allservices['custom']); // ignore custom services
+			foreach ($allservices as $services) {
+				foreach($services as $service) {
+					$s = $this->getService($service);
+					if (!$s['disabled']) { 
+						foreach ($s['fw'] as $fw) { 
+							if ($fw['leport']) {
+								$leports[] = $fw['port'];
+							}
+						}
+					}
 				}
 			}
 		}
@@ -553,12 +562,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		// Advanced Settings
 		case "updateadvanced":
-			$pre = $this->getAdvancedSettings();
-			$current = $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
-			if($_REQUEST['option'] == "lefilter" && $pre[$_REQUEST['option']] != $_REQUEST['val']){
-				$this->restartFirewall();
-			}
-			return $current;
+			return $this->setAdvancedSetting($_REQUEST['option'], $_REQUEST['val']);
 
 		// OOBE
 		case "getoobequestion":
