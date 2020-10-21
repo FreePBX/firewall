@@ -753,10 +753,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case "start_id":
 			$this->FreePBX->Sysadmin->runHook("fail2ban-generate");
 			$this->FreePBX->Sysadmin->runHook("fail2ban-start");
-		break;
+			return true;
 		case "getIPsZone":
 			return $this->getipzone($_REQUEST["from"]);
-		break;
 		case "deletenetworks":
 			// We are handed a JSON string
 			if (!isset($_REQUEST['json'])) {
