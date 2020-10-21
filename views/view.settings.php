@@ -2,6 +2,7 @@
 // i18n common things
 $ena = _("Enabled");
 $leg = _("Legacy");
+$dis = _("Disabled");
 
 
 $advanced = $fw->getAdvancedSettings();
