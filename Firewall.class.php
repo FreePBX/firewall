@@ -932,23 +932,19 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				if(!empty($_REQUEST["option"])){
 					switch($_REQUEST["option"]){
 						case "enabled":
-						case "disabled":
 							if($asfw["id_sync_fw"] == "legacy"){
-								// That was legacy to become enabled or disabled
-								$this->setConfig("custom_whitelist", $IDsetting["ids"]["fail2ban_whitelist"]);
-								$this->setConfig("idregextip", "false");
-								$this->setConfig("trusted", "false");
-								$this->setConfig("local", "false");
-								$this->setConfig("other", "false");
-								$this->updateWhitelist($IDsetting["ids"]["fail2ban_whitelist"]);
+								// That was legacy to become enabled
+								if($this->getConfig("idregextip") != "true" && $this->getConfig("trusted") != "true" && $this->getConfig("local") != "true" && $this->getConfig("other") != "true"){
+									// For the first install only
+									$this->setConfig("custom_whitelist", $IDsetting["ids"]["fail2ban_whitelist"]);
+									$this->updateWhitelist($IDsetting["ids"]["fail2ban_whitelist"]);								
+								}
 							}						
 						break;
 						case "legacy":
 							if($asfw["id_sync_fw"] != "legacy"){
-								 // That was enabled or disabled to become legacy
+								 // That was enabled to become legacy
 								$IDsetting["ids"]["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $this->getConfig("dynamic_whitelist")."\n".$this->getConfig("custom_whitelist")."\n".$this->getExtRegistered());
-								$this->setConfig("custom_whitelist", "");
-								$this->setConfig("dynamic_whitelist", "");
 								$this->FreePBX->Sysadmin->sync_fw($IDsetting["ids"]);
 							}	
 						break;
