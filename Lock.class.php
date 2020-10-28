@@ -8,7 +8,8 @@ class Lock {
 
 	public static function getLockDir() {
 		$setting = getSettings();
-		return $setting["ASTRUNDIR"];
+		$astrundir = !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk";
+		return $astrundir;
 	}
 
 	public static function canLock($lockname = false) {
@@ -17,6 +18,17 @@ class Lock {
 		}
 		// So, we see if we CAN lock a name, and if we can, lock it.
 		$lockdir = self::getLockDir();
+		/* During the initial boot, it might possible that /var/run/asterisk itself is not created 
+		/* so trying to wait here at max 30 sec before giving up */
+		$x=1;
+		while($x <= 6) {
+			if (!is_dir($lockdir)) {
+				sleep(5);
+				$x++;
+			} else {
+				break;
+			}
+		}
 		if (!is_dir("$lockdir/firewall")) {
 			@unlink("$lockdir/firewall");
 			mkdir("$lockdir/firewall");
