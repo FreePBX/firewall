@@ -38,6 +38,33 @@ if(!empty($module_status)){
 ?>
 
 <script type='text/javascript' src='modules/firewall/assets/js/views/main.js'></script>
+<?php
+/**
+ * We display an alert to clear the cache and reload the page.
+ */
+if($fw->getConfig("first_install") == "yes"){
+  $message  = _("A major change has appeared. Reload the page to empty the cache. Please wait...")."<br>";
+  $message .= _("If a problem appears, try to clear the cache in your browser manually.");
+  $first = <<<EOF
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="alert alert-dismissable alert-info">				 
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> × </button>
+          <h4> Warning! </h4> 
+          {$message}
+        </div>
+      </div>
+    </div>
+</div> 
+EOF;
+  echo $first;
+  $fw->setConfig("first_install", "no");
+  header('Cache-Control: no-cache');
+  header('Pragma: no-cache');
+  header("Refresh:2");
+}
+?>
 <form method='post'>
 <div class="display no-border">
   <div class="nav-container">
@@ -61,6 +88,7 @@ if(!empty($module_status)){
       <?php } ?>
     </ul>
     <div class="tab-content display">
+
       <div role="tabpanel" id="about" class="tab-pane <?php echo $about; ?>">
         <?php echo load_view(__DIR__."/view.about.php", array("smart" => $ss, "fw" => $fw)); ?>
       </div>

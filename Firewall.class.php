@@ -111,6 +111,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
 		$this->addsyncjob();
+		$this->setConfig("first_install", "yes");
 	}
 	
 	public function uninstall() {
@@ -816,6 +817,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		return load_view($view, array("fw" => $this, "module_status" => $module->getinfo('sysadmin', MODULE_STATUS_ENABLED)));
 	}
+
 	public function getipzone($from){
 		switch($from){
 			case "custom_whitelist":
@@ -863,14 +865,30 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$both 		= $currentwl."\n".$wl;
 		$both 		= preg_replace('!\n+!', chr(10), $both);
 		$both 		= explode("\n", $both);
-		return implode("\n", array_unique($both));
+		$result 	= implode("\n", array_unique($both));
+		$this->setConfig("custom_whitelist",$result);
+		return $result;
 	}
 
-	public function updateWhitelist($wl){
+	public function updateWhitelist($wl = ""){
 		/**
 		 * Used by console to syncing / updating the whitelist dynamically.
 		 * Only the difference is used between before and after the synchronisation.
 		 */
+		if(is_array($wl)){
+			/**
+			 * Generate a string whitelist when getipzone("all") is used to get all ips
+			 * with the arg : all, it returns an array with all zones including their ips.
+			 */ 
+			foreach($wl as $zone => $ips){
+				foreach($ips as $value){
+					$list[] = $value;
+				}
+			}
+			
+			$wl = implode("\n",$list);
+		}
+
 		$this->runHook("get-dynamic-ignoreip");
 		$wl 			 = preg_replace('!\n+!', chr(10), $wl);
 		$previous_ignore = preg_replace('!\n+!', chr(10), $this->getConfig("dynamic_whitelist"));
