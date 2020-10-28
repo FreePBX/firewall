@@ -8,7 +8,8 @@ class Lock {
 
 	public static function getLockDir() {
 		$setting = getSettings();
-		return $setting["ASTRUNDIR"];
+		$astrundir = !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk";
+		return $astrundir;
 	}
 
 	public static function canLock($lockname = false) {
