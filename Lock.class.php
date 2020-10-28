@@ -19,12 +19,14 @@ class Lock {
 		// So, we see if we CAN lock a name, and if we can, lock it.
 		$lockdir = self::getLockDir();
 		$fwlockdir = "$lockdir/firewall";
+		file_put_contents("/tmp/1.txt", "enter canLock with lock".$lockname);
 		if (!is_dir($fwlockdir)) {
 			@unlink($fwlockdir);
 			mkdir($fwlockdir);
 			@chmod($fwlockdir, 0666);
 			exec("ls -lrt /var/run/asterisk", $out);
 			print "canLock $out";
+			file_put_contents("/tmp/2.txt", "created directory out".print_r($out, true));
 			if (!is_dir($fwlockdir)) {
 				print "canLock $fwlockdir cannt create \n";
 				throw new \Exception("Can't create $fwlockdir directory");
