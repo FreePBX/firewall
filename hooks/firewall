@@ -12,6 +12,7 @@ $astlogdir	= '/var/log/asterisk';//$cfg->get('ASTLOGDIR');
 $logfile 	= $astlogdir."/firewall.log";
 $webuser 	= 'asterisk';//$cfg->get('AMPASTERISKWEBUSER');
 $webgroup 	= 'asterisk'; //$cfg->get("AMPASTERISKWEBGROUP");
+file_put_contents("/tmp/1.txt","hello firewall hook");
 try {
 	$sig = $g->checkSig($sigfile);
 	if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
@@ -22,6 +23,8 @@ try {
 	if (empty($sig['hashes']['hooks/voipfirewalld'])) {
 		throw new \Exception("Firewalld not part of module.sig");
 	}
+
+	file_put_contents("/tmp/2.txt","starting voipfirewalld");
 
 	$fd = __DIR__."/voipfirewalld";
 
@@ -38,6 +41,7 @@ try {
 
 // Start the daemon
 chmod($fd, 0755);
-exec("nohup $fd &>> ".$logfile." &");
+exec("nohup $fd &>> ".$logfile." &", $output);
+file_put_contents("/tmp/3.txt","started voipfirewalld output = ".print_r($output,true));
 chown($logfile, $webuser);
 chgrp($logfile, $webgroup);
