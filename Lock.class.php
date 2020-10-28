@@ -20,12 +20,23 @@ class Lock {
 		$lockdir = self::getLockDir();
 		$fwlockdir = "$lockdir/firewall";
 		file_put_contents("/tmp/1.txt", "enter canLock with lock".$lockname);
+		$x=1;
+		while($x <= 6) {
+			if (!is_dir($lockdir)) {
+				print "$lockdir not yet created waiting..count = $x";
+				sleep(5);
+				$x++;
+			} else {
+				print "$lockdir present, breaking from loop";
+				break;
+			}
+		}
 		if (!is_dir($fwlockdir)) {
 			@unlink($fwlockdir);
 			mkdir($fwlockdir);
 			@chmod($fwlockdir, 0666);
 			exec("ls -lrt /var/run/asterisk", $out);
-			print "canLock $out";
+			print "canLock ".print_r($out,true);
 			file_put_contents("/tmp/2.txt", "created directory out".print_r($out, true));
 			if (!is_dir($fwlockdir)) {
 				print "canLock $fwlockdir cannt create \n";
