@@ -18,13 +18,19 @@ class Lock {
 		}
 		// So, we see if we CAN lock a name, and if we can, lock it.
 		$lockdir = self::getLockDir();
-		if (!is_dir("$lockdir/firewall")) {
-			@unlink("$lockdir/firewall");
-			mkdir("$lockdir/firewall");
-			@chmod("$lockdir/firewall", 0666);
-			if (!is_dir("$lockdir/firewall")) {
-				throw new \Exception("Can't create $lockdir/firewall directory");
+		$fwlockdir = "$lockdir/firewall";
+		if (!is_dir($fwlockdir)) {
+			@unlink($fwlockdir);
+			mkdir($fwlockdir);
+			@chmod($fwlockdir, 0666);
+			exec("ls -lrt /var/run/asterisk", $out);
+			print "canLock $out";
+			if (!is_dir($fwlockdir)) {
+				print "canLock $fwlockdir cannt create \n";
+				throw new \Exception("Can't create $fwlockdir directory");
 			}
+		} else {
+			print "canLock $fwlockdir not found \n";
 		}
 		$lf = "$lockdir/firewall/lock-$lockname";
 		$lockfh = fopen($lf, "c"); // Create it if it doesn't exist
