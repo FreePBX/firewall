@@ -286,6 +286,6 @@ function needs_whitelist($ip) {
 }
 
 function is_IPlocal($ip) {
-	$subnet = ["127.0.0.0/8", "169.254.0.0/16", "::1/128", "fe80::/10"];
+	$subnet = array("127.0.0.0/8", "169.254.0.0/16", "::1/128", "fe80::/10");
 	return IpUtils::checkIp($ip, $subnet);
 }
