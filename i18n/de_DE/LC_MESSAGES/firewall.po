@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-20 06:46+0000\n"
+"POT-Creation-Date: 2020-10-29 11:57+0000\n"
 "PO-Revision-Date: 2020-02-05 10:00+0000\n"
 "Last-Translator: florian alberts <alberts@ar-systems.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -320,10 +320,6 @@ msgstr "Abbrechen"
 msgid "Command to run (see --help)"
 msgstr "Befehl zum Ausführen (siehe --Hilfe)"
 
-#: firewall.i18n.php:6
-msgid "Connectivity"
-msgstr "Konnektivität"
-
 #: views/view.portmaps.php:11 views/view.services.php:2
 msgid "Core Services"
 msgstr "Standard Services"
@@ -529,7 +525,7 @@ msgstr ""
 "Fehlgeschlagen! Konnte den Eintrag nicht validieren. Bitte versuchen Sie es "
 "erneut."
 
-#: firewall.i18n.php:10 page.firewall.php:6
+#: page.firewall.php:6
 msgid "Firewall"
 msgstr "Firewall"
 
@@ -736,13 +732,6 @@ msgid ""
 "If you do not wish to use Sangoma Smart Firewall, simply click 'Abort'. You "
 "may return to this setup wizard via the 'Firewall' option in the "
 "Connectivity menu."
-msgstr ""
-
-#: firewall.i18n.php:8
-msgid ""
-"Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible "
-"distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
-"further information."
 msgstr ""
 
 #: Firewall.class.php:163
@@ -1322,7 +1311,7 @@ msgstr "Endpunkte erfolgreich registriert"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: Firewall.class.php:101 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:101 views/view.about.php:3
 msgid "System Firewall"
 msgstr "Systemfirewall"
 
@@ -1885,6 +1874,9 @@ msgstr ""
 "ist eine vollständig integrierte und eng verbundene Firewall, die ständig "
 "überwacht, welche Remoteclients eine Verbindung zu diesem Computer "
 "herstellen dürfen, und den Zugriff von gültigen Hosts automatisch ermöglicht."
+
+#~ msgid "Connectivity"
+#~ msgstr "Konnektivität"
 
 #~ msgid ""
 #~ "This will allow access to the LetsEncrypt service on Port 80, when it is "
