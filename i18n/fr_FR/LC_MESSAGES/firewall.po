@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-20 06:46+0000\n"
+"POT-Creation-Date: 2020-10-29 11:57+0000\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -275,10 +275,6 @@ msgstr "Annuler"
 msgid "Command to run (see --help)"
 msgstr ""
 
-#: firewall.i18n.php:6
-msgid "Connectivity"
-msgstr "Connectivité"
-
 #: views/view.portmaps.php:11 views/view.services.php:2
 msgid "Core Services"
 msgstr ""
@@ -461,7 +457,7 @@ msgstr ""
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
-#: firewall.i18n.php:10 page.firewall.php:6
+#: page.firewall.php:6
 msgid "Firewall"
 msgstr ""
 
@@ -650,13 +646,6 @@ msgid ""
 "If you do not wish to use Sangoma Smart Firewall, simply click 'Abort'. You "
 "may return to this setup wizard via the 'Firewall' option in the "
 "Connectivity menu."
-msgstr ""
-
-#: firewall.i18n.php:8
-msgid ""
-"Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible "
-"distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
-"further information."
 msgstr ""
 
 #: Firewall.class.php:163
@@ -1214,7 +1203,7 @@ msgstr ""
 msgid "Summary"
 msgstr "Sommaire"
 
-#: Firewall.class.php:101 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:101 views/view.about.php:3
 msgid "System Firewall"
 msgstr ""
 
@@ -1695,6 +1684,9 @@ msgid ""
 "the remote clients allowed to connect to this machine, and automatically "
 "allows access from valid hosts."
 msgstr ""
+
+#~ msgid "Connectivity"
+#~ msgstr "Connectivité"
 
 #~ msgid "<strong>Safe mode is available.</strong>"
 #~ msgstr "<strong>Le mode sécuritaire est disponible.</strong>"
