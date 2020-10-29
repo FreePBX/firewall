@@ -111,7 +111,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
 		$this->addsyncjob();
-		$this->setConfig("first_install", "yes");
+		$nt = \FreePBX::Notifications();
+		$nt->add_warning("firewall", "1", _("Intrusion detection handling method"), _("Intrusion detection handling method is been updated recently. Please clear your browser cache and try if you are having issue with Intrusion Detection Start/Restart/Stop button.") , "", $reset=true, $candelete=true);
 	}
 	
 	public function uninstall() {
