@@ -208,7 +208,7 @@ if($legacy != ""){
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" id="whitelist" name="whitelist" rows="'.(count($ids['fail2ban_whitelist']) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
+					<textarea class="form-control" pattern="^(\b(?:\d{1,3}\.){3}\d{1,3}\b)$|^(\b(?:\d{1,3}\.){3}\d{1,3}\b)\/\d{1,2}$|^((\w|\d|[-\.]){1,})+(\w|\d|[-])$|^()$" id="whitelist" name="whitelist" rows="'.(count($ids['fail2ban_whitelist']) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
 				</div>
 			</div>
 		</div>
@@ -242,7 +242,7 @@ else{
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" id="whitelist" name="whitelist" rows="'.(count($ids['whitelist']) + 1).'"">'.$ids['whitelist'].'</textarea>
+					<textarea class="form-control" pattern="^(\b(?:\d{1,3}\.){3}\d{1,3}\b)$|^(\b(?:\d{1,3}\.){3}\d{1,3}\b)\/\d{1,2}$|^((\w|\d|[-\.]){1,})+(\w|\d|[-])$|^()$" id="whitelist" name="whitelist" rows="'.(count($ids['whitelist']) + 1).'"">'.$ids['whitelist'].'</textarea>
 				</div>
 			</div>
 		</div>
@@ -491,3 +491,11 @@ if ($i_d_conf) {
 
   }
 </script>
+<style>
+:valid, .ok {
+    background-color: white;
+}
+:invalid, .error {
+    background-color: #F2DEDE;
+}
+</style>
