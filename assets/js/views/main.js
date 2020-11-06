@@ -136,6 +136,8 @@ $(document).ready(function() {
 		$("#whitelisttable").bootstrapTable("removeAll");
 	});
 
+	$("#whitelist").keyup(validateTextarea);
+
 	$("#unbanall").on("click", function(){
 		unbanall();
 	})
@@ -146,6 +148,26 @@ $(document).ready(function() {
 });
 
 /**** Intrusion Dectection Tab ****/
+function validateTextarea() {
+    var errorMsg = _("At least one entry has been set incorrectly in the list !!");
+    var pattern = new RegExp('^' + $("#whitelist").attr('pattern') + '$');
+    $.each($("#whitelist").val().split("\n"), function () {
+		var hasError = !this.match(pattern);
+        if (typeof $("#whitelist").setCustomValidity === 'function') {
+            $("#whitelist").setCustomValidity(hasError ? errorMsg : '');
+        } else {			
+            $("#whitelist").toggleClass('error', !!hasError);
+            $("#whitelist").toggleClass('ok', !hasError);
+            if (hasError) {
+				$("#saveids").prop('disabled', 'true');
+            } else {
+				$("#saveids").removeAttr('disabled');
+            }
+        }
+        return !hasError;
+    });
+}
+
 function del_entire_whitelist(){
 	var d = { command: 'del_entire_whitelist', module: 'firewall'};
 	$.ajax({
