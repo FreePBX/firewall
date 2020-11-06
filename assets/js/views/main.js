@@ -159,10 +159,8 @@ function validateTextarea() {
             $("#whitelist").toggleClass('ok', !hasError);
             if (hasError) {
 				$("#saveids").prop('disabled', 'true');
-				fpbxToast( errorMsg,'Alert','error');
             } else {
 				$("#saveids").removeAttr('disabled');
-                $("#whitelist").removeAttr('title');
             }
         }
         return !hasError;
