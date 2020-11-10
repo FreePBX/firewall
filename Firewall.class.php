@@ -799,6 +799,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return load_view(__DIR__."/views/bootnav.php", array("fw" => $this, "thispage" => $page));
 	}
 
+	public function sysadmin_info(){
+		$module = \module_functions::create();
+		return $module->getinfo('sysadmin', MODULE_STATUS_ENABLED);
+	}
+
 	public function showPage($page) {
 		if (strpos($page, ".") !== false) {
 			throw new \Exception("Invalid page name $page");
@@ -814,9 +819,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (!file_exists($view)) {
 			throw new \Exception("Can't find page $page");
 		}
-		$module = \module_functions::create();
 
-		return load_view($view, array("fw" => $this, "module_status" => $module->getinfo('sysadmin', MODULE_STATUS_ENABLED)));
+		return load_view($view, array("fw" => $this, "module_status" => $this->sysadmin_info()));
 	}
 
 	public function getipzone($from){
@@ -872,6 +876,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function updateWhitelist($wl = ""){
+		$sa = $this->sysadmin_info();
+		if(empty($a)){
+			return false;
+		}
+		if(!$this->FreePBX->Sysadmin->isActivated()){
+			return false;
+		}
+		
 		/**
 		 * Used by console to syncing / updating the whitelist dynamically.
 		 * Only the difference is used between before and after the synchronisation.
