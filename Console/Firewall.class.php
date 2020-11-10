@@ -108,8 +108,9 @@ class Firewall extends Command {
 
 	public function scan($output){	
 		$fw 		= \FreePBX::Firewall();
-		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
-		if($IDsetting != false){
+		$module 	= \module_functions::create();
+		$sa 		= $module->getinfo('sysadmin', MODULE_STATUS_ENABLED);	
+		if(!empty($sa)){
 			$as			= $fw->getAdvancedSettings();
 
 			// need to get F2B status like this way when this one is launch through cron job.
