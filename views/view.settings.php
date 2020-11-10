@@ -56,7 +56,8 @@ $sections = array(
 	  ),
 	),
 );
-if(!FreePBX::Sysadmin()->isActivated()){
+$sa = FreePBX::Firewall()->sysadmin_info();
+if(!empty($a) && !FreePBX::Sysadmin()->isActivated()){
 	unset($sections["id_service"]);
 	unset($sections["id_sync_fw"]);
 }
