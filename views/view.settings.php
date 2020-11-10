@@ -9,7 +9,6 @@ $leg = _("Legacy");
 $dis = _("Disabled");
 
 $advanced = $fw->getAdvancedSettings();
-
 $sections = array(
 	"safemode" => array( "desc" => _("Safe Mode"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
 		_("Safe mode gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
@@ -57,6 +56,10 @@ $sections = array(
 	  ),
 	),
 );
+if(!FreePBX::Sysadmin()->isActivated()){
+	unset($sections["id_service"]);
+	unset($sections["id_sync_fw"]);
+}
 
 foreach ($sections as $key => $tmparr) {
 	if (!isset($advanced[$key])) {

@@ -109,16 +109,21 @@ class Firewall extends Command {
 	public function scan($output){	
 		$fw 		= \FreePBX::Firewall();
 		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
-		$as			= $fw->getAdvancedSettings();
+		if($IDsetting != false){
+			$as			= $fw->getAdvancedSettings();
 
-		// need to get F2B status like this way when this one is launch through cron job.
-		$out = shell_exec("pgrep -f fail2ban-server"); 
-		if (!empty($out) && trim($as["id_sync_fw"]) != "legacy"){
-			$output->writeln("<info>"._("Syncing....")."</info>");
-			$fw->updateWhitelist($fw->getipzone("all"));
+			// need to get F2B status like this way when this one is launch through cron job.
+			$out = shell_exec("pgrep -f fail2ban-server"); 
+			if (!empty($out) && trim($as["id_sync_fw"]) != "legacy"){
+				$output->writeln("<info>"._("Syncing....")."</info>");
+				$fw->updateWhitelist($fw->getipzone("all"));
+			}
+			elseif($as["id_sync_fw"] == "legacy"){
+				$output->writeln("<error>"._("Syncing cannot be performed because the Intrusion Detection Sync Firewall setting is set to Legacy mode.")."</error>");
+			}
 		}
-		elseif($as["id_sync_fw"] == "legacy"){
-			$output->writeln("<error>"._("Syncing cannot be performed because the Intrusion Detection Sync Firewall setting is set to Legacy mode.")."</error>");
+		else{
+			$output->writeln("<error>"._("Intrusion Detection is available for all activated systems only.")."</error>");
 		}
 	}
 
