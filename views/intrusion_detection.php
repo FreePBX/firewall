@@ -208,7 +208,7 @@ if($legacy != ""){
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" pattern="^(\b(?:\d{1,3}\.){3}\d{1,3}\b)$|^(\b(?:\d{1,3}\.){3}\d{1,3}\b)\/\d{1,2}$|^((\w|\d|[-\.]){1,})+(\w|\d|[-])$|^()$" id="whitelist" name="whitelist" rows="'.(count($ids['fail2ban_whitelist']) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
+					<textarea class="form-control" pattern="'.$wl_filter.'" id="whitelist" name="whitelist" rows="'.(count($ids['fail2ban_whitelist']) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
 				</div>
 			</div>
 		</div>
@@ -242,7 +242,7 @@ else{
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" pattern="^(\b(?:\d{1,3}\.){3}\d{1,3}\b)$|^(\b(?:\d{1,3}\.){3}\d{1,3}\b)\/\d{1,2}$|^((\w|\d|[-\.]){1,})+(\w|\d|[-])$|^()$" id="whitelist" name="whitelist" rows="'.(count($ids['whitelist']) + 1).'"">'.$ids['whitelist'].'</textarea>
+					<textarea class="form-control" pattern="'.$wl_filter.'" id="whitelist" name="whitelist" rows="'.(count($ids['whitelist']) + 1).'"">'.$ids['whitelist'].'</textarea>
 				</div>
 			</div>
 		</div>
@@ -289,7 +289,7 @@ else{
 						<tr>
 							<th data-formatter="actionwlFormatter" data-events="actionwlEvents" data-width="50px" data-field="action" class="text-center">'._("Action").'</th>
 							<th data-width="200px" data-field="source" >'._("Source").'</th>
-							<th data-field="type" >'._("Type").'</th>
+							<th data-field="type" >'._("Zone").'</th>
 						</tr>
 					</thead>
 				</table>
@@ -327,7 +327,7 @@ else{
 						<tr>
 							<th data-formatter="actionFormatter" data-events="actionEvents" data-width="50px" data-field="action" class="text-center">'._("Action").'</th>
 							<th data-width="200px" data-field="ip" >'._("IP Banned").'</th>
-							<th data-field="type" >'._("Type").'</th>
+							<th data-field="type" >'._("Cause").'</th>
 						</tr>
 					</thead>
 				</table>
@@ -441,7 +441,7 @@ if ($i_d_conf) {
 		default:
 			return {
 				css: {
-					background: 'white'
+					background: '#FCCACA'
 				}
 			}
 	}
@@ -484,7 +484,7 @@ if ($i_d_conf) {
 		default:
 			return {
 				css: {
-					background: 'white'
+					background: '#A2EDBF'
 				}
 			}
 	}
