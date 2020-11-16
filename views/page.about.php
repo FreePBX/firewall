@@ -33,6 +33,31 @@ if(!empty($module_status["sysadmin"]) &&  ($sa = FreePBX::Sysadmin()) && $sa->ge
   if($indetec["legacy"] == ""){
     $indetec["ids"]["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $fw->getConfig("dynamic_whitelist"));
   }
+  
+  $wl_filter              = "^(\b(?:\d{1,3}\.){3}\d{1,3}\b)$";                    // IPV4
+  $wl_filter             .= "|^(\b(?:\d{1,3}\.){3}\d{1,3}\b)\/\d{1,2}$";          // IPV4 + subnet
+  $wl_filter             .= "|^((\w|\d|[-\.]){1,})+(\w|\d|[-])$";                 // Domains
+  $wl_filter             .= "|^()$";                                              // Nothing (CR)
+  $wl_filter             .= "|^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}";        // IPV6 
+  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,7}:";
+  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}";
+  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}";
+  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}";
+  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}";
+  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}";
+  $wl_filter             .= "|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})";
+  $wl_filter             .= "|:((:[0-9a-fA-F]{1,4}){1,7}|:)";
+  $wl_filter             .= "|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}";
+  $wl_filter             .= "|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]";
+  $wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]";
+  $wl_filter             .= "|(2[0-4]";
+  $wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])";
+  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]";
+  $wl_filter             .= "|(2[0-4]";
+  $wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]";
+  $wl_filter             .= "|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$";
+  
+  $indetec["wl_filter"]   = $wl_filter;
 }
 ?>
 
