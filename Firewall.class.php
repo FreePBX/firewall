@@ -801,7 +801,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function sysadmin_info(){
 		$module = \module_functions::create();
-		return $module->getinfo('sysadmin', MODULE_STATUS_ENABLED);
+		$result = $module->getinfo('sysadmin', MODULE_STATUS_ENABLED);
+		return (empty($result["sysadmin"])) ? '' : $result;
 	}
 
 	public function showPage($page) {
@@ -877,7 +878,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function updateWhitelist($wl = ""){
 		$sa = $this->sysadmin_info();
-		if(empty($a)){
+		if(empty($sa)){
 			return false;
 		}
 		if(!$this->FreePBX->Sysadmin->isActivated()){
