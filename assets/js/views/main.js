@@ -142,7 +142,21 @@ $(document).ready(function() {
 	})
 
 	$("#delwl").on("click", function(){
-		del_entire_whitelist();
+		$("#delwl-confirm").dialog({
+			resizable: false,
+			height: "auto",
+			width: 400,
+			modal: true,
+			buttons: {
+				"Yes": function(){
+					del_entire_whitelist();
+					$(this).dialog("close");
+				},
+				Cancel: function(){
+					$(this).dialog("close");
+				}
+			}
+		});
 	});
 });
 
