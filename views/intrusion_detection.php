@@ -266,6 +266,7 @@ else{
 			<br>
 			<div id="toolbarwl">
 				&nbsp;&nbsp;&nbsp;<button class="btn btn-default" type="button" title="'._("Delete entire custom whitelist").' "id="delwl">'._("Delete Custom Whitelist").' <i class="fa fa-trash"></i></button>
+				<div class="text-center" id="delwl-confirm" title="'._("Are you sure?").'" style="display:none"><h3>'._("Do you want to delete ALL custom whitelist entries?").'</h3></div>
 			</div>
 			<div align="justify" style="width: 100%; ">
 				<table 
