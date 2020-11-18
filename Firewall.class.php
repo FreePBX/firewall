@@ -1753,7 +1753,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function getAdvancedSettings() {
-		$defaults = array("safemode" => "enabled", "masq" => "enabled", "lefilter" => "enabled", "customrules" => "disabled", "rejectpackets" => "disabled", "id_service" => "enabled", "id_sync_fw" => "legacy");
+		$defaults = array("safemode" => "enabled", "masq" => "enabled", "lefilter" => "enabled", "customrules" => "disabled", "rejectpackets" => "disabled", "id_service" => "enabled", "id_sync_fw" => "legacy", "import_hosts" => "enabled");
 
 		$settings = $this->getConfig("advancedsettings");
 		if (!is_array($settings)) {

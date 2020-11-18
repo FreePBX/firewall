@@ -110,6 +110,7 @@
 		<file>/usr/lib/sysadmin/includes.php</file>
 		<module>sipsettings ge 13.0.23.1</module>
 		<module>manager ge 13.0.2.5</module>
+		<module>sysadmin ge ?????</module>
 	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>
