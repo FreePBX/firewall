@@ -51,8 +51,8 @@ $sections = array(
 	),
 	"import_hosts" => array( "desc" => _("Add etc/hosts as Trusted"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
 		_("Automatically add hosts from file /etc/hosts to Trusted Zone").
-		"<br>"._("<strong>Enabled</strong>: Hosts in the hosts file are as Trusted").
-		"<br>"._("<strong>Disabled</strong>: Hosts in the hosts file are NOT as Trusted excepted localhost"),
+		"<br>"._("<strong>Enabled</strong>: All hosts defined are added to the Trusted Zone (default)").
+		"<br>"._("<strong>Disabled</strong>: Hosts defined in /etc/hosts are not added to Trusted Zone except localhost."),
 		),
 	),
 );
