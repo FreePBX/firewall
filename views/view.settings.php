@@ -50,10 +50,15 @@ $sections = array(
 		"<br>"._("<strong>Legacy</strong>: Intrusion Detection whitelist will work like in the past with no automated synchronization to the whitelist.")
 		),
 	),
-
+	"import_hosts" => array( "desc" => _("Add etc/hosts as Trusted"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Enable / Disable Add etc/hosts as Trusted.").
+		"<br>"._("<strong>Enabled</strong>: Hosts in the hosts file are as Trusted").
+		"<br>"._("<strong>Disabled</strong>: Hosts in the hosts file are NOT as Trusted excepted localhost"),
+		),
+	),
 );
 $sa = $fw->sysadmin_info();
-if(empty($a) || (!empty($a) && !FreePBX::Sysadmin()->isActivated())){
+if(empty($sa) || (!empty($sa) && !FreePBX::Sysadmin()->isActivated())){
 	unset($sections["id_service"]);
 	unset($sections["id_sync_fw"]);
 }
