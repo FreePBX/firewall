@@ -62,7 +62,7 @@ $(document).ready(function() {
 			$("#idregextip").removeAttr("active");
 		}
 		get_button_status();
-		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 
 	// Clicked on id_stop
@@ -84,7 +84,7 @@ $(document).ready(function() {
 	$("#idrefresh").on("click", function(){
 		//update_whitelist();
 		get_button_status();
-		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 
 	// Clicked on Trusted zone
@@ -97,7 +97,7 @@ $(document).ready(function() {
 		}
 		//update_whitelist();
 		get_button_status();
-		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 	
 	// Clicked on Local zone
@@ -110,7 +110,7 @@ $(document).ready(function() {
 		}
 		//update_whitelist();
 		get_button_status();
-		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 
 	// Clicked on Other zone
@@ -123,7 +123,7 @@ $(document).ready(function() {
 		}
 		//update_whitelist();
 		get_button_status();
-		$("#whitelisttable").bootstrapTable('refresh', {url: 'ajax.php?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
 	});
 
 	// Clicked on Clear All
