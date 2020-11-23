@@ -1,12 +1,14 @@
 <?php
 
-$debug = true;
-$setting = getSettings();
-$astlogdir = !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
-$astspooldir = !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
-$astrundir = !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk" ;
+$debug 			= true;
+$setting 		= getSettings();
+$astlogdir 		= !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
+$astspooldir 	= !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
+$astrundir 		= !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk" ;
+$as 			= json_decode($setting["advancedsettings"]);
+$id_service 	= $as->id_service;
+$thissvc 		= "firewall";
 
-$thissvc = "firewall";
 // Include once because *sometimes*, on *some machines*, it crashes?
 include_once 'lock.php';
 use \FreePBX\modules\Firewall\Lock;
@@ -18,7 +20,7 @@ if (!Lock::canLock($thissvc)) {
 }
 
 // Regen fail2ban conf, if we can
-if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
+if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate") && $id_service == "enabled") {
 	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
 	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start $astrundir`;
 }
@@ -124,7 +126,9 @@ $f = $v->checkFile("bin/clean-iptables");
 `$f`;
 
 // Start fail2ban if we can
-`service fail2ban start`;
+if($id_service == "enabled"){
+	`service fail2ban start`;
+}
 
 // Always load ip_contrack_ftp, even if FTP isn't allowed,
 // as it helps with OUTBOUND connections, too.
@@ -335,12 +339,14 @@ function getSettings() {
 }
 
 function shutdown() {
-	global $thissvc, $v;
+	global $thissvc, $v, $id_service;
 
 	Lock::unLock($thissvc);
 
 	// Clean up on exit. Start by stopping fail2ban, if it's running
-	`service fail2ban stop`;
+	if($id_service == "enabled"){
+		`service fail2ban stop`;
+	}
 
 	// Flush all iptables rules
 	$f = $v->checkFile("bin/clean-iptables");
@@ -348,14 +354,18 @@ function shutdown() {
 	
 	// If sysadmin is configuring fail2ban, it'll need to regenerate the
 	// conf file
-	if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
-		`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
-	}
-	// And restart fail2ban
-	if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start")) {
-		`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
-	} else {
-		`service fail2ban start`;
+	if($id_service == "enabled"){
+		// If sysadmin is configuring fail2ban, it'll need to regenerate the
+		// conf file
+		if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
+			`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
+		}
+		// And restart fail2ban
+		if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start")) {
+			`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
+		} else {
+			`service fail2ban start`;
+		}
 	}
 	exit;
 }
@@ -468,7 +478,7 @@ function checkPhar() {
 
 function updateFirewallRules($firstrun = false) {
 	// Signature validation and firewall driver
-	global $v, $driver, $services, $thissvc, $fwversion, $netobj, $astspooldir, $astlogdir;
+	global $v, $driver, $services, $thissvc, $fwversion, $netobj, $astspooldir, $astlogdir, $id_service;
 
 	// Flush cache, read what the system thinks the firewall rules are.
 	$currentrules = $driver->refreshCache();
@@ -483,7 +493,9 @@ function updateFirewallRules($firstrun = false) {
 		// This is bad.
 		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in ".$astlogdir."/firewall.log\n");
 		Lock::unLock($thissvc);
-		`service fail2ban stop`;
+		if($id_service == "enabled"){
+			`service fail2ban stop`;
+		}
 		$f = $v->checkFile("bin/clean-iptables");
 		`$f`;
 		// Wait 4 seconds to give incron a chance to catch up
