@@ -5,10 +5,10 @@
 <?php
 // i18n common things
 $ena = _("Enabled");
+$leg = _("Legacy");
 $dis = _("Disabled");
 
 $advanced = $fw->getAdvancedSettings();
-
 $sections = array(
 	"safemode" => array( "desc" => _("Safe Mode"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
 		_("Safe mode gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
@@ -43,7 +43,24 @@ $sections = array(
 		_("Normally this should be set to <strong>Disabled</strong> unless you are debugging network connectivity."),
 		),
 	),
+	"id_service" => array( "desc" => _("Intrusion Detection Service"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Enable / Disable Intrusion Detection service on boot.").
+		"<br>"._("<strong>Enabled</strong>: This service will be started on boot.").
+		"<br>"._("<strong>Disabled</strong>: This service will be stopped and Intrusion Detection will not run on boot. Intrusion Detection will be stopped as well."),
+		),
+	),
+	"import_hosts" => array( "desc" => _("Add etc/hosts as Trusted"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Automatically add hosts from file /etc/hosts to Trusted Zone").
+		"<br>"._("<strong>Enabled</strong>: All hosts defined are added to the Trusted Zone (default)").
+		"<br>"._("<strong>Disabled</strong>: Hosts defined in /etc/hosts are not added to Trusted Zone except localhost."),
+		),
+	),
 );
+$sa = $fw->sysadmin_info();
+if(empty($sa) || (!empty($sa) && !FreePBX::Sysadmin()->isActivated())){
+	unset($sections["id_service"]);
+	unset($sections["id_sync_fw"]);
+}
 
 foreach ($sections as $key => $tmparr) {
 	if (!isset($advanced[$key])) {
