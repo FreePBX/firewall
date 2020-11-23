@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-23 05:39+0000\n"
+"POT-Creation-Date: 2020-11-23 08:54+0000\n"
 "PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -31,7 +31,7 @@ msgstr "%s 是基于页面的呼叫管理解决方案。"
 msgid "%s is not configured correctly."
 msgstr "还没有成功配置%s 。"
 
-#: views/view.settings.php:55
+#: views/view.settings.php:60
 msgid ""
 "<strong>Disabled</strong>: Hosts defined in /etc/hosts are not added to "
 "Trusted Zone except localhost."
@@ -43,10 +43,17 @@ msgid ""
 "Detection will not run on boot. Intrusion Detection will be stopped as well."
 msgstr ""
 
-#: views/view.settings.php:54
+#: views/view.settings.php:59
 msgid ""
 "<strong>Enabled</strong>: All hosts defined are added to the Trusted Zone "
 "(default)"
+msgstr ""
+
+#: views/view.settings.php:53
+msgid ""
+"<strong>Enabled</strong>: Automatically synchronize IPs from specific "
+"firewall zones to the whitelist. E.g: When you add to a trusted zone, local "
+"or otherwise, they will be added to the Intrusion Detection whitelist."
 msgstr ""
 
 #: views/view.settings.php:48
@@ -64,6 +71,12 @@ msgstr ""
 "you may be inadvertently allowing other hosted clients unrestricted access "
 "to your machine! Please use common sense to make sure that you are only "
 "allowing known trusted networks."
+
+#: views/view.settings.php:54
+msgid ""
+"<strong>Legacy</strong>: Intrusion Detection whitelist will work like in the "
+"past with no automated synchronization to the whitelist."
+msgstr ""
 
 #: views/view.interfaces.php:11
 msgid ""
@@ -110,7 +123,7 @@ msgstr "添加网络"
 msgid "Add New"
 msgstr "添加新规则"
 
-#: views/view.settings.php:52
+#: views/view.settings.php:57
 msgid "Add etc/hosts as Trusted"
 msgstr ""
 
@@ -260,7 +273,7 @@ msgstr ""
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
 
-#: views/view.settings.php:53
+#: views/view.settings.php:58
 msgid "Automatically add hosts from file /etc/hosts to Trusted Zone"
 msgstr ""
 
@@ -822,6 +835,10 @@ msgstr ""
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
+msgstr ""
+
+#: views/view.settings.php:52
+msgid "Intrusion Detection Sync Firewall"
 msgstr ""
 
 #: Console/Firewall.class.php:126
