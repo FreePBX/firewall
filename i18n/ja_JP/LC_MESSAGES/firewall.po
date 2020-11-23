@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-23 05:24+0000\n"
+"POT-Creation-Date: 2020-11-23 05:39+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -31,20 +31,25 @@ msgstr ""
 msgid "%s is not configured correctly."
 msgstr ""
 
-#: views/view.settings.php:50
+#: views/view.settings.php:55
+msgid ""
+"<strong>Disabled</strong>: Hosts defined in /etc/hosts are not added to "
+"Trusted Zone except localhost."
+msgstr ""
+
+#: views/view.settings.php:49
 msgid ""
 "<strong>Disabled</strong>: This service will be stopped and Intrusion "
 "Detection will not run on boot. Intrusion Detection will be stopped as well."
 msgstr ""
 
-#: views/view.settings.php:55
+#: views/view.settings.php:54
 msgid ""
-"<strong>Enabled</strong>: Automatically synchronize IPs from specific "
-"firewall zones to the whitelist. E.g: When you add to a trusted zone, local "
-"or otherwise, they will be added to the Intrusion Detection whitelist."
+"<strong>Enabled</strong>: All hosts defined are added to the Trusted Zone "
+"(default)"
 msgstr ""
 
-#: views/view.settings.php:49
+#: views/view.settings.php:48
 msgid "<strong>Enabled</strong>: This service will be started on boot."
 msgstr ""
 
@@ -56,12 +61,6 @@ msgid ""
 "to make sure that you are only allowing known trusted networks."
 msgstr ""
 
-#: views/view.settings.php:56
-msgid ""
-"<strong>Legacy</strong>: Intrusion Detection whitelist will work like in the "
-"past with no automated synchronization to the whitelist."
-msgstr ""
-
 #: views/view.interfaces.php:11
 msgid ""
 "A 'Trusted' interface means that <strong>no filtering</strong> will be "
@@ -70,7 +69,7 @@ msgid ""
 "interfering with existing traffic."
 msgstr ""
 
-#: Firewall.class.php:246
+#: Firewall.class.php:249
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -78,7 +77,7 @@ msgid ""
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
 
-#: Firewall.class.php:236
+#: Firewall.class.php:239
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -89,7 +88,7 @@ msgstr ""
 msgid "About Zones"
 msgstr ""
 
-#: views/intrusion_detection.php:290 views/intrusion_detection.php:328
+#: views/intrusion_detection.php:291 views/intrusion_detection.php:329
 msgid "Action"
 msgstr ""
 
@@ -103,6 +102,10 @@ msgstr ""
 
 #: views/view.blacklist.php:40 views/view.networks.php:83
 msgid "Add New"
+msgstr ""
+
+#: views/view.settings.php:52
+msgid "Add etc/hosts as Trusted"
 msgstr ""
 
 #: Console/Firewall.class.php:88
@@ -140,11 +143,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
 
-#: Console/Firewall.class.php:331
+#: Console/Firewall.class.php:336
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:322
+#: Console/Firewall.class.php:327
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -162,13 +165,13 @@ msgid ""
 "interface."
 msgstr ""
 
-#: views/view.settings.php:20
+#: views/view.settings.php:19
 msgid ""
 "Allows <strong>temporary</strong> Internet zone access to the LetsEncrypt "
 "acme-challenge folder during an active certificate update request."
 msgstr ""
 
-#: Console/Firewall.class.php:165 Console/Firewall.class.php:181
+#: Console/Firewall.class.php:170 Console/Firewall.class.php:186
 msgid "An error has occurred!"
 msgstr ""
 
@@ -210,6 +213,10 @@ msgid ""
 "that interface."
 msgstr ""
 
+#: views/intrusion_detection.php:269
+msgid "Are you sure?"
+msgstr ""
+
 #: views/warning.notready.php:3
 msgid ""
 "As this machine has recently been rebooted, the firewall is "
@@ -232,19 +239,23 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:210
+#: Console/Firewall.class.php:215
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:231
+#: Console/Firewall.class.php:236
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:282
+#: Console/Firewall.class.php:287
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
+msgstr ""
+
+#: views/view.settings.php:53
+msgid "Automatically add hosts from file /etc/hosts to Trusted Zone"
 msgstr ""
 
 #: OOBE.class.php:232
@@ -277,7 +288,7 @@ msgstr ""
 msgid "Both (TCP and UDP)"
 msgstr ""
 
-#: views/view.settings.php:43
+#: views/view.settings.php:42
 msgid ""
 "By sending a Reject packet, the attacker knows that they have discovered a "
 "machine. By dropping the packet silently, no response is sent to the "
@@ -298,6 +309,10 @@ msgstr ""
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
+msgstr ""
+
+#: views/intrusion_detection.php:331
+msgid "Cause"
 msgstr ""
 
 #: views/intrusion_detection.php:185
@@ -328,7 +343,7 @@ msgstr ""
 msgid "Cumulative Total of remote clients:"
 msgstr ""
 
-#: views/view.settings.php:34
+#: views/view.settings.php:33
 msgid "Custom Firewall Rules"
 msgstr ""
 
@@ -376,7 +391,7 @@ msgstr "削除"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1067
+#: Firewall.class.php:1102
 msgid "Delete Selected"
 msgstr ""
 
@@ -404,8 +419,12 @@ msgstr ""
 msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
 
-#: views/view.smart.php:6
+#: views/view.settings.php:9 views/view.smart.php:6
 msgid "Disabled"
+msgstr ""
+
+#: views/intrusion_detection.php:269
+msgid "Do you want to delete ALL custom whitelist entries?"
 msgstr ""
 
 #: views/intrusion_detection.php:144
@@ -432,7 +451,7 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-#: views/view.settings.php:48
+#: views/view.settings.php:47
 msgid "Enable / Disable Intrusion Detection service on boot."
 msgstr ""
 
@@ -448,7 +467,7 @@ msgstr ""
 msgid "Enabled"
 msgstr ""
 
-#: views/view.settings.php:42
+#: views/view.settings.php:41
 msgid ""
 "Enabling 'Reject Packets' sends an explicit response to the other machine, "
 "telling them that their traffic has been administratively blocked. Leaving "
@@ -456,7 +475,7 @@ msgid ""
 "attacker that their traffic has been intercepted."
 msgstr ""
 
-#: Console/Firewall.class.php:136
+#: Console/Firewall.class.php:141
 msgid "Enabling Firewall."
 msgstr ""
 
@@ -474,20 +493,20 @@ msgstr ""
 msgid "Error!"
 msgstr ""
 
-#: Console/Firewall.class.php:274
+#: Console/Firewall.class.php:279
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:215
+#: Console/Firewall.class.php:220
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
 
-#: Console/Firewall.class.php:151
+#: Console/Firewall.class.php:156
 msgid "Error: Missing argument. Expected 'enable' or 'disable'."
 msgstr ""
 
-#: Console/Firewall.class.php:189
+#: Console/Firewall.class.php:194
 #, php-format
 msgid "Error: Unknown option '%s'. Expected 'enable or 'disable'."
 msgstr ""
@@ -522,7 +541,7 @@ msgid ""
 "as additional data."
 msgstr ""
 
-#: Console/Firewall.class.php:242
+#: Console/Firewall.class.php:247
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -534,23 +553,23 @@ msgstr ""
 msgid "Firewall"
 msgstr ""
 
-#: Firewall.class.php:166
+#: Firewall.class.php:169
 msgid "Firewall Active"
 msgstr ""
 
-#: Firewall.class.php:187
+#: Firewall.class.php:190
 msgid "Firewall Configuration"
 msgstr ""
 
-#: Firewall.class.php:168
+#: Firewall.class.php:171
 msgid "Firewall Disabled"
 msgstr ""
 
-#: Firewall.class.php:221 Firewall.class.php:222
+#: Firewall.class.php:224 Firewall.class.php:225
 msgid "Firewall Integrity Failed"
 msgstr ""
 
-#: Firewall.class.php:181
+#: Firewall.class.php:184
 msgid "Firewall Service not running!"
 msgstr ""
 
@@ -558,7 +577,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Firewall.class.php:1039
+#: Firewall.class.php:1074
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -570,7 +589,7 @@ msgstr ""
 msgid "Firewall has not started yet!"
 msgstr ""
 
-#: Console/Firewall.class.php:128
+#: Console/Firewall.class.php:133
 msgid "Firewall is not enabled, can't disable it"
 msgstr ""
 
@@ -629,7 +648,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Console/Firewall.class.php:274
+#: Console/Firewall.class.php:279
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -666,11 +685,11 @@ msgstr ""
 msgid "IP Addresses: "
 msgstr ""
 
-#: views/intrusion_detection.php:329
+#: views/intrusion_detection.php:330
 msgid "IP Banned"
 msgstr ""
 
-#: views/intrusion_detection.php:304
+#: views/intrusion_detection.php:305
 msgid "IP's that are currently banned."
 msgstr ""
 
@@ -760,7 +779,7 @@ msgid ""
 "further information."
 msgstr ""
 
-#: Firewall.class.php:223
+#: Firewall.class.php:226
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -772,7 +791,7 @@ msgstr ""
 msgid "Interface Name"
 msgstr ""
 
-#: views/page.about.php:52
+#: views/page.about.php:87
 msgid "Interfaces"
 msgstr ""
 
@@ -781,26 +800,37 @@ msgid "Internet"
 msgstr ""
 
 #: views/intrusion_detection.php:24 views/intrusion_detection.php:49
-#: views/page.about.php:59
+#: views/page.about.php:94
 msgid "Intrusion Detection"
 msgstr ""
 
-#: views/view.settings.php:47
+#: views/view.settings.php:46
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:944
+#: Firewall.class.php:979
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:944
+#: Firewall.class.php:979
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
 msgstr ""
 
-#: views/view.settings.php:53
-msgid "Intrusion Detection Sync Firewall"
+#: Console/Firewall.class.php:126
+msgid "Intrusion Detection is available for all activated systems only."
+msgstr ""
+
+#: Firewall.class.php:113
+msgid "Intrusion detection handling method"
+msgstr ""
+
+#: Firewall.class.php:113
+msgid ""
+"Intrusion detection handling method is been updated recently. Please clear "
+"your browser cache and try if you are having issue with Intrusion Detection "
+"Start/Restart/Stop button."
 msgstr ""
 
 #: views/disabled.php:11
@@ -859,19 +889,19 @@ msgstr ""
 msgid "Length of time in seconds a remote IP is banned before being reset."
 msgstr ""
 
-#: Console/Firewall.class.php:185
+#: Console/Firewall.class.php:190
 msgid "Lets Encrypt rules already disabled. Nothing to do."
 msgstr ""
 
-#: Console/Firewall.class.php:169
+#: Console/Firewall.class.php:174
 msgid "Lets Encrypt rules already enabled. Nothing to do"
 msgstr ""
 
-#: Console/Firewall.class.php:178
+#: Console/Firewall.class.php:183
 msgid "Lets Encrypt rules disabled successfully."
 msgstr ""
 
-#: Console/Firewall.class.php:162
+#: Console/Firewall.class.php:167
 msgid "Lets Encrypt rules enabled successfully."
 msgstr ""
 
@@ -934,11 +964,11 @@ msgstr ""
 msgid "Network/Host"
 msgstr ""
 
-#: views/page.about.php:55
+#: views/page.about.php:90
 msgid "Networks"
 msgstr ""
 
-#: Firewall.class.php:233 Firewall.class.php:235
+#: Firewall.class.php:236 Firewall.class.php:238
 msgid "New Interface Detected"
 msgstr ""
 
@@ -958,15 +988,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:276
+#: Firewall.class.php:279
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:278
+#: Firewall.class.php:281
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:279
+#: Firewall.class.php:282
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -985,7 +1015,7 @@ msgstr ""
 msgid "No network identifiers supplied"
 msgstr ""
 
-#: views/view.settings.php:44
+#: views/view.settings.php:43
 msgid ""
 "Normally this should be set to <strong>Disabled</strong> unless you are "
 "debugging network connectivity."
@@ -1014,7 +1044,14 @@ msgstr ""
 msgid "Note that timestamps may not be accurate, and are indicative only."
 msgstr ""
 
-#: views/view.settings.php:22
+#: views/page.about.php:71
+msgid ""
+"Note: Intrusion detection handling method is been updated recently. Please "
+"clear your browser cache and try if you are having issue with Intrusion "
+"Detection Start/Restart/Stop button."
+msgstr ""
+
+#: views/view.settings.php:21
 msgid ""
 "Note: LetsEncrypt will always send challenge queries to port 80.  If this "
 "server is not listening on port 80, certificate requests will fail unless an "
@@ -1180,7 +1217,7 @@ msgstr ""
 msgid "Reject"
 msgstr ""
 
-#: views/view.settings.php:40
+#: views/view.settings.php:39
 msgid "Reject Packets"
 msgstr ""
 
@@ -1192,16 +1229,16 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:278
+#: Console/Firewall.class.php:283
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1074
+#: Firewall.class.php:1109
 msgid "Reset"
 msgstr "リセット"
 
-#: views/page.about.php:49 views/view.smart.php:3
+#: views/page.about.php:84 views/view.smart.php:3
 msgid "Responsive Firewall"
 msgstr ""
 
@@ -1224,7 +1261,7 @@ msgstr ""
 msgid "Responsive Firewall is not enabled."
 msgstr ""
 
-#: views/view.settings.php:19
+#: views/view.settings.php:18
 msgid "Responsive LetsEncrypt Rules"
 msgstr ""
 
@@ -1264,11 +1301,11 @@ msgid ""
 "strong password and SSH keys. "
 msgstr ""
 
-#: views/view.settings.php:14
+#: views/view.settings.php:13
 msgid "Safe Mode"
 msgstr ""
 
-#: views/view.settings.php:15
+#: views/view.settings.php:14
 msgid ""
 "Safe mode gives you the ability to recover from an accidental "
 "misconfiguration by temporarily disabling the firewall if the machine is "
@@ -1289,12 +1326,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1066 Firewall.class.php:1075 views/modal.customsvc.php:37
+#: Firewall.class.php:1101 Firewall.class.php:1110 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
 
-#: Firewall.class.php:1069
+#: Firewall.class.php:1104
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -1322,7 +1359,7 @@ msgid ""
 "connections matching the zones."
 msgstr ""
 
-#: views/page.about.php:46
+#: views/page.about.php:81
 msgid "Settings"
 msgstr ""
 
@@ -1343,7 +1380,7 @@ msgstr ""
 msgid "Single Port: %s"
 msgstr ""
 
-#: views/intrusion_detection.php:291
+#: views/intrusion_detection.php:292
 msgid "Source"
 msgstr ""
 
@@ -1351,7 +1388,7 @@ msgstr ""
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
-#: Firewall.class.php:173
+#: Firewall.class.php:176
 msgid "Starting up"
 msgstr ""
 
@@ -1367,8 +1404,8 @@ msgstr ""
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:212 Console/Firewall.class.php:254
-#: Console/Firewall.class.php:311
+#: Console/Firewall.class.php:217 Console/Firewall.class.php:259
+#: Console/Firewall.class.php:316
 msgid "Success!"
 msgstr ""
 
@@ -1386,17 +1423,17 @@ msgid ""
 "detection whitelist."
 msgstr ""
 
-#: Console/Firewall.class.php:121
+#: Console/Firewall.class.php:122
 msgid ""
 "Syncing cannot be performed because the Intrusion Detection Sync Firewall "
 "setting is set to Legacy mode."
 msgstr ""
 
-#: Console/Firewall.class.php:117
+#: Console/Firewall.class.php:118
 msgid "Syncing...."
 msgstr ""
 
-#: Firewall.class.php:161 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:164 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr ""
 
@@ -1437,7 +1474,7 @@ msgid ""
 "Save button."
 msgstr ""
 
-#: Firewall.class.php:453
+#: Firewall.class.php:465
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1450,7 +1487,7 @@ msgstr ""
 msgid "The file (%s) could not be found!"
 msgstr ""
 
-#: views/view.settings.php:36
+#: views/view.settings.php:35
 msgid ""
 "The files /etc/firewall-4.rules and /etc/firewall-6.rules (for IPv4 and IPv6 "
 "rules) must be owned by the 'root' user and not writable by any other user. "
@@ -1507,7 +1544,7 @@ msgid ""
 "This is an inherently secure protocol."
 msgstr ""
 
-#: views/view.settings.php:37
+#: views/view.settings.php:36
 msgid ""
 "This allows expert users to customize the firewall to their specifications. "
 "This should be <strong>Disabled</strong> unless you explicitly know why it "
@@ -1537,13 +1574,13 @@ msgid ""
 "if required, %s on the Networks tab. %s"
 msgstr ""
 
-#: views/view.settings.php:35
+#: views/view.settings.php:34
 msgid ""
 "This authorizes the system to import custom iptables rules after the "
 "firewall has started."
 msgstr ""
 
-#: views/view.settings.php:41
+#: views/view.settings.php:40
 msgid ""
 "This configures what happens when a packet is received by the Firewall that "
 "<strong>will not be allowed</strong> through to the system."
@@ -1638,13 +1675,13 @@ msgid ""
 "Responsive Firewall will be bypassed."
 msgstr ""
 
-#: views/view.settings.php:21
+#: views/view.settings.php:20
 msgid ""
 "This should be <strong>Enabled</strong> unless you wish to manage "
 "LetsEncrypt access manually."
 msgstr ""
 
-#: views/view.settings.php:16
+#: views/view.settings.php:15
 msgid ""
 "This should be disabled if there is the possibility of malicious individuals "
 "rebooting your machine without your knowledge. Otherwise it should be left "
@@ -1693,20 +1730,16 @@ msgstr ""
 msgid "Trusted"
 msgstr ""
 
-#: Firewall.class.php:242 Firewall.class.php:245
+#: Firewall.class.php:245 Firewall.class.php:248
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:274
+#: Firewall.class.php:277
 msgid "Trusted Management Network defined"
 msgstr ""
 
 #: views/intrusion_detection.php:176
 msgid "Trusted Zone"
-msgstr ""
-
-#: views/intrusion_detection.php:292 views/intrusion_detection.php:330
-msgid "Type"
 msgstr ""
 
 #: Services.class.php:118
@@ -1733,19 +1766,19 @@ msgstr ""
 msgid "UDP Ports:"
 msgstr ""
 
-#: views/intrusion_detection.php:308
+#: views/intrusion_detection.php:309
 msgid "Unban All"
 msgstr ""
 
-#: Firewall.class.php:675
+#: Firewall.class.php:711
 msgid "Unknown"
 msgstr ""
 
-#: Console/Firewall.class.php:303
+#: Console/Firewall.class.php:308
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1068
+#: Firewall.class.php:1103
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1842,7 +1875,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:454
+#: Firewall.class.php:466
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -1892,6 +1925,10 @@ msgstr ""
 
 #: views/view.shortcuts.php:11
 msgid "Your Client"
+msgstr ""
+
+#: views/intrusion_detection.php:293
+msgid "Zone"
 msgstr ""
 
 #: views/page.advanced.php:26
