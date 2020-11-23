@@ -70,6 +70,8 @@ class Firewall extends Command {
 				$this->removeFromZone($output, $input->getArgument('opt'), $id);
 			}
 			return true;
+		case "sync":
+			return $this->scan($output);
 		default:
 			$output->writeln($this->showHelp());
 		}
@@ -88,6 +90,7 @@ class Firewall extends Command {
 			"list [zone]" => _("List all entries in zone 'zone'"),
 			"add [zone] [id id id..]" => _("Add to 'zone' the IDs provided."),
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
+			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist.")
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
 
 		);
@@ -101,6 +104,22 @@ class Firewall extends Command {
 		$help .="<comment>fwconsole firewall add trusted 10.46.80.0/24 hostname.example.com 1.2.3.4</comment>\n";
 
 		return $help;
+	}
+
+	public function scan($output){	
+		$fw 		= \FreePBX::Firewall();
+		$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
+		$as			= $fw->getAdvancedSettings();
+
+		// need to get F2B status like this way when this one is launch through cron job.
+		$out = shell_exec("pgrep -f fail2ban-server"); 
+		if (!empty($out) && trim($as["id_sync_fw"]) != "legacy"){
+			$output->writeln("<info>"._("Syncing....")."</info>");
+			$fw->updateWhitelist($fw->getipzone("all"));
+		}
+		elseif($as["id_sync_fw"] == "legacy"){
+			$output->writeln("<error>"._("Syncing cannot be performed because the Intrusion Detection Sync Firewall setting is set to Legacy mode.")."</error>");
+		}
 	}
 
 	private function disableFirewall($output) {

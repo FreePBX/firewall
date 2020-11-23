@@ -5,7 +5,8 @@
 <?php
 // i18n common things
 $ena = _("Enabled");
-$dis = _("Disabled");
+$leg = _("Legacy");
+
 
 $advanced = $fw->getAdvancedSettings();
 
@@ -42,6 +43,18 @@ $sections = array(
 		_("By sending a Reject packet, the attacker knows that they have discovered a machine. By dropping the packet silently, no response is sent to the attacker, and they may move on to a different target."),
 		_("Normally this should be set to <strong>Disabled</strong> unless you are debugging network connectivity."),
 		),
+	),
+	"id_service" => array( "desc" => _("Intrusion Detection Service"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Enable / Disable Intrusion Detection service on boot.").
+		"<br>"._("<strong>Enabled</strong>: This service will be started on boot.").
+		"<br>"._("<strong>Disabled</strong>: This service will be stopped and Intrusion Detection will not run on boot. Intrusion Detection will be stopped as well."),
+		),
+	),
+	"id_sync_fw" => array( "desc" => _("Intrusion Detection Sync Firewall"), "values" => array("enabled" => $ena, "legacy" => $leg), 
+		"docs" => array(
+		_("<strong>Enabled</strong>: Automatically synchronize IPs from specific firewall zones to the whitelist. E.g: When you add to a trusted zone, local or otherwise, they will be added to the Intrusion Detection whitelist.").
+		"<br>"._("<strong>Legacy</strong>: Intrusion Detection whitelist will work like in the past with no automated synchronization to the whitelist."),
+	  ),
 	),
 );
 
