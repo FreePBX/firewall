@@ -24,7 +24,7 @@
 	<location>compatibility</location>
 	<md5sum>compatibility</md5sum>
 	<supported>
-		<version>13.0</version>
+		<version>14.0</version>
 	</supported>
 	<console>
 		<command>
