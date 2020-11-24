@@ -648,7 +648,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					case "legacy":
 						if($asfw["id_sync_fw"] != "legacy"){
 							 // That was enabled to become legacy
-							$IDsetting["ids"]["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $this->getConfig("dynamic_whitelist")."\n".$this->getConfig("custom_whitelist")."\n".$this->getExtRegistered());
+							$IDsetting["ids"]["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $this->getConfig("dynamic_whitelist"));
 							$this->FreePBX->Sysadmin->sync_fw($IDsetting["ids"]);
 						}	
 					break;
