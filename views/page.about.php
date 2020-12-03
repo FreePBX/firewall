@@ -21,43 +21,9 @@ $ss     = $fw->getSmartSettings();
 $asfw   = $fw->getAdvancedSettings();
 $salic  = false;
 
-if(!empty($module_status["sysadmin"]) &&  ($sa = FreePBX::Sysadmin()) && $sa->getIntrusionDetection() != false){
-  $salic                  = true;
-  $indetec                = $sa->getIntrusionDetection();
-  $indetec["idregextip"]  = $fw->getConfig("idregextip")  == "true"   ? "Active"  : "";
-  $indetec["trusted"]     = $fw->getConfig("trusted")     == "true"   ? "Active"  : "";
-  $indetec["local"]       = $fw->getConfig("local")       == "true"   ? "Active"  : "";
-  $indetec["other"]       = $fw->getConfig("other")       == "true"   ? "Active"  : "";
-  $indetec["idstatus"]    = $indetec["status"]            == "stopped"? "style='display: none;'": "";
-  $indetec["legacy"]      = $asfw["id_sync_fw"]           == "legacy" ? "style='display: none;'": "";
-  if($indetec["legacy"] == ""){
-    $indetec["ids"]["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $fw->getConfig("dynamic_whitelist"));
-  }
-  
-  $wl_filter              = "^(\b(?:\d{1,3}\.){3}\d{1,3}\b)$";                    // IPV4
-  $wl_filter             .= "|^(\b(?:\d{1,3}\.){3}\d{1,3}\b)\/\d{1,2}$";          // IPV4 + subnet
-  $wl_filter             .= "|^((\w|\d|[-\.]){1,})+(\w|\d|[-])$";                 // Domains
-  $wl_filter             .= "|^()$";                                              // Nothing (CR)
-  $wl_filter             .= "|^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}";        // IPV6 
-  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,7}:";
-  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}";
-  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}";
-  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}";
-  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}";
-  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}";
-  $wl_filter             .= "|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})";
-  $wl_filter             .= "|:((:[0-9a-fA-F]{1,4}){1,7}|:)";
-  $wl_filter             .= "|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}";
-  $wl_filter             .= "|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]";
-  $wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]";
-  $wl_filter             .= "|(2[0-4]";
-  $wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])";
-  $wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]";
-  $wl_filter             .= "|(2[0-4]";
-  $wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]";
-  $wl_filter             .= "|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$";
-  
-  $indetec["wl_filter"]   = $wl_filter;
+if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->getIntrusionDetection() != false){
+  $salic    = true;
+  $indetec  = $fw->getIDDataPage();
 }
 ?>
 
@@ -67,8 +33,8 @@ if(!empty($module_status["sysadmin"]) &&  ($sa = FreePBX::Sysadmin()) && $sa->ge
       <div class="col-md-12">
         <div class="alert alert-dismissable alert-warning">				 
           <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> × </button>
-          <h4> Warning! </h4> 
-          <?php echo _("Note: Intrusion detection handling method is been updated recently. Please clear your browser cache and try if you are having issue with Intrusion Detection Start/Restart/Stop button.") ?>
+          <h4> <?php echo _("Warning!") ?> </h4> 
+          <?php echo _("Note: The Intrusion Detection handling method has been updated recently. Please clear your browser cache and refresh if you are having issues seeing the Intrusion Detection Start/Restart/Stop button.") ?>
         </div>
       </div>
     </div>

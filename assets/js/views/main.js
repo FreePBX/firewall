@@ -10,6 +10,14 @@ $(document).ready(function() {
 		$("#action-bar").hide();
 	}
 
+	if($("#page_body a.active").text() === "Intrusion Detection"){
+		$("#action-bar").show();
+		$("#idtrustedzone").hide();
+		$("#idlocalzone").hide();
+		$("#idotherzone").hide();
+		$("#clearall").hide();	
+	}
+
 	// Update address bar when someone changes tabs
 	$("#page_body a[data-toggle='tab']").on('shown.bs.tab', function(e) {
 		var newuri = updateQuery("tab", e.target.getAttribute('aria-controls'));
@@ -490,6 +498,15 @@ function delete_all_selected(ignored) {
 }
 
 function update_actionbar() {
+	if($("#page_body a.active").text() === "Intrusion Detection"){
+		$("#action-bar").show();
+		$("#idtrustedzone").hide();
+		$("#idlocalzone").hide();
+		$("#idotherzone").hide();
+		$("#clearall").hide();
+		return;
+	}
+	
 	// If we're not looking at networks or interfaces, hide it.
 	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces" && $("#page_body li.active").data('name') !== "intrusion_detection") {
 		$("#action-bar").hide();

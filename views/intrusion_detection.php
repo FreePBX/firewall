@@ -1,5 +1,17 @@
 <?php
 echo '<script type="text/javascript" src="modules/sysadmin/assets/js/views/intrusion_detection.js"></script>';
+if($from_sysadmin){
+	echo '<script>window.from_sysadmin = true;</script>';
+	echo '<script type="text/javascript" src="modules/firewall/assets/js/views/main.js"></script>';
+	echo '<script type="text/javascript" src="modules/firewall/assets/js/views/advanced.js"></script>';	
+	?>
+	<div class="alert alert-dismissable alert-warning">				 
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true"> × </button>
+		<h4> <?php echo _("Warning!") ?> </h4> 
+		<?php echo _("Note: The Intrusion Detection handling method has been updated recently. Please clear your browser cache and refresh if you are having issues seeing the Intrusion Detection Start/Restart/Stop button.") ?>
+	</div>
+	<?php	
+}
 $info = _("When the service is running, attempts to compromise your system are logged. If the attempts exceed the
 Max Retry limit, the remote IP is blocked from accessing the system for the length of Ban Time.  The number
 of attempts are reset after the Find Time is exceeded.<br />
@@ -21,12 +33,101 @@ if ($i_d_conf) {
 }
 
 ?>
-<h1><?php echo _("Intrusion Detection")?></h1>
+<div class="element-container">
+	<div class="row">
+		<div class="form-group">
+			<div class="col-md-6">
+				<h1><?php echo _("Intrusion Detection")?></h1>
+			</div>
+			<div class="col-md-6 text-right">
+				<?php if($from_sysadmin){ ?>
+					<!-- Modal -->
+					<i class="fa fa-2x fa-cogs adv-settings" title="Advanced Settings" data-toggle="modal" data-target="#advanced-settings"></i>
+					<div class="modal fade" id="advanced-settings" tabindex="-1" role="dialog" aria-labelledby="advanced-settingsLabel" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h5 class="modal-title text-left" id="advanced-settingsLabel"><?php echo _("Advanced Settings") ?></h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body text-left">
+									<div class="fpbx-container">
+										<div class="element-container">	
+											<div class="row">
+												<div class="form-group">
+													<div class="col-md-7">
+														<label class="control-label" for="INTRUSION_DETECTION_SERVICE"><?php echo _("Intrusion Detection Service") ?></label>
+														<i class="fa fa-question-circle fpbx-help-icon" data-for="INTRUSION_DETECTION_SERVICE"></i>&nbsp;
+														<a href="#" data-for="INTRUSION_DETECTION_SERVICE" data-type="bool" data-defval="1" class="hidden defset"><i class="fa fa-refresh"></i></a>
+													</div>
+													<div class="col-md-5 radioset text-right">
+														<input type="hidden" id="INTRUSION_DETECTION_SERVICEdefault" value="1">
+														<input type="radio" class="advsetting" id="INTRUSION_DETECTION_SERVICEtrue" name="id_service" value="enabled" <?php  echo $id_service_enabled ?>>
+														<label for="INTRUSION_DETECTION_SERVICEtrue"><?php echo _("Enabled") ?></label>
+														<input type="radio" class="advsetting" id="INTRUSION_DETECTION_SERVICEfalse" name="id_service" value="diabled" <?php  echo $id_service_disabled ?>>
+														<label for="INTRUSION_DETECTION_SERVICEfalse"><?php echo _("Disabled") ?></label>
+													</div>		
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														<span id="INTRUSION_DETECTION_SERVICE-help" class="help-block fpbx-help-block">
+														<?php 
+														echo "<strong>"._("Enable / Disable").":</strong> "._("Intrusion Detection service on boot.")."<br>";
+														echo "<strong>"._("Enabled").":</strong> "._("This service will be started on boot.")."<br>";
+														echo "<strong>"._("Disabled").":</strong> "._("This service will be stopped and Intrusion Detection will not run on boot. Intrusion Detection will be stopped as well.")."<br>";
+														?>
+														<br>
+														<br>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="element-container">	
+										<div class="row">
+												<div class="form-group">
+													<div class="col-md-7">
+														<label class="control-label" for="IDSF"><?php echo _("Intrusion Detection Sync Firewall") ?></label>
+														<i class="fa fa-question-circle fpbx-help-icon" data-for="IDSF"></i>&nbsp;
+														<a href="#" data-for="IDSF" data-type="bool" data-defval="1" class="hidden defset"><i class="fa fa-refresh"></i></a>
+													</div>
+													<div class="col-md-5 radioset text-right">
+														<input type="hidden" id="IDSFdefault" value="1">
+														<input type="radio" class="advsetting" id="IDSFtrue" name="id_sync_fw" value="enabled" <?php  echo $id_sync_fw_enabled ?>>
+														<label for="IDSFtrue"><?php echo _("Enabled") ?></label>
+														<input type="radio" class="advsetting" id="IDSFfalse" name="id_sync_fw" value="legacy" <?php  echo $id_sync_fw_legacy ?>>
+														<label for="IDSFfalse"><?php echo _("Legacy") ?></label>
+													</div>		
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														<span id="IDSF-help" class="help-block fpbx-help-block">
+														<?php 
+														echo "<strong>"._("Enabled").":</strong> "._("Automatically synchronize IPs from specific firewall zones to the whitelist. E.g: When you add to a trusted zone, local or otherwise, they will be added to the Intrusion Detection whitelist")."<br>";
+														echo "<strong>"._("Legacy").":</strong> "._("Intrusion Detection whitelist will work like in the past with no automated synchronization to the whitelist).")."<br>";
+														?>
+														</span>
+													</div>
+												</div>
+											</div>
+										</div>									
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="well">
 	<?php echo $info ?>
 </div>
 
-<form method="post" action="">
+<form class="fpbx-submit" method="post" action="">
 <!--Status-->
 <div class="element-container">
 	<div class="row">
@@ -249,7 +350,7 @@ else{
 		<p></p>
 		<div class="row">
 			<div class="col-md-12">
-				<span id="whitelist-help" class="help-block fpbx-help-block">'. _("Custom IP's that can never be banned.").'</span>
+				<span id="whitelist-help" class="help-block fpbx-help-block">'. _("Custom IP's that can never be banned.").'<br> '._("Enter one IP or one Host per line. No comma allowed for multiple entries.").'</span>
 			</div>
 		</div>
 	</div>

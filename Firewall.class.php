@@ -804,7 +804,70 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$result = $module->getinfo('sysadmin', MODULE_STATUS_ENABLED);
 		return (empty($result["sysadmin"])) ? '' : $result;
 	}
-
+	
+	/**
+	 * showIDPage for Sysadmin menu
+	 * This page is displayed only if Firewall is disabled.
+	 *
+	 * 
+	 * @return string
+	 */
+	public function showIDPage(){		
+		return __DIR__."/views/intrusion_detection.php";
+	}
+	
+	/**
+	 * getIDDataPage  : Prepare everything for I.D page
+	 * This page is shared with Firewall and Sysadmin module.
+	 * The common data are there.
+	 *
+	 * @return array
+	 */
+	public function getIDDataPage(){
+		$asfw   				= $this->getAdvancedSettings();
+		$indetec                = $this->FreePBX->Sysadmin->getIntrusionDetection();
+		$indetec["idregextip"]  = $this->getConfig("idregextip")  == "true"   ? "Active"  : "";
+		$indetec["trusted"]     = $this->getConfig("trusted")     == "true"   ? "Active"  : "";
+		$indetec["local"]       = $this->getConfig("local")       == "true"   ? "Active"  : "";
+		$indetec["other"]       = $this->getConfig("other")       == "true"   ? "Active"  : "";
+		$indetec["idstatus"]    = $indetec["status"]              == "stopped"? "style='display: none;'": "";
+		$indetec["legacy"]      = $asfw["id_sync_fw"]             == "legacy" ? "style='display: none;'": "";
+		if($indetec["legacy"] == ""){
+		  $indetec["ids"]["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $this->getConfig("dynamic_whitelist"));
+		}
+		  
+		$wl_filter              = "^(\b(?:\d{1,3}\.){3}\d{1,3}\b)$";                    // IPV4
+		$wl_filter             .= "|^(\b(?:\d{1,3}\.){3}\d{1,3}\b)\/\d{1,2}$";          // IPV4 + subnet
+		$wl_filter             .= "|^((\w|\d|[-\.]){1,})+(\w|\d|[-])$";                 // Domains
+		$wl_filter             .= "|^()$";                                              // Nothing (CR)
+		$wl_filter             .= "|^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}";        // IPV6 
+		$wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,7}:";
+		$wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}";
+		$wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}";
+		$wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}";
+		$wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}";
+		$wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}";
+		$wl_filter             .= "|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})";
+		$wl_filter             .= "|:((:[0-9a-fA-F]{1,4}){1,7}|:)";
+		$wl_filter             .= "|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}";
+		$wl_filter             .= "|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]";
+		$wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]";
+		$wl_filter             .= "|(2[0-4]";
+		$wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])";
+		$wl_filter             .= "|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]";
+		$wl_filter             .= "|(2[0-4]";
+		$wl_filter             .= "|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]";
+		$wl_filter             .= "|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$";
+		
+		$indetec["wl_filter"]   = $wl_filter;
+		$indetec["id_sync_fw_legacy"]	= $asfw["id_sync_fw"] == "legacy" ? "checked" : "";
+		$indetec["id_sync_fw_enabled"]  = $asfw["id_sync_fw"] != "legacy" ? "checked" : "";
+		$indetec["id_service_enabled"]  = $asfw["id_service"] == "enabled" ? "checked" : "";
+		$indetec["id_service_disabled"] = $asfw["id_service"] != "enabled" ? "checked" : "";
+		
+		return $indetec;
+	}
+	
 	public function showPage($page) {
 		if (strpos($page, ".") !== false) {
 			throw new \Exception("Invalid page name $page");
