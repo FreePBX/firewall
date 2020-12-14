@@ -59,7 +59,7 @@
 		<file>/usr/lib/sysadmin/includes.php</file>
 		<module>sipsettings ge 13.0.23.1</module>
 		<module>manager ge 13.0.2.5</module>
-		<module>sysadmin ge 15.0.17</module>
+		<module>sysadmin ge 15.0.21.3</module>
 		<version>15.0.6.18</version>
 	</depends>
 	<menuitems>
