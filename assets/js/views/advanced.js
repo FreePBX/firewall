@@ -19,8 +19,10 @@ $(document).ready(function() {
 		$.ajax({
 			url: window.FreePBX.ajaxurl,
 			data: { command: "switchlegacy", module: 'firewall', option: v },
-			success: function() { 
-				// Do something if necessary.
+			success: function() {
+				if(typeof window.from_sysadmin !== "undefined"){
+					location.reload();
+				} // Do something if necessary.
 			}
 		});
 	})
