@@ -6,8 +6,21 @@ $astlogdir 		= !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log
 $astspooldir 	= !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
 $astrundir 		= !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk" ;
 $as 			= json_decode($setting["advancedsettings"]);
+$timout			= 0;
+while (empty($as->id_service)){
+	$setting 	= getSettings();
+	$as 		= json_decode($setting["advancedsettings"]);
+	sleep(1);
+	$timout++;
+	if($timout == 10){
+		print "Issue in fetching the Intrusion Detection status, hence aborting the firewall service.\n";
+		print_r($as);
+		exit(1);
+	}
+	print "Waiting for the state of I.D service...\n";
+}
+
 $id_service 	= $as->id_service;
-echo("Intrusion Detection = $id_service");
 $thissvc 		= "firewall";
 
 // Include once because *sometimes*, on *some machines*, it crashes?
