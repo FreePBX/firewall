@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-23 12:27+0000\n"
+"POT-Creation-Date: 2020-12-14 06:00+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -36,12 +36,12 @@ msgid ""
 "        && (stream.peek() == "
 msgstr ""
 
-#: assets/js/views/advanced.js:507
+#: assets/js/views/advanced.js:509
 #, perl-format
 msgid "# %s (%s)"
 msgstr ""
 
-#: assets/js/views/advanced.js:506
+#: assets/js/views/advanced.js:508
 #, perl-format
 msgid "# %s: %s\\n"
 msgstr ""
@@ -205,7 +205,7 @@ msgstr ""
 msgid "About Zones"
 msgstr "Về Zone ( Vùng)"
 
-#: views/intrusion_detection.php:291 views/intrusion_detection.php:329
+#: views/intrusion_detection.php:392 views/intrusion_detection.php:430
 msgid "Action"
 msgstr ""
 
@@ -237,7 +237,7 @@ msgstr "Thêm vào 'zone' những ID được cung cấp."
 msgid "Add to Trusted"
 msgstr "Thêm vào Trusted"
 
-#: assets/js/views/advanced.js:586
+#: assets/js/views/advanced.js:588
 msgid "Added"
 msgstr "Đã thêm"
 
@@ -249,7 +249,8 @@ msgstr "Nâng cao"
 msgid "Advanced Custom Rules"
 msgstr ""
 
-#: views/page.advanced.php:40 views/view.settings.php:68
+#: views/intrusion_detection.php:50 views/page.advanced.php:40
+#: views/view.settings.php:68
 msgid "Advanced Settings"
 msgstr "Các cài đặt nâng cao"
 
@@ -363,15 +364,15 @@ msgstr ""
 "'Internet', vì vùng này đã được cài đặt là vùng mặc định cho các lưu lượng "
 "đến tại giao diện đó."
 
-#: assets/js/views/advanced.js:470
+#: assets/js/views/advanced.js:472
 msgid "Are you sure to reload the rules? changes will be lost."
 msgstr ""
 
-#: assets/js/views/advanced.js:531
+#: assets/js/views/advanced.js:533
 msgid "Are you sure to save the data?"
 msgstr ""
 
-#: views/intrusion_detection.php:269
+#: views/intrusion_detection.php:370
 msgid "Are you sure?"
 msgstr ""
 
@@ -426,7 +427,14 @@ msgstr ""
 msgid "Automatically configure Asterisk IP Settings?"
 msgstr "Tự động cấu hình Các cài đặt IP Asterisk?"
 
-#: views/intrusion_detection.php:84
+#: views/intrusion_detection.php:108
+msgid ""
+"Automatically synchronize IPs from specific firewall zones to the whitelist. "
+"E.g: When you add to a trusted zone, local or otherwise, they will be added "
+"to the Intrusion Detection whitelist"
+msgstr ""
+
+#: views/intrusion_detection.php:185
 msgid "Ban Time"
 msgstr ""
 
@@ -501,7 +509,7 @@ msgstr ""
 msgid "Cleaning..."
 msgstr ""
 
-#: views/intrusion_detection.php:185
+#: views/intrusion_detection.php:286
 msgid "Clear All"
 msgstr ""
 
@@ -513,7 +521,7 @@ msgstr "Lệnh chạy (see--help)"
 msgid "Connectivity"
 msgstr "Khả năng kết nối"
 
-#: views/intrusion_detection.php:71
+#: views/intrusion_detection.php:172
 msgid "Control intrusion detection."
 msgstr ""
 
@@ -539,7 +547,7 @@ msgstr "Tổng số tích lũy số máy khách từ xa:"
 msgid "Custom Firewall Rules"
 msgstr "Các nguyên tắc Tùy chỉnh Firewall"
 
-#: views/intrusion_detection.php:252
+#: views/intrusion_detection.php:353
 msgid "Custom IP's that can never be banned."
 msgstr ""
 
@@ -560,7 +568,7 @@ msgstr ""
 msgid "Custom Services"
 msgstr "Tùy chỉnh các dịch vụ"
 
-#: views/intrusion_detection.php:241
+#: views/intrusion_detection.php:342
 msgid "Custom Whitelist"
 msgstr ""
 
@@ -594,15 +602,15 @@ msgstr "Mặc định Vùng (Zone)"
 msgid "Delete"
 msgstr "Xóa"
 
-#: views/intrusion_detection.php:268
+#: views/intrusion_detection.php:369
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1471
+#: Firewall.class.php:1534
 msgid "Delete Selected"
 msgstr "Xóa những gì được chọn"
 
-#: views/intrusion_detection.php:268
+#: views/intrusion_detection.php:369
 msgid "Delete entire custom whitelist"
 msgstr ""
 
@@ -627,15 +635,16 @@ msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
 "Vô hiệu Firewall Hệ thống. Điều này sễ tắt Firewall hệ thống hoàn toàn."
 
+#: views/intrusion_detection.php:70 views/intrusion_detection.php:79
 #: views/view.settings.php:5 views/view.smart.php:6
 msgid "Disabled"
 msgstr "Đã vô hiệu"
 
-#: views/intrusion_detection.php:269
+#: views/intrusion_detection.php:370
 msgid "Do you want to delete ALL custom whitelist entries?"
 msgstr ""
 
-#: views/intrusion_detection.php:144
+#: views/intrusion_detection.php:245
 msgid "E-mail:"
 msgstr ""
 
@@ -670,13 +679,17 @@ msgstr ""
 msgid "Edit"
 msgstr "Chỉnh sửa"
 
-#: views/intrusion_detection.php:154
+#: views/intrusion_detection.php:255
 msgid "Email Address to send Notifications to."
 msgstr ""
 
 #: views/view.smart.php:45
 msgid "Enable"
 msgstr "Kích hoạt"
+
+#: views/intrusion_detection.php:77
+msgid "Enable / Disable"
+msgstr ""
 
 #: views/view.settings.php:43
 msgid "Enable / Disable Intrusion Detection service on boot."
@@ -690,6 +703,8 @@ msgstr "Kích hoạt Responsive Firewall?"
 msgid "Enable or disable Lets Encrypt rules."
 msgstr ""
 
+#: views/intrusion_detection.php:68 views/intrusion_detection.php:78
+#: views/intrusion_detection.php:99 views/intrusion_detection.php:108
 #: views/view.settings.php:3 views/view.smart.php:5
 msgid "Enabled"
 msgstr "Đã kích hoạt"
@@ -723,16 +738,21 @@ msgstr ""
 msgid "Enter new IP or Hostname here"
 msgstr "Nhập một IP mới hoặc Hostname ở đây"
 
-#: assets/js/views/advanced.js:488
+#: views/intrusion_detection.php:353
+msgid ""
+"Enter one IP or one Host per line. No comma allowed for multiple entries."
+msgstr ""
+
+#: assets/js/views/advanced.js:490
 #, perl-format
 msgid "Error (%s): %s"
 msgstr ""
 
-#: assets/js/views/advanced.js:401
+#: assets/js/views/advanced.js:403
 msgid "Error Checking Status!"
 msgstr ""
 
-#: assets/js/views/advanced.js:439
+#: assets/js/views/advanced.js:441
 #, perl-format
 msgid "Error checking protocol file (%s)!"
 msgstr ""
@@ -805,7 +825,7 @@ msgstr ""
 "FTP được sử dụng bởi trình quản lý Endpoint để gửi các hình ảnh của firmware "
 "tới các điện thoại, cũng như các dữ liệu bổ sung."
 
-#: assets/js/views/advanced.js:601
+#: assets/js/views/advanced.js:603
 msgid "Failed State Change!"
 msgstr ""
 
@@ -814,7 +834,7 @@ msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 "Không thành công! Không thể hợp lệ hóa mục nhập. Vui lòng thử lại lần nữa."
 
-#: views/intrusion_detection.php:124
+#: views/intrusion_detection.php:225
 msgid "Find Time"
 msgstr ""
 
@@ -850,7 +870,7 @@ msgstr "Dịch vụ Firewall không chạy!"
 msgid "Firewall Wizard"
 msgstr "Thuật sĩ Firewall"
 
-#: Firewall.class.php:1445
+#: Firewall.class.php:1508
 msgid "Firewall can not be disabled"
 msgstr "Không thể vô hiệu Firewall"
 
@@ -942,7 +962,7 @@ msgstr ""
 msgid "Host '%s' is not currently in the blacklist."
 msgstr "Host '%s' hiện không thuộc danh sách đen."
 
-#: views/intrusion_detection.php:114
+#: views/intrusion_detection.php:215
 msgid "How many times a remote IP can try to connect during the find time."
 msgstr ""
 
@@ -982,23 +1002,23 @@ msgstr "Địa chỉ IP: "
 msgid "IP Addresses: "
 msgstr "Các địa chỉ IP: "
 
-#: views/intrusion_detection.php:330
+#: views/intrusion_detection.php:431
 msgid "IP Banned"
 msgstr ""
 
-#: views/intrusion_detection.php:305
+#: views/intrusion_detection.php:406
 msgid "IP's that are currently banned."
 msgstr ""
 
-#: views/intrusion_detection.php:264
+#: views/intrusion_detection.php:365
 msgid "IP's that are currently trusted."
 msgstr ""
 
-#: views/intrusion_detection.php:225
+#: views/intrusion_detection.php:326
 msgid "IPs that are currently banned."
 msgstr ""
 
-#: views/intrusion_detection.php:218
+#: views/intrusion_detection.php:319
 msgid "IPs that can never be banned."
 msgstr ""
 
@@ -1093,11 +1113,11 @@ msgstr ""
 "cần kích vào 'Abort'. Bạn có thể quay lại thuật sĩ cài đặt này thông qua tùy "
 "chọn 'Firewall\" trong menu Connectivity."
 
-#: views/intrusion_detection.php:193
+#: views/intrusion_detection.php:294
 msgid "Import all IP addresses from all source types."
 msgstr ""
 
-#: views/intrusion_detection.php:164
+#: views/intrusion_detection.php:265
 msgid "Import:"
 msgstr ""
 
@@ -1132,7 +1152,7 @@ msgstr ""
 msgid "Interface Name"
 msgstr "Tên giao diện"
 
-#: views/page.about.php:87
+#: views/page.about.php:53
 msgid "Interfaces"
 msgstr "Các giao diện"
 
@@ -1140,31 +1160,41 @@ msgstr "Các giao diện"
 msgid "Internet"
 msgstr "Mạng internet"
 
-#: views/intrusion_detection.php:24 views/intrusion_detection.php:49
-#: views/page.about.php:94
+#: views/intrusion_detection.php:40 views/intrusion_detection.php:150
+#: views/page.about.php:60
 msgid "Intrusion Detection"
 msgstr ""
 
-#: views/view.settings.php:42
+#: views/intrusion_detection.php:61 views/view.settings.php:42
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1308
+#: Firewall.class.php:1371
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1308
+#: Firewall.class.php:1371
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
 msgstr ""
 
-#: views/view.settings.php:48
+#: views/intrusion_detection.php:92 views/view.settings.php:48
 msgid "Intrusion Detection Sync Firewall"
 msgstr ""
 
 #: Console/Firewall.class.php:128
 msgid "Intrusion Detection is available for all activated systems only."
+msgstr ""
+
+#: views/intrusion_detection.php:77
+msgid "Intrusion Detection service on boot."
+msgstr ""
+
+#: views/intrusion_detection.php:109
+msgid ""
+"Intrusion Detection whitelist will work like in the past with no automated "
+"synchronization to the whitelist)."
 msgstr ""
 
 #: Firewall.class.php:115
@@ -1202,7 +1232,7 @@ msgstr ""
 msgid "It is recommended to turn this on if you have remote clients."
 msgstr "Nếu bạn có các máy khách từ xa thì khuyến cáo nên bật nó lên."
 
-#: views/intrusion_detection.php:20
+#: views/intrusion_detection.php:32
 msgid ""
 "It seems that you are missing the necessary files to start Intrusion "
 "Detection."
@@ -1227,6 +1257,7 @@ msgid ""
 "equivalent package install command as per your OS and try again."
 msgstr ""
 
+#: views/intrusion_detection.php:101 views/intrusion_detection.php:109
 #: views/view.settings.php:4
 msgid "Legacy"
 msgstr ""
@@ -1235,7 +1266,7 @@ msgstr ""
 msgid "Legacy SIP (chan_sip)"
 msgstr "Giao thức Legacy SIP (chan_sip)"
 
-#: views/intrusion_detection.php:94
+#: views/intrusion_detection.php:195
 msgid "Length of time in seconds a remote IP is banned before being reset."
 msgstr ""
 
@@ -1277,7 +1308,7 @@ msgstr "Đang tải..."
 msgid "Local"
 msgstr "Tại chỗ"
 
-#: views/intrusion_detection.php:179
+#: views/intrusion_detection.php:280
 msgid "Local Zone"
 msgstr ""
 
@@ -1297,7 +1328,7 @@ msgstr ""
 msgid "Main"
 msgstr "Chính"
 
-#: views/intrusion_detection.php:104
+#: views/intrusion_detection.php:205
 msgid "Max Retry"
 msgstr ""
 
@@ -1383,7 +1414,7 @@ msgstr "Các dịch vụ NFS không khat dụng trên máy này"
 msgid "Network/Host"
 msgstr "Mạng/host"
 
-#: views/page.about.php:90
+#: views/page.about.php:56
 msgid "Networks"
 msgstr "Mạng"
 
@@ -1395,11 +1426,11 @@ msgstr "Đã phát hiện một giao diện mới"
 msgid "New rules unsent!"
 msgstr ""
 
-#: assets/js/views/advanced.js:471 assets/js/views/advanced.js:532
+#: assets/js/views/advanced.js:473 assets/js/views/advanced.js:534
 msgid "No"
 msgstr ""
 
-#: views/intrusion_detection.php:228
+#: views/intrusion_detection.php:329
 msgid "No Banned IP's"
 msgstr ""
 
@@ -1489,13 +1520,6 @@ msgstr ""
 msgid "Note that timestamps may not be accurate, and are indicative only."
 msgstr ""
 
-#: views/page.about.php:71
-msgid ""
-"Note: Intrusion detection handling method is been updated recently. Please "
-"clear your browser cache and try if you are having issue with Intrusion "
-"Detection Start/Restart/Stop button."
-msgstr ""
-
 #: views/view.settings.php:17
 msgid ""
 "Note: LetsEncrypt will always send challenge queries to port 80.  If this "
@@ -1503,7 +1527,14 @@ msgid ""
 "upstream firewall or proxy redirects requests to the server port."
 msgstr ""
 
-#: assets/js/views/advanced.js:527
+#: views/intrusion_detection.php:11 views/page.about.php:37
+msgid ""
+"Note: The Intrusion Detection handling method has been updated recently. "
+"Please clear your browser cache and refresh if you are having issues seeing "
+"the Intrusion Detection Start/Restart/Stop button."
+msgstr ""
+
+#: assets/js/views/advanced.js:529
 #, perl-format
 msgid "Nothing to save here. No change for rules in (%s)."
 msgstr ""
@@ -1516,7 +1547,7 @@ msgstr "Số lượng máy khách bị giới hạn tốc độ ở hiện tại
 msgid "Number of currently blocked Attackers:"
 msgstr "Số lượng kẻ tấn công bị khóa ở hiện tại:"
 
-#: views/intrusion_detection.php:134
+#: views/intrusion_detection.php:235
 msgid "Number of seconds before attempts are reset."
 msgstr ""
 
@@ -1540,7 +1571,7 @@ msgstr "Khác"
 msgid "Other Traffic"
 msgstr "Lưu lượng khác"
 
-#: views/intrusion_detection.php:182
+#: views/intrusion_detection.php:283
 msgid "Other Zone"
 msgstr ""
 
@@ -1630,12 +1661,12 @@ msgstr ""
 msgid "Protocol"
 msgstr "Giao thức"
 
-#: assets/js/views/advanced.js:493
+#: assets/js/views/advanced.js:495
 #, perl-format
 msgid "Protocol data (%s) loaded successfully."
 msgstr ""
 
-#: assets/js/views/advanced.js:541
+#: assets/js/views/advanced.js:543
 #, perl-format
 msgid "Protocol data (%s) saved successfully."
 msgstr ""
@@ -1719,7 +1750,7 @@ msgstr ""
 msgid "Registered Endpoints"
 msgstr "Các Endpoint đã đăng ký"
 
-#: views/intrusion_detection.php:173
+#: views/intrusion_detection.php:274
 msgid "Registered Ext. IPs"
 msgstr ""
 
@@ -1749,11 +1780,11 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr "Đã xóa %s ra khỏi Danh sách đen."
 
-#: Firewall.class.php:1478
+#: Firewall.class.php:1541
 msgid "Reset"
 msgstr "Cài đặt lại"
 
-#: views/page.about.php:84 views/view.smart.php:3
+#: views/page.about.php:50 views/view.smart.php:3
 msgid "Responsive Firewall"
 msgstr "Tường lửa Responsive"
 
@@ -1854,12 +1885,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall hiện đã kích hoạt!"
 
-#: Firewall.class.php:1470 Firewall.class.php:1479 views/modal.customsvc.php:37
+#: Firewall.class.php:1533 Firewall.class.php:1542 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Lưu"
 
-#: Firewall.class.php:1473
+#: Firewall.class.php:1536
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -1899,7 +1930,7 @@ msgstr ""
 "Các dịch vụ được gán cho các vùng <strong>có thể truy cập</strong>vào các "
 "kết nối tương ứng với mỗi vùng."
 
-#: views/page.about.php:81
+#: views/page.about.php:47
 msgid "Settings"
 msgstr "Các cài đặt"
 
@@ -1924,7 +1955,7 @@ msgstr "Đưa ra giúp đỡ"
 msgid "Single Port: %s"
 msgstr "Công giao tiếp đơn (single port):%s"
 
-#: views/intrusion_detection.php:292
+#: views/intrusion_detection.php:393
 msgid "Source"
 msgstr ""
 
@@ -1936,11 +1967,11 @@ msgstr "Khởi động ( bật lên nếu đang bị vô hiệu) Firewall hệ t
 msgid "Starting up"
 msgstr "Khởi động"
 
-#: assets/js/views/advanced.js:598
+#: assets/js/views/advanced.js:600
 msgid "State Change Successful"
 msgstr ""
 
-#: views/bootnav.php:5 views/intrusion_detection.php:35
+#: views/bootnav.php:5 views/intrusion_detection.php:136
 msgid "Status"
 msgstr "Trạng thái"
 
@@ -2009,7 +2040,7 @@ msgstr "TFTP thường được dử dụng cho việc cung cấp và nâng cấ
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr "Cảm ơn vì đã sử dụng Sangoma Smart Firewall!"
 
-#: views/intrusion_detection.php:154
+#: views/intrusion_detection.php:255
 msgid ""
 "The 'From' address that emails appear to come from is configured in "
 "'Notification Settings'"
@@ -2021,7 +2052,7 @@ msgid ""
 "they will not be applied."
 msgstr ""
 
-#: views/intrusion_detection.php:259
+#: views/intrusion_detection.php:360
 msgid ""
 "The changes are not yet applied. They will be applied during the next "
 "synchronization. However, you can apply them immediately by clicking the "
@@ -2304,6 +2335,16 @@ msgstr ""
 "nên</strong> bật truy cập từ vùng 'Internet, hoặc Responsive Firewall  sẽ bị "
 "bỏ qua."
 
+#: views/intrusion_detection.php:78
+msgid "This service will be started on boot."
+msgstr ""
+
+#: views/intrusion_detection.php:79
+msgid ""
+"This service will be stopped and Intrusion Detection will not run on boot. "
+"Intrusion Detection will be stopped as well."
+msgstr ""
+
 #: views/view.settings.php:16
 msgid ""
 "This should be <strong>Enabled</strong> unless you wish to manage "
@@ -2391,11 +2432,11 @@ msgstr "Giao diện an toàn được phát hiện"
 msgid "Trusted Management Network defined"
 msgstr "Mạng quản lý an toàn (Trusted Management Network) được xác định"
 
-#: views/intrusion_detection.php:176
+#: views/intrusion_detection.php:277
 msgid "Trusted Zone"
 msgstr ""
 
-#: views/intrusion_detection.php:293 views/intrusion_detection.php:331
+#: views/intrusion_detection.php:394 views/intrusion_detection.php:432
 msgid "Type"
 msgstr ""
 
@@ -2432,11 +2473,11 @@ msgstr "Các cổng UDP:"
 msgid "Unable to read file: %s"
 msgstr ""
 
-#: views/intrusion_detection.php:309
+#: views/intrusion_detection.php:410
 msgid "Unban All"
 msgstr ""
 
-#: Firewall.class.php:1039
+#: Firewall.class.php:1102
 msgid "Unknown"
 msgstr ""
 
@@ -2444,15 +2485,15 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr "Mục nhập không xác định!"
 
-#: Firewall.class.php:1472
+#: Firewall.class.php:1535
 msgid "Update Interfaces"
 msgstr "Cập nhật các giao diện"
 
-#: views/intrusion_detection.php:170
+#: views/intrusion_detection.php:271
 msgid "Updates the whitelist according to the options chosen."
 msgstr ""
 
-#: assets/js/views/advanced.js:581
+#: assets/js/views/advanced.js:583
 msgid "Updating..."
 msgstr "Đang cập nhật..."
 
@@ -2468,6 +2509,10 @@ msgstr ""
 #: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
 msgid "Warning"
 msgstr "Cảnh báo"
+
+#: views/intrusion_detection.php:10 views/page.about.php:36
+msgid "Warning!"
+msgstr ""
 
 #: Services.class.php:55
 msgid ""
@@ -2530,7 +2575,7 @@ msgstr ""
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr "Khi thêm hoặc xóa khỏi một vùng, một hay nhiều ID sẽ được cung cấp."
 
-#: views/intrusion_detection.php:3
+#: views/intrusion_detection.php:15
 msgid ""
 "When the service is running, attempts to compromise your system are logged. "
 "If the attempts exceed the\n"
@@ -2550,7 +2595,7 @@ msgstr ""
 "sẽ <strong>không bị chặn</strong>,và thay vào đó lại cho phép số lần thử "
 "đăng ký <strong>rất hạn chế</strong>."
 
-#: views/intrusion_detection.php:207
+#: views/intrusion_detection.php:308
 msgid "Whitelist"
 msgstr ""
 
@@ -2558,7 +2603,7 @@ msgstr ""
 msgid "XMPP"
 msgstr "XMPP"
 
-#: assets/js/views/advanced.js:471 assets/js/views/advanced.js:532
+#: assets/js/views/advanced.js:473 assets/js/views/advanced.js:534
 msgid "Yes"
 msgstr ""
 
@@ -2587,7 +2632,7 @@ msgstr "Bạn có thể nhập một mô tả ngắn cho giao diện này ở đ
 msgid "You can enter a short description for this network here."
 msgstr "Bạn có thể nhập một mô tả ngắn cho mạng này ở đây."
 
-#: views/intrusion_detection.php:193
+#: views/intrusion_detection.php:294
 msgid ""
 "You can select Registered Extension IPs, and various zones at once. Also, "
 "you can select Clear All to remove all entries from the whitelist.'"
