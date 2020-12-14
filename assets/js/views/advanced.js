@@ -280,7 +280,9 @@ $(document).ready(function() {
 			url: window.FreePBX.ajaxurl,
 			data: { command: "switchlegacy", module: 'firewall', option: v },
 			success: function() { 
-				// Do something if necessary.
+				if(typeof window.from_sysadmin !== "undefined"){
+					location.reload();
+				}
 			}
 		});
 	})
