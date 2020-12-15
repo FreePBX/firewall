@@ -5,9 +5,6 @@ $setting 		= getSettings();
 $astlogdir 		= !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
 $astspooldir 	= !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
 $astrundir 		= !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk" ;
-$as 			= json_decode($setting["advancedsettings"]);
-$id_service 	= $as->id_service;
-echo("Intrusion Detection = $id_service");
 $thissvc 		= "firewall";
 
 // Include once because *sometimes*, on *some machines*, it crashes?
@@ -19,6 +16,14 @@ if (!Lock::canLock($thissvc)) {
 	// print "Firewall Service already running, not restarting...\n";
 	exit;
 }
+include_once 'common.php';
+
+// Load our validator
+$v = new \FreePBX\modules\Firewall\Validator($sig);
+
+$advSvc			= getServices(); #returning services along with advancedsettings fetched via \FreePBX::Firewall()->getAdvancedSettings()
+$id_service 		= $advSvc['advancedsettings']['id_service'];
+
 
 // Regen fail2ban conf, if we can
 if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate") && $id_service == "enabled") {
@@ -26,10 +31,6 @@ if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate") 
 	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start $astrundir`;
 }
 
-include_once 'common.php';
-
-// Load our validator
-$v = new \FreePBX\modules\Firewall\Validator($sig);
 
 if (posix_geteuid() !== 0) {
 	throw new \Exception("I must be run as root.");
