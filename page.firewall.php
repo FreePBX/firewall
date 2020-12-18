@@ -26,6 +26,7 @@ if (!$fw->isEnabled()) {
 	print $fw->showPage($page);
 }
 ?>
+     </div>
   </div> <!-- /row -->
 </div> <!-- /container-fluid -->
 
