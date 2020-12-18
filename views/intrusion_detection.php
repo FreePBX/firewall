@@ -594,9 +594,6 @@ if ($i_d_conf) {
   }
 </script>
 <style>
-:valid, .ok {
-    background-color: white;
-}
 :invalid, .error {
     background-color: #F2DEDE;
 }
