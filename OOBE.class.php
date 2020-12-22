@@ -197,7 +197,7 @@ class OOBE {
 			"helptext" => array(
 				_("Enabling Responsive Firewall allows remote clients to securely register to this server without explicitly whitelisting them."),
 				_("It is recommended to turn this on if you have remote clients."),
-				"<a href='http://wiki.freepbx.org/display/FPG/Responsive+Firewall' target=_new>"._("Further information is available at the PBX Wiki.")."</a>",
+				"<a href='http://wiki.sangoma.com/display/FPG/Responsive+Firewall' target=_new>"._("Further information is available at the PBX Wiki.")."</a>",
 			),
 			"default" => "yes",
 		);
