@@ -70,6 +70,8 @@ class Firewall extends Command {
 				$this->removeFromZone($output, $input->getArgument('opt'), $id);
 			}
 			return true;
+		case "sync":
+			return $this->scan($output);
 		case "fix_custom_rules":
 			return $this->customRulesFix($output);
 		default:
@@ -92,6 +94,7 @@ class Firewall extends Command {
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
 			"fix_custom_rules" => _("Create the files for the custom rules if they don't exist and set the permissions and owners correctly."),
+			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist.")
 		);
 		foreach ($commands as $o => $t) {
 			$help .= "<info>$o</info> : <comment>$t</comment>\n";
@@ -103,6 +106,27 @@ class Firewall extends Command {
 		$help .="<comment>fwconsole firewall add trusted 10.46.80.0/24 hostname.example.com 1.2.3.4</comment>\n";
 
 		return $help;
+	}
+
+	public function scan($output){	
+		$fw 		= \FreePBX::Firewall();
+		$sa 		= $fw->sysadmin_info();
+		if(!empty($sa)){
+			$as		= $fw->getAdvancedSettings();
+
+			// need to get F2B status like this way when this one is launch through cron job.
+			$out = shell_exec("pgrep -f fail2ban-server"); 
+			if (!empty($out) && trim($as["id_sync_fw"]) != "legacy"){
+				$output->writeln("<info>"._("Syncing....")."</info>");
+				$fw->updateWhitelist($fw->getipzone("all"));
+			}
+			elseif($as["id_sync_fw"] == "legacy"){
+				$output->writeln("<error>"._("Syncing cannot be performed because the Intrusion Detection Sync Firewall setting is set to Legacy mode.")."</error>");
+			}
+		}
+		else{
+			$output->writeln("<error>"._("Intrusion Detection is available for all activated systems only.")."</error>");
+		}
 	}
 
 	private function disableFirewall($output) {
@@ -138,13 +162,35 @@ class Firewall extends Command {
 		switch ($param){
 			case "enable":
 				$fw = \FreePBX::Firewall();
-				$output->writeln("<info>"._("Lets Encrypt rules enabled for 60 seconds...")."</info>");	
-				$fw->enableLeRules();
+				$as = $fw->getAdvancedSettings();
+				if(!empty($as['lefilter']) && $as['lefilter'] == "disabled"){
+					$res = $fw->setAdvancedSetting('lefilter', 'enabled');
+					if(!empty($res['lefilter']) && $res['lefilter'] == 'enabled'){
+						$output->writeln("<info>"._("Lets Encrypt rules enabled successfully.")."</info>");
+					}
+					else{
+						$output->writeln("<error>"._("An error has occurred!")."</error>");
+					}					
+				}
+				else{
+					$output->writeln("<info>"._("Lets Encrypt rules already enabled. Nothing to do")."</info>");
+				}
 				break;
 			case "disable" :
 				$fw = \FreePBX::Firewall();
-				$output->writeln("<info>"._("Disabling Lets Encrypt rules...")."</info>");	
-				$fw->disableLeRules();
+				$as = $fw->getAdvancedSettings();
+				if(!empty($as['lefilter']) && $as['lefilter'] == "enabled"){
+					$res = $fw->setAdvancedSetting('lefilter', 'disabled');
+					if(!empty($res['lefilter']) && $res['lefilter'] == 'disabled'){
+						$output->writeln("<info>"._("Lets Encrypt rules disabled successfully.")."</info>");
+					}
+					else{
+						$output->writeln("<error>"._("An error has occurred!")."</error>");
+					}				
+				}
+				else{
+					$output->writeln("<info>"._("Lets Encrypt rules already disabled. Nothing to do.")."</info>");
+				}
 				break;
 			default:
 				$output->writeln("<error>".sprintf(_("Error: Unknown option '%s'. Expected 'enable or 'disable'."), $param)."</error>");

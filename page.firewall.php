@@ -13,8 +13,7 @@
 	<div class='row'>
 		<div class='col-sm-12'>
 			<?php
-			if ( (!$fw->isEnabled()) && ($page != "logs") ) {
-				// No bootnav, only show logs to see if an error has occurred.
+			if ( !$fw->isEnabled() ) {
 				print $fw->showDisabled();
 			} else {
 				if ($fw->isNotReady()) {

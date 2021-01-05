@@ -75,6 +75,8 @@ foreach ($hostmaps as $host => $zone) {
 	}
 }
 
+$advanced = \FreePBX::Firewall()->getAdvancedSettings();
+
 // Grab /etc/hosts and make sure that every host in there is added
 // to the trusted zone
 $hosts = file("/etc/hosts");
@@ -84,13 +86,13 @@ foreach ($hosts as $h) {
 		continue;
 	}
 	if (filter_var($line[0], \FILTER_VALIDATE_IP)) {
-		$harr[$line[0]] = "trusted";
+		if(!empty($advanced["import_hosts"]) && ($advanced["import_hosts"] != "disabled" || $line[0] == "127.0.0.1")){
+			$harr[$line[0]] = "trusted";
+		}		
 	}
 }
 
 $services['hostmaps'] = $harr;
-
-$advanced = \FreePBX::Firewall()->getAdvancedSettings();
 
 // Safemode handling
 $safemode = array(

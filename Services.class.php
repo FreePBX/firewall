@@ -78,7 +78,7 @@ class Services {
 			"name" => _("Web Management"),
 			"defzones" => array("internal"),
 			"descr" => _("Web management interface for your PBX. This is the http, not https (secure) interface."),
-			"fw" => array(array("protocol" => "tcp", "port" => 80)),
+			"fw" => array(array("protocol" => "tcp", "port" => 80, "leport" => true)),
 		);
 
 		// TODO: This is not portable for machines that don't have sysadmin.
@@ -118,7 +118,7 @@ class Services {
 			"name" => _("UCP"),
 			"defzones" => array("external", "other", "internal"),
 			"descr" => _("UCP - User Control Panel - is the main user interface to the PBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
-			"fw" => array(array("protocol" => "tcp", "port" => 81)),
+			"fw" => array(array("protocol" => "tcp", "port" => 81, "leport" => true)),
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
@@ -128,7 +128,7 @@ class Services {
 			$retarr['fw'] = array();
 
 			if (isset($ports['ucp']) && $ports['ucp'] !== 'disabled' && $ports['ucp'] >= 80) {
-				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['ucp']);
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['ucp'], "leport" => true);
 			}
 			if (isset($ports['sslucp']) && $ports['sslucp'] !== 'disabled' && $ports['sslucp'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslucp']);
@@ -184,8 +184,8 @@ class Services {
 	private function getSvc_letsencrypt() {
 
 		$retarr = array(
-			"name" => _("Lets Encrypt"),
-			"descr" => _("This will allow access to the LetsEncrypt service on Port 80, when it is enabled."),
+			"name" => _("LetsEncrypt"),
+			"descr" => _("This will allow access to the LetsEncrypt service when it is enabled."),
 			"fw" => array(),
 			"defzones" => array(),
 			"disabled" => true,
@@ -194,16 +194,20 @@ class Services {
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 		} catch (\Exception $e) {
-			$ports = array( "leport" => "999" );
+			$ports = array( "leport" => 0 );
 		}
 
-		if (isset($ports['leport']) && $ports['leport'] == "80") {
-			$retarr["descr"] = _("This exposes the LetsEncrypt service on Port 80. This MUST be allowed access from the 'Internet' zone.");
-			$retarr['fw'] = array(
-				array("protocol" => "tcp", "port" => 80),
-			);
-			$retarr['defzones'] = array("external");
-			unset($retarr['disabled']);
+		if (isset($ports['leport']) && $ports['leport'] >= 80) {
+			$retarr['fw'] = array(array("protocol" => "tcp", "port" => $ports['leport'], "leport" => true),);
+			$advancedsettingsurl = "<a href=?display=firewall&page=advanced&tab=settings>";
+			$as = \FreePBX::Firewall()->getAdvancedSettings();
+			if ($as['lefilter'] == "disabled") {
+				$retarr["descr"] .= "<div class='well'>".sprintf(_("This must be allowed access from the 'Internet' zone unless %s Responsive LetsEncrypt Rules %s are enabled. Enabling %s Responsive LetsEncrypt Rules %s is recommended"), $advancedsettingsurl, "</a>", $advancedsettingsurl, "</a>")."</div>";
+				$retarr['defzones'] = array("external");
+				unset($retarr['disabled']);
+			} else {
+				$retarr["descr"] .= "<div class='well'>".sprintf( _("This protocol is being managed by %s Responsive LetsEncrypt Rules. %s Disable %s Responsive LetsEncrypt Rules %s to manage access here."), $advancedsettingsurl, "</a>", $advancedsettingsurl, "</a>")."</div>";
+			}
 		}
 		return $retarr;
 	}
@@ -364,7 +368,7 @@ class Services {
 			"name" => _("HTTP Provisioning"),
 			"defzones" => array("other", "internal"),
 			"descr" => _("Phones that are configured via Endpoint Manager to use HTTP provisioning will use this port to download its configuration. It is NOT ADVISED to expose this port to the public internet, as SIP Secrets will be available to a knowledgable attacker."),
-			"fw" => array(array("protocol" => "tcp", "port" => 84, "ratelimit" => true))
+			"fw" => array(array("protocol" => "tcp", "port" => 84, "ratelimit" => true, "leport" => true))
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
@@ -372,7 +376,7 @@ class Services {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 			$retarr['fw'] = array();
 			if (isset($ports['hpro']) && $ports['hpro'] !== 'disabled' && $ports['hpro'] >= 80) {
-				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['hpro'], "ratelimit" => true);
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['hpro'], "ratelimit" => true, "leport" => true);
 			}
 			if (!$retarr['fw']) {
 				// No port are assigned to restapps, it's not enabled in sysadmin
@@ -435,7 +439,7 @@ class Services {
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
 			if (isset($ports['restapps']) && $ports['restapps'] !== 'disabled' &&  $ports['restapps'] >= 80) {
-				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['restapps']);
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['restapps'], "leport" => true);
 			}
 
 			// Were there any ports discovered?

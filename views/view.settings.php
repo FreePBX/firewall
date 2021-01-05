@@ -1,22 +1,22 @@
 <?php
 // i18n common things
 $ena = _("Enabled");
+$leg = _("Legacy");
 $dis = _("Disabled");
 
 $advanced = $fw->getAdvancedSettings();
-
 $sections = array(
 	"safemode" => array( "desc" => _("Safe Mode"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
 		_("Safe mode gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
 		_("This should be disabled if there is the possibility of malicious individuals rebooting your machine without your knowledge. Otherwise it should be left <strong>Enabled</strong>"),
 		),
 	),
-	/* Disabled - setting no longer used, LetsEncypt Rules enabled dynamically for updates only
-	"lefilter" => array( "desc" => _("LetsEncrypt Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
-		_("Allow full Internet zone access to the Let's Encrypt acme-challenge folder on port 80."),
+	"lefilter" => array( "desc" => _("Responsive LetsEncrypt Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Allows <strong>temporary</strong> Internet zone access to the LetsEncrypt acme-challenge folder during an active certificate update request."),
+		_("This should be <strong>Enabled</strong> unless you wish to manage LetsEncrypt access manually."),
+		"<span style='font-size:smaller;'>"._("Note: LetsEncrypt will always send challenge queries to port 80.  If this server is not listening on port 80, certificate requests will fail unless an upstream firewall or proxy redirects requests to the server port.")."</span>",
 		),
 	),
-	*/
 	/*
 	 * Disabled - unused. Masq is always on, there's no reason to turn it off.
 	"masq" => array( "desc" => _("Outbound Masquerading"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
@@ -39,9 +39,29 @@ $sections = array(
 		_("Normally this should be set to <strong>Disabled</strong> unless you are debugging network connectivity."),
 		),
 	),
+	"id_service" => array( "desc" => _("Intrusion Detection Service"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Enable / Disable Intrusion Detection service on boot.").
+		"<br>"._("<strong>Enabled</strong>: This service will be started on boot.").
+		"<br>"._("<strong>Disabled</strong>: This service will be stopped and Intrusion Detection will not run on boot. Intrusion Detection will be stopped as well."),
+		),
+	),
+	"id_sync_fw" => array( "desc" => _("Intrusion Detection Sync Firewall"), "values" => array("enabled" => $ena, "legacy" => $leg), "docs" => array(
+		_("<strong>Enabled</strong>: Automatically synchronize IPs from specific firewall zones to the whitelist. E.g: When you add to a trusted zone, local or otherwise, they will be added to the Intrusion Detection whitelist.").
+		"<br>"._("<strong>Legacy</strong>: Intrusion Detection whitelist will work like in the past with no automated synchronization to the whitelist.")
+		),
+	),
+	"import_hosts" => array( "desc" => _("Add etc/hosts as Trusted"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Automatically add hosts from file /etc/hosts to Trusted Zone").
+		"<br>"._("<strong>Enabled</strong>: All hosts defined are added to the Trusted Zone (default)").
+		"<br>"._("<strong>Disabled</strong>: Hosts defined in /etc/hosts are not added to Trusted Zone except localhost."),
+		),
+	),
 );
-
-
+$sa = $fw->sysadmin_info();
+if(empty($sa) || (!empty($sa) && !FreePBX::Sysadmin()->isActivated())){
+	unset($sections["id_service"]);
+	unset($sections["id_sync_fw"]);
+}
 ?>
 
 <div class='container-fluid'>
