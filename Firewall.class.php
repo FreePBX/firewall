@@ -386,88 +386,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 	// END - Advanced Custom Rules
 
-
-	// INI - Logs
-	public function read_logs() {
-		$data_return = array();
-		$this->logfile_init();
-		foreach (self::$filesLog as $type => $file) {
-			$data_file = array();
-			if ( $this->read_file($file, $data_file) ) {
-				if (count($data_file) == 0) {
-					$data_return[] = sprintf("<div class='line type_msg_%s'>%s >>> <span class='cyan'>"._("No records found.")."</span></div>", $type, strtoupper($type));
-				} else {
-					//We will reverse order of records so that the last events are at the beginning.
-					foreach (array_reverse($data_file) as $line) {
-						$new_line = null;
-						$line_data = explode(":", $line, 2);
-
-						//detect timestamp and convert format.
-						if (count($line_data) == 2) {
-							if (is_numeric ($line_data[0])) {
-								//1587214309: Wall: 'Firewall service now starting.
-								$timestamp = gmdate('Y-m-d H:i:s', trim($line_data[0]) );
-								$msg = trim($line_data[1]);
-								$new_line = sprintf("[%s] - %s", $timestamp, $msg);
-							}
-						}
-
-						//msg without timestamp
-						if ( is_null($new_line) ) {
-							$new_line = trim($line);
-						}
-
-						//apply styles
-						$new_line_lowercase = strtolower($new_line);
-						switch(true) {
-							case strpos( $new_line_lowercase , "error"):
-							case strpos( $new_line_lowercase , "exception"):
-								$new_line = sprintf("<span class='red'>%s</span>", htmlentities($new_line, ENT_QUOTES | ENT_HTML401, "UTF-8") );
-								break;
-
-							case strpos( $new_line_lowercase , "custom rule:"):
-								$new_line = sprintf("<span class='lime'>%s</span>", htmlentities($new_line, ENT_QUOTES | ENT_HTML401, "UTF-8") );
-								break;
-
-							case strpos( $new_line_lowercase , "/sbin/iptables"):
-							case strpos( $new_line_lowercase , "/sbin/ip6tables"):
-								$new_line = sprintf("<span class='green'>%s</span>", htmlentities($new_line, ENT_QUOTES | ENT_HTML401, "UTF-8") );
-								break;
-
-							default:
-								$new_line = sprintf("<span class='cyan'>%s</span>", htmlentities($new_line, ENT_QUOTES | ENT_HTML401, "UTF-8") );
-						}
-
-						//add type msg (OUT or ERR)
-						$new_line = sprintf("<div class='line type_msg_%s'>%s >>> %s</div>", $type, strtoupper($type), $new_line);
-						$data_return[] = $new_line;
-					}
-				}
-			} else {
-				freepbx_log(FPBX_LOG_NOTICE, sprintf(_("Module Firewall - read_logs - The file '%s' does not exist or cannot be read."), $file));
-			}
-		}
-		return $data_return;
-	}
-
-	public function clean_logs () {
-		$this->logfile_init();
-		$data_return = true;
-		foreach (self::$filesLog as $type => $file) {
-			if (file_exists($file)) {
-				if (! is_writable($file)) {
-					freepbx_log(FPBX_LOG_ERROR, sprintf(_("Module Firewall - clean_logs - The file '%s' cannot be written."), $file));
-					$data_return = false;
-				} else {
-					file_put_contents($file, "");
-				}
-			}
-		}
-		return $data_return;
-	}
-
-	// END - Logs
-
+	
 	public function oobeHook() {
 		include __DIR__.'/OOBE.class.php';
 		$o = new Firewall\OOBE($this);
@@ -1427,13 +1346,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				} else {
 					return "error";
 				}
-				
-			// Logs
-			case "read_logs":
-				return $this->read_logs();
-
-			case "clean_logs":
-				return $this->clean_logs();
 
 			case 'intrusion_detection':
 				return;
