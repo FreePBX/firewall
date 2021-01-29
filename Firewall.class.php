@@ -38,7 +38,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function services() {
 		if (!self::$services) {
 			include 'Services.class.php';
-			self::$services = new Firewall\Services($this);
+			self::$services = new Firewall\Services();
 		}
 		return self::$services;
 	}
@@ -1483,7 +1483,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function getServices() {
 		if (!self::$services) {
 			include 'Services.class.php';
-			self::$services = new Firewall\Services($this);
+			self::$services = new Firewall\Services();
 		}
 
 		$retarr = array("core" => self::$services->getCoreServices(), "extra" => self::$services->getExtraServices(), "custom" => $this->getAllCustomServices());
@@ -2059,7 +2059,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function getBlacklist() {
 		if (!self::$services) {
 			include 'Services.class.php';
-			self::$services = new Firewall\Services($this);
+			self::$services = new Firewall\Services();
 		}
 		self::$services->getBlacklist();
 	}
@@ -2067,7 +2067,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function addToBlacklist($host) {
 		if (!self::$services) {
 			include 'Services.class.php';
-			self::$services = new Firewall\Services($this);
+			self::$services = new Firewall\Services();
 		}
 		self::$services->addToBlacklist($host);
 	}
@@ -2075,7 +2075,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function removeFromBlacklist($host) {
 		if (!self::$services) {
 			include 'Services.class.php';
-			self::$services = new Firewall\Services($this);
+			self::$services = new Firewall\Services();
 		}
 		self::$services->removeFromBlacklist($host);
 	}
