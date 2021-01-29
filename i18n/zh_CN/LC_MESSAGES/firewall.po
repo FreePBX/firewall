@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-05 06:57+0000\n"
+"POT-Creation-Date: 2021-01-29 06:35+0000\n"
 "PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -56,12 +56,12 @@ msgstr ""
 msgid "%s Files Restored OK"
 msgstr ""
 
-#: Services.class.php:618
+#: Services.class.php:624
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr "%s 是基于页面的呼叫管理解决方案。"
 
-#: Services.class.php:614
+#: Services.class.php:620
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "还没有成功配置%s 。"
@@ -92,32 +92,32 @@ msgstr ""
 msgid ","
 msgstr ""
 
-#: Firewall.class.php:291
+#: Firewall.class.php:314
 msgid "- Adjusting owner and permissions... OK!"
 msgstr ""
 
-#: Firewall.class.php:301
+#: Firewall.class.php:324
 #, php-format
 msgid ""
 "- Adjusting owner... ERROR!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:296
+#: Firewall.class.php:319
 #, php-format
 msgid ""
 "- Adjusting permissions... ERROR!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:270
+#: Firewall.class.php:293
 #, php-format
 msgid ""
 "- Does not exist, creating file... ERROR!!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:274
+#: Firewall.class.php:297
 msgid "- Does not exist, creating file... OK!"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgid ""
 "interfering with existing traffic."
 msgstr ""
 
-#: Firewall.class.php:484
+#: Firewall.class.php:507
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -186,7 +186,7 @@ msgstr ""
 "已经检测到一个已设置到信任的网络接口。这是一个错误的设置。为了确保公司系统能"
 "够被安全保护，请修改默认的接口区域设置 '%s'。"
 
-#: Firewall.class.php:474
+#: Firewall.class.php:497
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -228,6 +228,10 @@ msgstr ""
 #: views/view.shortcuts.php:7
 msgid "Add to Trusted"
 msgstr "添加可信赖的网段"
+
+#: Api/Gql/Firewall.php:77
+msgid "Add to blacklist"
+msgstr ""
 
 #: assets/js/views/advanced.js:588
 msgid "Added"
@@ -405,6 +409,10 @@ msgstr ""
 msgid "Blacklist"
 msgstr "黑名单"
 
+#: Api/Gql/Firewall.php:200
+msgid "Blacklist port"
+msgstr ""
+
 #: views/view.blocked.php:18
 msgid "Blocked Attackers"
 msgstr "过滤攻击者"
@@ -424,11 +432,11 @@ msgid ""
 "attacker, and they may move on to a different target."
 msgstr ""
 
-#: Services.class.php:346
+#: Services.class.php:352
 msgid "CHANSIP is not available on this machine"
 msgstr "本主机不支持chan_sip "
 
-#: Services.class.php:305
+#: Services.class.php:311
 msgid "CHAN_SIP Protocol"
 msgstr "chan_sip 协议"
 
@@ -444,7 +452,7 @@ msgstr "取消"
 msgid "Check Custrom Rules..."
 msgstr ""
 
-#: Firewall.class.php:264
+#: Firewall.class.php:287
 #, php-format
 msgid "Check file '%s'"
 msgstr ""
@@ -519,7 +527,7 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Services.class.php:139
+#: Services.class.php:145
 msgid "Dedicated UCP access is disabled in Sysadmin Port Management"
 msgstr ""
 
@@ -543,7 +551,7 @@ msgstr "删除"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1446
+#: Firewall.class.php:1469
 msgid "Delete Selected"
 msgstr "已删除选项"
 
@@ -565,6 +573,10 @@ msgstr "禁用"
 
 #: views/view.about.php:51
 msgid "Disable Firewall"
+msgstr ""
+
+#: Api/Gql/Firewall.php:59
+msgid "Disable firewall"
 msgstr ""
 
 #: Console/Firewall.class.php:85
@@ -630,6 +642,10 @@ msgstr ""
 msgid "Enable Responsive Firewall?"
 msgstr ""
 
+#: Api/Gql/Firewall.php:45
+msgid "Enable firewall"
+msgstr ""
+
 #: Console/Firewall.class.php:89
 msgid "Enable or disable Lets Encrypt rules."
 msgstr ""
@@ -681,7 +697,7 @@ msgstr ""
 msgid "Error checking protocol file (%s)!"
 msgstr ""
 
-#: Firewall.class.php:353
+#: Firewall.class.php:376
 msgid "Error saving data!"
 msgstr ""
 
@@ -732,11 +748,11 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:498
+#: Services.class.php:504
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:500
+#: Services.class.php:506
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -750,6 +766,10 @@ msgstr ""
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
+#: Api/Gql/Firewall.php:111
+msgid "Fetch custom service zone"
+msgstr ""
+
 #: views/intrusion_detection.php:225
 msgid "Find Time"
 msgstr ""
@@ -758,23 +778,23 @@ msgstr ""
 msgid "Firewall"
 msgstr "防火墙"
 
-#: Firewall.class.php:405
+#: Firewall.class.php:428
 msgid "Firewall Active"
 msgstr "激活防火墙"
 
-#: Firewall.class.php:425
+#: Firewall.class.php:448
 msgid "Firewall Configuration"
 msgstr "防火墙设置"
 
-#: Firewall.class.php:407
+#: Firewall.class.php:430
 msgid "Firewall Disabled"
 msgstr "关闭防火墙"
 
-#: Firewall.class.php:459 Firewall.class.php:460
+#: Firewall.class.php:482 Firewall.class.php:483
 msgid "Firewall Integrity Failed"
 msgstr "防火墙检测失败"
 
-#: Firewall.class.php:419
+#: Firewall.class.php:442
 msgid "Firewall Service not running!"
 msgstr "防火墙服务没有运行"
 
@@ -782,13 +802,21 @@ msgstr "防火墙服务没有运行"
 msgid "Firewall Wizard"
 msgstr "防火墙快速设置"
 
-#: Firewall.class.php:1420
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1443
 msgid "Firewall can not be disabled"
 msgstr "防火墙不能关闭"
+
+#: Api/Gql/Firewall.php:52
+msgid "Firewall enable process has been completed."
+msgstr ""
 
 #: Console/Firewall.class.php:21
 msgid "Firewall functions"
 msgstr "防火墙功能"
+
+#: Api/Gql/Firewall.php:67
+msgid "Firewall has been disabled"
+msgstr ""
 
 #: views/warning.notready.php:2
 msgid "Firewall has not started yet!"
@@ -807,6 +835,10 @@ msgstr ""
 msgid ""
 "Firewall should now auto-detect and configure External IP settings. This "
 "will assist with NAT or Translation issues."
+msgstr ""
+
+#: Api/Gql/Firewall.php:72
+msgid "Firewall.lock doest not exists"
 msgstr ""
 
 #: Console/Firewall.class.php:105
@@ -834,27 +866,27 @@ msgstr ""
 msgid "Further information is available at the PBX Wiki."
 msgstr ""
 
-#: Services.class.php:368
+#: Services.class.php:374
 msgid "HTTP Provisioning"
 msgstr ""
 
-#: Services.class.php:383
+#: Services.class.php:389
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Services.class.php:448
+#: Services.class.php:454
 msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Services.class.php:394
+#: Services.class.php:400
 msgid "HTTPS Provisioning"
 msgstr ""
 
-#: Services.class.php:409
+#: Services.class.php:415
 msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Services.class.php:476
+#: Services.class.php:482
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
@@ -873,11 +905,11 @@ msgid ""
 "updated with the latest settings!"
 msgstr ""
 
-#: Services.class.php:354 Smart.class.php:43
+#: Services.class.php:360 Smart.class.php:43
 msgid "IAX Protocol"
 msgstr ""
 
-#: Services.class.php:356
+#: Services.class.php:362
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
@@ -903,12 +935,24 @@ msgstr ""
 msgid "IP Banned"
 msgstr ""
 
+#: Api/Gql/Firewall.php:82
+msgid "IP has been added to blacklist"
+msgstr ""
+
+#: Api/Gql/Firewall.php:92
+msgid "IP removed from blacklist"
+msgstr ""
+
 #: views/intrusion_detection.php:406
 msgid "IP's that are currently banned."
 msgstr ""
 
 #: views/intrusion_detection.php:365
 msgid "IP's that are currently trusted."
+msgstr ""
+
+#: Api/Gql/Firewall.php:159
+msgid "IPs black listed"
 msgstr ""
 
 #: views/intrusion_detection.php:326
@@ -1007,7 +1051,7 @@ msgid ""
 "further information."
 msgstr ""
 
-#: Firewall.class.php:461
+#: Firewall.class.php:484
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -1036,11 +1080,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1290
+#: Firewall.class.php:1313
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1290
+#: Firewall.class.php:1313
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1064,11 +1108,11 @@ msgid ""
 "synchronization to the whitelist)."
 msgstr ""
 
-#: Firewall.class.php:115
+#: Firewall.class.php:138
 msgid "Intrusion detection handling method"
 msgstr ""
 
-#: Firewall.class.php:115
+#: Firewall.class.php:138
 msgid ""
 "Intrusion detection handling method is been updated recently. Please clear "
 "your browser cache and try if you are having issue with Intrusion Detection "
@@ -1148,7 +1192,7 @@ msgstr ""
 msgid "Lets Encrypt rules enabled successfully."
 msgstr ""
 
-#: Services.class.php:187
+#: Services.class.php:193
 msgid "LetsEncrypt"
 msgstr ""
 
@@ -1186,52 +1230,56 @@ msgstr ""
 msgid "Max Retry"
 msgstr ""
 
-#: Firewall.class.php:290
+#: Api/Gql/Firewall.php:155 Api/Gql/Firewall.php:178
+msgid "Message for the request"
+msgstr ""
+
+#: Firewall.class.php:313
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Adjusting owner and permissions in file "
 "'%s'... OK!"
 msgstr ""
 
-#: Firewall.class.php:300
+#: Firewall.class.php:323
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Error adjusting owner in file '%s'. Error "
 "Message: %s"
 msgstr ""
 
-#: Firewall.class.php:295
+#: Firewall.class.php:318
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Error adjusting permissions in file '%s'. "
 "Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:278
+#: Firewall.class.php:301
 #, php-format
 msgid "Module Firewall - Check Rules - File '%s' exist... OK!"
 msgstr ""
 
-#: Firewall.class.php:273
+#: Firewall.class.php:296
 #, php-format
 msgid "Module Firewall - Check Rules - File '%s' not exist, created OK!"
 msgstr ""
 
-#: Firewall.class.php:269
+#: Firewall.class.php:292
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - File '%s' not exist, error creating. Error "
 "Message: %s"
 msgstr ""
 
-#: Firewall.class.php:378
+#: Firewall.class.php:401
 #, php-format
 msgid ""
 "Module Firewall - Remove File Rules - Error detected by deleting the file "
 "'%s'!. Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:381
+#: Firewall.class.php:404
 #, php-format
 msgid "Module Firewall - Remove File Rules - File '%s' deleted successfully."
 msgstr ""
@@ -1245,11 +1293,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:521
+#: Services.class.php:527
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:528
+#: Services.class.php:534
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -1261,11 +1309,11 @@ msgstr ""
 msgid "Networks"
 msgstr ""
 
-#: Firewall.class.php:471 Firewall.class.php:473
+#: Firewall.class.php:494 Firewall.class.php:496
 msgid "New Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:358
+#: Firewall.class.php:381
 msgid "New rules unsent!"
 msgstr ""
 
@@ -1289,15 +1337,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:514
+#: Firewall.class.php:537
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:516
+#: Firewall.class.php:539
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:517
+#: Firewall.class.php:540
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -1376,7 +1424,7 @@ msgstr ""
 msgid "Number of seconds before attempts are reset."
 msgstr ""
 
-#: Services.class.php:420
+#: Services.class.php:426
 msgid "OpenVPN Server"
 msgstr "OpenVPN 服务器"
 
@@ -1396,11 +1444,11 @@ msgstr ""
 msgid "Other Zone"
 msgstr ""
 
-#: Services.class.php:297
+#: Services.class.php:303
 msgid "PJSIP is not available on this machine"
 msgstr "本主机不支持PJSIP"
 
-#: Services.class.php:370
+#: Services.class.php:376
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTP provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
@@ -1408,7 +1456,7 @@ msgid ""
 "a knowledgable attacker."
 msgstr ""
 
-#: Services.class.php:396
+#: Services.class.php:402
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTPS provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
@@ -1421,6 +1469,10 @@ msgid ""
 "Please ensure that you are not inadvertently allowing unauthorized hosts "
 "access to your machine. You should only select 'Yes' if you are sure the "
 "network (above) is not accessible by any unknown third parties."
+msgstr ""
+
+#: Api/Gql/Firewall.php:115
+msgid "Please find the blacklisted Ip below"
 msgstr ""
 
 #: views/disabled.php:13
@@ -1474,11 +1526,11 @@ msgstr ""
 msgid "Protocol data (%s) saved successfully."
 msgstr ""
 
-#: Firewall.class.php:336 Firewall.class.php:366
+#: Firewall.class.php:359 Firewall.class.php:389
 msgid "Protocol not selected!"
 msgstr ""
 
-#: Firewall.class.php:332 Firewall.class.php:362
+#: Firewall.class.php:355 Firewall.class.php:385
 msgid "Protocol not valid!"
 msgstr ""
 
@@ -1494,19 +1546,19 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:432
+#: Services.class.php:438
 msgid "REST Apps (HTTP)"
 msgstr ""
 
-#: Services.class.php:460
+#: Services.class.php:466
 msgid "REST Apps (HTTPS)"
 msgstr ""
 
-#: Services.class.php:452 Services.class.php:480
+#: Services.class.php:458 Services.class.php:486
 msgid "REST Apps are only available with System Admin"
 msgstr ""
 
-#: Services.class.php:434 Services.class.php:462
+#: Services.class.php:440 Services.class.php:468
 msgid ""
 "REST Apps are used with intelligent phones to provide an interactive "
 "interface from the phone itself. Note that any devices that are allowed "
@@ -1535,6 +1587,10 @@ msgstr ""
 msgid "Re-Run Wizard"
 msgstr ""
 
+#: Api/Gql/Firewall.php:26
+msgid "Read from firewall"
+msgstr ""
+
 #: views/page.status.php:28
 msgid "Registered Endpoints"
 msgstr ""
@@ -1559,6 +1615,10 @@ msgstr ""
 msgid "Reload"
 msgstr ""
 
+#: Api/Gql/Firewall.php:87
+msgid "Remove from blacklist"
+msgstr ""
+
 #: Console/Firewall.class.php:91
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
@@ -1568,7 +1628,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1453
+#: Firewall.class.php:1476
 msgid "Reset"
 msgstr "重置"
 
@@ -1603,7 +1663,7 @@ msgstr ""
 msgid "Restart the System Firewall"
 msgstr ""
 
-#: Services.class.php:248
+#: Services.class.php:254
 msgid "SIP Protocol"
 msgstr ""
 
@@ -1611,24 +1671,24 @@ msgstr ""
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 
-#: Services.class.php:578
+#: Services.class.php:584
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:584
+#: Services.class.php:590
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr ""
 
-#: Services.class.php:587
+#: Services.class.php:593
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
 
-#: Services.class.php:50
+#: Services.class.php:56
 msgid "SSH"
 msgstr ""
 
-#: Services.class.php:52
+#: Services.class.php:58
 msgid ""
 "SSH is the most commonly used system administration tool. It is also a "
 "common target for hackers. We <strong>strongly recommend</strong> using a "
@@ -1660,12 +1720,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1445 Firewall.class.php:1454 views/modal.customsvc.php:37
+#: Firewall.class.php:1468 Firewall.class.php:1477 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "保存"
 
-#: Firewall.class.php:1448
+#: Firewall.class.php:1471
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -1718,6 +1778,14 @@ msgstr ""
 msgid "Single Port: %s"
 msgstr ""
 
+#: Api/Gql/Firewall.php:54
+msgid "Sorry unable to process enable firewall"
+msgstr ""
+
+#: Api/Gql/Firewall.php:117
+msgid "Sorry, No Blacklisted IP found"
+msgstr ""
+
 #: views/intrusion_detection.php:393
 msgid "Source"
 msgstr ""
@@ -1726,7 +1794,7 @@ msgstr ""
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
-#: Firewall.class.php:412
+#: Firewall.class.php:435
 msgid "Starting up"
 msgstr "启动"
 
@@ -1741,6 +1809,10 @@ msgstr "状态"
 #: views/page.status.php:25
 msgid "Status Overview"
 msgstr "状态浏览"
+
+#: Api/Gql/Firewall.php:163 Api/Gql/Firewall.php:182
+msgid "Status for the request"
+msgstr ""
 
 #: Console/Firewall.class.php:86
 msgid "Stop the System Firewall"
@@ -1775,7 +1847,7 @@ msgstr ""
 msgid "Syncing...."
 msgstr ""
 
-#: Firewall.class.php:400 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:423 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr "系统防火墙"
 
@@ -1791,11 +1863,11 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:508
+#: Services.class.php:514
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:510
+#: Services.class.php:516
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
@@ -1822,7 +1894,7 @@ msgid ""
 "Save button."
 msgstr ""
 
-#: Firewall.class.php:706
+#: Firewall.class.php:729
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -1898,7 +1970,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:422
+#: Services.class.php:428
 msgid ""
 "This allows clients to connect to an OpenVPN server running on this machine. "
 "This is an inherently secure protocol."
@@ -1911,7 +1983,7 @@ msgid ""
 "is enabled."
 msgstr ""
 
-#: Services.class.php:531
+#: Services.class.php:537
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -1986,21 +2058,21 @@ msgid ""
 "extension configuration of your PBX."
 msgstr ""
 
-#: Services.class.php:250
+#: Services.class.php:256
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:490
+#: Services.class.php:496
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
 msgstr ""
 
-#: Services.class.php:307
+#: Services.class.php:313
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
-#: Services.class.php:205
+#: Services.class.php:211
 #, php-format
 msgid ""
 "This must be allowed access from the 'Internet' zone unless %s Responsive "
@@ -2021,14 +2093,14 @@ msgstr ""
 msgid "This page gives you a summary of the status of the Responsive Firewall."
 msgstr ""
 
-#: Services.class.php:209
+#: Services.class.php:215
 #, php-format
 msgid ""
 "This protocol is being managed by %s Responsive LetsEncrypt Rules. %s "
 "Disable %s Responsive LetsEncrypt Rules %s to manage access here."
 msgstr ""
 
-#: Services.class.php:255 Services.class.php:312 Services.class.php:361
+#: Services.class.php:261 Services.class.php:318 Services.class.php:367
 msgid ""
 "This protocol is being managed by the Responsive Firewall. You "
 "<strong>should not</strong> enable access from the 'Internet' zone, or "
@@ -2058,7 +2130,7 @@ msgid ""
 "<strong>Enabled</strong>"
 msgstr ""
 
-#: Services.class.php:188
+#: Services.class.php:194
 msgid "This will allow access to the LetsEncrypt service when it is enabled."
 msgstr ""
 
@@ -2107,15 +2179,19 @@ msgstr ""
 msgid "Total number of Registered Clients:"
 msgstr ""
 
+#: Api/Gql/Firewall.php:186
+msgid "Transaction for the request"
+msgstr ""
+
 #: Zones.class.php:13
 msgid "Trusted"
 msgstr "可信任的"
 
-#: Firewall.class.php:480 Firewall.class.php:483
+#: Firewall.class.php:503 Firewall.class.php:506
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:512
+#: Firewall.class.php:535
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -2127,11 +2203,11 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: Services.class.php:118
+#: Services.class.php:124
 msgid "UCP"
 msgstr ""
 
-#: Services.class.php:120
+#: Services.class.php:126
 msgid ""
 "UCP - User Control Panel - is the main user interface to the PBX, and allows "
 "people to control their phone. Note that if you want to allow users to use "
@@ -2160,7 +2236,7 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Firewall.class.php:1021
+#: Firewall.class.php:1044
 msgid "Unknown"
 msgstr ""
 
@@ -2168,7 +2244,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1447
+#: Firewall.class.php:1470
 msgid "Update Interfaces"
 msgstr ""
 
@@ -2197,7 +2273,7 @@ msgstr "警告"
 msgid "Warning!"
 msgstr ""
 
-#: Services.class.php:55
+#: Services.class.php:61
 msgid ""
 "Warning: Unable to read /etc/ssh/sshd_config - this port may be incorrect. "
 "This is <strong>expected</strong> when viewing through the Web Interface. "
@@ -2215,29 +2291,29 @@ msgid ""
 "no changes will be made to your existing Firewall setup."
 msgstr ""
 
-#: Services.class.php:78
+#: Services.class.php:84
 msgid "Web Management"
 msgstr ""
 
-#: Services.class.php:99
+#: Services.class.php:105
 msgid "Web Management (Secure)"
 msgstr ""
 
-#: Services.class.php:80
+#: Services.class.php:86
 msgid ""
 "Web management interface for your PBX. This is the http, not https (secure) "
 "interface."
 msgstr ""
 
-#: Services.class.php:101
+#: Services.class.php:107
 msgid "Web management interface for your PBX. This is the https interface."
 msgstr ""
 
-#: Services.class.php:173
+#: Services.class.php:179
 msgid "WebRTC"
 msgstr ""
 
-#: Services.class.php:175
+#: Services.class.php:181
 msgid ""
 "WebRTC is used by UCP (and other services) to enable calls to be made via a "
 "web browser."
@@ -2268,7 +2344,11 @@ msgstr ""
 msgid "Whitelist"
 msgstr ""
 
-#: Services.class.php:488
+#: Api/Gql/Firewall.php:29
+msgid "Write to firewall"
+msgstr ""
+
+#: Services.class.php:494
 msgid "XMPP"
 msgstr ""
 
@@ -2282,7 +2362,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:707
+#: Firewall.class.php:730
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -2338,11 +2418,11 @@ msgstr "用户端"
 msgid "Zone Information"
 msgstr ""
 
-#: Services.class.php:218
+#: Services.class.php:224
 msgid "Zulu UC"
 msgstr ""
 
-#: Services.class.php:221
+#: Services.class.php:227
 msgid ""
 "Zulu UC Desktop and softphone integration unifies the most popular business "
 "communication tools & applications enhancing user productivity and mobility. "
@@ -2352,7 +2432,7 @@ msgid ""
 "zones."
 msgstr ""
 
-#: Services.class.php:236
+#: Services.class.php:242
 msgid "Zulu is not not available on this machine"
 msgstr ""
 
@@ -2366,11 +2446,15 @@ msgstr ""
 msgid "automatically granted"
 msgstr "自动处理权限"
 
+#: Api/Gql/Firewall.php:133
+msgid "firewall call back description"
+msgstr ""
+
 #: vendor/npm-asset/codemirror/addon/hint/javascript-hint.js:140
 msgid "function"
 msgstr ""
 
-#: Services.class.php:632
+#: Services.class.php:638
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
