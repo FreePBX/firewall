@@ -19,6 +19,29 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->webuser = $this->FreePBX->Config->get('AMPASTERISKWEBUSER');
 	    $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
 	}
+	
+	/**
+	 * setServices
+	 *
+	 * @param  mixed $servicesObj
+	 * @return void
+	 */
+	public function setServices($servicesObj){
+		self::$services = $servicesObj;
+	}
+	
+	/**
+	 * services
+	 *
+	 * @return void
+	 */
+	public function services() {
+		if (!self::$services) {
+			include 'Services.class.php';
+			self::$services = new Firewall\Services($this);
+		}
+		return self::$services;
+	}
 
 	public function getTrustedZone($from){
 		$networkmaps = $this->FreePBX->Firewall->get_networkmaps();
@@ -1460,7 +1483,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function getServices() {
 		if (!self::$services) {
 			include 'Services.class.php';
-			self::$services = new Firewall\Services;
+			self::$services = new Firewall\Services($this);
 		}
 
 		$retarr = array("core" => self::$services->getCoreServices(), "extra" => self::$services->getExtraServices(), "custom" => $this->getAllCustomServices());
@@ -2033,55 +2056,28 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
-	public function getBlacklist() {
-		$hosts = array_keys($this->getAll("blacklist"));
-		$smart = $this->getSmartObj();
-		$retarr = array();
-		foreach ($hosts as $h) {
-			// Is this an IP address?
-			list($test) = explode("/", $h);
-			if (filter_var($test, \FILTER_VALIDATE_IP)) {
-				$retarr[$h] = false;
-				continue;
-			} else {
-				// Try a DNS lookup
-				$retarr[$h] = $smart->lookup($h);
-			}
+	public function getBlacklist($host) {
+		if (!self::$services) {
+			include 'Services.class.php';
+			self::$services = new Firewall\Services($this);
 		}
-		return $retarr;
+		self::$services->getBlacklist();
 	}
 
 	public function addToBlacklist($host) {
-		// Make sure we can look this host up, and it's a valid thing to 
-		// add to the blacklist.
-		//
-		$smart = $this->getSmartObj();
-		// Is this a network? If it has a slash, assume it does.
-		if (strpos($host, "/") !== false) {
-			$rawnet = true;
-			$trust = $smart->returnCidr($host);
-		} else {
-			$rawnet = false;
-			$trust = $smart->lookup($host);
+		if (!self::$services) {
+			include 'Services.class.php';
+			self::$services = new Firewall\Services($this);
 		}
-
-		// If it's false, or empty, we couldn't validate it
-		if (!$trust) {
-			throw new \Exception("Can't validate $host");
-		}
-
-		// If it can, we can add it happily.
-		// If this is a network, make sure we use the returnCidr value,
-		// because that's actually correct.
-		if ($rawnet) {
-			$this->setConfig($trust, true, "blacklist");
-		} else {
-			$this->setConfig($host, true, "blacklist");
-		}
+		self::$services->addToBlacklist($host);
 	}
 
 	public function removeFromBlacklist($host) {
-		$this->setConfig($host, false, "blacklist");
+		if (!self::$services) {
+			include 'Services.class.php';
+			self::$services = new Firewall\Services($this);
+		}
+		self::$services->removeFromBlacklist($host);
 	}
 
 	public function genUUID() {
