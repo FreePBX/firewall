@@ -2056,7 +2056,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
-	public function getBlacklist($host) {
+	public function getBlacklist() {
 		if (!self::$services) {
 			include 'Services.class.php';
 			self::$services = new Firewall\Services($this);
