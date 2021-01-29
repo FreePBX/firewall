@@ -18,7 +18,7 @@ class Services {
 		if($firewallModule != null){
 			$this->firewallModule = $firewallModule;
 		}else{
-			$this->firewallModule = \FreePBX::firewall();
+			$this->firewallModule = \FreePBX::Firewall();
 		}
 	}
 
