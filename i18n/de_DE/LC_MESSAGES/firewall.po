@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-29 12:57+0000\n"
+"POT-Creation-Date: 2021-02-02 06:27+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -970,10 +970,6 @@ msgstr ""
 msgid "IPs that are currently banned."
 msgstr ""
 
-#: views/intrusion_detection.php:319
-msgid "IPs that can never be banned."
-msgstr ""
-
 #: views/view.advanced_customrules.php:4
 msgid "IPv4"
 msgstr ""
@@ -1214,6 +1210,12 @@ msgstr ""
 
 #: Console/Firewall.class.php:92
 msgid "List all entries in zone 'zone'"
+msgstr ""
+
+#: views/intrusion_detection.php:319
+msgid ""
+"List of IPv4/6 addresses that will never be banned by Intrusion Detection. "
+"One address per line with no separators."
 msgstr ""
 
 #: views/view.blocked.php:2 views/view.registered.php:15

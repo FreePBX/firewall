@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-29 12:57+0000\n"
+"POT-Creation-Date: 2021-02-02 06:27+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -1033,10 +1033,6 @@ msgstr ""
 msgid "IPs that are currently banned."
 msgstr ""
 
-#: views/intrusion_detection.php:319
-msgid "IPs that can never be banned."
-msgstr ""
-
 #: views/view.advanced_customrules.php:4
 msgid "IPv4"
 msgstr ""
@@ -1313,6 +1309,12 @@ msgstr "Được kết nối tới giao diện %s"
 #: Console/Firewall.class.php:92
 msgid "List all entries in zone 'zone'"
 msgstr "Danh sách các mục nhập trong vùng 'zone'"
+
+#: views/intrusion_detection.php:319
+msgid ""
+"List of IPv4/6 addresses that will never be banned by Intrusion Detection. "
+"One address per line with no separators."
+msgstr ""
 
 #: views/view.blocked.php:2 views/view.registered.php:15
 #: views/view.status.php:15
