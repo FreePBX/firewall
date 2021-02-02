@@ -972,7 +972,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			// if they need to be)
 			$this->Notifications()->delete('firewall', 'newint');
 			$this->Notifications()->delete('firewall', 'trustedint');
-			dbug($_REQUEST);
+
 			return $this->runHook("updateinterfaces", $_REQUEST);
 		case "updaterfw":
 			// Ensure people don't accidentally allow traffic through when rfw is enabled
