@@ -7,19 +7,13 @@ class Services {
 	private $allservices;
 	private $coreservices;
 	private $extraservices;
-	private $firewallModule;
 
-	public function __construct($firewallModule = null) {
+	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt");
 		$this->extraservices = array("zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
-		if($firewallModule != null){
-			$this->firewallModule = $firewallModule;
-		}else{
-			$this->firewallModule = \FreePBX::Firewall();
-		}
 	}
 
 	public function getCoreServices() {
@@ -206,7 +200,7 @@ class Services {
 		if (isset($ports['leport']) && $ports['leport'] >= 80) {
 			$retarr['fw'] = array(array("protocol" => "tcp", "port" => $ports['leport'], "leport" => true),);
 			$advancedsettingsurl = "<a href=?display=firewall&page=advanced&tab=settings>";
-			$as = $this->firewallModule->getAdvancedSettings();
+			$as = \FreePBX::Firewall()->getAdvancedSettings();
 			if ($as['lefilter'] == "disabled") {
 				$retarr["descr"] .= "<div class='well'>".sprintf(_("This must be allowed access from the 'Internet' zone unless %s Responsive LetsEncrypt Rules %s are enabled. Enabling %s Responsive LetsEncrypt Rules %s is recommended"), $advancedsettingsurl, "</a>", $advancedsettingsurl, "</a>")."</div>";
 				$retarr['defzones'] = array("external");
@@ -257,7 +251,7 @@ class Services {
 			"fw" => array(),
 		);
 
-		if ($this->firewallModule->getConfig('responsivefw') && $this->firewallModule->getConfig("pjsip", "rfw")) {
+		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("pjsip", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 
@@ -314,7 +308,7 @@ class Services {
 			"fw" => array(),
 		);
 
-		if ($this->firewallModule->getConfig('responsivefw') && $this->firewallModule->getConfig("chansip", "rfw")) {
+		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("chansip", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 
@@ -363,7 +357,7 @@ class Services {
 			// If you're using IAX on a non standard port, stop it. You're doing it wrong.
 			"fw" => array(array("protocol" => "udp", "port" => 4569)),
 		);
-		if ($this->firewallModule->getConfig('responsivefw') && $this->firewallModule->getConfig("iax", "rfw")) {
+		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("iax", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 		return $retarr;
@@ -652,7 +646,7 @@ class Services {
 		// Make sure we can look this host up, and it's a valid thing to 
 		// add to the blacklist.
 		//
-		$smart = $this->firewallModule->getSmartObj();
+		$smart = \FreePBX::Firewall()->getSmartObj();
 		// Is this a network? If it has a slash, assume it does.
 		if (strpos($host, "/") !== false) {
 			$rawnet = true;
@@ -671,9 +665,9 @@ class Services {
 		// If this is a network, make sure we use the returnCidr value,
 		// because that's actually correct.
 		if ($rawnet) {
-			$this->firewallModule->setConfig($trust, true, "blacklist");
+			\FreePBX::Firewall()->setConfig($trust, true, "blacklist");
 		} else {
-			$this->firewallModule->setConfig($host, true, "blacklist");
+			\FreePBX::Firewall()->setConfig($host, true, "blacklist");
 		}
 	}
 	
@@ -684,7 +678,7 @@ class Services {
 	 * @return void
 	 */
 	public function removeFromBlacklist($host) {
-		$this->firewallModule->setConfig($host, false, "blacklist");
+		\FreePBX::Firewall()->setConfig($host, false, "blacklist");
 	}
 	
 	/**
@@ -693,8 +687,8 @@ class Services {
 	 * @return void
 	 */
 	public function getBlacklist() {
-		$hosts = array_keys($this->firewallModule->getAll("blacklist"));
-		$smart = $this->firewallModule->getSmartObj();
+		$hosts = array_keys(\FreePBX::Firewall()->getAll("blacklist"));
+		$smart = \FreePBX::Firewall()->getSmartObj();
 		$retarr = array();
 		foreach ($hosts as $h) {
 			// Is this an IP address?

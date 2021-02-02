@@ -316,7 +316,7 @@ if($legacy != ""){
 		<p></p>
 		<div class="row">
 			<div class="col-md-12">
-				<span id="whitelist-help" class="help-block fpbx-help-block">'. _("IPs that can never be banned.").'</span>
+				<span id="whitelist-help" class="help-block fpbx-help-block">'. _("List of IPv4/6 addresses that will never be banned by Intrusion Detection. One address per line with no separators.").'</span>
 			</div>
 		</div>
 	</div>
