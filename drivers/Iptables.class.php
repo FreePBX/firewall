@@ -1276,14 +1276,14 @@ class Iptables {
 		// even when they are rejected.  So, as a simple 'we know you're doing bad things'
 		// check, if they've sent more than 50 packets in 10 seconds, they're baddies.
 		// We're just going to block them, and be done with it.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 10 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 10 --hitcount 250 --name REPEAT --rsource", "jump" => "fpbxattacker");
 		// Has this IP already been detected as a persistent attacker? They're off to
 		// the bit bucket.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 1 --name ATTACKER --rsource", "jump" => "fpbxattacker");
 		// This is the 'short' block, which allows up to 10 packets in 60 seconds,
 		// before they get clamped. 10 packets is enough to establish and hang up two
 		// calls, or one with voicemail notification.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxshortblock");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 50 --name SIGNALLING --rsource", "jump" => "fpbxshortblock");
 		// Note, this is *deliberately* after the check. Otherwise it'll never time out. We
 		// want to let them actually attempt to connect, albeit slowly. If they're legitimate,
 		// their registration will be discovered, and they won't hit here any more. If they're
@@ -1294,7 +1294,7 @@ class Iptables {
 		// If this IP has sent more than 100 signalling requests without success in a 24 hour
 		// period, we're deeming them as bad guys, and we're not interested in talking to them
 		// any more.
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 500 --name REPEAT --rsource", "jump" => "fpbxattacker");
 		// OK, hasn't exceeded any rate limiting, good to go, for now.
 		$retarr['fpbxrfw'][] = array("jump" => "ACCEPT");
 
@@ -1340,9 +1340,9 @@ class Iptables {
 		//   Allow up to 50 unauthed connections from a single IP within 60 seconds
 		//   Allow up to 100 unauthed connections from a single IP within 5 minutes
 		//   Any more than 200 unauthed connections from a single IP within a day is a hardblock
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 200 --name REPEAT --rsource", "jump" => "fpbxattacker");
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 300 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxshortblock");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 1000 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 300 --hitcount 500 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 250 --name REPEAT --rsource", "jump" => "fpbxshortblock");
 
 		// If they made it past here, they're all good.
 		$retarr['fpbxratelimit'][] = array("jump" => "ACCEPT");
