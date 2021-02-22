@@ -1068,7 +1068,22 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("oobeanswered", array());
 			$this->setConfig("abortoobe", false);
 			return;
-
+		case "setrfrules":
+			foreach($_REQUEST as $field => $val){
+				$k = explode('_',$field);
+				$id = $k[0];
+				if($id == 'fpbxratelimit' || $id == 'fpbxrfw'){
+					$key = $k[1];
+					$set = $k[2];
+					$responsive[$id][$key][$set] = $val;
+				}
+			}
+			foreach($responsive as $id => $rows){
+				foreach($rows as $key => $val){
+					\FreePBX::Firewall()->SetConfig($key,$val,$id);
+				}
+			}
+		return true;
 		default:
 			throw new \Exception("Sad Panda - ".$_REQUEST['command']);
 		}
@@ -1117,7 +1132,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	// Now comes the real code. Let's catch the POST and see if there's an action
-	public function doConfigPageInit($display) {
+	public function doConfigPageInit($display) {dbug($_REQUEST);
 		$action = $this->getReq('action');
 		switch ($action) {
 		case false:
@@ -1149,6 +1164,22 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			return;
 		case 'intrusion_detection':
 			return;
+		case "saveresponsive":
+			foreach($_REQUEST as $field => $val){
+				$k = explode('_',$field);
+				$id = $k[0];
+				if($id == 'fpbxratelimit' || $id == 'fpbxrfw'){
+					$key = $k[1];
+					$set = $k[2];
+					$responsive[$id][$key][$set] = $val;
+				}
+			}
+			foreach($responsive as $id => $rows){
+				foreach($rows as $key => $val){
+					\FreePBX::Firewall()->SetConfig($key,$val,$id);
+				}
+			}
+		return ;
 		default:
 			throw new \Exception("Unknown action $action");
 		}
