@@ -16,7 +16,6 @@ if ($smart['responsive']) {
 }
 
 $protocols = $smart['rprotocols'];
-
 ?>
 <h3>Sangoma <?php echo $rf; ?></h3>
 
@@ -77,6 +76,85 @@ foreach ($protocols as $id => $tmparr) {
 <?php
 }
 ?>
+<div class="container-fluid">
+<div class="element-container">
+<div class='row'>
+  <div class="section-title" data-for="Reponsive"><h3><i class="fa fa-minus"></i> <?php echo _('Responsive firewall threshold parameters') ?></h3>
+  <div class="row">
+	<div class="col-md-12">
+		<div class="alert alert-info" role="alert">
+			<?php echo _("Exercise extreme caution when editing Responsive Threshold Parameters. Improper config can block legitimate registrations or expand access from untrusted sources");?></span>
+		</div>
+	</div>
+</div>
+  </div>
+  
+    <div class="section" data-id="Reponsive">  
+		<div class="section-title" data-for="Ratelimit"><h3><i class="fa fa-minus"></i> Ratelimit threshold</h3></div>
+			<div class="section" data-id="Ratelimit">
+				<form  id="formreponsiveset" name="formreponsiveset">
+				<?php
+				foreach($smart['fpbxratelimit'] as $key => $value){
+				?>
+				<div class="element-container">
+					<div class='row'>
+						<div class='form-horizontal '>
+							<div class='col-sm-2'>
+								<label class='control-label' for='ratelimitth'><?php echo _($key); ?></label>
+							</div>
+							<div class='col-sm-2'>
+								<?php echo _('Duration(s)') ?></div><div class='col-sm-2'><input type='number' min='0' class='form-control' name='fpbxratelimit_<?php echo $key; ?>_seconds' id='fpbxratelimit_<?php echo $key; ?>_seconds' value=<?php echo $value['seconds'];?> >
+							</div>
+							<div class='col-sm-2'>
+								<?php echo _('Count') ?></div><div class='col-sm-2'><input type='number' min='0' class='form-control' name='fpbxratelimit_<?php echo $key; ?>_hitcount' id='fpbxratelimit_<?php echo $key; ?>_hitcount' value=<?php echo $value['hitcount'];?> >
+							</div>
+							<div class='col-sm-2'>	
+									<?php echo $value['type'] ?>
+									<input type='hidden' name='fpbxratelimit_<?php echo $key; ?>_type' id='fpbxratelimit_<?php echo $key; ?>_type' value=<?php echo $value['type'];?> >
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php 
+					}
+				?>
+			</div>
+			<div class="section-title" data-for="block"><h3><i class="fa fa-minus"></i> Block threshold</h3></div>
+				<div class="section" data-id="block">
+				<?php
+					foreach($smart['fpbxrfw'] as $key => $value){
+				?>
+					<div class="element-container">
+						<div class='row'>
+							<div class='form-horizontal '>
+								<div class='col-sm-2'>
+									<label class='control-label' for='fpbxrfwth'><?php echo _($key); ?></label>
+								</div>
+								<div class='col-sm-2'>
+									<?php echo _('Duration(s)') ?></div><div class='col-sm-2'><input type='number' min='0' class='form-control' name='fpbxrfw_<?php echo $key; ?>_seconds' id='fpbxrfw_<?php echo $key; ?>_seconds' value=<?php echo $value['seconds'];?> >
+								</div>
+								<div class='col-sm-2'>	
+									<?php echo _('Count') ?></div><div class='col-sm-2'><input type='number' min='0' class='form-control' name='fpbxrfw_<?php echo $key; ?>_hitcount' id='fpbxrfw_<?php echo $key; ?>_hitcount' value=<?php echo $value['hitcount'];?> >
+								</div>
+								<div class='col-sm-2'>	
+									<?php echo $value['type'] ?>
+									<input type='hidden' name='fpbxrfw_<?php echo $key; ?>_type' id='fpbxrfw_<?php echo $key; ?>_type' value=<?php echo $value['type'];?> >
+								</div>
+							</div>
+						</div>
+					</div>
+					<?php 
+					}
+				?>
+				</div>
+			
+			<input type="button" id="submitbutton" value="Save settings">
+			<input type="button" id="reponsivereset" value="Reset to Default">
+			</form>
+			</div>
+		</div>
+	</div>
+</div>
 
 </div>
 
