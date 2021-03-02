@@ -1,4 +1,64 @@
 $(document).ready(function() {
+	$("#reponsivereset").click(function() {
+		if (confirm('Are you sure to Set the values to Default ?')) {
+			$("#fpbxratelimit_TIER3_seconds").val(86400);
+			$("#fpbxratelimit_TIER2_seconds").val(300);
+			$("#fpbxratelimit_TIER1_seconds").val(60);
+			$("#fpbxratelimit_TIER3_hitcount").val(200);
+			$("#fpbxratelimit_TIER2_hitcount").val(100);
+			$("#fpbxratelimit_TIER1_hitcount").val(50);
+			$("#fpbxrfw_TIERA_seconds").val(10);
+			$("#fpbxrfw_TIERB_seconds").val(60);
+			$("#fpbxrfw_TIERC_seconds").val(86400);
+			$("#fpbxrfw_TIERA_hitcount").val(50);
+			$("#fpbxrfw_TIERB_hitcount").val(10);
+			$("#fpbxrfw_TIERC_hitcount").val(100);
+			$.ajax({
+				type: 'post',
+				url: 'ajax.php?command=setrfrules&module=firewall',
+				data: formdata(),
+				success: function () {
+					alert('Please note : These changes are auto applied ,  Please Monitor the firewall.log for any config mismatch  in the iptables rules');
+				}
+			});
+		} else {
+			return;
+		}
+	});
+	function  formdata(){
+		var str = '';
+		str ='&fpbxratelimit_TIER3_seconds='+$("#fpbxratelimit_TIER3_seconds").val()+'&fpbxratelimit_TIER2_seconds='+$("#fpbxratelimit_TIER2_seconds").val()+'&fpbxratelimit_TIER1_seconds='+$("#fpbxratelimit_TIER1_seconds").val()+'&fpbxratelimit_TIER3_hitcount='+$("#fpbxratelimit_TIER3_hitcount").val();
+		str = str+'&fpbxratelimit_TIER2_hitcount='+$("#fpbxratelimit_TIER2_hitcount").val()+'&fpbxratelimit_TIER1_hitcount='+$("#fpbxratelimit_TIER1_hitcount").val()+'&fpbxrfw_TIERA_seconds='+$("#fpbxrfw_TIERA_seconds").val();
+		str = str+'&fpbxrfw_TIERB_seconds='+$("#fpbxrfw_TIERB_seconds").val()+'&fpbxrfw_TIERC_seconds='+$("#fpbxrfw_TIERC_seconds").val()+'&fpbxrfw_TIERA_hitcount='+$("#fpbxrfw_TIERA_hitcount").val()+'&fpbxrfw_TIERB_hitcount='+$("#fpbxrfw_TIERB_hitcount").val()+'&fpbxrfw_TIERC_hitcount='+$("#fpbxrfw_TIERC_hitcount").val();
+		str = str+'&fpbxrfw_TIERB_type='+$("#fpbxrfw_TIERB_type").val()+'&fpbxrfw_TIERC_type='+$("#fpbxrfw_TIERC_type").val()+'&fpbxrfw_TIERA_type='+$("#fpbxrfw_TIERA_type").val();
+		str = str+'&fpbxratelimit_TIER1_type='+$("#fpbxratelimit_TIER1_type").val()+'&fpbxratelimit_TIER2_type='+$("#fpbxratelimit_TIER2_type").val()+'&fpbxratelimit_TIER3_type='+$("#fpbxratelimit_TIER3_type").val();
+		return str;
+	}
+
+	$('#submitbutton').click(function (e) {
+			e.preventDefault();
+			if(parseInt($("#fpbxratelimit_TIER1_seconds").val()) > parseInt($("#fpbxratelimit_TIER2_seconds").val()) || 
+				parseInt($("#fpbxratelimit_TIER2_seconds").val()) > parseInt($("#fpbxratelimit_TIER3_seconds").val()) || 
+				parseInt($("#fpbxratelimit_TIER1_seconds").val()) > parseInt($("#fpbxratelimit_TIER3_seconds").val())){
+					alert("Ratelimit threshold durations are overlapping. Please check the durations");
+					return false;
+			}
+			if(parseInt($("#fpbxrfw_TIERA_seconds").val()) > parseInt($("#fpbxrfw_TIERB_seconds").val()) || 
+				parseInt($("#fpbxrfw_TIERB_seconds").val()) > parseInt($("#fpbxrfw_TIERC_seconds").val()) || 
+				parseInt($("#fpbxrfw_TIERA_seconds").val()) > parseInt($("#fpbxrfw_TIERC_seconds").val())){
+					alert("Block threshold durations are overlapping. Please check the durations");
+					return false;
+			}
+			$.ajax({
+				type: 'post',
+				url: 'ajax.php?command=setrfrules&module=firewall',
+				data: formdata(),
+				success: function () {
+					alert('Please note : These changes are auto applied, Please Monitor the firewall.log for any config mismatch in the iptables rules');
+				}
+			});
+
+        });
 	// Don't let enter accidentally submit the form, which ends up disabling
 	// the firewall.
 	$("form").on("keypress", function(e) {if (e.keyCode == 13 &&  (e.target.id != "whitelist" && e.target.id != "custom_whitelist")) e.preventDefault(); });

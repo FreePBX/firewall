@@ -47,7 +47,15 @@ class Smart {
 			foreach ($retarr['rprotocols'] as $id => $null) {
 				$retarr['rprotocols'][$id]['state'] = \FreePBX::Firewall()->getConfig($id, "rfw");
 			}
-		};
+		}
+		//reponsive filrewall 
+		$retarr['fpbxratelimit']['TIER1'] = \FreePBX::Firewall()->getConfig('TIER1','fpbxratelimit');
+		$retarr['fpbxratelimit']['TIER2'] = \FreePBX::Firewall()->getConfig('TIER2','fpbxratelimit');
+		$retarr['fpbxratelimit']['TIER3'] = \FreePBX::Firewall()->getConfig('TIER3','fpbxratelimit');
+		$retarr['fpbxrfw']['TIERA'] = \FreePBX::Firewall()->getConfig('TIERA','fpbxrfw');
+		$retarr['fpbxrfw']['TIERB'] = \FreePBX::Firewall()->getConfig('TIERB','fpbxrfw');
+		$retarr['fpbxrfw']['TIERC'] = \FreePBX::Firewall()->getConfig('TIERC','fpbxrfw');
+
 		return $retarr;
 	}
 
