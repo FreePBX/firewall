@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-06 02:48+0000\n"
+"POT-Creation-Date: 2021-03-02 08:02+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -402,6 +402,10 @@ msgstr ""
 msgid "Core Services"
 msgstr "Các dịch vụ chính"
 
+#: views/view.smart.php:109 views/view.smart.php:137
+msgid "Count"
+msgstr ""
+
 #: views/view.customsvc.php:2
 msgid "Create new Service"
 msgstr "Tạo một Dịch vụ mới"
@@ -461,7 +465,7 @@ msgstr "Xóa"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1165
+#: Firewall.class.php:1196
 msgid "Delete Selected"
 msgstr "Xóa những gì được chọn"
 
@@ -477,7 +481,7 @@ msgstr "Xóa các ID được cung cấp khỏi 'zone'."
 msgid "Description"
 msgstr "Mô tả"
 
-#: views/view.smart.php:43
+#: views/view.smart.php:42
 msgid "Disable"
 msgstr "Vô hiệu"
 
@@ -497,6 +501,10 @@ msgstr "Đã vô hiệu"
 
 #: views/intrusion_detection.php:370
 msgid "Do you want to delete ALL custom whitelist entries?"
+msgstr ""
+
+#: views/view.smart.php:106 views/view.smart.php:134
+msgid "Duration(s)"
 msgstr ""
 
 #: views/intrusion_detection.php:245
@@ -524,7 +532,7 @@ msgstr "Chỉnh sửa"
 msgid "Email Address to send Notifications to."
 msgstr ""
 
-#: views/view.smart.php:45
+#: views/view.smart.php:44
 msgid "Enable"
 msgstr "Kích hoạt"
 
@@ -621,6 +629,13 @@ msgstr ""
 msgid "Excluded from Firewall"
 msgstr "Bị loại trừ khỏi Firewall"
 
+#: views/view.smart.php:86
+msgid ""
+"Exercise extreme caution when editing Responsive Threshold Parameters. "
+"Improper config can block legitimate registrations or expand access from "
+"untrusted sources"
+msgstr ""
+
 #: OOBE.class.php:247
 #, php-format
 msgid "External Address: %s"
@@ -679,7 +694,7 @@ msgstr "Dịch vụ Firewall không chạy!"
 msgid "Firewall Wizard"
 msgstr "Thuật sĩ Firewall"
 
-#: Firewall.class.php:1137
+#: Firewall.class.php:1152
 msgid "Firewall can not be disabled"
 msgstr "Không thể vô hiệu Firewall"
 
@@ -818,7 +833,7 @@ msgstr ""
 msgid "IPs that can never be banned."
 msgstr ""
 
-#: views/view.smart.php:28
+#: views/view.smart.php:27
 msgid ""
 "If fail2ban is enabled and configured on this machine, fail2ban will send "
 "you email alerts when this happens."
@@ -826,7 +841,7 @@ msgstr ""
 "Nếu fail2ban được kích hoạt và cấu hình trên máy này, fail2ban sẽ gửi cho "
 "bạn email cảnh báo về các hoạt động."
 
-#: views/view.smart.php:27
+#: views/view.smart.php:26
 msgid ""
 "If the incoming connection attempts are invalid, traffic from that machine "
 "will be dropped for a short period of time. If attempts to authenticate "
@@ -836,7 +851,7 @@ msgstr ""
 "trong một khoảng thời gian ngắn. Nếu các lần thử xác thực tiếp tục không "
 "thành công, host tấn công sẽ bị khóa trong 24 tiếng."
 
-#: views/view.smart.php:26
+#: views/view.smart.php:25
 msgid ""
 "If the registration attempt is successful, the remote host is then added to "
 "a 'Known Good' zone, that has permission to use that protocol, and is "
@@ -1193,7 +1208,7 @@ msgstr ""
 msgid "Note that changes to the firewall are effective immediately."
 msgstr "Lưu ý rằng những thay đổi trên firewall sẽ có hiệu lực ngay lập tức."
 
-#: views/view.smart.php:29
+#: views/view.smart.php:28
 msgid ""
 "Note that if you have explicitly granted 'External' connections access to a "
 "protocol, this filtering and rate limiting will not be used.  This is only "
@@ -1439,7 +1454,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr "Đã xóa %s ra khỏi Danh sách đen."
 
-#: Firewall.class.php:1172
+#: Firewall.class.php:1203
 msgid "Reset"
 msgstr "Cài đặt lại"
 
@@ -1471,6 +1486,10 @@ msgstr "Responsive Firewall không được kích hoạt."
 
 #: views/view.settings.php:18
 msgid "Responsive LetsEncrypt Rules"
+msgstr ""
+
+#: views/view.smart.php:82
+msgid "Responsive firewall threshold parameters"
 msgstr ""
 
 #: Console/Firewall.class.php:86
@@ -1544,12 +1563,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall hiện đã kích hoạt!"
 
-#: Firewall.class.php:1164 Firewall.class.php:1173 views/modal.customsvc.php:37
+#: Firewall.class.php:1195 Firewall.class.php:1204 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr "Lưu"
 
-#: Firewall.class.php:1167
+#: Firewall.class.php:1198
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2090,7 +2109,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr "Mục nhập không xác định!"
 
-#: Firewall.class.php:1166
+#: Firewall.class.php:1197
 msgid "Update Interfaces"
 msgstr "Cập nhật các giao diện"
 
@@ -2181,7 +2200,7 @@ msgid ""
 "We recommend this service always run."
 msgstr ""
 
-#: views/view.smart.php:25
+#: views/view.smart.php:24
 msgid ""
 "When this is enabled, any incoming VoIP connection attempts that would be "
 "otherwise rejected are <strong>not blocked</strong>, and instead allowed a "
