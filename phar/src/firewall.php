@@ -565,8 +565,23 @@ function updateFirewallRules($firstrun = false) {
 	$driver->updateTargets($getservices);
 
 	// And permit our registrations through
-	$driver->updateRegistrations($getservices['smartports']['registrations']);
-
+  	$ipaddrs = $driver->updateRegistrations($getservices['smartports']['registrations']);
+  //If fail2ban bypass is enabled 
+  $fwconf = getSettings();
+  if (isset($fwconf['responsivefw']) && isset($fwconf['fail2banbypass'])){
+	 if (isset($ipaddrs)) {
+      foreach($ipaddrs as $ip => $action) {
+	if ($action === "ipadd") { 
+         $f2bancmd = "fail2ban-client set asterisk-iptables addignoreip $ip";
+	 @`$f2bancmd`;
+       }
+        if ($action === "iprem") {
+             $f2bancmd = "fail2ban-client set asterisk-iptables delignoreip $ip";
+	 @`$f2bancmd`;
+       }
+        }
+     }
+  }
 	// Make sure we nuke any kernel conntrack rules that may be hanging around for 
 	// those hosts.
 	$a = new FreePBX\modules\Firewall\Attacks(1000); // We don't care about jiffies

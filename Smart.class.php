@@ -47,6 +47,7 @@ class Smart {
 			foreach ($retarr['rprotocols'] as $id => $null) {
 				$retarr['rprotocols'][$id]['state'] = \FreePBX::Firewall()->getConfig($id, "rfw");
 			}
+			$retarr['fail2banbypass'] = \FreePBX::Firewall()->getConfig("fail2banbypass");
 		};
 		return $retarr;
 	}

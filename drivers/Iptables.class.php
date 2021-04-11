@@ -826,6 +826,7 @@ class Iptables {
 			$me = &$current[$ipv]['filter']['fpbxregistrations'];
 			$exists = array_flip($me);
 			$process = $tmparr['targets'];
+			//$retarr = array();
 			foreach ($process as $addr) {
 				$p = "-s $addr/".$tmparr['prefix']." -j fpbxknownreg";
 				if (isset($exists[$p])) {
@@ -838,6 +839,8 @@ class Iptables {
 				$cmd = $tmparr['ipt']." -A fpbxregistrations $p";
 				$this->l($cmd);
 				exec($cmd, $output, $ret);
+              	//Pass IP address back to calling function
+				$retarr[$addr] = "ipadd";
 			}
 
 			// Are any left over? They can be removed.
@@ -848,10 +851,26 @@ class Iptables {
 				$cmd = $tmparr['ipt']." -D fpbxregistrations $rule";
 				$this->l($cmd);
 				exec($cmd, $output, $ret);
-
+				//return IP address to calling function
+				//first ipv4
+				preg_match("/\d+\.\d+\.\d+\.\d+/", $rule, $f2bip);
+				if (!is_null($f2bip[0])) {
+				$retarr[$f2bip[0]] = "iprem";
+                } else {				
+					//ipv6
+					$f2bipfull = explode(' ',$rule);
+					if (!is_null($f2bipfull[1])) {
+                    $f2bip = explode('/',$f2bipfull[1]);
+					if (filter_var($f2bip[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+					$retarr[$f2bip[0]] = "iprem";
+					}
+					}
+				
+				}
 				// And then grab the ID, so we can remove the entries in *reverse* order,
-				// so we don't lose our place.
+				// so we don't lose our place.				
 				$delids[] = $i;
+				
 			}
 
 			// Now if there were any to be deleted, we delete them from the end backwards, 
@@ -862,6 +881,9 @@ class Iptables {
 				array_splice($me, $i, 1);
 			}
 		}
+      if (isset($retarr)) {
+	return $retarr;
+}
 	}
 
 	// Root process
