@@ -1,3 +1,11 @@
+#floating-nav-bar .bootnav > .list-group {
+  margin-top: 20px;
+}
+
+.nav-container {
+  margin-bottom: 44px;
+}
+
 label.btn {
 	margin: 0;
 }
@@ -41,3 +49,18 @@ tr[zone='other']>td { background-color: #ede7f6; }
 
 // Dont' display the action bar unless we've explictly asked for it.
 #action-bar{ display: none; }
+
+
+
+
+/*
+  Section Advanced > advanced_customrules
+*/
+
+#advanced_customrules textarea[name=text_rules] {
+  width: 100%;
+}
+
+#advanced_customrules .hide-element {
+  display: none;
+}

@@ -21,12 +21,12 @@ elseif(file_exists(__DIR__."/../../framework/amp_conf/htdocs/admin".$ipUtils)) {
 
 $apps = array(
 	"voipfirewalld" => array(
-		"firewall.php",
-		"common.php",
-		array(__DIR__."/../hooks/validator.php", "validator.php"),
-		array(__DIR__."/../Lock.class.php", "lock.php"),
-		"modprobe.php",
-		"asmanager.php",
+		"firewall.php", 
+		"common.php", 
+		array(__DIR__."/../hooks/validator.php", "validator.php"), 
+		array(__DIR__."/../Lock.class.php", "lock.php"), 
+		"modprobe.php", 
+		"asmanager.php", 
 		"monitor.php",
 		array($ipUtils, "IpUtils.php")
 	),

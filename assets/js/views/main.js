@@ -1,13 +1,81 @@
 $(document).ready(function() {
+	$("#reponsivereset").click(function() {
+		if (confirm('Are you sure to Set the values to Default ?')) {
+			$("#fpbxratelimit_TIER3_seconds").val(86400);
+			$("#fpbxratelimit_TIER2_seconds").val(300);
+			$("#fpbxratelimit_TIER1_seconds").val(60);
+			$("#fpbxratelimit_TIER3_hitcount").val(200);
+			$("#fpbxratelimit_TIER2_hitcount").val(100);
+			$("#fpbxratelimit_TIER1_hitcount").val(50);
+			$("#fpbxrfw_TIERA_seconds").val(10);
+			$("#fpbxrfw_TIERB_seconds").val(60);
+			$("#fpbxrfw_TIERC_seconds").val(86400);
+			$("#fpbxrfw_TIERA_hitcount").val(50);
+			$("#fpbxrfw_TIERB_hitcount").val(10);
+			$("#fpbxrfw_TIERC_hitcount").val(100);
+			$.ajax({
+				type: 'post',
+				url: 'ajax.php?command=setrfrules&module=firewall',
+				data: formdata(),
+				success: function () {
+					alert('Please note : These changes are auto applied ,  Please Monitor the firewall.log for any config mismatch  in the iptables rules');
+				}
+			});
+		} else {
+			return;
+		}
+	});
+	function  formdata(){
+		var str = '';
+		str ='&fpbxratelimit_TIER3_seconds='+$("#fpbxratelimit_TIER3_seconds").val()+'&fpbxratelimit_TIER2_seconds='+$("#fpbxratelimit_TIER2_seconds").val()+'&fpbxratelimit_TIER1_seconds='+$("#fpbxratelimit_TIER1_seconds").val()+'&fpbxratelimit_TIER3_hitcount='+$("#fpbxratelimit_TIER3_hitcount").val();
+		str = str+'&fpbxratelimit_TIER2_hitcount='+$("#fpbxratelimit_TIER2_hitcount").val()+'&fpbxratelimit_TIER1_hitcount='+$("#fpbxratelimit_TIER1_hitcount").val()+'&fpbxrfw_TIERA_seconds='+$("#fpbxrfw_TIERA_seconds").val();
+		str = str+'&fpbxrfw_TIERB_seconds='+$("#fpbxrfw_TIERB_seconds").val()+'&fpbxrfw_TIERC_seconds='+$("#fpbxrfw_TIERC_seconds").val()+'&fpbxrfw_TIERA_hitcount='+$("#fpbxrfw_TIERA_hitcount").val()+'&fpbxrfw_TIERB_hitcount='+$("#fpbxrfw_TIERB_hitcount").val()+'&fpbxrfw_TIERC_hitcount='+$("#fpbxrfw_TIERC_hitcount").val();
+		str = str+'&fpbxrfw_TIERB_type='+$("#fpbxrfw_TIERB_type").val()+'&fpbxrfw_TIERC_type='+$("#fpbxrfw_TIERC_type").val()+'&fpbxrfw_TIERA_type='+$("#fpbxrfw_TIERA_type").val();
+		str = str+'&fpbxratelimit_TIER1_type='+$("#fpbxratelimit_TIER1_type").val()+'&fpbxratelimit_TIER2_type='+$("#fpbxratelimit_TIER2_type").val()+'&fpbxratelimit_TIER3_type='+$("#fpbxratelimit_TIER3_type").val();
+		return str;
+	}
+
+	$('#submitbutton').click(function (e) {
+			e.preventDefault();
+			if(parseInt($("#fpbxratelimit_TIER1_seconds").val()) > parseInt($("#fpbxratelimit_TIER2_seconds").val()) || 
+				parseInt($("#fpbxratelimit_TIER2_seconds").val()) > parseInt($("#fpbxratelimit_TIER3_seconds").val()) || 
+				parseInt($("#fpbxratelimit_TIER1_seconds").val()) > parseInt($("#fpbxratelimit_TIER3_seconds").val())){
+					alert("Ratelimit threshold durations are overlapping. Please check the durations");
+					return false;
+			}
+			if(parseInt($("#fpbxrfw_TIERA_seconds").val()) > parseInt($("#fpbxrfw_TIERB_seconds").val()) || 
+				parseInt($("#fpbxrfw_TIERB_seconds").val()) > parseInt($("#fpbxrfw_TIERC_seconds").val()) || 
+				parseInt($("#fpbxrfw_TIERA_seconds").val()) > parseInt($("#fpbxrfw_TIERC_seconds").val())){
+					alert("Block threshold durations are overlapping. Please check the durations");
+					return false;
+			}
+			$.ajax({
+				type: 'post',
+				url: 'ajax.php?command=setrfrules&module=firewall',
+				data: formdata(),
+				success: function () {
+					alert('Please note : These changes are auto applied, Please Monitor the firewall.log for any config mismatch in the iptables rules');
+				}
+			});
+
+        });
 	// Don't let enter accidentally submit the form, which ends up disabling
 	// the firewall.
-	$("form").on("keypress", function(e) { if (e.keyCode == 13) e.preventDefault(); });
+	$("form").on("keypress", function(e) {if (e.keyCode == 13 &&  (e.target.id != "whitelist" && e.target.id != "custom_whitelist")) e.preventDefault(); });
 
 	// If we're not looking at the network or interface tab on page load, hide the action bar.
 	// This needs work, as it's hacky.
 	update_actionbar();
-	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces") {
+	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces" && $("#page_body li.active").data('name') !== "intrusion_detection") {
 		$("#action-bar").hide();
+	}
+
+	if($("#page_body a.active").text() === "Intrusion Detection"){
+		$("#action-bar").show();
+		$("#idtrustedzone").hide();
+		$("#idlocalzone").hide();
+		$("#idotherzone").hide();
+		$("#clearall").hide();	
 	}
 
 	// Update address bar when someone changes tabs
@@ -50,7 +118,270 @@ $(document).ready(function() {
 
 	// Clicked on 'Delete Selected'?
 	$("#delsel").on("click", delete_all_selected);
+
+	// Clicked on 'Save Intrusion Detection'?
+	$("#saveids").on("click", save_ids);
+
+	// Clicked on Registered Extension IPs
+	$("#idregextip").on("click", function(){
+		if(typeof $("#idregextip").attr("active") === "undefined"){
+			$("#idregextip").attr("active", true);
+		}
+		else{
+			$("#idregextip").removeAttr("active");
+		}
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+	});
+
+	// Clicked on id_stop
+	$("#id_stop").on("click", function(){
+		stop_id();
+	});
+
+	// Clicked on id_start
+	$("#id_start").on("click", function(){
+		start_id();
+	});
+
+	// Clicked on id_restart
+	$("#id_restart").on("click", function(){
+		start_id();
+	});
+
+	// Clicked on Refresh
+	$("#idrefresh").on("click", function(){
+		//update_whitelist();
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+	});
+
+	// Clicked on Trusted zone
+	$("#idtrustedzone").on("click", function(){
+		if(typeof $("#idtrustedzone").attr("active") === "undefined"){	
+			$("#idtrustedzone").attr("active" ,true);
+		}
+		else{
+			$("#idtrustedzone").removeAttr("active");
+		}
+		//update_whitelist();
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+	});
+	
+	// Clicked on Local zone
+	$("#idlocalzone").on("click", function(){
+		if(typeof $("#idlocalzone").attr("active") === "undefined"){
+			$("#idlocalzone").attr("active", true);	
+		}
+		else{
+			$("#idlocalzone").removeAttr("active");	
+		}
+		//update_whitelist();
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+	});
+
+	// Clicked on Other zone
+	$("#idotherzone").on("click", function(){
+		if(typeof $("#idotherzone").attr("active") === "undefined"){
+			$("#idotherzone").attr("active" ,true);
+		}
+		else{
+			$("#idotherzone").removeAttr("active");	
+		}
+		//update_whitelist();
+		get_button_status();
+		$("#whitelisttable").bootstrapTable('refresh', {url: window.FreePBX.ajaxurl+'?module=firewall&command=getNewWhitelist&idregextip='+window.idregextip+'&trusted='+window.trusted+'&local='+window.local+'&other='+window.other});
+	});
+
+	// Clicked on Clear All
+	$("#clearall").on("click", function(){
+		$("#whitelist").val(_(""));
+		$("#idregextip").removeAttr("active");
+		$("#idtrustedzone").removeAttr("active");
+		$("#idlocalzone").removeAttr("active");
+		$("#idotherzone").removeAttr("active");	
+		$("#whitelisttable").bootstrapTable("removeAll");
+	});
+
+	$("#whitelist").keyup(validateTextarea);
+
+	$("#unbanall").on("click", function(){
+		unbanall();
+	})
+
+	$("#delwl").on("click", function(){
+		$("#delwl-confirm").dialog({
+			resizable: false,
+			height: "auto",
+			width: 400,
+			modal: true,
+			buttons: {
+				"Yes": function(){
+					del_entire_whitelist();
+					$(this).dialog("close");
+				},
+				Cancel: function(){
+					$(this).dialog("close");
+				}
+			}
+		});
+	});
 });
+
+/**** Intrusion Dectection Tab ****/
+function validateTextarea() {
+    var errorMsg = _("At least one entry has been set incorrectly in the list !!");
+    var pattern = new RegExp('^' + $("#whitelist").attr('pattern') + '$');
+    $.each($("#whitelist").val().split("\n"), function () {
+		var hasError = !this.match(pattern);
+        if (typeof $("#whitelist").setCustomValidity === 'function') {
+            $("#whitelist").setCustomValidity(hasError ? errorMsg : '');
+        } else {			
+            $("#whitelist").toggleClass('error', !!hasError);
+            $("#whitelist").toggleClass('ok', !hasError);
+            if (hasError) {
+				$("#saveids").prop('disabled', 'true');
+            } else {
+				$("#saveids").removeAttr('disabled');
+            }
+        }
+        return !hasError;
+    });
+}
+
+function del_entire_whitelist(){
+	var d = { command: 'del_entire_whitelist', module: 'firewall'};
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			$('#whitelisttable').bootstrapTable('refresh');
+		}
+	});	
+}
+function stop_id(){
+	var d = { command: 'stop_id', module: 'firewall'};
+	$("#doing").html('<i class="fa fa-spinner fa-spin"></i></i>'+' '+_("Please wait...."));
+	window.result = "";
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			console.debug(data);
+		}
+	});
+	setTimeout("window.location = window.location.href;",5500);
+	return true; 
+}
+
+function unbanall(){
+	var d = { command: 'unbanall', module: 'firewall'};
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			$('#banlisttable').bootstrapTable('refresh');
+		}
+	});	
+}
+
+function start_id(){
+	var d = { command: 'start_id', module: 'firewall'};
+	$("#doing").html('<i class="fa fa-spinner fa-spin"></i></i> '+' '+_("Please wait...."));
+	window.result = "";
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			// Do something if necessary
+		}
+	});
+	setTimeout("window.location = window.location.href;",5500);
+	return true; 
+}
+
+function save_ids(){
+	get_button_status();
+	var d = { command: 'saveids', 
+			  module: 'firewall', 
+			  ban_time: $("#ban_time").val(),
+			  max_retry: $("#max_retry").val(),
+			  find_time: $("#find_time").val(),
+			  email: $("#email").val(),
+			  whitelist: $("#whitelist").val(),
+			  idregextip: window.idregextip,
+			  trusted: window.trusted,
+			  local: window.local,
+			  other: window.other,
+			  whitelist: $("#whitelist").val()
+			};
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		success: function(){
+			$("#needApply").hide();
+		},
+		complete: function(data) {
+			
+			window.location.href = window.location.href;
+		}
+	});
+}
+
+function get_button_status(){
+	window.idregextip 	= (typeof $("#idregextip").attr("active") === "undefined")? "false": "true";
+	window.trusted 		= (typeof $("#idtrustedzone").attr("active") === "undefined")? "false": "true";
+	window.local 		= (typeof $("#idlocalzone").attr("active") === "undefined")? "false": "true";
+	window.other 		= (typeof $("#idotherzone").attr("active") === "undefined")? "false": "true";
+}
+
+function update_whitelist(){
+	whitelist	= "";
+	get_button_status();
+
+	if(window.idregextip){
+		whitelist += gettrusted('extregips');
+	}
+
+	if(window.trusted){
+		whitelist += gettrusted('trusted');
+	}
+
+	if(window.local){
+		whitelist += gettrusted('local');
+	}
+
+	if(window.other){
+		whitelist += gettrusted('other');
+	}
+
+	return whitelist;
+}
+
+function gettrusted(from){
+	var d = { command: 'getIPsZone', module: 'firewall', from: from	};
+	window.result = "";
+	$.ajax({
+		url: window.FreePBX.ajaxurl,
+		data: d,
+		async: false,
+		success: function(data) {
+			$.each(data, function(idx, ip){
+				if(ip !== true){
+					window.result += ip+'\n';	
+				}					
+			});
+		}
+	});
+	
+	return window.result.replace("\n\n","\n");
+}
 
 /**** Responsive Firewall Tab ****/
 function update_rfw(event) {
@@ -242,8 +573,17 @@ function delete_all_selected(ignored) {
 }
 
 function update_actionbar() {
+	if($("#page_body a.active").text() === "Intrusion Detection"){
+		$("#action-bar").show();
+		$("#idtrustedzone").hide();
+		$("#idlocalzone").hide();
+		$("#idotherzone").hide();
+		$("#clearall").hide();
+		return;
+	}
+	
 	// If we're not looking at networks or interfaces, hide it.
-	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces") {
+	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces" && $("#page_body li.active").data('name') !== "intrusion_detection") {
 		$("#action-bar").hide();
 		return;
 	}
@@ -252,7 +592,7 @@ function update_actionbar() {
 	if ($("#page_body li.active").data('name') === "networks") {
 		$("#action-bar").show();
 		$("#savenets,#delsel").show();
-		$("#saveints").hide();
+		$("#saveints,#saveids").hide();
 		return;
 	}
 
@@ -260,14 +600,28 @@ function update_actionbar() {
 	if ($("#page_body li.active").data('name') === "interfaces") {
 		$("#action-bar").show();
 		$("#saveints").show();
+		$("#savenets,#delsel,#saveids").hide();
+		
+		return;
+	}
+
+	// If we're looking at intrusion detection, we only want 'save intrusion detection'
+	if ($("#page_body li.active").data('name') === "intrusion_detection") {
+		$("#action-bar").show();
 		$("#savenets,#delsel").hide();
+		$("#saveints").hide();
+		$("#saveids").show();
+		
+		// if Intrusion Detection is stopped
+		if (!$("#ban_time").is(":visible")){
+			$("#action-bar").hide();
+		}
 		return;
 	}
 
 	// How did we get here?
 	console.log("error?");
 }
-
 
 function save_interface_zones() {
 	// Ajax setup

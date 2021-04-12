@@ -197,7 +197,7 @@ class OOBE {
 			"helptext" => array(
 				_("Enabling Responsive Firewall allows remote clients to securely register to this server without explicitly whitelisting them."),
 				_("It is recommended to turn this on if you have remote clients."),
-				"<a href='http://wiki.freepbx.org/display/FPG/Responsive+Firewall' target=_new>"._("Further information is available at the PBX Wiki.")."</a>",
+				"<a href='http://wiki.sangoma.com/display/FPG/Responsive+Firewall' target=_new>"._("Further information is available at the PBX Wiki.")."</a>",
 			),
 			"default" => "yes",
 		);
@@ -260,7 +260,10 @@ class OOBE {
 		}
 
 		include 'Natget.class.php';
+		include 'Network.class.php';
+
 		$n = new Natget();
+		$nt = new Network();
 		$myip = $n->getVisibleIP();
 		$myroutes = $n->getRoutes();
 		\FreePBX::Sipsettings()->setConfig('externip', $myip);
@@ -270,6 +273,22 @@ class OOBE {
 		if (!is_array($ssroutes)) {
 			$ssroutes = array();
 		}
+
+		// Setting up Internet Zones for each interfaces by default.
+		$ints = $nt->discoverInterfaces();		
+		foreach ($ints as $int => $values) {
+			if(strpos($int, "tun") !== true){
+				$devices[$int] = array("zone" => "external", "description" => "");
+			}
+			else{
+				$devices[$int] = array("zone" => "internal", "description" => "");
+			}
+		}
+		
+		$_REQUEST["command"] = "updateinterfaces";
+		$_REQUEST["module"] = "firewall";
+		$_REQUEST["ints"] = json_encode($devices);
+		$this->fw->ajaxHandler();
 
 		// I don't like these loops, it feels messy.
 		foreach ($myroutes as $r) {

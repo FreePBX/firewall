@@ -17,6 +17,20 @@ try {
 } catch (\Exception $e) {
 	// First install. Ignore error.
 }
+//reponseive firewall defaults 
+$responsive['fpbxratelimit']['TIER3'] = ['seconds'=>86400,'hitcount'=>200,'type'=>'BLOCK'];
+$responsive['fpbxratelimit']['TIER2'] = ['seconds'=>300,'hitcount'=>100,'type'=>'BLOCK'];
+$responsive['fpbxratelimit']['TIER1'] = ['seconds'=>60,'hitcount'=>50,'type'=>'SHORTBLOCK'];
+$responsive['fpbxrfw']['TIERA'] = ['seconds'=>10,'hitcount'=>50,'type'=>'BLOCK'];
+$responsive['fpbxrfw']['TIERB'] = ['seconds'=>60,'hitcount'=>10,'type'=>'SHORTBLOCK'];
+$responsive['fpbxrfw']['TIERC'] = ['seconds'=>86400,'hitcount'=>100,'type'=>'BLOCK'];
+foreach($responsive as $id => $rows){
+	foreach($rows as $key => $val){
+		if(!is_array(\FreePBX::Firewall()->getConfig($key,$id))){
+			\FreePBX::Firewall()->SetConfig($key,$val,$id);
+		}
+	}
+}
 
 $defaults = array(
 	"name" => "firewall",

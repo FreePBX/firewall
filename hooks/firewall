@@ -13,7 +13,6 @@ $logfile 	= $astlogdir."/firewall.log";
 $webuser 	= 'asterisk';//$cfg->get('AMPASTERISKWEBUSER');
 $webgroup 	= 'asterisk'; //$cfg->get("AMPASTERISKWEBGROUP");
 try {
-
 	$sig = $g->checkSig($sigfile);
 	if (!isset($sig['config']['hash']) || $sig['config']['hash'] !== "sha256") {
 		throw new \Exception("Invalid sig file.. Hash is not sha256 - check $sigfile");

@@ -49,6 +49,14 @@ class Smart {
 			}
 			$retarr['fail2banbypass'] = \FreePBX::Firewall()->getConfig("fail2banbypass");
 		};
+		//reponsive filrewall 
+		$retarr['fpbxratelimit']['TIER1'] = \FreePBX::Firewall()->getConfig('TIER1','fpbxratelimit');
+		$retarr['fpbxratelimit']['TIER2'] = \FreePBX::Firewall()->getConfig('TIER2','fpbxratelimit');
+		$retarr['fpbxratelimit']['TIER3'] = \FreePBX::Firewall()->getConfig('TIER3','fpbxratelimit');
+		$retarr['fpbxrfw']['TIERA'] = \FreePBX::Firewall()->getConfig('TIERA','fpbxrfw');
+		$retarr['fpbxrfw']['TIERB'] = \FreePBX::Firewall()->getConfig('TIERB','fpbxrfw');
+		$retarr['fpbxrfw']['TIERC'] = \FreePBX::Firewall()->getConfig('TIERC','fpbxrfw');
+
 		return $retarr;
 	}
 

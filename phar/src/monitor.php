@@ -5,6 +5,7 @@ include_once 'IpUtils.php';
 
 use \Symfony\Component\HttpFoundation\IpUtils;
 
+
 $setting = getSettings();
 $astlogdir = !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
 
@@ -286,6 +287,6 @@ function needs_whitelist($ip) {
 }
 
 function is_IPlocal($ip) {
-	$subnet = array("127.0.0.0/8", "169.254.0.0/16", "::1/128", "fe80::/10");
+	$subnet = ["127.0.0.0/8", "169.254.0.0/16", "::1/128", "fe80::/10"];
 	return IpUtils::checkIp($ip, $subnet);
 }

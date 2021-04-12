@@ -1,14 +1,10 @@
-<div class='container-fluid'>
-
-<h3><?php echo _("Advanced Settings"); ?></h3>
-
 <?php
 // i18n common things
 $ena = _("Enabled");
+$leg = _("Legacy");
 $dis = _("Disabled");
 
 $advanced = $fw->getAdvancedSettings();
-
 $sections = array(
 	"safemode" => array( "desc" => _("Safe Mode"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
 		_("Safe mode gives you the ability to recover from an accidental misconfiguration by temporarily disabling the firewall if the machine is rebooted two times in succession."),
@@ -43,31 +39,67 @@ $sections = array(
 		_("Normally this should be set to <strong>Disabled</strong> unless you are debugging network connectivity."),
 		),
 	),
+	"id_service" => array( "desc" => _("Intrusion Detection Service"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Enable / Disable Intrusion Detection service on boot.").
+		"<br>"._("<strong>Enabled</strong>: This service will be started on boot.").
+		"<br>"._("<strong>Disabled</strong>: This service will be stopped and Intrusion Detection will not run on boot. Intrusion Detection will be stopped as well."),
+		),
+	),
+	"id_sync_fw" => array( "desc" => _("Intrusion Detection Sync Firewall"), "values" => array("enabled" => $ena, "legacy" => $leg), "docs" => array(
+		_("<strong>Enabled</strong>: Automatically synchronize IPs from specific firewall zones to the whitelist. E.g: When you add to a trusted zone, local or otherwise, they will be added to the Intrusion Detection whitelist.").
+		"<br>"._("<strong>Legacy</strong>: Intrusion Detection whitelist will work like in the past with no automated synchronization to the whitelist.")
+		),
+	),
+	"import_hosts" => array( "desc" => _("Add etc/hosts as Trusted"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
+		_("Automatically add hosts from file /etc/hosts to Trusted Zone").
+		"<br>"._("<strong>Enabled</strong>: All hosts defined are added to the Trusted Zone (default)").
+		"<br>"._("<strong>Disabled</strong>: Hosts defined in /etc/hosts are not added to Trusted Zone except localhost."),
+		),
+	),
 );
+$sa = $fw->sysadmin_info();
+if(empty($sa) || (!empty($sa) && !FreePBX::Sysadmin()->isActivated())){
+	unset($sections["id_service"]);
+	unset($sections["id_sync_fw"]);
+}
+?>
 
+<div class='container-fluid'>
+	<h3><?php echo _("Advanced Settings"); ?></h3>
+
+<?php
 foreach ($sections as $key => $tmparr) {
 	if (!isset($advanced[$key])) {
 		throw new \Exception("Advanced setting '$key' is unknown");
 	}
 	$current = $advanced[$key];
 
-	print "<div class='well'><h4>".$tmparr['desc']."</h4>";
+	print "<div class='well'>";
+	print "		<h4>".$tmparr['desc']."</h4>";
 	foreach ($tmparr['docs'] as $row) {
-		print "<p>$row</p>";
+		print "	<p>$row</p>";
 	}
-	print "<div class='row'><div class='form-horizontal clearfix'><div class='col-sm-4'>";
-	print "<label class='control-label' for='$key'>".$tmparr['desc']."</label></div>";
-	print "<div class='col-sm-8'><span class='radioset'>";
+	print "		<div class='row'>";
+	print "			<div class='form-horizontal clearfix'>";
+	print "				<div class='col-sm-4'>";
+	print "					<label class='control-label' for='$key'>".$tmparr['desc']."</label>";
+	print "				</div>";
+	print "				<div class='col-sm-8'>";
+	print "					<span class='radioset'>";
 	foreach ($tmparr['values'] as $k => $v) {
 		if ($current === $k) {
 			$checked = "checked";
 		} else {
 			$checked = "";
 		}
-		print "<input $checked type='radio' class='advsetting $key' name='$key' id='${key}_$k' value='$k' ><label for='${key}_$k'>$v</label>";
+		print "					<input $checked type='radio' class='advsetting $key' name='$key' id='${key}_$k' value='$k' ><label for='${key}_$k'>$v</label>";
 	}
-	print "</span> </div> </div> </div> </div>";
+	print "					</span>";
+	print "				</div>";
+	print "			</div>";
+	print "		</div>";
+	print "</div>";
 }
+?>
 
-print "</div>";
-
+</div>

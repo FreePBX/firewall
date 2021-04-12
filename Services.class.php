@@ -635,4 +635,72 @@ class Services {
 		);
 		return $retarr;
 	}
+	
+	/**
+	 * addToBlacklist
+	 *
+	 * @param  mixed $host
+	 * @return void
+	 */
+	public function addToBlacklist($host) {
+		// Make sure we can look this host up, and it's a valid thing to 
+		// add to the blacklist.
+		//
+		$smart = \FreePBX::Firewall()->getSmartObj();
+		// Is this a network? If it has a slash, assume it does.
+		if (strpos($host, "/") !== false) {
+			$rawnet = true;
+			$trust = $smart->returnCidr($host);
+		} else {
+			$rawnet = false;
+			$trust = $smart->lookup($host);
+		}
+
+		// If it's false, or empty, we couldn't validate it
+		if (!$trust) {
+			throw new \Exception("Can't validate $host");
+		}
+
+		// If it can, we can add it happily.
+		// If this is a network, make sure we use the returnCidr value,
+		// because that's actually correct.
+		if ($rawnet) {
+			\FreePBX::Firewall()->setConfig($trust, true, "blacklist");
+		} else {
+			\FreePBX::Firewall()->setConfig($host, true, "blacklist");
+		}
+	}
+	
+	/**
+	 * removeFromBlacklist
+	 *
+	 * @param  mixed $host
+	 * @return void
+	 */
+	public function removeFromBlacklist($host) {
+		\FreePBX::Firewall()->setConfig($host, false, "blacklist");
+	}
+	
+	/**
+	 * getBlacklist
+	 *
+	 * @return void
+	 */
+	public function getBlacklist() {
+		$hosts = array_keys(\FreePBX::Firewall()->getAll("blacklist"));
+		$smart = \FreePBX::Firewall()->getSmartObj();
+		$retarr = array();
+		foreach ($hosts as $h) {
+			// Is this an IP address?
+			list($test) = explode("/", $h);
+			if (filter_var($test, \FILTER_VALIDATE_IP)) {
+				$retarr[$h] = false;
+				continue;
+			} else {
+				// Try a DNS lookup
+				$retarr[$h] = $smart->lookup($h);
+			}
+		}
+		return $retarr;
+	}
 }

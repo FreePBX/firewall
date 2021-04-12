@@ -2,114 +2,74 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.60.19</version>
+	<version>15.0.8.10</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
-	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
+	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
 	<category>Connectivity</category>
 	<candisable>no</candisable>
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
-		*13.0.60.19* Packaging of ver 13.0.60.19
-		*13.0.60.18* Fixing FREEPBX-21923 Firewall not starting at boot time issue
-		*13.0.60.17* Fixing FREEPBX-21822
-		*13.0.60.16* Packaging of ver 13.0.60.16
-		*13.0.60.15* FREEPBX-21739: Add ipv6 localhost - FreePBX 13 
-		*13.0.60.14* Packaging of ver 13.0.60.14
-		*13.0.60.13* Packaging of ver 13.0.60.13
-		*13.0.60.12* Packaging of ver 13.0.60.12
-		*13.0.60.11* Packaging of ver 13.0.60.11
-		*13.0.60.10* Packaging of ver 13.0.60.10
-		*13.0.60.9* FREEPBX-21611 Randomly getting touch():Utime failed: Permission denied 
-		*13.0.60.8* FREEI-1848 Define a good location for tmp and log file for the Firewall module 
-		*13.0.60.7* FREEI-1659 Changing firewall wizard imaging[13.0] 
-		*13.0.60.6* FREEI-1428 LetsEncrypt validation may now come from any IP address 
-		*13.0.60.5* rebuilding voipfirewalld 
-		*13.0.60.4* bump 
-		*13.0.60.2* FREEPBX-18511 - Add networks from cli.
-		*13.0.60.1* Fine tune TCP ratelimiting
-		*13.0.60* Fix jiffies being inaccesable in newer containers
-		*13.0.59* FREEPBX-19933 Firewall submenu missing on mobile devices/ narrow screens
-		*13.0.58* Use lazy loading console commands
-		*13.0.57.1* PHP 5.3 compatibility fix.
-		*13.0.57* Enable LetsEncrypt service
-		*13.0.56* FREEPBX-17657 - Better OpenVZ compatibility
-		*13.0.55.3* Hardcode /tmp as the lockfile directory
-		*13.0.55.2* Fix incorrect network name 'noprefixroute' being returned
-		*13.0.55.1* Ensure Fail2Ban isn't accidentally restarted
-		*13.0.54.3* Require Manager module (for AMI connection)
-		*13.0.54.2* Refactor monitoring so it is gentler on heavily loaded systems
-		*13.0.54.1* Restart firewall automatically if it crashes unexpectedly
-		*13.0.53.4* Be less sensitive about loops in monitoring
-		*13.0.53.3* Avoid potential infinite loop in monitoring daemon
-		*13.0.53.2* Actively listen for successful connections
-		*13.0.52* Support new sysadmin-rpm for longer interface descriptions
-		*13.0.51.1* Fix Zulu issues causing crash
-		*13.0.51* Add TCP rate limiting
-		*13.0.50.1* Fix overly restrictive firewall for Zulu UC.
-		*13.0.50* Allow interface changes while firewall is in safe mode
-		*13.0.49.2* Disable -w flag on older systems
-		*13.0.49* Add -w flag to iptables to avoid races, FREEPBX-16075 - Allow IPv6 DHCP as well as SLAAC.
-		*13.0.48* FREEPBX-16493 - Remove networks immedately when requested
-		*13.0.47.2* Speed up Status page significantly
-		*13.0.47.1* Don't shut down on a transient database issue.
-		*13.0.46.1* #16272, #16150, #16146 - CIDRs were not able to be added to networks
-		*13.0.46* Make sure startup contains fresh data.
-		*13.0.45.5* FREEPBX-15957 Change default webrtc zone to local
-		*13.0.45.4* FREEPBX-15257 Network/Host Field accepts accented characters, preventing deletion of entry
-		*13.0.45.3* FREEPBX-15403
-		*13.0.45.2* FREEPBX-14207
-		*13.0.45.1* FREEPBX-11811 list shading inconsistent for blocked attackers and blacklist
-		*13.0.45* FREEPBX-14765 - Ensure dashboard errors are cleaned up correctly
-		*13.0.44.7* FREEPBX-14483 - Enable tftp conntrack
-		*13.0.44.6* FREEPBX-14502 - Fix out of date links
-		*13.0.44.5* FREEPBX-14508 Firewall Network Interface Save issue
-		*13.0.44.4* FREEPBX-14321 and Minor typo fixes
-		*13.0.44.3* Significant UI rework, many bug/feature requests: #11473, #12472, #13788, #13345, #13695, #13773, #13918, #14164, #13328.
-		*13.0.43.1* Reliability update: FREEPBX-14014, FREEPBX-13844, FREEPBX-13815, FREEPBX-13729
-		*13.0.42.2* Allow other services to be on port 80
-		*13.0.42.1* FREEPBX-13411 Avoid potential race condition with slow DNS
-		*13.0.42* Whitelist device when logging in.
-		*13.0.41.1* Make sure empty networkmaps can't exist
-		*13.0.41* Split provisioning and restapps into secure and insecure settings
-		*13.0.40.1* FREEPBX-12624 - Missed pjsip in the warnings
-		*13.0.40* Complete first stagge of FreePBX 14 support
-		*13.0.39.3* FREEPBX-13396 More edge cases in 'ip -o addr'
-		*13.0.39.2* FREEPBX-13357 PHP 5.6 throws exception instead of empty array
-		*13.0.39.1* FREEPBX-13138 - Avoid potential bypass of iptables
-		*13.0.39* #13056 - Ensure blank hosts aren't parsed.
-		*13.0.38.2* Also address potential tftp issues
-		*13.0.38.1* Potential fix for segv on startup.
-		*13.0.37.1* Fix crash on startup when unconfigured
-		*13.0.36.4* Ensure that all the node ports are returned correctly
-		*13.0.36.3* #12624 - Minor warning fix
-		*13.0.36.2* FREEPBX-12549
-		*13.0.36.1* FreePBX Distro 7 fixes, FreePBX 14 support.
-		*13.0.35.2* Minor bugfix reported in forums, when ifcfg file is corrupt
-		*13.0.35.1* Implement new SSL ports in Sysadmin, and auto-open RestAPPS for registered endpoint #12443
-		*13.0.34* #12472 - allow Passive FTP
-		*13.0.33* Do not look up blank hosts
-		*13.0.32* Add 'lock firewall on' feature - see http://wiki.freepbx.org/x/0wLzAw
-		*13.0.31* Fix issue reported on IRC, and potentially #12095
-		*13.0.30* #12336 and remove all kernel modules when shutting down
-		*13.0.29* Update for new Sipsettings module with complete TLS support
-		*13.0.28* #12251 - PJSip issues
-		*13.0.27.1* Better TLS Support
-		*13.0.26* #12133, #12142, #12143, #12149
-		*13.0.25* Be more tolerant of transient DB errors
-		*13.0.24* Handle tunnel interfaces sensibly.
-		*13.0.23.1* Make stop and start more intuitive
-		*13.0.23* Support managed mode.
-		*13.0.22.3* Double-check we unlock when exiting.
-		*13.0.22* Fix possibility of accidental iptables entry duplication
-		*13.0.21.1* Ensure firewall stops when fwconsole stop is run
-		*13.0.21* #11610, #11916, #11947, #11709, #11813, #11919, #11920, #11935.
+		*15.0.8.10* FREEPBX-22196 
+		*15.0.8.9* Packaging of ver 15.0.8.9
+		*15.0.8.8* FREEI-2745 Update tool tip for intrusion detection whitelist 
+		*15.0.8.7* FREEI-2675 bug resolved for firewall services class 
+		*15.0.8.6* FREEI-2675 firewall gql api's and utest 
+		*15.0.8.5* FREEPBX-22131 - remove logs secction 
+		*15.0.8.4*  FREEI-2587 
+		*15.0.8.3*  FREEI-2572 
+		*15.0.8.2*  FREEPBX-22105 
+		*15.0.8.1*  FREEI-2481 I.D doesn't not appear when the Firewall is disabled. 
+		*15.0.8*    FREEI-2469 option to legacy from enabled, Registered ext IP's are getting added to whitelist. 
+		*15.0.7*    FREEI-1982 Moving Intrusion detection to firewall
+		*15.0.6.34* Packaging of ver 15.0.6.34
+		*15.0.6.33* FREEPBX-21923 
+		*15.0.6.32* Packaging of ver 15.0.6.32
+		*15.0.6.31* Fixing FREEPBX-21822 
+		*15.0.6.30* Packaging of ver 15.0.6.30
+		*15.0.6.29* Packaging of ver 15.0.6.29
+		*15.0.6.28* Packaging of ver 15.0.6.28
+		*15.0.6.27* Jerrmlerules 
+		*15.0.6.26* Packaging of ver 15.0.6.26
+		*15.0.6.25* FREEPBX-21627: reload firewall rules after enable or disable custom rules. 
+		*15.0.6.24* FREEPBX-21625: Add button for clean log. 
+		*15.0.6.23* FREEPBX-21611 
+		*15.0.6.22* Packaging of ver 15.0.6.22
+		*15.0.6.21* FREEI-1848 Define a good location for tmp and log file for the Firewall module 
+		*15.0.6.20* Packaging of ver 15.0.6.20
+		*15.0.6.19* Packaging of ver 15.0.6.19
+		*15.0.6.18* FREEI-1659 Changing firewall wizard imaging 
+		*15.0.6.17* FREEPBX-21613 Clicking on save rules button in Firewall - Advanced custom rules page without making any changes gives response in some spanish language. 
+		*15.0.6.16* FREEPBX-21612 - Fix: The log list does not show data. 
+		*15.0.6.15* FREEPBX-21612 
+		*15.0.6.14* FREEPBX-21609: Add button only save rules. 
+		*15.0.6.13* FREEPBX-21430 Edit Files Custom Rules and show log firewall
+		*15.0.6.12* FREEI-1428 LetsEncrypt validation may now come from any IP address 
+		*15.0.6.11* bump 
+		*15.0.6.10* FREEPBX-21472: Correct layout 
+		*15.0.6.9* Use SQL prepared statement
+		*15.0.6.8* FREEPBX-21399 Firewall broken after restore from legacy backup onto FreePBX 15
+		*15.0.6.7* FREEPBX-21053 readded backup and restore custom rules with restore hook
+		*15.0.6.6* FREEPBX-21053 reverting backup and restore custom rules to previous state
+		*15.0.6.5* FREEPBX-21053, backup and restore custom rules 
+		*15.0.6.4* FREEI-958 kvblobstore fetch added 
+		*15.0.6.3* Related to FREEPBX-20414: removed $jobid from runRestore() 
+		*15.0.6.2* FREEPBX-18511 - Add networks from cli.
+		*15.0.6.1* Fine tune TCP ratelimiting
+		*15.0.6* Fix jiffies being inaccesable in newer containers
+		*15.0.5* FREEPBX-19933 Firewall submenu missing on mobile devices/ narrow screens
+		*15.0.4* Use lazy loading console commands
+		*15.0.3* fixing legacy restore
+		*15.0.2* Packaging of ver 15.0.2
+		*15.0.1* Impliment Backup 15
 	</changelog>
 	<depends>
 		<file>/usr/lib/sysadmin/includes.php</file>
 		<module>sipsettings ge 13.0.23.1</module>
 		<module>manager ge 13.0.2.5</module>
+		<module>sysadmin ge 15.0.21.3</module>
+		<version>15.0.6.18</version>
 	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>
@@ -117,7 +77,7 @@
 	<location>compatibility</location>
 	<md5sum>compatibility</md5sum>
 	<supported>
-		<version>13.0</version>
+		<version>15.0</version>
 	</supported>
 	<console>
 		<command>
@@ -134,12 +94,12 @@
 		<framework class="Stop" namespace="FreePBX\Console\Command">
 			<method callingMethod="postAsteriskHooks" class="Firewall" namespace="FreePBX\modules">stopFirewall</method>
 		</framework>
-		<framework class="Restart" namespace="FreePBX\Console\Command">
-			<method callingMethod="preAsteriskHooks" class="Firewall" namespace="FreePBX\modules">restartFirewall</method>
-		</framework>
 		<framework class="Chown" namespace="FreePBX\Console\Command">
 			<method callingMethod="fwcChownFiles" class="Firewall" namespace="FreePBX\modules">chownFreepbx</method>
 		</framework>
+		<Backup class="Backup" namespace="FreePBX\modules">
+			<method callingMethod="postrestoreModulehook" class="Firewall" namespace="FreePBX\modules">postrestorehook</method>
+		</Backup>
 	</hooks>
 	<oobe method="oobeHook" priority="200"/>
 </module>
