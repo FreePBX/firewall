@@ -309,7 +309,7 @@ if($legacy != ""){
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" pattern="'.$wl_filter.'" id="whitelist" name="whitelist" rows="'.(count($ids['fail2ban_whitelist']) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
+					<textarea class="form-control" pattern="'.$wl_filter.'" id="whitelist" name="whitelist" rows="'.(count(array($ids['fail2ban_whitelist'])) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
 				</div>
 			</div>
 		</div>
@@ -343,7 +343,7 @@ else{
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" pattern="'.$wl_filter.'" id="whitelist" name="whitelist" rows="'.(count($ids['whitelist']) + 1).'"">'.$ids['whitelist'].'</textarea>
+					<textarea class="form-control" pattern="'.$wl_filter.'" id="whitelist" name="whitelist" rows="'.(count(array($ids['whitelist'])) + 1).'"">'.$ids['whitelist'].'</textarea>
 				</div>
 			</div>
 		</div>
