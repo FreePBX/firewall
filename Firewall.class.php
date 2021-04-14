@@ -1373,6 +1373,24 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			case 'intrusion_detection':
 				return;
 
+			case "setrfrules":
+				foreach($_REQUEST as $field => $val){
+					$k = explode('_',$field);
+					$id = $k[0];
+					if($id == 'fpbxratelimit' || $id == 'fpbxrfw'){
+						$key = $k[1];
+						$set = $k[2];
+						$responsive[$id][$key][$set] = $val;
+					}
+				}
+				foreach($responsive as $id => $rows){
+					foreach($rows as $key => $val){
+						\FreePBX::Firewall()->SetConfig($key,$val,$id);
+					}
+				}
+				return true;
+
+
 			default:
 				throw new \Exception("Sad Panda - ".$_REQUEST['command']);
 		}
@@ -1453,6 +1471,22 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		case 'disablerfw':
 			$this->setConfig('responsivefw', false);
 			return;
+		case "saveresponsive":
+			foreach($_REQUEST as $field => $val){
+				$k = explode('_',$field);
+				$id = $k[0];
+				if($id == 'fpbxratelimit' || $id == 'fpbxrfw'){
+					$key = $k[1];
+					$set = $k[2];
+					$responsive[$id][$key][$set] = $val;
+				}
+			}
+			foreach($responsive as $id => $rows){
+				foreach($rows as $key => $val){
+					\FreePBX::Firewall()->SetConfig($key,$val,$id);
+				}
+			}
+		return ;
 		default:
 			throw new \Exception("Unknown action $action");
 		}
