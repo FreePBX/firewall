@@ -585,19 +585,24 @@ function updateFirewallRules($firstrun = false) {
 
 	// And permit our registrations through
   	$ipaddrs = $driver->updateRegistrations($getservices['smartports']['registrations']);
-  //If fail2ban bypass is enabled 
+
+ //If fail2ban bypass is enabled
   $fwconf = getSettings();
   if (isset($fwconf['responsivefw']) && isset($fwconf['fail2banbypass'])){
-	 if (isset($ipaddrs)) {
+         if (isset($ipaddrs)) {
       foreach($ipaddrs as $ip => $action) {
-	if ($action === "ipadd") { 
-         $f2bancmd = "fail2ban-client set asterisk-iptables addignoreip $ip";
-	 @`$f2bancmd`;
-       }
-        if ($action === "iprem") {
-             $f2bancmd = "fail2ban-client set asterisk-iptables delignoreip $ip";
-	 @`$f2bancmd`;
-       }
+        if ($action === "ipadd") {
+        $f2bancmd = "fail2ban-client set asterisk-iptables addignoreip $ip";
+        print time().": Fail2Ban Bypass- $ip reported as good, executing $f2bancmd\n";
+                $cmdoutput = `$f2bancmd`;
+                print time().": $cmdoutput\n";
+    }
+    if ($action === "iprem") {
+        $f2bancmd = "fail2ban-client set asterisk-iptables delignoreip $ip";
+        print time().": Fail2Ban Bypass- $ip no longer registered, executing $f2bancmd\n";
+                $cmdoutput = `$f2bancmd`;
+        print time().": $cmdoutput\n";
+    }
         }
      }
   }
