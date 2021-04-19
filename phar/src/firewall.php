@@ -127,9 +127,12 @@ $monitorpid = start_monitor();
 $f = $v->checkFile("bin/clean-iptables");
 `$f`;
 
+// Flush all fail2ban rules in asterisk-iptables jail
+`fail2ban-client reload asterisk-iptables`;
+
 // Start fail2ban if we can
 if($id_service == "enabled"){
-	`service fail2ban start`;
+	`service fail2ban start`;	
 }
 
 // Always load ip_contrack_ftp, even if FTP isn't allowed,
