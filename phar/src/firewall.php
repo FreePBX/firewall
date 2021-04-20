@@ -127,13 +127,13 @@ $monitorpid = start_monitor();
 $f = $v->checkFile("bin/clean-iptables");
 `$f`;
 
-// Flush all fail2ban rules in asterisk-iptables jail
-`fail2ban-client reload asterisk-iptables`;
-
 // Start fail2ban if we can
 if($id_service == "enabled"){
-	`service fail2ban start`;	
+	`service fail2ban start`;
 }
+
+// Flush all fail2ban rules in asterisk-iptables jail
+`fail2ban-client reload asterisk-iptables`;
 
 // Always load ip_contrack_ftp, even if FTP isn't allowed,
 // as it helps with OUTBOUND connections, too.
@@ -593,12 +593,30 @@ function updateFirewallRules($firstrun = false) {
   $fwconf = getSettings();
   if (isset($fwconf['responsivefw']) && isset($fwconf['fail2banbypass'])){
          if (isset($ipaddrs)) {
+	//grab a list of IPs already in the ignore list
+	$allowed_ips = `fail2ban-client get asterisk-iptables ignoreip`;
+	$f2b_lines = explode(PHP_EOL, $allowed_ips);
+	foreach ($f2b_lines as $l) {
+        	if (preg_match('/(`-|\|-)\s(.+)/', $l, $m))
+        	$parsed_ips[] = $m[2];
+	}
+
       foreach($ipaddrs as $ip => $action) {
         if ($action === "ipadd") {
-        $f2bancmd = "fail2ban-client set asterisk-iptables addignoreip $ip";
-        print time().": Fail2Ban Bypass- $ip reported as good, executing $f2bancmd\n";
+	$f2b_exists = false;
+	foreach($parsed_ips as $pip){
+		if ($ip == $pip) {
+			$f2b_exists = true;
+			print time().": Fail2Ban Bypass- $ip registered but already being ignored.\n";
+			break;
+			}
+	}
+        if (!$f2b_exists){ 
+		$f2bancmd = "fail2ban-client set asterisk-iptables addignoreip $ip";
+        	print time().": Fail2Ban Bypass- $ip reported as good, executing $f2bancmd\n";
                 $cmdoutput = `$f2bancmd`;
                 print time().": $cmdoutput\n";
+		}
     }
     if ($action === "iprem") {
         $f2bancmd = "fail2ban-client set asterisk-iptables delignoreip $ip";
