@@ -57,7 +57,7 @@ function processQuestion(q) {
 	if (q.default === "yes") {
 		b = "<div class='pull-right clearfix'><button type='button' class='btn btn-default' onClick='buttonNo()'>No</button><button type='button' class='btn btn-default' onclick='buttonYes()'>Yes</button></div>";
 	} else {
-		b = "<div class='pull-right clearfix'><button type='button' onClick='buttonYes()' class='btn btn-default'>Yes</button><button type='button' onClick='buttonNo()' class='btn btn-default'>No</button></div>";
+		b = "<div class='pull-right clearfix'><button type='button' onClick='buttonNo()' class='btn btn-default'>No</button><button type='button' onClick='buttonYes()' class='btn btn-default'>Yes</button></div>";
 	}
 	$("#qdiv").html(h);
 	$("#buttonsdiv").html(b);
