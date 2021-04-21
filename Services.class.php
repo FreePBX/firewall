@@ -7,6 +7,7 @@ class Services {
 	private $allservices;
 	private $coreservices;
 	private $extraservices;
+	private $firewall;
 
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
@@ -702,5 +703,162 @@ class Services {
 			}
 		}
 		return $retarr;
+	}
+
+	/**
+	 * setFirewallConfigurations
+	 *
+	 * @return void
+	 */
+	public function setFirewallConfigurations($input) {
+		$this->firewall = \FreePBX::Firewall();
+
+		// Firewall should be enabled
+		$this->firewall->setConfig("status", $input['status']);
+		// Responsive should be on
+		$this->firewall->setConfig("responsivefw", $input['responsiveFirewall']);
+		// For chan_sip and pjsip
+		$this->firewall->setConfig("chansip", $input['chansip'][0], $input['chansip'][1]);
+		$this->firewall->setConfig("pjsip", $input['pjsip'][0], $input['pjsip'][1]);
+		// Safe mode disabled
+		$this->firewall->setConfig("safemodeenabled", $input['safeMode']);
+		// Jiffies set to 1000 (TODO: If we change vm infrastructure, recalc this)
+		$this->firewall->setConfig("currentjiffies", $input['currentJiffies']);
+		// And mark the OOBE wizard as done
+		$this->firewall->setConfig("oobeanswered", $input['enableTrustedHost'], $input['enableResponsive'], $input['externalSetup']);
+		
+		$this->setServiceZones("provis", array($input['serviceZone'][0], $input['serviceZone'][1], $input['serviceZone'][2]));
+		
+		return true;
+	}
+	
+	/**
+	 * addToWhitelist
+	 *
+	 * @param  mixed $input
+	 * @return void
+	 */
+	public function addToWhitelist($input){
+		foreach($input['IPs'] as $zone){
+			$value = json_decode(str_replace("'", '"', $zone[0]));
+			$this->addToZone($value->sourceIp, $value->zone, $value->hidden); 
+		}
+		return true;
+	}
+	
+	/**
+	 * getFirewallConfigurations
+	 *
+	 * @param  mixed $input
+	 * @return void
+	 */
+	public function getFirewallConfigurations() {
+		$this->firewall = \FreePBX::Firewall();
+
+		$firewallStatus = $this->firewall->getConfig("status");
+		$responsiveFirewall = $this->firewall->getConfig("responsivefw");
+		$chainSip= $this->firewall->getConfig("chansip");
+		$pjSip = $this->firewall->getConfig("pjsip");
+		$safemodeEnabled = $this->firewall->getConfig("safemodeenabled");
+		$currentJiffies = $this->firewall->getConfig("currentjiffies");
+		$oobeAnswered = $this->firewall->getConfig("oobeanswered");
+		$provis = $this->firewall->getConfig("provis");
+
+		return array(['firewallStatus' => $firewallStatus, 'responsiveFirewall' => $responsiveFirewall, 'chainSip' => $chainSip, 'pjSip' => $pjSip, 'safemodeEnabled' => $safemodeEnabled, 'currentJiffies' => $currentJiffies, 'oobeAnswered' => $oobeAnswered, 'provis' => $provis]);
+	}
+	
+	/**
+	 * setServiceZones
+	 *
+	 * @param  mixed $service
+	 * @param  mixed $zones
+	 * @return void
+	 */
+	public function setServiceZones($service, $zones) {
+		$this->firewall = \FreePBX::Firewall();
+		if (!is_array($zones)) {
+			throw new \Exception("No zones provided for service $service");
+		}
+		$this->firewall->setConfig($service, $zones, "servicesettings");
+	}
+	
+	/**
+	 * addToZone
+	 *
+	 * @param  mixed $srcip
+	 * @param  mixed $zone
+	 * @param  mixed $hide
+	 * @param  mixed $apply
+	 * @return void
+	 */
+	public function addToZone($srcip, $zone, $hide = false, $apply = true) {
+		$this->firewall = \FreePBX::Firewall();
+		if ($zone !== "trusted") {
+			throw new \Exception("Can only add to trusted zone at the moment");
+		}
+
+		$split = explode("/", $srcip);
+
+		if (!filter_var($split[0], \FILTER_VALIDATE_IP)) {
+			throw new \Exception("Can only add IP addressess");
+		}
+
+		if (!isset($split[1])) {
+			$split[1] = "32";
+		}
+
+		if ((int) $split[1] > 32 || (int) $split[1] < 8) {
+			throw new \Exception("Invalid source - $srcip");
+		}
+
+		$trust = join("/", $split);
+
+		// Ok, grab our current trustednets and update them
+		$nets = $this->firewall->getConfig("networkmaps");
+
+		if (!is_array($nets)) {
+			$nets = array();
+		}
+
+		$nets[$trust] = $zone;
+		$this->firewall->setConfig("networkmaps", $nets);
+
+		// We were asked to hide this?
+		if ($hide) {
+			$hidden = $this->firewall->getConfig("hiddennets");
+			if (!is_array($hidden)) {
+				$hidden = array();
+			}
+			$hidden[$trust] = true;
+			$this->firewall->setConfig("hiddennets", $hidden);
+		}
+
+		// Is the machine running?
+		if ($apply) {
+			// It is. Is firewall enabled?
+			if ($this->firewall->getConfig("status")) {
+				// It is. OK, ssh in and update the config.
+				$filename = "/var/spool/asterisk/incron/firewall.addnetwork";
+				$params = [ $zone => [ "$srcip/32" ] ];
+				$b = base64_encode(gzcompress(json_encode($params)));
+				// Mangle the filename so it's a filename
+				$filename .= ".".str_replace('/', '_', $b);
+				touch($filename);
+			}
+		}
+	}
+	
+	/**
+	 * getServiceZones
+	 *
+	 * @return void
+	 */
+	public function getServiceZones() {
+		$res =  \FreePBX::Firewall()->get_networkmaps();
+		$response_array = array();
+		foreach($res as $key => $val){
+			array_push($response_array,array('sourceIp' => $key , 'trusted' => $val));
+		}
+		return $response_array;
 	}
 }
