@@ -267,12 +267,17 @@ class Smart {
 
 		// PJSIP?
 		if ($this->pjsip) {
-			$sql = "SELECT DISTINCT(`data`) FROM `pjsip` WHERE `keyword`='sip_server'";
+			$sql = "SELECT DISTINCT(`data`) FROM `pjsip` WHERE `keyword`='sip_server' OR `keyword`='match'";
 			$q = $this->db->query($sql);
 			$pjsiptrunks = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($pjsiptrunks as $p) {
 				if (!empty($p['data'])) {
+					if (strpos($p['data'], ",")) {
+						$match_split = explode(",", $p['data']);
+						foreach ($match_split as $k=>$v) $discovered[$v] = true;
+					} else {
 					$discovered[$p['data']] = true;
+					}
 				}
 			}
 			// PJSip extensions don't have allow/deny at the moment.
