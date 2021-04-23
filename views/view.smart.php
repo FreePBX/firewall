@@ -157,37 +157,5 @@ foreach ($protocols as $id => $tmparr) {
 </div>
 
 </div>
-<br>
-<div class='container-fluid'>
-<?php
-$docs = array(
-	_("By default, Fail2Ban remains active even when responsive firewall is enabled.  This provides additional protection against attackers with access to an IP with a registered device or comprimised SIP credentials."),
-	_("In some situations, it may be desirable to have Responsive Firewall whitelist known registrations from Fail2Ban, so that an incorrectly configured device doesn't trip the firewall and cause legitimate devices behind the same public IP to be blocked."),
-	_("By enabling the bypass below, an exemption will be added to Fail2Ban for any IP that has successfully registered through the Responsive Firewall."),
-);
-foreach ($docs as $p) {
-	print "<p>$p</p>\n";
-}
 
-if (\FreePBX::Firewall()->getConfig('fail2banbypass')) {
-		$on = "checked";
-		$off = "";
-	} else {
-		$on = "";
-		$off = "checked";
-	}
-?>
-<div class='row'>
-  <div class='form-horizontal clearfix'>
-    <div class='col-sm-4'>
-      <label class='control-label' for='fail2banbypass'>Fail2Ban Bypass</label>
-    </div>
-    <div class='col-sm-8'>
-      <span class='radioset'>
-	<input type='radio' class='f2bmode' name='fail2banbypass' id='fail2banbypass1' value='true' <?php echo "$on $d"; ?>><label for='fail2banbypass1'><?php echo $ena; ?></label>
-	<input type='radio' class='f2bmode' name='fail2banbypass' id='fail2banbypass2' value='false' <?php echo "$off $d"; ?>><label for='fail2banbypass2'><?php echo $dis; ?></label>
-      </span>
-    </div>
-  </div>
-</div>
-</div>
+

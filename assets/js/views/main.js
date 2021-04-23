@@ -89,7 +89,6 @@ $(document).ready(function() {
 	$(".rfw").click(update_rfw);
 	$(".safemode").click(update_safemode);
 	$(".rejmode").click(update_rejectmode);
-	$(".f2bmode").click(update_fail2ban);
 
 	/**** Interfaces Tab ****/
 	// Update row colour on change
@@ -394,20 +393,6 @@ function update_rfw(event) {
 		complete: function(data) {
 			window.location.href = window.location.href;
 		}
-	});
-}
-
-function update_fail2ban(event) {
-	var target = event.target;
-	var d = { command: 'setf2bmode', module: 'firewall', value: target.getAttribute('value') };
-	var n = target.getAttribute('name');
-	$("input[name="+n+"]").prop('disabled', true);
-	$.ajax({
-		url: window.FreePBX.ajaxurl,
-		data: d,
-		success: function(data) {
-			window.location.href = window.location.href;
-		},
 	});
 }
 
