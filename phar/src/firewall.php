@@ -132,9 +132,6 @@ if($id_service == "enabled"){
 	`service fail2ban start`;
 }
 
-// Flush all fail2ban rules in asterisk-iptables jail
-`fail2ban-client reload asterisk-iptables`;
-
 // Always load ip_contrack_ftp, even if FTP isn't allowed,
 // as it helps with OUTBOUND connections, too.
 `/sbin/modprobe ip_conntrack_ftp`;
@@ -587,46 +584,8 @@ function updateFirewallRules($firstrun = false) {
 	$driver->updateTargets($getservices);
 
 	// And permit our registrations through
-  	$ipaddrs = $driver->updateRegistrations($getservices['smartports']['registrations']);
+	$driver->updateRegistrations($getservices['smartports']['registrations']);
 
- //If fail2ban bypass is enabled
-  $fwconf = getSettings();
-  if (isset($fwconf['responsivefw']) && isset($fwconf['fail2banbypass'])){
-         if (isset($ipaddrs)) {
-	//grab a list of IPs already in the ignore list
-	$allowed_ips = `fail2ban-client get asterisk-iptables ignoreip`;
-	$f2b_lines = explode(PHP_EOL, $allowed_ips);
-	foreach ($f2b_lines as $l) {
-        	if (preg_match('/(`-|\|-)\s(.+)/', $l, $m))
-        	$parsed_ips[] = $m[2];
-	}
-
-      foreach($ipaddrs as $ip => $action) {
-        if ($action === "ipadd") {
-	$f2b_exists = false;
-	foreach($parsed_ips as $pip){
-		if ($ip == $pip) {
-			$f2b_exists = true;
-			print time().": Fail2Ban Bypass- $ip registered but already being ignored.\n";
-			break;
-			}
-	}
-        if (!$f2b_exists){ 
-		$f2bancmd = "fail2ban-client set asterisk-iptables addignoreip $ip";
-        	print time().": Fail2Ban Bypass- $ip reported as good, executing $f2bancmd\n";
-                $cmdoutput = `$f2bancmd`;
-                print time().": $cmdoutput\n";
-		}
-    }
-    if ($action === "iprem") {
-        $f2bancmd = "fail2ban-client set asterisk-iptables delignoreip $ip";
-        print time().": Fail2Ban Bypass- $ip no longer registered, executing $f2bancmd\n";
-                $cmdoutput = `$f2bancmd`;
-        print time().": $cmdoutput\n";
-    }
-        }
-     }
-  }
 	// Make sure we nuke any kernel conntrack rules that may be hanging around for 
 	// those hosts.
 	$a = new FreePBX\modules\Firewall\Attacks(1000); // We don't care about jiffies
