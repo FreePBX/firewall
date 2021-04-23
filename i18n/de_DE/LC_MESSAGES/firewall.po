@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-23 04:53+0000\n"
+"POT-Creation-Date: 2021-04-23 05:22+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -441,19 +441,6 @@ msgstr "Blockierte Hosts"
 msgid "Both (TCP and UDP)"
 msgstr "Beide (TCP und UDP)"
 
-#: views/view.smart.php:164
-msgid ""
-"By default, Fail2Ban remains active even when responsive firewall is "
-"enabled.  This provides additional protection against attackers with access "
-"to an IP with a registered device or comprimised SIP credentials."
-msgstr ""
-
-#: views/view.smart.php:166
-msgid ""
-"By enabling the bypass below, an exemption will be added to Fail2Ban for any "
-"IP that has successfully registered through the Responsive Firewall."
-msgstr ""
-
 #: views/view.settings.php:38
 msgid ""
 "By sending a Reject packet, the attacker knows that they have discovered a "
@@ -584,7 +571,7 @@ msgstr "Löschen"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1506
+#: Firewall.class.php:1503
 msgid "Delete Selected"
 msgstr ""
 
@@ -859,7 +846,7 @@ msgstr "Firewall-Dienst wird nicht ausgeführt!"
 msgid "Firewall Wizard"
 msgstr "Firewall-Assistent"
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1463
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1461
 msgid "Firewall can not be disabled"
 msgstr "Die Firewall kann nicht deaktiviert werden"
 
@@ -1101,14 +1088,6 @@ msgstr ""
 msgid "Import:"
 msgstr ""
 
-#: views/view.smart.php:165
-msgid ""
-"In some situations, it may be desirable to have Responsive Firewall "
-"whitelist known registrations from Fail2Ban, so that an incorrectly "
-"configured device doesn't trip the firewall and cause legitimate devices "
-"behind the same public IP to be blocked."
-msgstr ""
-
 #: Restore.php:102
 msgid ""
 "Info: If custom firewall rules are not retrieved correctly, run the "
@@ -1151,11 +1130,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1315
+#: Firewall.class.php:1313
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1315
+#: Firewall.class.php:1313
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1724,7 +1703,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1513
+#: Firewall.class.php:1510
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -1820,12 +1799,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall ist jetzt aktiviert!"
 
-#: Firewall.class.php:1505 Firewall.class.php:1514 views/modal.customsvc.php:37
+#: Firewall.class.php:1502 Firewall.class.php:1511 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Speichern"
 
-#: Firewall.class.php:1508
+#: Firewall.class.php:1505
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2440,7 +2419,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1507
+#: Firewall.class.php:1504
 msgid "Update Interfaces"
 msgstr ""
 
