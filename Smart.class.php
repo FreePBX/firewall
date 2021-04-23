@@ -47,7 +47,8 @@ class Smart {
 			foreach ($retarr['rprotocols'] as $id => $null) {
 				$retarr['rprotocols'][$id]['state'] = \FreePBX::Firewall()->getConfig($id, "rfw");
 			}
-		}
+			$retarr['fail2banbypass'] = \FreePBX::Firewall()->getConfig("fail2banbypass");
+		};
 		//reponsive filrewall 
 		$retarr['fpbxratelimit']['TIER1'] = \FreePBX::Firewall()->getConfig('TIER1','fpbxratelimit');
 		$retarr['fpbxratelimit']['TIER2'] = \FreePBX::Firewall()->getConfig('TIER2','fpbxratelimit');
