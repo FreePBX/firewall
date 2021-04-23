@@ -739,10 +739,7 @@ class Services {
 	 * @return void
 	 */
 	public function addToWhitelist($input){
-		foreach($input['IPs'] as $zone){
-			$value = json_decode(str_replace("'", '"', $zone[0]));
-			$this->addToZone($value->sourceIp, $value->zone, $value->hidden); 
-		}
+		$this->addToZone($input['sourceIp'], $input['zone'], $input['hidden']); 
 		return true;
 	}
 	

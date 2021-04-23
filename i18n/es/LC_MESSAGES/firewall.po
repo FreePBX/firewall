@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-23 04:50+0000\n"
+"POT-Creation-Date: 2021-04-23 04:53+0000\n"
 "PO-Revision-Date: 2020-09-02 11:50+0000\n"
 "Last-Translator: Javier Pastor <jpastor@cerebelum.net>\n"
 "Language-Team: Spanish <http://*/projects/freepbx/firewall/es/>\n"
@@ -221,7 +221,7 @@ msgid "Add New"
 msgstr "Agregar Nueva"
 
 #: Api/Gql/Firewall.php:113
-msgid "Add a whiltelisted IPs"
+msgid "Add a whiltelisted IP"
 msgstr ""
 
 #: views/view.settings.php:53
@@ -637,6 +637,10 @@ msgstr ""
 #, fuzzy
 msgid "Delete from 'zone' the IDs provided."
 msgstr "Elimine de la 'zona' los ID proporcionados."
+
+#: Api/Gql/Firewall.php:438
+msgid "Describe the service zone to be trusted or not"
+msgstr ""
 
 #: views/modal.customsvc.php:11
 msgid "Description"
@@ -1058,6 +1062,10 @@ msgstr "Dirección IP: "
 msgid "IP Banned"
 msgstr ""
 
+#: Api/Gql/Firewall.php:120
+msgid "IP has been Whitelisted"
+msgstr ""
+
 #: Api/Gql/Firewall.php:82
 msgid "IP has been added to blacklist"
 msgstr ""
@@ -1076,10 +1084,6 @@ msgstr ""
 
 #: Api/Gql/Firewall.php:289
 msgid "IPs black listed"
-msgstr ""
-
-#: Api/Gql/Firewall.php:120
-msgid "IPs has been added to Whitelisted"
 msgstr ""
 
 #: views/intrusion_detection.php:326
@@ -1254,7 +1258,7 @@ msgstr ""
 msgid "Ip address listed is trusted or not"
 msgstr ""
 
-#: Api/Gql/Firewall.php:265
+#: Api/Gql/Firewall.php:265 Api/Gql/Firewall.php:434
 msgid "Ip address of the source"
 msgstr ""
 
@@ -1934,10 +1938,6 @@ msgstr ""
 msgid "Set the current Jiffer value, default is 1000"
 msgstr ""
 
-#: Api/Gql/Firewall.php:434
-msgid "Set the list of zones to whitelist"
-msgstr ""
-
 #: Api/Gql/Firewall.php:404
 msgid "Set the service Zone, default is true"
 msgstr ""
@@ -1976,7 +1976,7 @@ msgid "Sorry, No Blacklisted IPs found"
 msgstr ""
 
 #: Api/Gql/Firewall.php:122
-msgid "Sorry, failed to added IPs to Whitelist"
+msgid "Sorry, failed to added IP to Whitelist"
 msgstr ""
 
 #: Api/Gql/Firewall.php:178
@@ -2434,6 +2434,10 @@ msgstr ""
 
 #: Api/Gql/Firewall.php:346
 msgid "Transaction for the request"
+msgstr ""
+
+#: Api/Gql/Firewall.php:442
+msgid "True/false value for hidden"
 msgstr ""
 
 #: Zones.class.php:13
