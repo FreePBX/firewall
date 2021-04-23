@@ -72,7 +72,7 @@ class Firewall extends Base {
 							return ['message' =>_("Firewall.lock doest not exists"), 'status' => false];
 						}}
 					]),
-					'addBlackListIPs' => Relay::mutationWithClientMutationId([
+					'addBlackListIP' => Relay::mutationWithClientMutationId([
 						'name' => 'addBlacklistIP',
 						'description' => _('Add to blacklist'),
 						'inputFields' => $this->getInputFields(),
@@ -82,7 +82,7 @@ class Firewall extends Base {
 							return ['message' =>_("IP has been added to blacklist"), 'status' => true];
 						}
 					]),
-					'deleteBlackListIPs' => Relay::mutationWithClientMutationId([
+					'deleteBlackListIP' => Relay::mutationWithClientMutationId([
 						'name' => 'deleteBlacklistIP',
 						'description' => _('Remove from blacklist'),
 						'inputFields' => $this->getInputFields(),
@@ -108,18 +108,18 @@ class Firewall extends Base {
 							return ['message' =>_($e->getMessage()), 'status' => false];
 						}}
 					]),
-					'addWhiteListIPs' => Relay::mutationWithClientMutationId([
-						'name' => 'addWhiteListIPs',
-						'description' => _('Add a whiltelisted IPs'),
+					'addWhiteListIP' => Relay::mutationWithClientMutationId([
+						'name' => 'addWhiteListIP',
+						'description' => _('Add a whiltelisted IP'),
 						'inputFields' => $this->getWhitelistIpsInputFields(),
 						'outputFields' => $this->getOutputFields(),
 						'mutateAndGetPayload' => function ($input) {	
 							try{
 								$res = $this->freepbx->firewall->services()->addToWhitelist($input);
 								if($res){
-									return ['message' =>_("IPs has been added to Whitelisted"), 'status' => true];
+									return ['message' =>_("IP has been Whitelisted"), 'status' => true];
 								}	
-								return ['message' =>_("Sorry, failed to added IPs to Whitelist"), 'status' => false];
+								return ['message' =>_("Sorry, failed to added IP to Whitelist"), 'status' => false];
 							}catch(\Exception $e){
 								return ['message' =>_($e->getMessage()), 'status' => false];
 							}
@@ -429,9 +429,17 @@ class Firewall extends Base {
 	 */
 	private function getWhitelistIpsInputFields(){
 		return[
-			'IPs' => [
-				'type' => Type::nonNull(Type::listOf(Type::listOf(Type::string()))),
-				'description' => _('Set the list of zones to whitelist'),
+			'sourceIp' => [
+				'type' => Type::nonNull(Type::string()),
+				'description' => _('Ip address of the source')
+			],
+			'zone' => [
+				'type' => Type::nonNull(Type::string()),
+				'description' => _('Describe the service zone to be trusted or not')
+			],
+         'hidden' => [
+				'type' => Type::nonNull(Type::boolean()),
+				'description' => _('True/false value for hidden')
 			]
 		];
 	}

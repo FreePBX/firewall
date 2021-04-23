@@ -70,11 +70,11 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
    }
 
   /**
-   * testAddBlacklistIPShouldReturnTrueWhenIPPassed
+   * testAddBlacklistIPhouldReturnTrueWhenIPPassed
    *
    * @return void
    */
-  public function testAddBlacklistIPShouldReturnTrueWhenIPPassed(){
+  public function testAddBlacklistIPhouldReturnTrueWhenIPPassed(){
     $ip = "100.100.100.100";
 
     $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Services::class)
@@ -89,7 +89,7 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
     self::$freepbx->firewall->setServices($mockfirewall);   
 
     $response = $this->request("mutation {
-      addBlackListIPs(input: { 
+      addBlackListIP(input: { 
       IP: \"$ip\" 
     }) {
       status message 
@@ -98,18 +98,18 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
       
     $json = (string)$response->getBody();
 
-    $this->assertEquals('{"data":{"addBlackListIPs":{"status":true,"message":"IP has been added to blacklist"}}}',$json);
+    $this->assertEquals('{"data":{"addBlackListIP":{"status":true,"message":"IP has been added to blacklist"}}}',$json);
 
     //status 200 success check
     $this->assertEquals(200, $response->getStatusCode());
    }
    
    /**
-    * testRemoveBlacklistIPShouldReturnTrueWhenIPPassed
+    * testRemoveBlacklistIPhouldReturnTrueWhenIPPassed
     *
     * @return void
     */
-   public function testRemoveBlacklistIPShouldReturnTrueWhenIPPassed(){
+   public function testRemoveBlacklistIPhouldReturnTrueWhenIPPassed(){
     $ip = "100.100.100.100";
 
     $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Services::class)
@@ -124,7 +124,7 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
 		->willReturn(true);
 
     $response = $this->request("mutation {
-      deleteBlackListIPs(input: { 
+      deleteBlackListIP(input: { 
       IP: \"$ip\" 
     }) {
       status message 
@@ -133,7 +133,7 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
       
     $json = (string)$response->getBody();
 
-    $this->assertEquals('{"data":{"deleteBlackListIPs":{"status":true,"message":"IP removed from blacklist"}}}',$json);
+    $this->assertEquals('{"data":{"deleteBlackListIP":{"status":true,"message":"IP removed from blacklist"}}}',$json);
 
     //status 200 success check
     $this->assertEquals(200, $response->getStatusCode());
@@ -220,20 +220,16 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
 	  $mockfirewall->method('addToWhitelist')
 		->willReturn(true);
 
-    $response = $this->request("mutation{
-      addWhiteListIPs(input : {
-        IPs: [
-          \" { 'sourceIp': '100.100.100.100', 'zone': 'none', 'hidden':'true' }\",
-          \" { 'sourceIp': '100.100.100.100', 'zone': 'none', 'hidden':'true' }\"
-        ]
-    }) {
-      status message 
-    }
-    }");
+    $response = $this->request("mutation {
+        addWhiteListIP(input : { sourceIp : \"100.100.100.100\"  ,zone : \"trusted\", hidden :true })   
+        {  
+          status message
+        }
+      }");
       
     $json = (string)$response->getBody();
 
-    $this->assertEquals('{"data":{"addWhiteListIPs":{"status":true,"message":"IPs has been added to Whitelisted"}}}',$json);
+    $this->assertEquals('{"data":{"addWhiteListIP":{"status":true,"message":"IP has been Whitelisted"}}}',$json);
 
     //status 200 success check
     $this->assertEquals(200, $response->getStatusCode());
@@ -257,20 +253,16 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
 	  $mockfirewall->method('addToWhitelist')
 		->willReturn(false);
 
-    $response = $this->request("mutation{
-      addWhiteListIPs(input : {
-         IPs: [
-          \" { 'sourceIp': '100.100.100.100', 'zone': 'none', 'hidden':'true' }\",
-          \" { 'sourceIp': '100.100.100.100', 'zone': 'none', 'hidden':'true' }\"
-        ]
-    }) {
-      status message 
-    }
-    }");
+    $response = $this->request("mutation {
+        addWhiteListIP(input : { sourceIp : \"100.100.100.100\"  ,zone : \"trusted\", hidden :true })   
+        {  
+          status message
+        }
+      }");
       
     $json = (string)$response->getBody();
 
-    $this->assertEquals('{"errors":[{"message":"Sorry, failed to added IPs to Whitelist","status":false}]}',$json);
+    $this->assertEquals('{"errors":[{"message":"Sorry, failed to added IP to Whitelist","status":false}]}',$json);
 
     $this->assertEquals(400, $response->getStatusCode());
    }
@@ -293,16 +285,11 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
 	  $mockfirewall->method('addToWhitelist')
 		->willThrowException(new \Exception('Can only add to trusted zone at the moment'));
 
-    $response = $this->request("mutation{
-      addWhiteListIPs(input : {
-        IPs: [
-          \" { 'sourceIp': '100.100.100.100', 'zone': 'none', 'hidden':'true' }\",
-          \" { 'sourceIp': '100.100.100.100', 'zone': 'none', 'hidden':'true' }\"
-        ]
-    }) {
-      status message 
-    }
-    }");
+     $response = $this->request("mutation {
+      addWhiteListIP(input : { sourceIp : \"100.100.100.100\"  ,zone : \"none\", hidden :true }){  
+        status message
+      }
+      }");
       
     $json = (string)$response->getBody();
 
@@ -329,15 +316,12 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
 	  $mockfirewall->method('addToWhitelist')
 		->willThrowException(new \Exception('Can only add IP addressess'));
 
-    $response = $this->request("mutation{
-      addWhiteListIPs(input : {
-         IPs: [
-          \" { 'sourceIp': 'none', 'zone': 'none', 'hidden':'true' }\"
-        ]
-    }) {
-      status message 
-    }
-    }");
+    $response = $this->request("mutation {
+        addWhiteListIP(input : { sourceIp : \"none\"  ,zone : \"none\", hidden :true })   
+        {  
+          status message
+        }
+      }");
       
     $json = (string)$response->getBody();
 
@@ -461,6 +445,43 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
       
     $json = (string)$response->getBody();
     $this->assertEquals('{"data":{"fetchAllWhitelistIPs":{"status":true,"message":"List of all whiltelistedIPs","whitelistIps":[{"sourceIp":"100.100.100.100","trusted":true},{"sourceIp":"100.100.100.101","trusted":true}]}}}',$json);
+
+    //status 200 success check
+    $this->assertEquals(200, $response->getStatusCode());
+   }
+
+   /**
+    * test_addWhitelist_all_parameters_sent_and_nested_mutation
+    *
+    * @return void
+    */
+   public function test_addWhitelist_all_parameters_sent_and_nested_mutation(){
+
+    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Services::class)
+		->disableOriginalConstructor()
+		->disableOriginalClone()
+		->setMethods(array('addToWhitelist'))
+    ->getMock();
+      
+    self::$freepbx->firewall->setServices($mockfirewall);   
+    
+	  $mockfirewall->method('addToWhitelist')
+		->willReturn(true);
+
+    $response = $this->request("mutation {
+        create1: addWhiteListIP(input : { sourceIp : \"100.100.100.100\"  ,zone : \"none\", hidden :true })   
+        {  
+          status message
+        },
+        create2: addWhiteListIP(input : { sourceIp : \"100.100.100.101\"  ,zone : \"none\", hidden :true })   
+        {  
+          status message
+        }
+      }");
+      
+    $json = (string)$response->getBody();
+
+    $this->assertEquals('{"data":{"create1":{"status":true,"message":"IP has been Whitelisted"},"create2":{"status":true,"message":"IP has been Whitelisted"}}}',$json);
 
     //status 200 success check
     $this->assertEquals(200, $response->getStatusCode());
