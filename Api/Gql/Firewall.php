@@ -254,7 +254,7 @@ class Firewall extends Base {
 					}
 				],
 				'provision' => [
-				   'type' => Type::boolean(),
+				   'type' => Type::listOf(Type::string()),
 				   'description' => _('Status for the provision'),
 					'resolve' => function($row) {
 						return $row['provis'];
@@ -380,14 +380,14 @@ class Firewall extends Base {
 				'defaultValue' => true
 			],
 			'chansip' => [
-				'type' => Type::listOf(Type::string()),
+				'type' => Type::boolean(),
 				'description' => _('Set the chainSIP configuration'),
-				'defaultValue' => ["true", "rfw"]
+				'defaultValue' => true
 			],
 			'pjsip' => [
-				'type' => Type::listOf(Type::string()),
+				'type' => Type::boolean(),
 				'description' => _('Set the PjSIP Configuration'),
-				'defaultValue' => ["true", "rfw"]
+				'defaultValue' => true
 			],
 			'safeMode' => [
 				'type' => Type::string(),
@@ -401,8 +401,8 @@ class Firewall extends Base {
 			],
 			'serviceZone' => [
 				'type' => Type::listOf(Type::string()),
-				'description' => _('Set the service Zone, default is true'),
-				'defaultValue' => true
+				'description' => _('Set the service zone options'), 
+				'defaultValue' => [ "external", "other", "internal" ]
 			],
 			'enableTrustedHost' => [
 				'type' => Type::boolean(),
@@ -416,8 +416,8 @@ class Firewall extends Base {
 			],
 			'externalSetup' => [
 				'type' => Type::boolean(),
-				'description' => _('Set OOBE ansexternalsetup options'),
-				'defaultValue' => [ "external", "other", "internal" ]
+				'description' => _('Set external setup oprion, default is true'),
+				'defaultValue' => true
 			]
 		];
 	}
