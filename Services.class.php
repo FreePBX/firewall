@@ -718,15 +718,14 @@ class Services {
 		// Responsive should be on
 		$this->firewall->setConfig("responsivefw", $input['responsiveFirewall']);
 		// For chan_sip and pjsip
-		$this->firewall->setConfig("chansip", $input['chansip'][0], $input['chansip'][1]);
-		$this->firewall->setConfig("pjsip", $input['pjsip'][0], $input['pjsip'][1]);
+		$this->firewall->setConfig("chansip", $input['chansip'], 'rfw');
+		$this->firewall->setConfig("pjsip", $input['pjsip'], 'rfw');
 		// Safe mode disabled
 		$this->firewall->setConfig("safemodeenabled", $input['safeMode']);
 		// Jiffies set to 1000 (TODO: If we change vm infrastructure, recalc this)
 		$this->firewall->setConfig("currentjiffies", $input['currentJiffies']);
 		// And mark the OOBE wizard as done
-		$this->firewall->setConfig("oobeanswered", $input['enableTrustedHost'], $input['enableResponsive'], $input['externalSetup']);
-		
+		$this->firewall->setConfig("oobeanswered", array('enabletrustedhost' => $input['enableTrustedHost'], 'enableresponsive' => $input['enableResponsive'], 'externsetup' => $input['externalSetup']));
 		$this->setServiceZones("provis", array($input['serviceZone'][0], $input['serviceZone'][1], $input['serviceZone'][2]));
 		
 		return true;
@@ -754,13 +753,12 @@ class Services {
 
 		$firewallStatus = $this->firewall->getConfig("status");
 		$responsiveFirewall = $this->firewall->getConfig("responsivefw");
-		$chainSip= $this->firewall->getConfig("chansip");
-		$pjSip = $this->firewall->getConfig("pjsip");
+		$chainSip= $this->firewall->getConfig("chansip", "rfw");
+		$pjSip = $this->firewall->getConfig("pjsip", "rfw");
 		$safemodeEnabled = $this->firewall->getConfig("safemodeenabled");
 		$currentJiffies = $this->firewall->getConfig("currentjiffies");
 		$oobeAnswered = $this->firewall->getConfig("oobeanswered");
-		$provis = $this->firewall->getConfig("provis");
-
+		$provis = $this->firewall->getConfig("provis","servicesettings");
 		return array(['firewallStatus' => $firewallStatus, 'responsiveFirewall' => $responsiveFirewall, 'chainSip' => $chainSip, 'pjSip' => $pjSip, 'safemodeEnabled' => $safemodeEnabled, 'currentJiffies' => $currentJiffies, 'oobeAnswered' => $oobeAnswered, 'provis' => $provis]);
 	}
 	

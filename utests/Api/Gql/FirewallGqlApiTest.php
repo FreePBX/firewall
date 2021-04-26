@@ -344,7 +344,7 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
     ->getMock();
       
 	  $mockfirewall->method('getFirewallConfigurations')
-		->willReturn(array(['firewallStatus' => true, 'responsiveFirewall' => true, 'chainSip' => true, 'pjSip' => true, 'safemodeEnabled' => 'disabled', 'currentJiffies' => "100", 'provis' => true]));
+		->willReturn(array(['firewallStatus' => true, 'responsiveFirewall' => true, 'chainSip' => true, 'pjSip' => true, 'safemodeEnabled' => 'disabled', 'currentJiffies' => "100", 'provis' => array('external','others')]));
     
     self::$freepbx->firewall->setServices($mockfirewall); 
 
@@ -364,7 +364,7 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
   }}");
       
     $json = (string)$response->getBody();
-    $this->assertEquals('{"data":{"fetchFirewallConfiguration":{"status":true,"message":"List of firewall configurations","configurations":[{"status":true,"responsiveFirewall":true,"chainSip":true,"pjSip":true,"safemode":"disabled","currentJiffies":"100","provision":true}]}}}',$json);
+    $this->assertEquals('{"data":{"fetchFirewallConfiguration":{"status":true,"message":"List of firewall configurations","configurations":[{"status":true,"responsiveFirewall":true,"chainSip":true,"pjSip":true,"safemode":"disabled","currentJiffies":"100","provision":["external","others"]}]}}}',$json);
 
     //status 200 success check
     $this->assertEquals(200, $response->getStatusCode());
@@ -393,8 +393,8 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
   updateFirewallConfiguration(input : {
 		status	: true
 		responsiveFirewall : true
-		chansip :  [\"true\", \"rfw\"]
-		pjsip : [\"true\", \"rfw\"]
+		chansip :  true
+		pjsip : true
 		safeMode: \"enabled\"
 		currentJiffies : \"1000\"
 		enableTrustedHost : true 
