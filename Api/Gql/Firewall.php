@@ -298,7 +298,7 @@ class Firewall extends Base {
 					'resolve' => function($root, $args) {
 						$data = array_map(function($row){
 							return $row;
-						},$root['response']);
+						},isset($root['response']) ? $root['response'] : []);
 						return $data;
 					}
 				],
@@ -308,7 +308,7 @@ class Firewall extends Base {
 					'resolve' => function($root, $args) {
 						$data = array_map(function($row){
 							return $row;
-						},$root['response']);
+						},isset($root['response']) ? $root['response'] : []);
 						return $data;
 					}
 				],
@@ -318,7 +318,7 @@ class Firewall extends Base {
 					'resolve' => function($root, $args) {
 						$data = array_map(function($row){
 							return $row;
-						},$root['response']);
+						},isset($root['response']) ? $root['response'] : []);
 						return $data;
 					}
 				],
@@ -431,15 +431,16 @@ class Firewall extends Base {
 		return[
 			'sourceIp' => [
 				'type' => Type::nonNull(Type::string()),
-				'description' => _('Ip address of the source')
+				'description' => _('IP address of the source')
 			],
 			'zone' => [
 				'type' => Type::nonNull(Type::string()),
 				'description' => _('Describe the service zone to be trusted or not')
 			],
          'hidden' => [
-				'type' => Type::nonNull(Type::boolean()),
-				'description' => _('True/false value for hidden')
+				'type' => Type::boolean(),
+				'description' => _('True/false value for hidden'),
+				'defaultValue' => false
 			]
 		];
 	}
