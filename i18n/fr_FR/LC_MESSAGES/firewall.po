@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-27 03:22+0000\n"
+"POT-Creation-Date: 2021-04-27 03:32+0000\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -1822,12 +1822,12 @@ msgid ""
 "connections matching the zones."
 msgstr ""
 
-#: Api/Gql/Firewall.php:419
-msgid "Set OOBE ansexternalsetup options"
-msgstr ""
-
 #: Api/Gql/Firewall.php:414
 msgid "Set OOBE answered enabled/disabled, default is true"
+msgstr ""
+
+#: Api/Gql/Firewall.php:419
+msgid "Set external setup oprion, default is true"
 msgstr ""
 
 #: Api/Gql/Firewall.php:389
@@ -1843,7 +1843,7 @@ msgid "Set the current Jiffer value, default is 1000"
 msgstr ""
 
 #: Api/Gql/Firewall.php:404
-msgid "Set the service Zone, default is true"
+msgid "Set the service zone options"
 msgstr ""
 
 #: Api/Gql/Firewall.php:409
