@@ -48,8 +48,8 @@ class Smart {
 				$retarr['rprotocols'][$id]['state'] = \FreePBX::Firewall()->getConfig($id, "rfw");
 			}
 			$retarr['fail2banbypass'] = \FreePBX::Firewall()->getConfig("fail2banbypass");
-		};
-		//reponsive filrewall 
+		}
+		//responsive firewall 
 		$retarr['fpbxratelimit']['TIER1'] = \FreePBX::Firewall()->getConfig('TIER1','fpbxratelimit');
 		$retarr['fpbxratelimit']['TIER2'] = \FreePBX::Firewall()->getConfig('TIER2','fpbxratelimit');
 		$retarr['fpbxratelimit']['TIER3'] = \FreePBX::Firewall()->getConfig('TIER3','fpbxratelimit');
