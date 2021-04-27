@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-23 05:22+0000\n"
+"POT-Creation-Date: 2021-04-27 03:25+0000\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -970,6 +970,10 @@ msgstr ""
 msgid "IP Banned"
 msgstr ""
 
+#: Api/Gql/Firewall.php:434
+msgid "IP address of the source"
+msgstr ""
+
 #: Api/Gql/Firewall.php:120
 msgid "IP has been Whitelisted"
 msgstr ""
@@ -1158,7 +1162,7 @@ msgstr ""
 msgid "Ip address listed is trusted or not"
 msgstr ""
 
-#: Api/Gql/Firewall.php:265 Api/Gql/Firewall.php:434
+#: Api/Gql/Firewall.php:265
 msgid "Ip address of the source"
 msgstr ""
 
