@@ -788,10 +788,6 @@ class Services {
 	 */
 	public function addToZone($srcip, $zone, $hide = false, $apply = true) {
 		$this->firewall = \FreePBX::Firewall();
-		if ($zone !== "trusted") {
-			throw new \Exception("Can only add to trusted zone at the moment");
-		}
-
 		$split = explode("/", $srcip);
 
 		if (!filter_var($split[0], \FILTER_VALIDATE_IP)) {

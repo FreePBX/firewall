@@ -268,37 +268,6 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
    }
    
    /**
-    * test_addWhitelist_firewall_when_none_passed_instedd_of_trusted_sent_should_throught_exception_and_return_false
-    *
-    * @return void
-    */
-   public function test_addWhitelist_when_none_passed_instead_of_trusted_sent_should_throught_exception_and_return_false(){
-
-    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Services::class)
-		->disableOriginalConstructor()
-		->disableOriginalClone()
-		->setMethods(array('addToWhitelist'))
-    ->getMock();
-      
-    self::$freepbx->firewall->setServices($mockfirewall);   
-    
-	  $mockfirewall->method('addToWhitelist')
-		->willThrowException(new \Exception('Can only add to trusted zone at the moment'));
-
-     $response = $this->request("mutation {
-      addWhiteListIP(input : { sourceIp : \"100.100.100.100\"  ,zone : \"none\", hidden :true }){  
-        status message
-      }
-      }");
-      
-    $json = (string)$response->getBody();
-
-    $this->assertEquals('{"errors":[{"message":"Can only add to trusted zone at the moment","status":false}]}',$json);
-
-    $this->assertEquals(400, $response->getStatusCode());
-   }
-   
-   /**
     * test_addWhitelist_firewall_when_none_passed_instead_of_IPAddress_should_throught_exception_and_return_false
     *
     * @return void
@@ -317,7 +286,7 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
 		->willThrowException(new \Exception('Can only add IP addressess'));
 
     $response = $this->request("mutation {
-        addWhiteListIP(input : { sourceIp : \"none\"  ,zone : \"none\", hidden :true })   
+        addWhiteListIP(input : { sourceIp : \"none\"  ,zone : \"trusted\", hidden :true })   
         {  
           status message
         }
@@ -469,11 +438,11 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
 		->willReturn(true);
 
     $response = $this->request("mutation {
-        create1: addWhiteListIP(input : { sourceIp : \"100.100.100.100\"  ,zone : \"none\", hidden :true })   
+        create1: addWhiteListIP(input : { sourceIp : \"100.100.100.100\"  ,zone : \"internal\", hidden :true })   
         {  
           status message
         },
-        create2: addWhiteListIP(input : { sourceIp : \"100.100.100.101\"  ,zone : \"none\", hidden :true })   
+        create2: addWhiteListIP(input : { sourceIp : \"100.100.100.101\"  ,zone : \"internal\", hidden :true })   
         {  
           status message
         }
@@ -486,5 +455,33 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
     //status 200 success check
     $this->assertEquals(200, $response->getStatusCode());
    }
-  }
+
+   public function test_addWhitelist_when_invalid_zone_sent_should_return_false(){
+
+    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Services::class)
+		->disableOriginalConstructor()
+		->disableOriginalClone()
+		->setMethods(array('addToWhitelist'))
+    ->getMock();
+      
+    self::$freepbx->firewall->setServices($mockfirewall);   
+    
+	  $mockfirewall->method('addToWhitelist')
+		->willReturn(true);
+
+    $response = $this->request("mutation {
+        addWhiteListIP(input : { sourceIp : \"100.100.100.100\"  ,zone : \"invalid\", hidden :true })   
+        {  
+          status message
+        }
+      }");
+      
+    $json = (string)$response->getBody();
+
+    $this->assertEquals('{"errors":[{"message":"Zone can be either internal,external,trusted,other","status":false}]}',$json);
+
+    //status 200 success check
+    $this->assertEquals(400, $response->getStatusCode());
+   }
+}
 ?>
