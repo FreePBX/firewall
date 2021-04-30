@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-04-27 03:33+0000\n"
+"POT-Creation-Date: 2021-04-30 03:55+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -454,7 +454,7 @@ msgstr ""
 msgid "Blacklist"
 msgstr "Danh sách đen"
 
-#: Api/Gql/Firewall.php:360
+#: Api/Gql/Firewall.php:364
 msgid "Blacklist port"
 msgstr ""
 
@@ -617,10 +617,6 @@ msgstr ""
 #: Console/Firewall.class.php:94
 msgid "Delete from 'zone' the IDs provided."
 msgstr "Xóa các ID được cung cấp khỏi 'zone'."
-
-#: Api/Gql/Firewall.php:438
-msgid "Describe the service zone to be trusted or not"
-msgstr ""
 
 #: views/modal.customsvc.php:11
 msgid "Description"
@@ -856,15 +852,15 @@ msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 "Không thành công! Không thể hợp lệ hóa mục nhập. Vui lòng thử lại lần nữa."
 
-#: Api/Gql/Firewall.php:160
+#: Api/Gql/Firewall.php:164
 msgid "Fetch all Whitelisted IPs"
 msgstr ""
 
-#: Api/Gql/Firewall.php:144
+#: Api/Gql/Firewall.php:148
 msgid "Fetch custom service zone"
 msgstr ""
 
-#: Api/Gql/Firewall.php:172
+#: Api/Gql/Firewall.php:176
 msgid "Fetch firewall configuration"
 msgstr ""
 
@@ -1048,11 +1044,11 @@ msgstr "Các địa chỉ IP: "
 msgid "IP Banned"
 msgstr ""
 
-#: Api/Gql/Firewall.php:434
+#: Api/Gql/Firewall.php:438
 msgid "IP address of the source"
 msgstr ""
 
-#: Api/Gql/Firewall.php:120
+#: Api/Gql/Firewall.php:124
 msgid "IP has been Whitelisted"
 msgstr ""
 
@@ -1072,7 +1068,7 @@ msgstr ""
 msgid "IP's that are currently trusted."
 msgstr ""
 
-#: Api/Gql/Firewall.php:289
+#: Api/Gql/Firewall.php:293
 msgid "IPs black listed"
 msgstr ""
 
@@ -1266,11 +1262,11 @@ msgid ""
 "Start/Restart/Stop button."
 msgstr ""
 
-#: Api/Gql/Firewall.php:269
+#: Api/Gql/Firewall.php:273
 msgid "Ip address listed is trusted or not"
 msgstr ""
 
-#: Api/Gql/Firewall.php:265
+#: Api/Gql/Firewall.php:269
 msgid "Ip address of the source"
 msgstr ""
 
@@ -1371,15 +1367,15 @@ msgid ""
 "One address per line with no separators."
 msgstr ""
 
-#: Api/Gql/Firewall.php:152
+#: Api/Gql/Firewall.php:156
 msgid "List of all blacklistedIPs"
 msgstr ""
 
-#: Api/Gql/Firewall.php:164
+#: Api/Gql/Firewall.php:168
 msgid "List of all whiltelistedIPs"
 msgstr ""
 
-#: Api/Gql/Firewall.php:176
+#: Api/Gql/Firewall.php:180
 msgid "List of firewall configurations"
 msgstr ""
 
@@ -1408,7 +1404,7 @@ msgstr "Chính"
 msgid "Max Retry"
 msgstr ""
 
-#: Api/Gql/Firewall.php:285 Api/Gql/Firewall.php:338
+#: Api/Gql/Firewall.php:289 Api/Gql/Firewall.php:342
 msgid "Message for the request"
 msgstr ""
 
@@ -1994,31 +1990,31 @@ msgstr ""
 "Các dịch vụ được gán cho các vùng <strong>có thể truy cập</strong>vào các "
 "kết nối tương ứng với mỗi vùng."
 
-#: Api/Gql/Firewall.php:414
+#: Api/Gql/Firewall.php:418
 msgid "Set OOBE answered enabled/disabled, default is true"
 msgstr ""
 
-#: Api/Gql/Firewall.php:419
+#: Api/Gql/Firewall.php:423
 msgid "Set external setup oprion, default is true"
 msgstr ""
 
-#: Api/Gql/Firewall.php:389
+#: Api/Gql/Firewall.php:393
 msgid "Set the PjSIP Configuration"
 msgstr ""
 
-#: Api/Gql/Firewall.php:384
+#: Api/Gql/Firewall.php:388
 msgid "Set the chainSIP configuration"
 msgstr ""
 
-#: Api/Gql/Firewall.php:399
+#: Api/Gql/Firewall.php:403
 msgid "Set the current Jiffer value, default is 1000"
 msgstr ""
 
-#: Api/Gql/Firewall.php:404
+#: Api/Gql/Firewall.php:408
 msgid "Set the service zone options"
 msgstr ""
 
-#: Api/Gql/Firewall.php:409
+#: Api/Gql/Firewall.php:413
 msgid "Set the trusted host, default is true"
 msgstr ""
 
@@ -2047,19 +2043,19 @@ msgstr "Công giao tiếp đơn (single port):%s"
 msgid "Sorry unable to process enable firewall"
 msgstr ""
 
-#: Api/Gql/Firewall.php:154
+#: Api/Gql/Firewall.php:158
 msgid "Sorry, No Blacklisted IPs found"
 msgstr ""
 
-#: Api/Gql/Firewall.php:122
+#: Api/Gql/Firewall.php:126
 msgid "Sorry, failed to added IP to Whitelist"
 msgstr ""
 
-#: Api/Gql/Firewall.php:178
+#: Api/Gql/Firewall.php:182
 msgid "Sorry, failed to list firewall configuration"
 msgstr ""
 
-#: Api/Gql/Firewall.php:166
+#: Api/Gql/Firewall.php:170
 msgid "Sorry, no whitelisted IPs found"
 msgstr ""
 
@@ -2091,43 +2087,43 @@ msgstr "Trạng thái"
 msgid "Status Overview"
 msgstr "Tổng quan tình trạng"
 
-#: Api/Gql/Firewall.php:251
+#: Api/Gql/Firewall.php:255
 msgid "Status for the ecternal Setup"
 msgstr ""
 
-#: Api/Gql/Firewall.php:207
+#: Api/Gql/Firewall.php:211
 msgid "Status for the firewall enabled/disabled"
 msgstr ""
 
-#: Api/Gql/Firewall.php:222
+#: Api/Gql/Firewall.php:226
 msgid "Status for the pjSIP"
 msgstr ""
 
-#: Api/Gql/Firewall.php:258
+#: Api/Gql/Firewall.php:262
 msgid "Status for the provision"
 msgstr ""
 
-#: Api/Gql/Firewall.php:293 Api/Gql/Firewall.php:342
+#: Api/Gql/Firewall.php:297 Api/Gql/Firewall.php:346
 msgid "Status for the request"
 msgstr ""
 
-#: Api/Gql/Firewall.php:214
+#: Api/Gql/Firewall.php:218
 msgid "Status for the responsive firewall"
 msgstr ""
 
-#: Api/Gql/Firewall.php:226
+#: Api/Gql/Firewall.php:230
 msgid "Status of safe mode enabled/disabled"
 msgstr ""
 
-#: Api/Gql/Firewall.php:218
+#: Api/Gql/Firewall.php:222
 msgid "Status of the chainSIP"
 msgstr ""
 
-#: Api/Gql/Firewall.php:237
+#: Api/Gql/Firewall.php:241
 msgid "Status of the trusted host"
 msgstr ""
 
-#: Api/Gql/Firewall.php:244
+#: Api/Gql/Firewall.php:248
 msgid "Status responsive enabled"
 msgstr ""
 
@@ -2540,15 +2536,15 @@ msgstr ""
 "phản hồi thông báo rằng lưu lượng truy cập của chúng đã bị cấm về mặt hành "
 "chính. Chúng KHÔNG được phép truy cập vào dịch vụ Responsive Firewall."
 
-#: Api/Gql/Firewall.php:374
+#: Api/Gql/Firewall.php:378
 msgid "To enable/disable a firewall"
 msgstr ""
 
-#: Api/Gql/Firewall.php:379
+#: Api/Gql/Firewall.php:383
 msgid "To enable/disable a responsive firewall"
 msgstr ""
 
-#: Api/Gql/Firewall.php:394
+#: Api/Gql/Firewall.php:398
 msgid "To enable/disable safe mode"
 msgstr ""
 
@@ -2584,11 +2580,11 @@ msgstr "Tổng số máy khách bị giới hạn tốc độ:"
 msgid "Total number of Registered Clients:"
 msgstr "Tổng số máy khách đã đăng ký:"
 
-#: Api/Gql/Firewall.php:346
+#: Api/Gql/Firewall.php:350
 msgid "Transaction for the request"
 msgstr ""
 
-#: Api/Gql/Firewall.php:442
+#: Api/Gql/Firewall.php:446
 msgid "True/false value for hidden"
 msgstr ""
 
@@ -2669,7 +2665,7 @@ msgstr ""
 msgid "Updating..."
 msgstr "Đang cập nhật..."
 
-#: Api/Gql/Firewall.php:233
+#: Api/Gql/Firewall.php:237
 msgid "Value of the current jiffies"
 msgstr ""
 
@@ -2862,6 +2858,10 @@ msgstr "Máy khách của bạn"
 msgid "Zone Information"
 msgstr "Thông tin của Vùng"
 
+#: Api/Gql/Firewall.php:119 Api/Gql/Firewall.php:442
+msgid "Zone can be either internal,external,trusted,other"
+msgstr ""
+
 #: Services.class.php:219
 msgid "Zulu UC"
 msgstr ""
@@ -2890,7 +2890,7 @@ msgstr ""
 msgid "automatically granted"
 msgstr "Tự động cấp"
 
-#: Api/Gql/Firewall.php:194
+#: Api/Gql/Firewall.php:198
 msgid "firewall call back description"
 msgstr ""
 
@@ -2915,11 +2915,11 @@ msgstr ""
 "tục các máy khách từ xa được cho phép kết nối với máy này và tự động cho "
 "phép truy nhập từ các host hợp lệ."
 
-#: Api/Gql/Firewall.php:307 Api/Gql/Firewall.php:317
+#: Api/Gql/Firewall.php:311 Api/Gql/Firewall.php:321
 msgid "list of whitelistIps"
 msgstr ""
 
-#: Api/Gql/Firewall.php:297
+#: Api/Gql/Firewall.php:301
 msgid "list the configurations details"
 msgstr ""
 
