@@ -114,6 +114,10 @@ class Firewall extends Base {
 						'inputFields' => $this->getWhitelistIpsInputFields(),
 						'outputFields' => $this->getOutputFields(),
 						'mutateAndGetPayload' => function ($input) {	
+							$trustedZone = array("internal","external","trusted","other");
+							if(!in_array($input['zone'], $trustedZone)){
+								return ['message' =>_("Zone can be either internal,external,trusted,other"), 'status' => false];
+							}
 							try{
 								$res = $this->freepbx->firewall->services()->addToWhitelist($input);
 								if($res){
@@ -435,7 +439,7 @@ class Firewall extends Base {
 			],
 			'zone' => [
 				'type' => Type::nonNull(Type::string()),
-				'description' => _('Describe the service zone to be trusted or not')
+				'description' => _('Zone can be either internal,external,trusted,other')
 			],
          'hidden' => [
 				'type' => Type::boolean(),
