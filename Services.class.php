@@ -117,7 +117,7 @@ class Services {
 	private function getSvc_ucp() {
 		$retarr = array(
 			"name" => _("UCP"),
-			"defzones" => array("external", "other", "internal"),
+			"defzones" => array("other", "internal"),
 			"descr" => _("UCP - User Control Panel - is the main user interface to the PBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
 			"fw" => array(array("protocol" => "tcp", "port" => 81, "leport" => true)),
 		);
