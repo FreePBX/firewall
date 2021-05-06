@@ -309,6 +309,16 @@ class Smart {
 
 			// Well that means it's a hostname.
 			$retarr = array_merge($retarr, $this->lookup($d));
+			 // Is there an SRV record?
+			$srvdns = dns_get_record('_sip._udp.'.$d, \DNS_SRV);
+                        if ($srvdns) {
+                                //There's a SRV record
+                                foreach($srvdns as $sd) {
+					$srvrecord = $this->lookup($sd['target']);
+					$retarr = array_merge($retarr, $srvrecord);
+					}
+                        }
+
 		}
 		return $retarr;
 	}
