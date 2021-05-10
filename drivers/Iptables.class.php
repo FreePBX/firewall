@@ -826,7 +826,6 @@ class Iptables {
 			$me = &$current[$ipv]['filter']['fpbxregistrations'];
 			$exists = array_flip($me);
 			$process = $tmparr['targets'];
-			//$retarr = array();
 			foreach ($process as $addr) {
 				$p = "-s $addr/".$tmparr['prefix']." -j fpbxknownreg";
 				if (isset($exists[$p])) {
@@ -1292,7 +1291,6 @@ class Iptables {
 		//This is enough time for the firewall daemon to discover it in asterisk and add it to the proper tables.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 90 --hitcount 1 --name WHITELIST --rsource", "jump" => "ACCEPT");
 		
-		//Possible solution to https://community.freepbx.org/t/responsive-firewall-always-blocks-good-external-users/72052/
 		//If the External IP address changes for a site with multiple devices, the IP address is unknown and packets flood without AUTH and cause DOS
 		//We are going to add a 90 second whitlist to packets coming from unknown IP's, somewhat bypassing the monitoring service whitelist
 		//First, if they're already on the list just let them pass

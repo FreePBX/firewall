@@ -1259,6 +1259,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				}
 				return $this->setConfig($_REQUEST['proto'], ($_REQUEST['value'] == "true"), 'rfw');
 			case "setf2bmode":
+				if ($_REQUEST['value'] !== "true") {
+					$this->runHook("reset-fail2ban");
+				}
 				return $this->setConfig("fail2banbypass", ($_REQUEST['value'] == "true"));
 			case "addtoblacklist":
 				return $this->addToBlacklist(htmlentities(trim($_REQUEST['entry']), \ENT_QUOTES, 'UTF-8', false));
