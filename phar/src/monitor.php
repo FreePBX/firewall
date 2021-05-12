@@ -202,7 +202,7 @@ function good_remote($ip, $event) {
 
 		// Now remove it from any recent chains it may be a member of. Note
 		// we don't remove from DISCOVERED, as that's only used in the GUI.
-		$chains = array("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING");
+		$chains = array("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING", "TEMPWHITELIST");
 		$line = "-$ip\n";
 		foreach ($chains as $c) {
 			@file_put_contents("/proc/net/xt_recent/$c", $line);
@@ -279,6 +279,11 @@ function needs_whitelist($ip) {
 	// Is this IP address already known about in fpbxregistrations?
 	$registered = get_registered();
 	if (isset($registered[$ip])) {
+		$chains = array("WHITELIST", "TEMPWHITELIST");
+		$line = "-$ip\n";
+		foreach ($chains as $c) {
+			@file_put_contents("/proc/net/xt_recent/$c", $line);
+		}
 		return false;
 	}
 

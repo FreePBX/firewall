@@ -838,6 +838,8 @@ class Iptables {
 				$cmd = $tmparr['ipt']." -A fpbxregistrations $p";
 				$this->l($cmd);
 				exec($cmd, $output, $ret);
+              	//Pass IP address back to calling function
+				$retarr[$addr] = "ipadd";
 			}
 
 			// Are any left over? They can be removed.
@@ -848,10 +850,26 @@ class Iptables {
 				$cmd = $tmparr['ipt']." -D fpbxregistrations $rule";
 				$this->l($cmd);
 				exec($cmd, $output, $ret);
-
+				//return IP address to calling function
+				//first ipv4
+				preg_match("/\d+\.\d+\.\d+\.\d+/", $rule, $f2bip);
+				if (!is_null($f2bip[0])) {
+				$retarr[$f2bip[0]] = "iprem";
+                } else {				
+					//ipv6
+					$f2bipfull = explode(' ',$rule);
+					if (!is_null($f2bipfull[1])) {
+                    $f2bip = explode('/',$f2bipfull[1]);
+					if (filter_var($f2bip[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
+					$retarr[$f2bip[0]] = "iprem";
+					}
+					}
+				
+				}
 				// And then grab the ID, so we can remove the entries in *reverse* order,
-				// so we don't lose our place.
+				// so we don't lose our place.				
 				$delids[] = $i;
+				
 			}
 
 			// Now if there were any to be deleted, we delete them from the end backwards, 
@@ -862,6 +880,9 @@ class Iptables {
 				array_splice($me, $i, 1);
 			}
 		}
+      if (isset($retarr)) {
+	return $retarr;
+}
 	}
 
 	// Root process
@@ -1157,7 +1178,7 @@ class Iptables {
 	private function loadDefaultRules() {
 		// create lefilter ipset
 		exec('ipset create -exist lefilter bitmap:port range 80-65535 timeout 60');
-
+		
 		$defaults = $this->getDefaultRules();
 		// We're here because our first rule isn't there. Insert it.
 		$this->insertRule('INPUT', array_shift($defaults['INPUT']));
@@ -1264,11 +1285,21 @@ class Iptables {
 		// sending VoIP *signalling* here. We want to give them a bit of slack, to make sure
 		// it's not a dynamic IP address of a known good client.
 
-		// Before we do anything, if this has already been discovered by the monitoring
-		// daemon, let it access this port for up to 90 seconds. This is enough time for the
-		// firewall daemon to discover it in asterisk and add it to the proper tables.
+		// Before we do anything, we mark the packet to be shown in the UI
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name DISCOVERED --rsource");
+		//If this has already been discovered by the monitoring daemon, let it access this port for up to 90 seconds.
+		//This is enough time for the firewall daemon to discover it in asterisk and add it to the proper tables.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 90 --hitcount 1 --name WHITELIST --rsource", "jump" => "ACCEPT");
-
+		
+		//If the External IP address changes for a site with multiple devices, the IP address is unknown and packets flood without AUTH and cause DOS
+		//We are going to add a 90 second whitlist to packets coming from unknown IP's, somewhat bypassing the monitoring service whitelist
+		//First, if they're already on the list just let them pass
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 90 --hitcount 1 --name TEMPWHITELIST --rsource", "jump" => "ACCEPT");
+		//If not, check if you're entitled to tempwhitelist
+		$retarr['fpbxrfw'][] = array("other" => "-m recent ! --rcheck --seconds 86400 --name TEMPWHITELIST --rsource", "jump" => "fpbxchecktempwhitelist");
+		//If you've made it here, you already failed the 90 second whitelist and tempwhitelist, clean up for next time
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --remove --name TEMPWHITELIST --rsource");
+		
 		// To start with, we ensure that we keep track of ALL rfw attempts.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
 		// This is purely for displaying the Registered Endpoints
@@ -1389,6 +1420,9 @@ class Iptables {
 		// used for the UI, so don't remove it from that)
 		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name REPEAT");
 		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name ATTACKER");
+		//Remove from the whitelists so that next time they are new packets and will get another 90 seconds
+		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name TEMPWHITELIST");
+		$retarr['fpbxknownreg'][] = array("other" => "-m recent --remove --rsource --name WHITELIST");
 		// Mark this as a known-good host, so it's not rate limited.
 		$retarr['fpbxknownreg'][] = array("other" => "-j MARK --set-xmark 0x4/0x4");
 		// If this is a signaling packet, we can just accept it without further checks.
@@ -1409,6 +1443,10 @@ class Iptables {
 		$retarr['lefilter'][] = array("ipvers" => "4", "other" => "-m string --string \"GET /.freepbx-known/\" --algo kmp --from 52 --to 53 -j ACCEPT");
 		$retarr['lefilter'][] = array("ipvers" => "6", "other" => "-m string --string \"GET /.freepbx-known/\" --algo kmp --from 72 --to 73 -j ACCEPT");
 		$retarr['lefilter'][] = array("other" => "-j RETURN");
+		
+		//This adds unknown packets to a 90 second whitelist
+		$retarr['fpbxchecktempwhitelist'][] = array("other" => "-m recent ! --rcheck --name REPEAT --rsource", "jump" => "fpbxtempwhitelist");
+		$retarr['fpbxtempwhitelist'][] = array("other" => "-m recent --set --name TEMPWHITELIST --rsource", "jump" => "ACCEPT");
 
 		return $retarr;
 	}
