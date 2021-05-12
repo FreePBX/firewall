@@ -47,8 +47,9 @@ class Smart {
 			foreach ($retarr['rprotocols'] as $id => $null) {
 				$retarr['rprotocols'][$id]['state'] = \FreePBX::Firewall()->getConfig($id, "rfw");
 			}
+			$retarr['fail2banbypass'] = \FreePBX::Firewall()->getConfig("fail2banbypass");
 		}
-		//reponsive filrewall 
+		//responsive firewall 
 		$retarr['fpbxratelimit']['TIER1'] = \FreePBX::Firewall()->getConfig('TIER1','fpbxratelimit');
 		$retarr['fpbxratelimit']['TIER2'] = \FreePBX::Firewall()->getConfig('TIER2','fpbxratelimit');
 		$retarr['fpbxratelimit']['TIER3'] = \FreePBX::Firewall()->getConfig('TIER3','fpbxratelimit');
@@ -267,12 +268,17 @@ class Smart {
 
 		// PJSIP?
 		if ($this->pjsip) {
-			$sql = "SELECT DISTINCT(`data`) FROM `pjsip` WHERE `keyword`='sip_server'";
+			$sql = "SELECT DISTINCT(`data`) FROM `pjsip` WHERE `keyword`='sip_server' OR `keyword`='match'";
 			$q = $this->db->query($sql);
 			$pjsiptrunks = $q->fetchAll(\PDO::FETCH_ASSOC);
 			foreach ($pjsiptrunks as $p) {
 				if (!empty($p['data'])) {
+					if (strpos($p['data'], ",")) {
+						$match_split = explode(",", $p['data']);
+						foreach ($match_split as $k=>$v) $discovered[$v] = true;
+					} else {
 					$discovered[$p['data']] = true;
+					}
 				}
 			}
 			// PJSip extensions don't have allow/deny at the moment.
@@ -308,6 +314,16 @@ class Smart {
 
 			// Well that means it's a hostname.
 			$retarr = array_merge($retarr, $this->lookup($d));
+			 // Is there an SRV record?
+			$srvdns = dns_get_record('_sip._udp.'.$d, \DNS_SRV);
+                        if ($srvdns) {
+                                //There's a SRV record
+                                foreach($srvdns as $sd) {
+					$srvrecord = $this->lookup($sd['target']);
+					$retarr = array_merge($retarr, $srvrecord);
+					}
+                        }
+
 		}
 		return $retarr;
 	}

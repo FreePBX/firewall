@@ -21,7 +21,7 @@ if (!filter_var($settings['unblock'], \FILTER_VALIDATE_IP)) {
 }
 
 // Now remove it from all recent chains
-$recent = array ("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING");
+$recent = array ("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING", "TEMPWHITELIST");
 foreach ($recent as $chain) {
 	$fh = fopen("/proc/net/xt_recent/$chain", "w");
 	fwrite($fh, "-".$settings['unblock']."\n");
