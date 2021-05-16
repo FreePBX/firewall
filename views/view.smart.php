@@ -79,17 +79,17 @@ foreach ($protocols as $id => $tmparr) {
 <div class="container-fluid">
 <div class="element-container">
 <div class='row'>
-  <div class="section-title" data-for="Reponsive"><h3><i class="fa fa-minus"></i> <?php echo _('Responsive firewall threshold parameters') ?></h3>
+  <div class="section-title" data-for="Reponsive"><h3><i class="fa fa-plus"></i> <?php echo _('Responsive firewall threshold parameters') ?></h3>
   <div class="row">
 	<div class="col-md-12">
-		<div class="alert alert-info" role="alert">
+		<div class="alert alert-warning" role="alert">
 			<?php echo _("Exercise extreme caution when editing Responsive Threshold Parameters. Improper config can block legitimate registrations or expand access from untrusted sources");?></span>
 		</div>
 	</div>
 </div>
   </div>
   
-    <div class="section" data-id="Reponsive">  
+    <div class="section" data-id="Reponsive" style="display: none;">  
 		<div class="section-title" data-for="Ratelimit"><h3><i class="fa fa-minus"></i> Ratelimit threshold</h3></div>
 			<div class="section" data-id="Ratelimit">
 				<form  id="formreponsiveset" name="formreponsiveset">
