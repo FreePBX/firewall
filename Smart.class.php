@@ -104,8 +104,8 @@ class Smart {
 		if ($start < 1024) {
 			$start = 1024;
 		}
-		if ($end > 65000) {
-			$end = 65000;
+		if ($end > 65535) {
+			$end = 65535;
 		}
 
 		// Make sure start and end are the right way round...
