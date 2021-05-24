@@ -12,7 +12,6 @@ if [ ! -x /usr/bin/systemctl ]; then
 	ipset -X lefilter
 	grep xt_recent /proc/modules >/dev/null && rmmod xt_recent
 	grep ipt_recent /proc/modules >/dev/null && rmmod ipt_recent
-    service fail2ban restart
 	exit
 fi
 
@@ -49,9 +48,6 @@ rmmod_r() {
 /usr/sbin/ip6tables -X
 /usr/sbin/ipset -F lefilter
 /usr/sbin/ipset -X lefilter
-#After iptables is flushed, restart fail2ban to recreate it's chains
-#This was fixed upstream in Fail2Ban 0.10.2
-systemctl restart fail2ban
 
 for mod in ${NF_MODULES[*]}; do
 	rmmod_r $mod
