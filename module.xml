@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>13.0.60.19</version>
+	<version>13.0.60.20</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*13.0.60.20* FREEPBX-21095 Firewall does not use Asterisk SIP Settings RTP Range, can block RTP streams 
 		*13.0.60.19* Packaging of ver 13.0.60.19
 		*13.0.60.18* Fixing FREEPBX-21923 Firewall not starting at boot time issue
 		*13.0.60.17* Fixing FREEPBX-21822

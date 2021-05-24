@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-29 11:57+0000\n"
+"POT-Creation-Date: 2021-05-24 02:41+0000\n"
 "PO-Revision-Date: 2017-03-13 19:49+0200\n"
 "Last-Translator: Kingvoice <suporte@kingvoice.com.br>\n"
 "Language-Team: Portuguese (Brazil) <http://weblate.freepbx.org/projects/"
@@ -300,6 +300,10 @@ msgstr "Cancelar"
 msgid "Command to run (see --help)"
 msgstr "Comando a ser executado (consulte --help)"
 
+#: firewall.i18n.php:6
+msgid "Connectivity"
+msgstr "Conectividade"
+
 #: views/view.portmaps.php:11 views/view.services.php:2
 msgid "Core Services"
 msgstr "Serviços Core"
@@ -496,7 +500,7 @@ msgstr ""
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
-#: page.firewall.php:6
+#: firewall.i18n.php:10 page.firewall.php:6
 msgid "Firewall"
 msgstr "Firewall"
 
@@ -687,6 +691,13 @@ msgid ""
 "If you do not wish to use Sangoma Smart Firewall, simply click 'Abort'. You "
 "may return to this setup wizard via the 'Firewall' option in the "
 "Connectivity menu."
+msgstr ""
+
+#: firewall.i18n.php:8
+msgid ""
+"Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible "
+"distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
+"further information."
 msgstr ""
 
 #: Firewall.class.php:163
@@ -1244,7 +1255,7 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: Firewall.class.php:101 views/view.about.php:3
+#: Firewall.class.php:101 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr ""
 
@@ -1725,9 +1736,6 @@ msgid ""
 "the remote clients allowed to connect to this machine, and automatically "
 "allows access from valid hosts."
 msgstr ""
-
-#~ msgid "Connectivity"
-#~ msgstr "Conectividade"
 
 #~ msgid "<strong>Responsive Firewall is not enabled</strong>."
 #~ msgstr "<strong>Firewall Responsivo não está habilitado</strong>."

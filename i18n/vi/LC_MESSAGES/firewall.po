@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-29 11:57+0000\n"
+"POT-Creation-Date: 2021-05-24 02:41+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -319,6 +319,10 @@ msgstr "Hủy"
 msgid "Command to run (see --help)"
 msgstr "Lệnh chạy (see--help)"
 
+#: firewall.i18n.php:6
+msgid "Connectivity"
+msgstr "Khả năng kết nối"
+
 #: views/view.portmaps.php:11 views/view.services.php:2
 msgid "Core Services"
 msgstr "Các dịch vụ chính"
@@ -524,7 +528,7 @@ msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 "Không thành công! Không thể hợp lệ hóa mục nhập. Vui lòng thử lại lần nữa."
 
-#: page.firewall.php:6
+#: firewall.i18n.php:10 page.firewall.php:6
 msgid "Firewall"
 msgstr "Tường lửa"
 
@@ -749,6 +753,16 @@ msgstr ""
 "Nếu bạn không muốn sử dụng Tường lửa thông minh Sagoma Smart Firewall, chỉ "
 "cần kích vào 'Abort'. Bạn có thể quay lại thuật sĩ cài đặt này thông qua tùy "
 "chọn 'Firewall\" trong menu Connectivity."
+
+#: firewall.i18n.php:8
+msgid ""
+"Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible "
+"distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
+"further information."
+msgstr ""
+"Firewall PBX đã được tích hợp hiện đang làm việc với các phân phối tương "
+"thích của RHEL6 và RHEL 7. Lưu ý: Điều này yêu cầu phải có Sysadmin RPM. Vui "
+"lòng xem wiki để có thêm thông tin."
 
 #: Firewall.class.php:163
 #, php-format
@@ -1372,7 +1386,7 @@ msgstr "Các Endpoints đã đăng ký thành công"
 msgid "Summary"
 msgstr "Tóm lược"
 
-#: Firewall.class.php:101 views/view.about.php:3
+#: Firewall.class.php:101 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr "Firewall Hệ thống"
 
@@ -1966,18 +1980,6 @@ msgstr ""
 "Là một tường lửa kết hợp chặt chẽ và tích hợp đầy đủ để có thể giám sát liên "
 "tục các máy khách từ xa được cho phép kết nối với máy này và tự động cho "
 "phép truy nhập từ các host hợp lệ."
-
-#~ msgid "Connectivity"
-#~ msgstr "Khả năng kết nối"
-
-#~ msgid ""
-#~ "Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 "
-#~ "compatible distributions. Note: This requires the Sysadmin RPM. Please "
-#~ "see wiki for further information."
-#~ msgstr ""
-#~ "Firewall PBX đã được tích hợp hiện đang làm việc với các phân phối tương "
-#~ "thích của RHEL6 và RHEL 7. Lưu ý: Điều này yêu cầu phải có Sysadmin RPM. "
-#~ "Vui lòng xem wiki để có thêm thông tin."
 
 #~ msgid "Zulu UC "
 #~ msgstr "Zulu UC "
