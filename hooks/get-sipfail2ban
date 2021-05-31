@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+    if (!@include_once(getenv('FREEPBX_CONF') ? getenv('FREEPBX_CONF') : '/etc/freepbx.conf')) {
+        include_once('/etc/asterisk/freepbx.conf');
+        $restrict_mods = array('firewall' => true);
+    }
+    $fw     = FreePBX::Firewall();
+    $FC     = "/usr/bin/fail2ban-client";
+    $cmd    = "$FC status asterisk-iptables | grep 'Banned IP' | sed -r 's/.+IP list:\t//g' | sed -e 's/ /\\n/g'";
+    exec($cmd, $out, $ret);
+    if($ret === 0 && is_array($out)){
+        $ipstr = implode(',', $out);
+        $fw->setConfig("dynamic_sip_banlist",$ipstr);
+    }
+    exit();
+?>

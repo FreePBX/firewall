@@ -1292,9 +1292,27 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				include __DIR__."/Attacks.class.php";
 				$a = new Firewall\Attacks($this->getJiffies());
 				$smart = $this->getSmartObj();
-				return $a->getAllAttacks($smart->getRegistrations());
+				$retarr = $a->getAllAttacks($smart->getRegistrations());
+
+				$retarr['failed'] = array();
+				$this->runHook("get-sipfail2ban");
+				$banliststr = $this->getConfig("dynamic_sip_banlist");
+				if (!$banliststr) {
+					return $retarr;
+				}
+				$banlist = explode(',', $banliststr);
+				$this->setConfig("dynamic_sip_banlist");
+				foreach($banlist as $l => $v) {
+					if (filter_var($v, FILTER_VALIDATE_IP)) {
+							$retarr['failed'][] = $v;
+					}
+				}
+
+				return $retarr;
 			case "delattacker":
 				return $this->runHook("removeallblocks", array("unblock" => $_REQUEST['target']));
+			case "delf2battacker":
+				return $this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => $_REQUEST['target']));
 
 			// Advanced Settings
 			case "updateadvanced":

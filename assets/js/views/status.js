@@ -6,12 +6,25 @@ $(document).ready(function() {
 		window.history.replaceState(null, document.title, newuri);
 	});
 
-	// Grab del button clicks
+	// Grab del button clicks ATTACKER
 	$("#attackersdiv").on("click", ".delbutton", function(e) {
 		var t = $(e.target).data("ip");
 		$.ajax({
 			url: window.FreePBX.ajaxurl,
 			data: { command: 'delattacker', module: 'firewall', target: t },
+			success: function(data) {
+				triggerPageUpdate();
+			},
+		});
+	});
+	triggerPageUpdate();
+
+	// Grab del button clicks fail2ban
+	$("#f2battackersdiv").on("click", ".delbutton", function(e) {
+		var t = $(e.target).data("ip");
+		$.ajax({
+			url: window.FreePBX.ajaxurl,
+			data: { command: 'delf2battacker', module: 'firewall', target: t },
 			success: function(data) {
 				triggerPageUpdate();
 			},
@@ -83,6 +96,7 @@ function processStatusUpdate(d) {
 	genRegHtml(d.summary.reged);
 	genClampedHtml(d.summary.clamped);
 	genBlockedHtml(d.summary.attackers, d);
+	genFailedHtml (d.failed);
 
 	// Blocked only wants loading shown once.
 	$(".onlyonce").removeClass("loading").removeClass("notloading");
@@ -137,6 +151,25 @@ function genBlockedHtml(attackers, d) {
 	$("#attackersdiv").html(h);
 }
 
+
+function genFailedHtml(attackers) {
+	if (attackers.length == 0) {
+		$("#f2battackersdiv").html('');
+		$("#nof2battackers").show();
+		return;
+	}
+	$("#nof2battackers").hide();
+	var h = "";
+	$.each(attackers, function (i, v) {
+		h += "<div class='element-container'><div class='row'>";
+		h += "<div class='col-sm-3'><h4>"+v+"</h4></div>";
+		h += "<div class='col-sm-1'>";
+		h += "<button type='button' class='btn x-btn btn-danger delbutton' data-ip='"+v+"' title='Unblock'><span data-ip='"+v+"' class='glyphicon glyphicon-remove'></span></button>"
+		h += "</div>";
+		h += "</div></div>";
+	});
+	$("#f2battackersdiv").html(h);
+}
 
 function formatTimestamps(ip, data) {
 	// data.summary.history.$ip contains a list of utimes.
