@@ -1296,12 +1296,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 				$retarr['failed'] = array();
 				$this->runHook("get-sipfail2ban");
-				$banliststr = $this->getConfig("dynamic_sip_banlist");
+				$file = '/var/spool/asterisk/firewall/sipbanned';
+				if(file_exists($file)) {
+					$banliststr = file_get_contents($file);
+					file_put_contents($file, '');
+				}
 				if (!$banliststr) {
 					return $retarr;
 				}
 				$banlist = explode(',', $banliststr);
-				$this->setConfig("dynamic_sip_banlist");
 				foreach($banlist as $l => $v) {
 					if (filter_var($v, FILTER_VALIDATE_IP)) {
 							$retarr['failed'][] = $v;

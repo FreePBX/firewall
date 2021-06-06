@@ -28,6 +28,9 @@ $(document).ready(function() {
 			success: function(data) {
 				triggerPageUpdate();
 			},
+			error: function(xhr, status, error){
+				console.error(xhr, status, error);
+			}
 		});
 	});
 	triggerPageUpdate();
