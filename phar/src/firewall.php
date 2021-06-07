@@ -819,7 +819,7 @@ function sigSleep($secs = 10) {
 		$secs = 5;
 	}
 	pcntl_sigtimedwait(array(SIGHUP), $sig, $secs);
-	dbug("Firewall sec = ".$secs." sig ".print_r($sig, true));
+	fwLog("Firewall sec = ".$secs." sig ".print_r($sig, true));
 	if ($sig['signo'] === SIGHUP) {
 		sigHupHandler(1);
 	}
