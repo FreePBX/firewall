@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>16.0.31</version>
+	<version>16.0.32</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*16.0.32* Packaging of ver 16.0.32
 		*16.0.31* FREEPBX-21095 
 		*16.0.30* FREEPBX-22196 RFW Threshold settings UI fixes 
 		*16.0.29* Packaging of ver 16.0.29
@@ -75,6 +76,9 @@
 		<framework class="Chown" namespace="FreePBX\Console\Command">
 			<method callingMethod="fwcChownFiles" class="Firewall" namespace="FreePBX\modules">chownFreepbx</method>
 		</framework>
+		<Backup class="Backup" namespace="FreePBX\modules">
+			<method callingMethod="postrestoreModulehook" class="Firewall" namespace="FreePBX\modules">postrestorehook</method>
+		</Backup>
 	</hooks>
 	<oobe method="oobeHook" priority="200"/>
 </module>
