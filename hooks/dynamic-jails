@@ -16,7 +16,7 @@
     $action = empty($settings["action"]) ? ""   : $settings["action"] ;
     $ip     = empty($settings["ip"])     ? ""   : $settings["ip"];
     $FC     = "/usr/bin/fail2ban-client";
-    $cmd    = "$FC status | grep 'Jail list' | cut -f3 | sed -e 's/ *//g' -e 's/\,/\\n/g'";
+    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
     exec($cmd, $out, $ret);
     if($ret === 0 && is_array($out)){
         foreach($out as $jail){
