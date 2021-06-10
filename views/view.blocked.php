@@ -26,5 +26,18 @@ $loading = _("Loading...");
 <div class='loading onlyonce'><p><?php echo $loading; ?></p></div>
 <div class='notloading onlyonce' id='attackersdiv'></div>
 
-</div>
+<!-- The line below needs to check if sysadmin is activated -->
+<?php if(!$intdet) : ?>
 
+	<h3><?php echo _("Blocked by Fail2Ban"); ?></h3>
+	<p><?php echo _("Any hosts in this section have been classified as an attacker by Fail2Ban's SIP jail. All traffic from them will be ignored for 30 minutes after they were classified as malicious."); ?></p>
+	<p><?php echo _("If you believe one of the hosts has been added in error, you can click the red 'X' to remove the block. If the host continues to send invalid data, it will be automatically re-added."); ?></p>
+	<div id='nof2battackers' class='alert alert-success' style='display: none'>
+  <h4><?php echo _("No hosts!"); ?></h4>
+  <p><?php echo _("There are no hosts that have been detected as attacking this server."); ?></p>
+</div>
+<div class='loading onlyonce'><p><?php echo $loading; ?></p></div>
+<div class='notloading onlyonce' id='f2battackersdiv'></div>
+
+<?php endif; ?>
+</div>

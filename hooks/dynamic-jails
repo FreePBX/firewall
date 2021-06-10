@@ -15,6 +15,10 @@
     
     $action = empty($settings["action"]) ? ""   : $settings["action"] ;
     $ip     = empty($settings["ip"])     ? ""   : $settings["ip"];
+    if (!filter_var($ip, \FILTER_VALIDATE_IP)) {
+	throw new \Exception("Not an IP address");
+    }
+
     $FC     = "/usr/bin/fail2ban-client";
     $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
     exec($cmd, $out, $ret);
