@@ -48,10 +48,11 @@
                     }
                     break;
                 case "unbanip" :
-                    exec("$FC status $jail | grep 'IP list:' | cut -f2", $out2);
-                    if(is_array($out2)){
-                        $out2 = implode($out2);
-                    }
+                    exec("$FC status $jail | grep 'IP list:' | cut -f2", $out3);
+		    if (!empty($out3[0])) {
+			$out2 = explode(' ', $out3[0]);
+		    }
+                    unset($out3);
                     if(!empty($out2) && array_search($ip, $out2) !== false){
                         exec("$FC set $jail $action $ip");
                         exec("echo '$d : $action $ip in jail $jail' >> /var/log/fail2ban.log");
