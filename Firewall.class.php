@@ -1301,7 +1301,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$banliststr = file_get_contents($file);
 					file_put_contents($file, '');
 				}
-				if (!$banliststr) {
+				if (empty($banliststr)) {
 					return $retarr;
 				}
 				$banlist = explode(',', $banliststr);
@@ -1315,7 +1315,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			case "delattacker":
 				return $this->runHook("removeallblocks", array("unblock" => $_REQUEST['target']));
 			case "delf2battacker":
-				return $this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => $_REQUEST['target']));
+				$ret = $this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => $_REQUEST['target']));
+				//The hook returns true right away, but the command needs time to run
+				usleep(300000);
+				return $ret;
 
 			// Advanced Settings
 			case "updateadvanced":
