@@ -16,6 +16,8 @@ class Smart {
 		}
 
 		$this->db = $db;
+		$this->chansip = false;
+		$this->pjsip = false;
 		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
 		switch ($driver) {
 		case 'both':
@@ -37,11 +39,17 @@ class Smart {
 
 	public function getSettings() {
 		$retarr = array("ssf" => true, "period" => 60, "responsive" => false);
-		$retarr['rprotocols'] = array(
-			"pjsip" => array("state" => true, "descr" => _("SIP Protocol (pjsip)")),
-			"chansip" => array("state" => true, "descr" => _("Legacy SIP (chan_sip)")),
-			"iax" => array("state" => false, "descr" => _("IAX Protocol")),
-		);
+		$retarr['rprotocols'] = array();
+		if ($this->chansip) {
+			$retarr['rprotocols'] = array("chansip" => array("state" => true, "descr" => _("Legacy SIP (chan_sip)")));
+		}
+		if ($this->pjsip) {
+			$retarr['rprotocols'] = array("pjsip" => array("state" => true, "descr" => _("SIP Protocol (pjsip)")));
+		}
+		if ($this->iax) {
+			$retarr['rprotocols'] = array("iax" => array("state" => false, "descr" => _("IAX Protocol")));
+		}
+		
 		if (\FreePBX::Firewall()->getConfig("responsivefw")) {
 			$retarr['responsive'] = true;
 			foreach ($retarr['rprotocols'] as $id => $null) {
