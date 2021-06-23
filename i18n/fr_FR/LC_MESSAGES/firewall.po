@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-23 03:18+0000\n"
+"POT-Creation-Date: 2021-06-23 10:23+0000\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -949,7 +949,7 @@ msgid ""
 "updated with the latest settings!"
 msgstr ""
 
-#: Services.class.php:355 Smart.class.php:50
+#: Services.class.php:355 Smart.class.php:51
 msgid "IAX Protocol"
 msgstr ""
 
@@ -1232,7 +1232,7 @@ msgstr ""
 msgid "Legacy"
 msgstr ""
 
-#: Smart.class.php:44
+#: Smart.class.php:45
 msgid "Legacy SIP (chan_sip)"
 msgstr ""
 
@@ -1749,7 +1749,7 @@ msgstr ""
 msgid "SIP Protocol"
 msgstr ""
 
-#: Smart.class.php:47
+#: Smart.class.php:48
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 
