@@ -92,6 +92,15 @@ foreach ($hosts as $h) {
 	}
 }
 
+//Get RFW threshhold settings
+$services['rfwtshld']['fpbxratelimit']['TIER1'] = \FreePBX::Firewall()->getConfig('TIER1','fpbxratelimit');
+$services['rfwtshld']['fpbxratelimit']['TIER2'] = \FreePBX::Firewall()->getConfig('TIER2','fpbxratelimit');
+$services['rfwtshld']['fpbxratelimit']['TIER3'] = \FreePBX::Firewall()->getConfig('TIER3','fpbxratelimit');
+$services['rfwtshld']['fpbxrfw']['TIERA'] = \FreePBX::Firewall()->getConfig('TIERA','fpbxrfw');
+$services['rfwtshld']['fpbxrfw']['TIERB'] = \FreePBX::Firewall()->getConfig('TIERB','fpbxrfw');
+$services['rfwtshld']['fpbxrfw']['TIERC'] = \FreePBX::Firewall()->getConfig('TIERC','fpbxrfw');
+
+
 $services['hostmaps'] = $harr;
 
 // Safemode handling
