@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-12 14:24+0000\n"
+"POT-Creation-Date: 2021-06-23 03:18+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -1025,7 +1025,7 @@ msgstr ""
 "Tuy nhiên nếu bạn tiếp tục, máy của bạn và tường lửa sẽ được tự động cập "
 "nhật các cài đặt mới nhất!"
 
-#: Services.class.php:355 Smart.class.php:43
+#: Services.class.php:355 Smart.class.php:50
 msgid "IAX Protocol"
 msgstr "Giao thức IAX"
 
@@ -1345,7 +1345,7 @@ msgstr ""
 msgid "Legacy"
 msgstr ""
 
-#: Smart.class.php:42
+#: Smart.class.php:44
 msgid "Legacy SIP (chan_sip)"
 msgstr "Giao thức Legacy SIP (chan_sip)"
 
@@ -1907,7 +1907,7 @@ msgstr ""
 msgid "SIP Protocol"
 msgstr "Giao thức SIP"
 
-#: Smart.class.php:41
+#: Smart.class.php:47
 msgid "SIP Protocol (pjsip)"
 msgstr "Giao thức SIP( pjsip)"
 
