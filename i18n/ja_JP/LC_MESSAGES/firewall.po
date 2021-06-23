@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-23 03:18+0000\n"
+"POT-Creation-Date: 2021-06-23 10:35+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -947,7 +947,7 @@ msgid ""
 "updated with the latest settings!"
 msgstr ""
 
-#: Services.class.php:355 Smart.class.php:50
+#: Services.class.php:355 Smart.class.php:51
 msgid "IAX Protocol"
 msgstr ""
 
@@ -1230,7 +1230,7 @@ msgstr ""
 msgid "Legacy"
 msgstr ""
 
-#: Smart.class.php:44
+#: Smart.class.php:45
 msgid "Legacy SIP (chan_sip)"
 msgstr ""
 
@@ -1747,7 +1747,7 @@ msgstr ""
 msgid "SIP Protocol"
 msgstr ""
 
-#: Smart.class.php:47
+#: Smart.class.php:48
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 

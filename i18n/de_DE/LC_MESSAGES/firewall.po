@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-23 03:18+0000\n"
+"POT-Creation-Date: 2021-06-23 10:35+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -964,7 +964,7 @@ msgid ""
 "updated with the latest settings!"
 msgstr ""
 
-#: Services.class.php:355 Smart.class.php:50
+#: Services.class.php:355 Smart.class.php:51
 msgid "IAX Protocol"
 msgstr "IAX Protokoll"
 
@@ -1247,7 +1247,7 @@ msgstr ""
 msgid "Legacy"
 msgstr ""
 
-#: Smart.class.php:44
+#: Smart.class.php:45
 msgid "Legacy SIP (chan_sip)"
 msgstr ""
 
@@ -1767,7 +1767,7 @@ msgstr ""
 msgid "SIP Protocol"
 msgstr "SIP Protokoll"
 
-#: Smart.class.php:47
+#: Smart.class.php:48
 msgid "SIP Protocol (pjsip)"
 msgstr "SIP Protokoll (pjsip)"
 
