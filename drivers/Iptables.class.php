@@ -1434,6 +1434,8 @@ class Iptables {
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-restapps_ssl");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-provis");
 		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-provis_ssl");
+		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-api");
+		$retarr['fpbxknownreg'][] = array("jump" => "fpbxsvc-api_ssl");
 
 		// Set up lefilter chain
 		$retarr['lefilter'][] = array("other" => "-m state --state NEW -j CONNMARK --set-mark 0x20");
