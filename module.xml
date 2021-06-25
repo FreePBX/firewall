@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>15.0.8.26</version>
+	<version>15.0.8.27</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*15.0.8.27* FREEI-3244 adding is set on array elements 
 		*15.0.8.26* Packaging of ver 15.0.8.26
 		*15.0.8.25* Fixing FREEI-3517 Chan_sip options displayed in firewall even when chan_sip is disabled 
 		*15.0.8.24* Packaging of ver 15.0.8.24
