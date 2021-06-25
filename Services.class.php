@@ -726,7 +726,7 @@ class Services {
 		$this->firewall->setConfig("currentjiffies", $input['currentJiffies']);
 		// And mark the OOBE wizard as done
 		$this->firewall->setConfig("oobeanswered", array('enabletrustedhost' => $input['enableTrustedHost'], 'enableresponsive' => $input['enableResponsive'], 'externsetup' => $input['externalSetup']));
-		$this->setServiceZones("provis", array($input['serviceZone'][0], $input['serviceZone'][1], $input['serviceZone'][2]));
+		$this->setServiceZones("provis", array(isset($input['serviceZone'][0]) ? $input['serviceZone'][0] : null,isset($input['serviceZone'][1]) ? $input['serviceZone'][1] : null, isset($input['serviceZone'][2]) ? $input['serviceZone'][2] : null));
 		
 		return true;
 	}
