@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-25 04:06+0000\n"
+"POT-Creation-Date: 2021-07-05 09:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -302,6 +302,13 @@ msgid ""
 "firewall is started."
 msgstr ""
 
+#: views/view.blocked.php:33
+msgid ""
+"Any hosts in this section have been classified as an attacker by Fail2Ban's "
+"SIP jail. All traffic from them will be ignored for 30 minutes after they "
+"were classified as malicious."
+msgstr ""
+
 #: views/view.blocked.php:19
 msgid ""
 "Any hosts in this section have been classified as an attacker. All traffic "
@@ -420,8 +427,12 @@ msgstr ""
 msgid "Blocked Attackers"
 msgstr ""
 
-#: views/page.status.php:31
+#: views/page.status.php:36
 msgid "Blocked Hosts"
+msgstr ""
+
+#: views/view.blocked.php:32
+msgid "Blocked by Fail2Ban"
 msgstr ""
 
 #: views/modal.customsvc.php:20
@@ -575,7 +586,7 @@ msgstr ""
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1509
+#: Firewall.class.php:1533
 msgid "Delete Selected"
 msgstr ""
 
@@ -856,7 +867,7 @@ msgid "Firewall Wizard"
 msgstr ""
 
 #: Api/Gql/Firewall.php:69
-#: Firewall.class.php:1466
+#: Firewall.class.php:1490
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -1080,6 +1091,7 @@ msgid ""
 msgstr ""
 
 #: views/view.blocked.php:20
+#: views/view.blocked.php:34
 msgid ""
 "If you believe one of the hosts has been added in error, you can click the "
 "red 'X' to remove the block. If the host continues to send invalid data, it "
@@ -1153,11 +1165,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1318
+#: Firewall.class.php:1342
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1318
+#: Firewall.class.php:1342
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1234,7 +1246,7 @@ msgstr ""
 msgid "Known Networks:"
 msgstr ""
 
-#: assets/js/views/status.js:131
+#: assets/js/views/status.js:148
 msgid "Last 5 packets"
 msgstr ""
 
@@ -1463,6 +1475,7 @@ msgstr ""
 
 #: views/view.blocked.php:12
 #: views/view.blocked.php:23
+#: views/view.blocked.php:36
 msgid "No hosts!"
 msgstr ""
 
@@ -1700,7 +1713,7 @@ msgstr ""
 msgid "Read from firewall"
 msgstr ""
 
-#: views/page.status.php:28
+#: views/page.status.php:33
 msgid "Registered Endpoints"
 msgstr ""
 
@@ -1737,7 +1750,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1516
+#: Firewall.class.php:1540
 msgid "Reset"
 msgstr ""
 
@@ -1834,15 +1847,15 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1508
-#: Firewall.class.php:1517
+#: Firewall.class.php:1532
+#: Firewall.class.php:1541
 #: views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
 
-#: Firewall.class.php:1511
+#: Firewall.class.php:1535
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -1969,7 +1982,7 @@ msgstr ""
 msgid "Status"
 msgstr ""
 
-#: views/page.status.php:25
+#: views/page.status.php:30
 msgid "Status Overview"
 msgstr ""
 
@@ -2146,6 +2159,7 @@ msgid "There are no hosts that are currently being rate limited."
 msgstr ""
 
 #: views/view.blocked.php:24
+#: views/view.blocked.php:37
 msgid "There are no hosts that have been detected as attacking this server."
 msgstr ""
 
@@ -2468,7 +2482,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1510
+#: Firewall.class.php:1534
 msgid "Update Interfaces"
 msgstr ""
 

@@ -40,6 +40,9 @@ rmmod_r() {
 	fi
 }
 
+#Before flusing IPTABLES, backup fail2ban chains
+iptables -S | grep -E "(fail2ban)|(f2b)" > /tmp/firewall-f2b
+
 /usr/sbin/iptables -F
 /usr/sbin/iptables -X
 /usr/sbin/iptables -t nat -F
@@ -58,3 +61,8 @@ for mod in ${NF_MODULES_COMMON[*]}; do
 	rmmod_r $mod >/dev/null
 done
 
+#Restore fail2ban IPTABLES rules, if any
+cat /tmp/firewall-f2b | while read line || [[ -n $line ]]; do
+iptables $line
+done
+rm -f /tmp/firewall-f2b

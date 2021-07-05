@@ -589,6 +589,9 @@ function updateFirewallRules($firstrun = false) {
 	// And permit our registrations through
   	$ipaddrs = $driver->updateRegistrations($getservices['smartports']['registrations']);
 
+	//Update RFW thresholds
+	$driver->updateRFWtshld($getservices['rfwtshld']);
+
  //If fail2ban bypass is enabled
   $fwconf = getSettings();
   if (isset($fwconf['responsivefw']) && isset($fwconf['fail2banbypass'])){

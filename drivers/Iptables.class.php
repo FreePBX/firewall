@@ -615,6 +615,101 @@ class Iptables {
 		return true;
 	}
 
+	//Root process
+	public function updateRFWtshld($rules) {
+		if(!is_array($rules)) {
+			throw new \Exception("rules is not an array");
+		}
+
+		//Check target
+		$this->checkTarget("fpbxrfw");
+		$this->checkTarget("fpbxratelimit");
+
+		//search for rules
+		$current = &$this->getCurrentIptables();
+		$ipvers = array("ipv6" => "/sbin/ip6tables ".$this->wlock, "ipv4" => "/sbin/iptables ".$this->wlock);
+		$mask = array("ipv6" => "--mask ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "ipv4" => "--mask 255.255.255.255");
+		foreach ($ipvers as $ipv => $ipt) {
+
+			//Generate what the rules should be
+			$tiera = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERA']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERA']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			$tierb = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERB']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERB']['hitcount']." --name SIGNALLING ".$mask[$ipv]." --rsource -j fpbxshortblock";
+			$tierc = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERC']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERC']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			$rfwarray = array("a" => $tiera, "b" => $tierb, "c" => $tierc);
+			$tier3 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER3']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER3']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			$tier2 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER2']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER2']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			$tier1 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER1']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER1']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxshortblock";
+			$rlarray = array("3" => $tier3, "2" => $tier2, "1" => $tier1);
+
+			$me = &$current[$ipv]['filter']['fpbxrfw'];
+			$foundrfwrules = 0;
+			$rfwruleline = array();
+			foreach ($me as $i => $line) {
+				$found = false;
+				//Ensure we get 3 matching rules
+				foreach($rfwarray as $r => $rule) {
+					if($line === $rule) {
+						$foundrfwrules += 1;
+						$rfwruleline[] = $i;
+						$found = true;
+					}
+				}
+				if (!$found && strpos($line, 'seconds') && (strpos($line, 'REPEAT') || strpos($line, 'SIGNALLING'))) {
+					$rfwruleline[] = $i;
+				}
+			}
+
+			//Did we not get 3 rules?
+			if ($foundrfwrules < 3) {
+				//Replace all the rules
+				$cmd = "$ipt -R fpbxrfw $rfwruleline[0] $tiera";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+				$cmd = "$ipt -R fpbxrfw $rfwruleline[1] $tierb";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+				$cmd = "$ipt -R fpbxrfw $rfwruleline[2] $tierc";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			}
+
+			//Rinse repeat fpbxratelimit
+			unset($rfwruleline);
+			$me = &$current[$ipv]['filter']['fpbxratelimit'];
+			$foundrfwrules = 0;
+			$rfwruleline = array();
+			foreach ($me as $i => $line) {
+				//Ensure we get 3 matching rules
+				$found = false;
+				foreach($rlarray as $r => $rule) {
+					if($line === $rule) {
+						$foundrfwrules += 1;
+						$rfwruleline[] = $i;
+						$found = true;
+					}
+				}
+				if (!$found && strpos($line, 'seconds') && strpos($line, 'REPEAT')) {
+					$rfwruleline[] = $i;
+				}
+			}
+
+			//Did we not get 3 rules?
+			if ($foundrfwrules < 3) {
+			//Replace all the rules
+			//The tiers are deliberatly assigned in reverse order
+				$cmd = "$ipt -R fpbxratelimit $rfwruleline[0] $tier3";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+				$cmd = "$ipt -R fpbxratelimit $rfwruleline[1] $tier2";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+				$cmd = "$ipt -R fpbxratelimit $rfwruleline[2] $tier1";
+				$this->l($cmd);
+				exec($cmd, $output, $ret);
+			}
+		}
+	}
+
 	// Root process
 	public function updateTargets($rules) {
 		// Create fpbxsmarthosts targets and signalling targets
@@ -1163,19 +1258,90 @@ class Iptables {
 	private function checkFpbxFirewall() {
 		$current = $this->getCurrentIptables();
 		if (!$this->isConfigured($current['ipv4'])) {
+			//Backup Fail2Ban ruleset
+			$f2b_rules = $this->backupFail2ban($current);
 			// Make sure we've cleaned up
 			$this->cleanOurRules();
 			// And add our defaults in
-			$this->loadDefaultRules();
+			$this->loadDefaultRules($f2b_rules);
 		}
 	}
 
+	private function backupFail2ban($ipt) {
+		//ipv4
+		foreach($ipt['ipv4']['filter']['INPUT'] as $i => $r) {
+			if ((strpos($r, "fail2ban") !== false)
+			    ||(strpos($r, "f2b") !== false)) {
+				$f2b_rule['INPUT'][] = $r;
+			}
+		}
+		foreach($ipt['ipv4']['filter'] as $chain => $i) {
+			if ((strpos($chain, "fail2ban") !== false)
+			    ||(strpos($chain, "fpbxinterfaces") !== false)
+			    ||(strpos($chain, "f2b") !== false)
+			    ||(strpos($chain, "fpbxnets") !== false)) {
+				foreach($i as $index => $r) {
+					$f2b_rule[$chain][] = $r;
+				}
+			}
+		}
+
+		if(!empty($f2b_rule)) {
+			foreach($f2b_rule as $chain => $v) {
+				foreach($v as $i => $r) {
+					$vals = explode("-j", $r);
+					$tmparr = array("ipvers" => "4", "other" => trim($vals[0]), "jump" => strtok($vals[1], ' '));
+					$f2b_rules[$chain][] = $tmparr;
+				}
+			}
+		}
+		unset($f2b_rule);
+
+		//ipv6
+		foreach($ipt['ipv6']['filter']['INPUT'] as $i => $r) {
+			if ((strpos($r, "fail2ban") !== false)
+			    ||(strpos($r, "f2b") !== false)) {
+				$f2b_rule['INPUT'][] = $r;
+			}
+		}
+
+		foreach($ipt['ipv6']['filter'] as $chain => $i) {
+			if ((strpos($chain, "fail2ban") !== false)
+			    ||(strpos($chain, "fpbxinterfaces") !== false)
+			    ||(strpos($chain, "f2b") !== false)
+			    ||(strpos($chain, "fpbxnets") !== false)) {
+				foreach($i as $index => $r) {
+					$f2b_rule[$chain][] = $r;
+				}
+			}
+		}
+
+		if(!empty($f2b_rule)) {
+			foreach($f2b_rule as $chain => $v) {
+				foreach($v as $i => $r) {
+					$vals = explode("-j", $r);
+					$tmparr = array("ipvers" => "6", "other" => trim($vals[0]), "jump" => strtok($vals[1], ' '));
+					$f2b_rules[$chain][] = $tmparr;
+				}
+			}
+		}
+
+		return $f2b_rules;
+	}
+
 	private function cleanOurRules() {
-		// todo
+		//We want to resets the iptables rules without breaking xt_recent
+		$this->l("Resetting iptables");
+		exec("/sbin/iptables ".$this->wlock." -F");
+		exec("/sbin/ip6tables ".$this->wlock." -F");
+		exec("/sbin/iptables ".$this->wlock." -X");
+		exec("/sbin/ip6tables ".$this->wlock." -X");
+		$this->currentconf = array();
+		$current = $this->getCurrentIptables();
 		return;
 	}
 
-	private function loadDefaultRules() {
+	private function loadDefaultRules($f2b_rules) {
 		// create lefilter ipset
 		exec('ipset create -exist lefilter bitmap:port range 80-65535 timeout 60');
 		
@@ -1188,6 +1354,13 @@ class Iptables {
 		// code.
 		unset($defaults['INPUT']);
 
+		//We read the damn code and need to restore fail2ban rules
+		if (!empty($f2b_rules['INPUT'])) {
+			foreach($f2b_rules['INPUT'] as $i => $r) {
+				$this->insertRule('INPUT', $r);
+			}
+		}
+
 		// Now, we need to create the chains for the rest of the rules
 		foreach ($defaults as $name => $val) {
 			$this->checkTarget($name);
@@ -1198,6 +1371,16 @@ class Iptables {
 			}
 			// unset ($rules[$name]);
 		}
+
+		//Restore lower level fail2ban and fpbxinterfaces rules
+		foreach((array) $f2b_rules as $chain => $vals) {
+			if($chain !== 'INPUT') {
+				foreach($vals as $i => $r) {
+					$this->addRule($chain, $r);
+				}
+			}
+		}
+
 		// Add MASQ rules. They're hardcoded here, because it's just simpler.
 		// Note we only NAT IPv4, not IPv6. If you want to nat IPv6, you're doing it wrong.
 		$rules = array(
@@ -1302,45 +1485,21 @@ class Iptables {
 		
 		// To start with, we ensure that we keep track of ALL rfw attempts.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name REPEAT --rsource");
-		// This is purely for displaying the Registered Endpoints
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --set --name DISCOVERED --rsource");
+		// These threshold limites can be set in the GUI; below are just defaults
+		// The GUI values will be set later by the firewall daemon
+
 		// Testing against various attack tools suggests that they tend to spam packets,
 		// even when they are rejected.  So, as a simple 'we know you're doing bad things'
 		// check, if they've sent more than 50 packets in 10 seconds, they're baddies.
 		// We're just going to block them, and be done with it.
-		$dbobj = \Sysadmin\FreePBX::Database();
-		$sql = $dbobj->prepare('select `val` from kvstore_FreePBX_modules_Firewall WHERE `key`=:key AND `id`=:id');
-		// Load settings.
-		$responsive['fpbxratelimit']['TIER1'] = ['seconds'=>60,'hitcount'=>50];
-		$responsive['fpbxratelimit']['TIER2'] = ['seconds'=>300,'hitcount'=>100];
-		$responsive['fpbxratelimit']['TIER3'] = ['seconds'=>86400,'hitcount'=>200];
-		$responsive['fpbxrfw']['TIERA'] = ['seconds'=>10,'hitcount'=>50];
-		$responsive['fpbxrfw']['TIERB'] = ['seconds'=>60,'hitcount'=>10];
-		$responsive['fpbxrfw']['TIERC'] = ['seconds'=>86400,'hitcount'=>100];
-		foreach ($responsive as $id => $rows) {
-			foreach($rows as $tier=> $vales){
-				$sql->execute(array(':key'=>$tier,':id'=>$id));
-				$val = $sql->fetchColumn();
-				$value = json_decode($val,true);
-				if (is_array($value)) {
-					$responsive[$id][$tier] = $value;
-				}
-			}
-		}
-		$tier1 = $responsive['fpbxrfw']['TIERA'];
-		$seconds = $tier1['seconds'];
-		$hitcount = $tier1['hitcount'];
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds $seconds --hitcount $hitcount --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 10 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxattacker");
 		// Has this IP already been detected as a persistent attacker? They're off to
 		// the bit bucket.
 		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 1 --name ATTACKER --rsource", "jump" => "fpbxattacker");
 		// This is the 'short' block, which allows up to 10 packets in 60 seconds,
 		// before they get clamped. 10 packets is enough to establish and hang up two
 		// calls, or one with voicemail notification.
-		$tier2 = $responsive['fpbxrfw']['TIERB'];
-		$seconds = $tier2['seconds'];
-		$hitcount = $tier2['hitcount'];
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds $seconds --hitcount $hitcount --name SIGNALLING --rsource", "jump" => "fpbxshortblock");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 10 --name SIGNALLING --rsource", "jump" => "fpbxshortblock");
 		// Note, this is *deliberately* after the check. Otherwise it'll never time out. We
 		// want to let them actually attempt to connect, albeit slowly. If they're legitimate,
 		// their registration will be discovered, and they won't hit here any more. If they're
@@ -1351,10 +1510,7 @@ class Iptables {
 		// If this IP has sent more than 100 signalling requests without success in a 24 hour
 		// period, we're deeming them as bad guys, and we're not interested in talking to them
 		// any more.
-		$tier3 = $responsive['fpbxrfw']['TIERC'];
-		$seconds = $tier3['seconds'];
-		$hitcount = $tier3['hitcount'];
-		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds $seconds --hitcount $hitcount --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxrfw'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
 		// OK, hasn't exceeded any rate limiting, good to go, for now.
 		$retarr['fpbxrfw'][] = array("jump" => "ACCEPT");
 
@@ -1400,18 +1556,9 @@ class Iptables {
 		//   Allow up to 50 unauthed connections from a single IP within 60 seconds
 		//   Allow up to 100 unauthed connections from a single IP within 5 minutes
 		//   Any more than 200 unauthed connections from a single IP within a day is a hardblock
-		$tier1 = $responsive['fpbxratelimit']['TIER1'];
-		$tier2 = $responsive['fpbxratelimit']['TIER2'];
-		$tier3 = $responsive['fpbxratelimit']['TIER3'];
-		$seconds = $tier1['seconds'];
-		$hitcount = $tier1['hitcount'];
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds $seconds --hitcount $hitcount --name REPEAT --rsource", "jump" => "fpbxattacker");
-		$seconds = $tier2['seconds'];
-		$hitcount = $tier2['hitcount'];
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds $seconds --hitcount $hitcount --name REPEAT --rsource", "jump" => "fpbxattacker");
-		$seconds = $tier3['seconds'];
-		$hitcount = $tier3['hitcount'];
-		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds $seconds --hitcount $hitcount --name REPEAT --rsource", "jump" => "fpbxshortblock");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 86400 --hitcount 200 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 300 --hitcount 100 --name REPEAT --rsource", "jump" => "fpbxattacker");
+		$retarr['fpbxratelimit'][] = array("other" => "-m recent --rcheck --seconds 60 --hitcount 50 --name REPEAT --rsource", "jump" => "fpbxshortblock");
 
 		// If they made it past here, they're all good.
 		$retarr['fpbxratelimit'][] = array("jump" => "ACCEPT");
@@ -1496,25 +1643,26 @@ class Iptables {
 	}
 
 	private function isConfigured($ipt) {
-		// Check to see that our firewall rule is the first one.
+		// Check to see that our firewall is configured
 		if (!isset($ipt['filter']) || !isset($ipt['filter']['INPUT'][0])) {
+			$this->l("There is no filter or INPUT chain");
 			return false;
 		}
 
-		// OK, so what IS the first rule in input?
-		if ($ipt['filter']['INPUT'][0] === "-j fpbxfirewall") {
+		// Verify that the fpbxfirewall chain is called from INPUT
+		foreach ($ipt['filter']['INPUT'] as $i => $r) {
+			if ($r === "-j fpbxfirewall") {
 			return true;
-		} else {
-			// Has something else been smart and tried to inject itself before us?
-			foreach ($ipt['filter']['INPUT'] as $i => $r) {
-				if ($r === "-j fpbxfirewall") {
-					// Yes. Yes they have. 
-					// TODO: Move it back to the first spot.
-					return true;
+			} else {
+				//It's only OK if the rule above us is Fail2Ban
+				if (strpos($r, "fail2ban") === false && strpos($r, "f2b") === false) {
+					$this->l("There is an invading rule above us: $r");
+					return false;
 				}
 			}
-			return false;
 		}
+		$this->l("fpbxfirewall rule not found in INPUT chain");
+		return false;
 	}
 
 	private function parseFilter($arr) {
