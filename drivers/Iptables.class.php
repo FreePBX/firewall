@@ -650,12 +650,12 @@ class Iptables {
 				foreach($rfwarray as $r => $rule) {
 					if($line === $rule) {
 						$foundrfwrules += 1;
-						$rfwruleline[] = $i;
+						$rfwruleline[] = $i + 1;
 						$found = true;
 					}
 				}
 				if (!$found && strpos($line, 'seconds') && (strpos($line, 'REPEAT') || strpos($line, 'SIGNALLING'))) {
-					$rfwruleline[] = $i;
+					$rfwruleline[] = $i + 1;
 				}
 			}
 
@@ -684,12 +684,12 @@ class Iptables {
 				foreach($rlarray as $r => $rule) {
 					if($line === $rule) {
 						$foundrfwrules += 1;
-						$rfwruleline[] = $i;
+						$rfwruleline[] = $i + 1;
 						$found = true;
 					}
 				}
 				if (!$found && strpos($line, 'seconds') && strpos($line, 'REPEAT')) {
-					$rfwruleline[] = $i;
+					$rfwruleline[] = $i + 1;
 				}
 			}
 
