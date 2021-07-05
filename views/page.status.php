@@ -15,6 +15,11 @@ case 'registered':
 default:
 	$status = "active";
 }
+
+if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->getIntrusionDetection() != false){
+  $salic    = true;
+}
+
 ?>
 
 <script type='text/javascript' src='modules/firewall/assets/js/views/status.js'></script>
@@ -39,7 +44,7 @@ default:
         <?php echo load_view(__DIR__."/view.registered.php"); ?>
       </div>
       <div role="tabpanel" id="blockedtab" class="tab-pane <?php echo $blockedtab; ?>">
-        <?php echo load_view(__DIR__."/view.blocked.php"); ?>
+        <?php echo load_view(__DIR__."/view.blocked.php", array("intdet" => $salic)); ?>
       </div>
     </div>
   </div>

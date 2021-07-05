@@ -83,7 +83,7 @@ class Smart {
 		$retarr = array(
 			'signalling' => $this->getVoipPorts(),
 			'rtp' => $this->getRTPPorts(),
-			'udptl' => array("start" => 4000, "end" => 4999), // This is not configurable.
+			'udptl' => $this->getUDPTLports(),
 			'known' => $this->getKnown(),
 			'registrations' => $this->getRegistrations(),
 		);
@@ -116,6 +116,27 @@ class Smart {
 		}
 		if ($end > 65535) {
 			$end = 65535;
+		}
+
+		// Make sure start and end are the right way round...
+		if ($end < $start) {
+			return array("start" => $end, "end" => $start);
+		} else {
+			return array("start" => $start, "end" => $end);
+		}
+	}
+
+	public function getUDPTLports() {
+		exec("grep -i \"^udptlstart\" /etc/asterisk/udptl_custom.conf | sed -r 's/.+=//g'", $out, $ret);
+		$start = (int) $out[0];
+		exec("grep -i \"^udptlend\" /etc/asterisk/udptl_custom.conf | sed -r 's/.+=//g'", $outend, $ret);
+		$end = (int) $outend[0];
+		if ($start < 1024) {
+			//Either not configured or port is wrong.  Use defaults.
+			$start = 4000;
+		}
+		if ($end > 65535 || $end < 1024) {
+			$end = 4999;
 		}
 
 		// Make sure start and end are the right way round...

@@ -55,7 +55,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function intrusion_detection_status() { 
-		exec('pidof -x fail2ban-server', $out, $ret);
+		exec('pgrep -f fail2ban-server', $out, $ret);
 		if ($ret == 0) {
 			return "running";
 		} else {
@@ -1292,9 +1292,33 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				include __DIR__."/Attacks.class.php";
 				$a = new Firewall\Attacks($this->getJiffies());
 				$smart = $this->getSmartObj();
-				return $a->getAllAttacks($smart->getRegistrations());
+				$retarr = $a->getAllAttacks($smart->getRegistrations());
+
+				$retarr['failed'] = array();
+				$this->runHook("get-sipfail2ban");
+				$file = '/var/spool/asterisk/firewall/sipbanned';
+				if(file_exists($file)) {
+					$banliststr = file_get_contents($file);
+					file_put_contents($file, '');
+				}
+				if (empty($banliststr)) {
+					return $retarr;
+				}
+				$banlist = explode(',', $banliststr);
+				foreach($banlist as $l => $v) {
+					if (filter_var($v, FILTER_VALIDATE_IP)) {
+							$retarr['failed'][] = $v;
+					}
+				}
+
+				return $retarr;
 			case "delattacker":
 				return $this->runHook("removeallblocks", array("unblock" => $_REQUEST['target']));
+			case "delf2battacker":
+				$ret = $this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => $_REQUEST['target']));
+				//The hook returns true right away, but the command needs time to run
+				usleep(300000);
+				return $ret;
 
 			// Advanced Settings
 			case "updateadvanced":

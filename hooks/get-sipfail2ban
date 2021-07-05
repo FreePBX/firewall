@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+    $file = '/var/spool/asterisk/firewall/sipbanned';
+    if (!is_dir('/var/spool/asterisk/firewall')) {
+	mkdir('/var/spool/asterisk/firewall');
+    }
+    $FC     = "/usr/bin/fail2ban-client";
+    $cmd    = "$FC status asterisk-iptables | grep 'IP list' | sed -r 's/.+IP list:\t//g' | sed -e 's/ /\\n/g'";
+    exec($cmd, $out, $ret);
+    if($ret === 0 && is_array($out)){
+        $ipstr = implode(',', $out);
+        file_put_contents($file, $ipstr);
+        chown($file, 'asterisk');
+    }
+    exit();
+?>

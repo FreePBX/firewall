@@ -1258,19 +1258,90 @@ class Iptables {
 	private function checkFpbxFirewall() {
 		$current = $this->getCurrentIptables();
 		if (!$this->isConfigured($current['ipv4'])) {
+			//Backup Fail2Ban ruleset
+			$f2b_rules = $this->backupFail2ban($current);
 			// Make sure we've cleaned up
 			$this->cleanOurRules();
 			// And add our defaults in
-			$this->loadDefaultRules();
+			$this->loadDefaultRules($f2b_rules);
 		}
 	}
 
+	private function backupFail2ban($ipt) {
+		//ipv4
+		foreach($ipt['ipv4']['filter']['INPUT'] as $i => $r) {
+			if ((strpos($r, "fail2ban") !== false)
+			    ||(strpos($r, "f2b") !== false)) {
+				$f2b_rule['INPUT'][] = $r;
+			}
+		}
+		foreach($ipt['ipv4']['filter'] as $chain => $i) {
+			if ((strpos($chain, "fail2ban") !== false)
+			    ||(strpos($chain, "fpbxinterfaces") !== false)
+			    ||(strpos($chain, "f2b") !== false)
+			    ||(strpos($chain, "fpbxnets") !== false)) {
+				foreach($i as $index => $r) {
+					$f2b_rule[$chain][] = $r;
+				}
+			}
+		}
+
+		if(!empty($f2b_rule)) {
+			foreach($f2b_rule as $chain => $v) {
+				foreach($v as $i => $r) {
+					$vals = explode("-j", $r);
+					$tmparr = array("ipvers" => "4", "other" => trim($vals[0]), "jump" => strtok($vals[1], ' '));
+					$f2b_rules[$chain][] = $tmparr;
+				}
+			}
+		}
+		unset($f2b_rule);
+
+		//ipv6
+		foreach($ipt['ipv6']['filter']['INPUT'] as $i => $r) {
+			if ((strpos($r, "fail2ban") !== false)
+			    ||(strpos($r, "f2b") !== false)) {
+				$f2b_rule['INPUT'][] = $r;
+			}
+		}
+
+		foreach($ipt['ipv6']['filter'] as $chain => $i) {
+			if ((strpos($chain, "fail2ban") !== false)
+			    ||(strpos($chain, "fpbxinterfaces") !== false)
+			    ||(strpos($chain, "f2b") !== false)
+			    ||(strpos($chain, "fpbxnets") !== false)) {
+				foreach($i as $index => $r) {
+					$f2b_rule[$chain][] = $r;
+				}
+			}
+		}
+
+		if(!empty($f2b_rule)) {
+			foreach($f2b_rule as $chain => $v) {
+				foreach($v as $i => $r) {
+					$vals = explode("-j", $r);
+					$tmparr = array("ipvers" => "6", "other" => trim($vals[0]), "jump" => strtok($vals[1], ' '));
+					$f2b_rules[$chain][] = $tmparr;
+				}
+			}
+		}
+
+		return $f2b_rules;
+	}
+
 	private function cleanOurRules() {
-		// todo
+		//We want to resets the iptables rules without breaking xt_recent
+		$this->l("Resetting iptables");
+		exec("/sbin/iptables ".$this->wlock." -F");
+		exec("/sbin/ip6tables ".$this->wlock." -F");
+		exec("/sbin/iptables ".$this->wlock." -X");
+		exec("/sbin/ip6tables ".$this->wlock." -X");
+		$this->currentconf = array();
+		$current = $this->getCurrentIptables();
 		return;
 	}
 
-	private function loadDefaultRules() {
+	private function loadDefaultRules($f2b_rules) {
 		// create lefilter ipset
 		exec('ipset create -exist lefilter bitmap:port range 80-65535 timeout 60');
 		
@@ -1283,6 +1354,13 @@ class Iptables {
 		// code.
 		unset($defaults['INPUT']);
 
+		//We read the damn code and need to restore fail2ban rules
+		if (!empty($f2b_rules['INPUT'])) {
+			foreach($f2b_rules['INPUT'] as $i => $r) {
+				$this->insertRule('INPUT', $r);
+			}
+		}
+
 		// Now, we need to create the chains for the rest of the rules
 		foreach ($defaults as $name => $val) {
 			$this->checkTarget($name);
@@ -1293,6 +1371,16 @@ class Iptables {
 			}
 			// unset ($rules[$name]);
 		}
+
+		//Restore lower level fail2ban and fpbxinterfaces rules
+		foreach((array) $f2b_rules as $chain => $vals) {
+			if($chain !== 'INPUT') {
+				foreach($vals as $i => $r) {
+					$this->addRule($chain, $r);
+				}
+			}
+		}
+
 		// Add MASQ rules. They're hardcoded here, because it's just simpler.
 		// Note we only NAT IPv4, not IPv6. If you want to nat IPv6, you're doing it wrong.
 		$rules = array(
@@ -1555,25 +1643,26 @@ class Iptables {
 	}
 
 	private function isConfigured($ipt) {
-		// Check to see that our firewall rule is the first one.
+		// Check to see that our firewall is configured
 		if (!isset($ipt['filter']) || !isset($ipt['filter']['INPUT'][0])) {
+			$this->l("There is no filter or INPUT chain");
 			return false;
 		}
 
-		// OK, so what IS the first rule in input?
-		if ($ipt['filter']['INPUT'][0] === "-j fpbxfirewall") {
+		// Verify that the fpbxfirewall chain is called from INPUT
+		foreach ($ipt['filter']['INPUT'] as $i => $r) {
+			if ($r === "-j fpbxfirewall") {
 			return true;
-		} else {
-			// Has something else been smart and tried to inject itself before us?
-			foreach ($ipt['filter']['INPUT'] as $i => $r) {
-				if ($r === "-j fpbxfirewall") {
-					// Yes. Yes they have. 
-					// TODO: Move it back to the first spot.
-					return true;
+			} else {
+				//It's only OK if the rule above us is Fail2Ban
+				if (strpos($r, "fail2ban") === false && strpos($r, "f2b") === false) {
+					$this->l("There is an invading rule above us: $r");
+					return false;
 				}
 			}
-			return false;
 		}
+		$this->l("fpbxfirewall rule not found in INPUT chain");
+		return false;
 	}
 
 	private function parseFilter($arr) {
