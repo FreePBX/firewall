@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-05 09:11+0000\n"
+"POT-Creation-Date: 2021-07-07 11:02+0000\n"
 "PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -1231,7 +1231,7 @@ msgstr ""
 msgid "Known Networks:"
 msgstr ""
 
-#: assets/js/views/status.js:148
+#: assets/js/views/status.js:149
 msgid "Last 5 packets"
 msgstr ""
 
