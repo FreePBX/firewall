@@ -17,7 +17,6 @@ $(document).ready(function() {
 			},
 		});
 	});
-	triggerPageUpdate();
 
 	// Grab del button clicks fail2ban
 	$("#f2battackersdiv").on("click", ".delbutton", function(e) {
@@ -33,6 +32,8 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	// Load Blocks
 	triggerPageUpdate();
 });
 
