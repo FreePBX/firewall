@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-05 15:27+0000\n"
+"POT-Creation-Date: 2021-07-07 12:18+0000\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -1227,7 +1227,7 @@ msgstr ""
 msgid "Known Networks:"
 msgstr ""
 
-#: assets/js/views/status.js:148
+#: assets/js/views/status.js:149
 msgid "Last 5 packets"
 msgstr ""
 
