@@ -11,7 +11,7 @@ class Services {
 
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
-		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt");
+		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl");
 		$this->extraservices = array("zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
@@ -70,6 +70,46 @@ class Services {
 		$sshdconf = file_get_contents($conf);
 		if (preg_match("/^Port\s+(\d+)/m", $sshdconf, $out)) {
 			$retarr['fw'] = array(array("protocol" => "tcp", "port" => $out[1]));
+		}
+		return $retarr;
+	}
+
+	private function getSvc_api() {
+		$retarr = array(
+			"name" => _("API (HTTP)"),
+			"defzones" => array("internal"),
+			"descr" => _("API port management for restapi and GrahpQL."),
+			"fw" => array(array("protocol" => "tcp", "port" => 83)));
+
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+			if (isset($ports['restapi'])) {
+				$retarr['fw'][0]['port'] = $ports['restapi'];
+			}
+		} catch (\Exception $e) {
+			// ignore
+		}
+		return $retarr;
+	}
+
+	private function getSvc_api_ssl() {
+		$retarr = array(
+			"name" => _("API (HTTPS)"),
+			"defzones" => array("internal"),
+			"descr" => _("API HTTPS port management for restapi and GrahpQL."),
+			"fw" => array(array("protocol" => "tcp", "port" => 2443)));
+
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+			if (isset($ports['sslrestapi'])) {
+				$retarr['fw'][0]['port'] = $ports['sslrestapi'];
+			}
+		} catch (\Exception $e) {
+			// ignore
 		}
 		return $retarr;
 	}
