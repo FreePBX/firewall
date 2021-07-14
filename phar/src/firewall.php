@@ -216,7 +216,7 @@ while(true) {
 		}
 		// Make sure we're REALLY meant to be shutting down.
 		if (file_exists("/etc/asterisk/firewall.lock") || file_exists("/etc/asterisk/firewall.enabled")) {
-			wall("/etc/aterisk/firewall.lock or /etc/asterisk/firewall.enabled exists!\nRefusing to shut down.\n");
+			wall("/etc/asterisk/firewall.lock or /etc/asterisk/firewall.enabled exists!\nRefusing to shut down.\n");
 			sleep(10);
 			checkPhar();
 			continue;
