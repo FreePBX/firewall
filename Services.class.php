@@ -11,7 +11,7 @@ class Services {
 
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
-		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl");
+		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl", "ntp");
 		$this->extraservices = array("zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
@@ -44,6 +44,16 @@ class Services {
 		}
 
 		return $this->$method();
+	}
+
+	private function getSvc_ntp(){
+		$retarr = array(
+			"name" => _("NTP"),
+			"defzones" => array("internal"),
+			"descr" => _("Allow any incoming NTP requests. The port is enabled by default on the Local zone."),
+			"fw" => array(array("protocol" => "udp", "port" => 123)),
+		);
+		return $retarr;
 	}
 
 	private function getSvc_ssh() {
