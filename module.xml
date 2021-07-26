@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>15.0.14</version>
+	<version>15.0.15</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*15.0.15* FREEPBX-22654 Don't use disabled as port for restapi 
 		*15.0.14* FREEPBX-22550 NTP/Chrony doesn't respond until configured in firewall 
 		*15.0.13* Packaging of ver 15.0.13
 		*15.0.12* Packaging of ver 15.0.12
