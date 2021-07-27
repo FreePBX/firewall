@@ -1,0 +1,48 @@
+#!/usr/bin/env php
+<?php
+    // Make sure we have a param
+    if (empty($argv[1])) {
+        throw new \Exception("Needs a param");
+    }
+
+    // Underp the base64 that the param is using.
+    $b       = str_replace('_', '/', $argv[1]);
+    $settings= @json_decode(gzuncompress(@base64_decode($b)), true);
+
+    if (!is_array($settings)) {
+        throw new \Exception("Invalid param");
+    }
+
+    $host   = empty($settings["host"]) ? "" : $settings["host"];
+    $tmp    = "/var/spool/asterisk/tmp/nslookup.tmp";
+    if(file_exists($tmp)){
+        unlink($tmp);
+    }
+
+    if($host == ""){
+        throw new \Exception(_("No host set.")); 
+    }
+
+    exec("/usr/bin/nslookup $host",$out, $ret);
+    if($ret != 0){
+        throw new \Exception(_("An error occurred!!")); 
+    }
+
+    $ip     = [];
+    $start  = false;
+    foreach($out as $line){
+        if( strpos($line, "Name:") !== false ){
+            $start = true;
+        }
+
+        if($start && strpos($line, "Address:") !== false ){
+            $ip_result = trim(str_replace("Address: ","",$line));
+            if (filter_var($ip_result, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                $ip[] = $ip_result;
+            }        
+        }
+    }
+
+    file_put_contents($tmp, json_encode($ip));
+    exit;
+?>
