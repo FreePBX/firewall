@@ -220,7 +220,7 @@ function get_iptables() {
 	return $ipt;
 }
 
-function get_registered($iptables) {
+function get_registered() {
 	static $cache;
 
 	if (!$cache) {
