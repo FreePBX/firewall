@@ -831,13 +831,20 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function NSLookUp($host =""){
 		if(preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $host) && preg_match("/^.{1,253}$/", $host)&& preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $host)){
-			$this->runHook("nslookup",array("host" => $host));
-			$file 	= $this->get_astspooldir()."/tmp/nslookup.tmp";
-			$result = false;
-			if(file_exists($file)){
-				$result = json_decode(file_get_contents($file), true);
+			try {
+				$dns_entries = dns_get_record($host, \DNS_A);
 			}
-			return $result;
+			catch (Exception $e) {
+				dbug("NSLookUP exception error : ".$e->getMessage()."\n");
+				return false;
+			}
+
+			foreach($dns_entries as $entry){
+				if(!empty($entry["ip"])){
+					$ip[] = $entry["ip"];
+				}				
+			}
+			return $ip;
 		};
 		return false;
 	}
