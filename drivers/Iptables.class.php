@@ -1653,16 +1653,9 @@ class Iptables {
 
 		//If custom rules are enabled, you fly at your own risk
 		$customenabled = false;
-		$dbobj = \Sysadmin\FreePBX::Database();
-		$query = 'select `val` from kvstore_FreePBX_modules_Firewall WHERE `key`= "advancedsettings"';
-		$sql = $dbobj->prepare($query);
-		$sql->execute();
-		$val = $sql->fetchColumn();
-		$value = json_decode($val, true);
-		if (is_array($value)) {
-			if ($value['customrules'] === 'enabled') {
-				$customenabled = true;
-			}
+		$advSvc = getServices();
+		if (!empty($advSvc['advancedsettings']['customrules']) && $advSvc['advancedsettings']['customrules'] === 'enabled') {
+			$customenabled = true;
 		}
 
 		// Verify that the fpbxfirewall chain is called from INPUT
@@ -1673,6 +1666,7 @@ class Iptables {
 				//It's only OK if the rule above us is Fail2Ban
 				if (strpos($r, "fail2ban") === false && strpos($r, "f2b") === false  && (!$customenabled)) {
 					$this->l("There is an invading rule above us: $r");
+					$this->l("This check can be disabled by enabling Custom Rules under Advanced Settings in the Firewall Module");
 					return false;
 				}
 			}
