@@ -1355,10 +1355,15 @@ class Iptables {
 		unset($defaults['INPUT']);
 
 		//We read the damn code and need to restore fail2ban rules
+		$checkpoint = [];
 		if (!empty($f2b_rules['INPUT'])) {
 			foreach($f2b_rules['INPUT'] as $i => $r) {
-				$this->insertRule('INPUT', $r);
+				if (array_search($r['jump'], $checkpoint, true) === false) {
+					$this->insertRule('INPUT', $r);
+					$checkpoint[] = $r['jump'];
+				}
 			}
+		unset($checkpoint);
 		}
 
 		// Now, we need to create the chains for the rest of the rules
