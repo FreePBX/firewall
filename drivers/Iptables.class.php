@@ -1656,14 +1656,22 @@ class Iptables {
 			return false;
 		}
 
+		//If custom rules are enabled, you fly at your own risk
+		$customenabled = false;
+		$advSvc = getServices();
+		if (!empty($advSvc['advancedsettings']['customrules']) && $advSvc['advancedsettings']['customrules'] === 'enabled') {
+			$customenabled = true;
+		}
+
 		// Verify that the fpbxfirewall chain is called from INPUT
 		foreach ($ipt['filter']['INPUT'] as $i => $r) {
 			if ($r === "-j fpbxfirewall") {
 			return true;
 			} else {
 				//It's only OK if the rule above us is Fail2Ban
-				if (strpos($r, "fail2ban") === false && strpos($r, "f2b") === false) {
+				if (strpos($r, "fail2ban") === false && strpos($r, "f2b") === false  && (!$customenabled)) {
 					$this->l("There is an invading rule above us: $r");
+					$this->l("This check can be disabled by enabling Custom Rules under Advanced Settings in the Firewall Module");
 					return false;
 				}
 			}
