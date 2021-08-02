@@ -347,11 +347,9 @@ class Smart {
 			$retarr = array_merge($retarr, $this->lookup($d));
 			
 			// Is there an SRV record?
-			try{
-				$srvdns = dns_get_record('_sip._udp.'.$d, \DNS_SRV);
-			} 
-			catch (Exception $e){
-				dbug("An error occured on SRV record _sip._udp.$d : ".$e->getMessage());
+			$srvdns = @dns_get_record('_sip._udp.'.$d, \DNS_SRV);
+			if (!$srvdns) {
+				dbug("An error occured on SRV record _sip._udp.$d : ");
 				$srvdns = false;
 			}
 			
