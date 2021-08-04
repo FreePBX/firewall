@@ -1658,9 +1658,16 @@ class Iptables {
 
 		//If custom rules are enabled, you fly at your own risk
 		$customenabled = false;
-		$advSvc = getServices();
-		if (!empty($advSvc['advancedsettings']['customrules']) && $advSvc['advancedsettings']['customrules'] === 'enabled') {
-			$customenabled = true;
+		$dbobj = \Sysadmin\FreePBX::Database();
+		$query = 'select `val` from kvstore_FreePBX_modules_Firewall WHERE `key`= "advancedsettings"';
+		$sql = $dbobj->prepare($query);
+		$sql->execute();
+		$val = $sql->fetchColumn();
+		$value = json_decode($val, true);
+		if (is_array($value)) {
+			if ($value['customrules'] === 'enabled') {
+				$customenabled = true;
+			}
 		}
 
 		// Verify that the fpbxfirewall chain is called from INPUT
