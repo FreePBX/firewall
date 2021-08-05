@@ -1255,6 +1255,8 @@ class Iptables {
 		return $this->currentconf;
 	}
 
+	// This function is also responsible for starting up the firewall
+	// because isConfigured returns false on first run
 	private function checkFpbxFirewall() {
 		$current = $this->getCurrentIptables();
 		if (!$this->isConfigured($current['ipv4'])) {
@@ -1264,6 +1266,11 @@ class Iptables {
 			$this->cleanOurRules();
 			// And add our defaults in
 			$this->loadDefaultRules($f2b_rules);
+			//Now, if custom rules are enabled, we need to add those rules
+			$advSvc = getServices();
+			if (!empty($advSvc['advancedsettings']['customrules']) && $advSvc['advancedsettings']['customrules'] === 'enabled') {
+				importCustomRules();
+			}
 		}
 	}
 
