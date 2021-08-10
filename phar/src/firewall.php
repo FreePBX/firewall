@@ -807,10 +807,6 @@ function updateFirewallRules($firstrun = false) {
 		}
 	}
 	
-	// If this is the first run, import the custom firewall rules, if enabled
-	if ($firstrun && $getservices['advancedsettings']['customrules'] === "enabled") {
-		importCustomRules();
-	}
 }
 
 function sigSleep($secs = 10) {
