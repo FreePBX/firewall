@@ -12,7 +12,7 @@
         foreach($out as $jail){
             exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $out2);
             $whitelist = implode("\n",array_unique($out2));
-            $fw->setConfig("dynamic_whitelist",$whitelist);
+            $fw->setConfig("dynamic_whitelist",str_replace("/32","",$whitelist));
             break;             
         }
     }
