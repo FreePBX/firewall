@@ -935,7 +935,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$todel_ignore = array_diff($previous_ignore, $current_ignore);
 		foreach($todel_ignore as $line){
 			if(!in_array($line, $inet)){
-				$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => $line ));
+				$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => str_replace("/32","",$line)));
 			} 
 		}
 
@@ -943,7 +943,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$toadd_ignore = array_diff($current_ignore, $previous_ignore);
 		foreach($toadd_ignore as $line){				
 			if(!in_array($line, $inet)){
-				$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => $line ));
+				$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => str_replace("/32","",$line)));
 			} 
 		}
 
