@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>14.0.3.12</version>
+	<version>14.0.3.13</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*14.0.3.13* FREEPBX-22769 Fail2ban Intrusion Detection Sync Firewall banned trustedIP's 
 		*14.0.3.12* FREEPBX-22550 NTP/Chrony doesn't respond until configured in firewall 
 		*14.0.3.11* Packaging of ver 14.0.3.11
 		*14.0.3.10* FREEPBX-21095 Firewall does not use Asterisk SIP Settings RTP Range, can block RTP streams 
