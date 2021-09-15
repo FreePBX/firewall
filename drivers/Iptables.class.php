@@ -1255,6 +1255,8 @@ class Iptables {
 		return $this->currentconf;
 	}
 
+	// This function is also responsible for starting up the firewall
+	// because isConfigured returns false on first run
 	private function checkFpbxFirewall() {
 		$current = $this->getCurrentIptables();
 		if (!$this->isConfigured($current['ipv4'])) {
@@ -1264,6 +1266,11 @@ class Iptables {
 			$this->cleanOurRules();
 			// And add our defaults in
 			$this->loadDefaultRules($f2b_rules);
+			//Now, if custom rules are enabled, we need to add those rules
+			$advSvc = getServices();
+			if (!empty($advSvc['advancedsettings']['customrules']) && $advSvc['advancedsettings']['customrules'] === 'enabled') {
+				importCustomRules();
+			}
 		}
 	}
 
@@ -1355,10 +1362,15 @@ class Iptables {
 		unset($defaults['INPUT']);
 
 		//We read the damn code and need to restore fail2ban rules
+		$checkpoint = [];
 		if (!empty($f2b_rules['INPUT'])) {
 			foreach($f2b_rules['INPUT'] as $i => $r) {
-				$this->insertRule('INPUT', $r);
+				if (array_search($r['jump'], $checkpoint, true) === false) {
+					$this->insertRule('INPUT', $r);
+					$checkpoint[] = $r['jump'];
+				}
 			}
+		unset($checkpoint);
 		}
 
 		// Now, we need to create the chains for the rest of the rules
@@ -1651,14 +1663,29 @@ class Iptables {
 			return false;
 		}
 
+		//If custom rules are enabled, you fly at your own risk
+		$customenabled = false;
+		$dbobj = \Sysadmin\FreePBX::Database();
+		$query = 'select `val` from kvstore_FreePBX_modules_Firewall WHERE `key`= "advancedsettings"';
+		$sql = $dbobj->prepare($query);
+		$sql->execute();
+		$val = $sql->fetchColumn();
+		$value = json_decode($val, true);
+		if (is_array($value)) {
+			if ($value['customrules'] === 'enabled') {
+				$customenabled = true;
+			}
+		}
+
 		// Verify that the fpbxfirewall chain is called from INPUT
 		foreach ($ipt['filter']['INPUT'] as $i => $r) {
 			if ($r === "-j fpbxfirewall") {
 			return true;
 			} else {
 				//It's only OK if the rule above us is Fail2Ban
-				if (strpos($r, "fail2ban") === false && strpos($r, "f2b") === false) {
+				if (strpos($r, "fail2ban") === false && strpos($r, "f2b") === false  && (!$customenabled)) {
 					$this->l("There is an invading rule above us: $r");
+					$this->l("This check can be disabled by enabling Custom Rules under Advanced Settings in the Firewall Module");
 					return false;
 				}
 			}

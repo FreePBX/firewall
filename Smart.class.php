@@ -343,18 +343,23 @@ class Smart {
 				continue;
 			}
 
-			// Well that means it's a hostname.
+			// Well that means it's a hostname.			
 			$retarr = array_merge($retarr, $this->lookup($d));
-			 // Is there an SRV record?
-			$srvdns = dns_get_record('_sip._udp.'.$d, \DNS_SRV);
-                        if ($srvdns) {
-                                //There's a SRV record
-                                foreach($srvdns as $sd) {
+			
+			// Is there an SRV record?
+			$srvdns = @dns_get_record('_sip._udp.'.$d, \DNS_SRV);
+			if (!$srvdns) {
+				dbug("An error occured on SRV record _sip._udp.$d : ");
+				$srvdns = false;
+			}
+			
+			if(!empty($srvdns) && is_array($srvdns)){
+				//There's a SRV record
+				foreach($srvdns as $sd) {
 					$srvrecord = $this->lookup($sd['target']);
 					$retarr = array_merge($retarr, $srvrecord);
-					}
-                        }
-
+				}
+			}
 		}
 		return $retarr;
 	}

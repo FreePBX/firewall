@@ -999,15 +999,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$ips = $this->NSLookUp($line);
 					if(is_array($ips)){
 						foreach($ips as $ip){
-							$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => $ip));
+							$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => str_replace("/32","",$line)));
 							usleep(500000);
 						}
 					}					
 				}
 				else{
-					$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => $line));
+					$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => str_replace("/32","",$line)));
 				}				
-			} 
+			}
 		}
 
 		// Add IP from the dynamic whitelist.
@@ -1018,13 +1018,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$ips = $this->NSLookUp($line);
 					if(is_array($ips)){
 						foreach($ips as $ip){
-							$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => $ip ));
+							$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => str_replace("/32","",$line)));
 							usleep(500000);
 						}
 					}					
 				}
 				else{
-					$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => $line ));
+					$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => str_replace("/32","",$line)));
 				}				
 			} 
 		}
