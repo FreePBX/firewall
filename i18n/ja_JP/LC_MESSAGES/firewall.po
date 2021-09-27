@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-26 02:20+0000\n"
+"POT-Creation-Date: 2021-09-27 03:51+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -603,7 +603,7 @@ msgstr "削除"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1533
+#: Firewall.class.php:1657
 msgid "Delete Selected"
 msgstr ""
 
@@ -873,7 +873,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1490
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1614
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -1167,11 +1167,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1342
+#: Firewall.class.php:1466
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1342
+#: Firewall.class.php:1466
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1742,7 +1742,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1540
+#: Firewall.class.php:1664
 msgid "Reset"
 msgstr "リセット"
 
@@ -1838,12 +1838,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1532 Firewall.class.php:1541 views/modal.customsvc.php:37
+#: Firewall.class.php:1656 Firewall.class.php:1665 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
 
-#: Firewall.class.php:1535
+#: Firewall.class.php:1659
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2450,7 +2450,7 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Firewall.class.php:1044
+#: Firewall.class.php:1168
 msgid "Unknown"
 msgstr ""
 
@@ -2458,7 +2458,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1534
+#: Firewall.class.php:1658
 msgid "Update Interfaces"
 msgstr ""
 
