@@ -95,7 +95,7 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			if (isset($ports['restapi']) && $ports['restapi'] !== "disabled") {
+			if (isset($ports['restapi']) && (int) $ports['restapi'] > 1) {
 				$retarr['fw'][0]['port'] = $ports['restapi'];
 			}
 		} catch (\Exception $e) {
@@ -115,7 +115,7 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = \FreePBX::Sysadmin()->getPorts();
-			if (isset($ports['sslrestapi']) && $ports['sslrestapi'] !== "disabled") {
+			if (isset($ports['sslrestapi']) && (int) $ports['sslrestapi'] > 1) {
 				$retarr['fw'][0]['port'] = $ports['sslrestapi'];
 			}
 		} catch (\Exception $e) {
