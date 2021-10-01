@@ -46,7 +46,7 @@
     /**
      * Removing flag at the end of script.
      */
-    @unlink("/var/spool/asterisk/tmp/getdyn.flg");
+    @unlink($fw->get_astspooldir()."/tmp/getdyn.flg");
     exit();
 
     /**

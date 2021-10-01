@@ -701,11 +701,18 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	 * @return void
 	 */
 	public function refresh_dynamic_ignoreip(){
-		$flg = "/var/spool/asterisk/tmp/getdyn.flg";
+		$flg 	= $this->get_astspooldir()."/tmp/getdyn.flg";
+		$t 		= 0;
+		$maxtime= 60;
 		touch($flg);
 		$this->runHook("get-dynamic-ignoreip");
 		while(file_exists($flg)){
 			sleep(1);
+			$t++;
+			if($t >= $maxtime){
+				dbug("Refresh dynamic ignoreip, timeout exceeded.");
+				break;
+			}
 		}
 	}
 
@@ -883,21 +890,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if (!is_array($nets)) {
 				throw new \Exception("Invalid JSON");
 			}
-			$all_net = array();
-
-			if($asfw["id_sync_fw"] == "enabled"){
-				$ids 		= $IDsetting["ids"];
-				foreach ($nets as $net) {
-					$this->removeNetwork($net);
-					$ids["fail2ban_whitelist"] = "";//str_replace($net,"",$ids["fail2ban_whitelist"]);
-				}
-				$ids["fail2ban_whitelist"] = "";//preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]); // remove double new lines
-				$this->FreePBX->Sysadmin->sync_fw($ids);
-			}
-			else{
-				foreach ($nets as $net) {
-					$this->removeNetwork($net);
-				}
+			
+			foreach ($nets as $net) {
+				$this->removeNetwork($net);
 			}
 			return true;
 		case "addnetworktozone":
@@ -935,9 +930,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				$ids["fail2ban_whitelist"] = "";// preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]."\n".$global_net);
 			}
 
-			if($asfw["id_sync_fw"] == "enabled"){
-				$this->FreePBX->Sysadmin->sync_fw($ids);
-			}
 			return $network2zone;
 		case "updatenetworks":
 			// We are handed a JSON string
@@ -967,9 +959,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$ids["fail2ban_whitelist"] = ""; //preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]."\n".$global_net);
 				}
 			}
-			if($asfw["id_sync_fw"] == "enabled"){
-				$this->FreePBX->Sysadmin->sync_fw($ids);
-			}
+
 			return true;
 		case "addrfc":
 			return $this->addRfcNetworks();
