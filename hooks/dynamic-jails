@@ -16,10 +16,10 @@
     $action = empty($settings["action"]) ? ""   : $settings["action"] ;
     $ip     = empty($settings["ip"])     ? ""   : $settings["ip"];
     $FC     = "/usr/bin/fail2ban-client";
-    $cmd    = "$FC status | grep 'Jail list' | cut -f3 | sed -e 's/ *//g' -e 's/\,/\\n/g'";
-    exec($cmd, $out, $ret);
-    if($ret === 0 && is_array($out)){
-        foreach($out as $jail){
+    exec("$FC status | grep 'Jail list' | cut -f3", $out, $ret);
+    $jails  = explode(", ",$out[0]);
+    if($ret === 0 && is_array($jails)){
+        foreach($jails as $jail){
             $d = @date("Y-m-d H:i:s");
             switch($action){
                 case "addignoreip" :
@@ -58,6 +58,5 @@
             }
             unset($out2);
         }
-    }
-    
+    }    
 ?>
