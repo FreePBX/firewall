@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-26 02:16+0000\n"
+"POT-Creation-Date: 2021-10-06 06:34+0000\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -424,7 +424,7 @@ msgstr "Supprimer"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1196
+#: Firewall.class.php:1215
 msgid "Delete Selected"
 msgstr "Supprimer les entrées sélectionnées"
 
@@ -633,7 +633,7 @@ msgstr ""
 msgid "Firewall Wizard"
 msgstr ""
 
-#: Firewall.class.php:1152
+#: Firewall.class.php:1171
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -864,11 +864,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1042
+#: Firewall.class.php:1061
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1042
+#: Firewall.class.php:1061
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1309,7 +1309,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1203
+#: Firewall.class.php:1222
 msgid "Reset"
 msgstr "Reset"
 
@@ -1405,12 +1405,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1195 Firewall.class.php:1204 views/modal.customsvc.php:37
+#: Firewall.class.php:1214 Firewall.class.php:1223 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
 
-#: Firewall.class.php:1198
+#: Firewall.class.php:1217
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -1859,7 +1859,7 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Firewall.class.php:773
+#: Firewall.class.php:809
 msgid "Unknown"
 msgstr ""
 
@@ -1867,7 +1867,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1197
+#: Firewall.class.php:1216
 msgid "Update Interfaces"
 msgstr ""
 
