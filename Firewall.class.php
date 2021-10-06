@@ -829,7 +829,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return load_view($view, array("fw" => $this, "module_status" => $this->sysadmin_info()));
 	}
 
-	public function NSLookUp($host =""){
+	public function NSLookUp_Check($host =""){
+		/**
+		 * Is a hostname?
+		 */
 		if(preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $host) && preg_match("/^.{1,253}$/", $host)&& preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $host)){
 			try {
 				$dns_entries = dns_get_record($host, \DNS_A);
@@ -838,7 +841,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				dbug("NSLookUP exception error : ".$e->getMessage()."\n");
 				return false;
 			}
-
+			$ip = [];
 			foreach($dns_entries as $entry){
 				if(!empty($entry["ip"])){
 					$ip[] = $entry["ip"];
@@ -846,6 +849,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 			return $ip;
 		};
+
+		/**
+		 * Is an IPV4?
+		 */
+		if (preg_match('/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/', $host, $ip_match)) {
+			$ip[] = $host;
+			return $ip;
+		 }
+
 		return false;
 	}
 
@@ -866,6 +878,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			case "other":
 				$result = $this->getTrustedZone("other");
 				break;
+			case "hosts":
+				$result = $this->getConfig("whiteHosts");
+				break;
 			case "all": 
 				$list = array();
 				if($this->getConfig("idregextip") == "true" ){
@@ -881,10 +896,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$list["Other"] = explode("\n", $this->getipzone("other"));
 				}
 				$list["Custom"] = explode("\n",$this->getConfig("custom_whitelist"));
+				$list["Hosts"] = explode("\n",$this->getConfig("whiteHosts"));
 				return $list;
 			default:
 				$result = "";				
 		}
+
 		return preg_replace('!\n+!', chr(10), $result);
 	}
 
@@ -897,16 +914,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$both 		= preg_replace('!\n+!', chr(10), $both);
 		$both 		= explode("\n", $both);
 		foreach($both as $ip){
-			if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
-				$nsips = $this->NSLookUp($ip);
-				if(is_array($nsips)){
-					foreach($nsips as $nsip){
+			$nsips = $this->NSLookUp_Check($ip);
+			if(is_array($nsips)){
+				foreach($nsips as $nsip){
+					if(!empty($nsip)){
 						$list[] = $nsip;
-					}
-				}					
-			}
-			else{
-				$list[] = $ip;
+					}					
+				}
 			}
 		}
 		$result 	= !empty($list) ? implode("\n", array_unique($list)) : "";
@@ -934,45 +948,45 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			 */ 
 			foreach($wl as $zone => $ips){
 				foreach($ips as $value){
-					if (!filter_var($value, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
-						$nsips = $this->NSLookUp($value);
-						if(is_array($nsips)){
-							foreach($nsips as $ip){
+					$nsips = $this->NSLookUp_Check($value);
+					if(is_array($nsips)){
+						foreach($nsips as $ip){
+							if(!empty($ip)){
 								$list[] = $ip;
 							}
-						}					
-					}
-					else{
-						$list[] = $value;
-					}					
+						}
+					}				
 				}
 			}
-			
-			$wl = implode("\n",$list);
+			$wl = "";
+			if(is_array($list)){
+				$wl = implode("\n",$list);
+			}	
 		}
 		else{
 			$lines = explode("\n",$wl);
 			foreach($lines as $lip){
-				if (!filter_var($lip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
-					$nsips = $this->NSLookUp($lip);
-					if(is_array($nsips)){
-						foreach($nsips as $ip){
+				$nsips = $this->NSLookUp_Check($lip);
+				if(is_array($nsips)){
+					foreach($nsips as $ip){
+						if(!empty($ip)){
 							$list[] = $ip;
 						}
 					}
 				}
-				else{
-					$list[] = $lip;
-				}
 			}
-			$wl = implode("\n",$list);
+			$wl = "";
+			if(is_array($list)){
+				$wl = implode("\n",$list);
+			}	
 		}
 
-		$this->runHook("get-dynamic-ignoreip");
-		$wl 			 = preg_replace('!\n+!', chr(10), $wl);
+		$this->refresh_dynamic_ignoreip();
+		
+		$wl 			 = str_replace("/32","",preg_replace('!\n+!', chr(10), $wl));
 		$previous_ignore = preg_replace('!\n+!', chr(10), $this->getConfig("dynamic_whitelist"));
-		$previous_ignore = explode("\n",$previous_ignore);
-		$current_ignore  = explode("\n", $wl);
+		$previous_ignore = array_unique(explode("\n",$previous_ignore));
+		$current_ignore  = array_unique(explode("\n", $wl));
 		
 		// rebuild arrays 
 		foreach($previous_ignore as $key => $line){
@@ -992,45 +1006,64 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		exec($ifconfig." -a | grep 'inet' | grep -v 'inet6' | grep -oE '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b'", $inet, $ret);
 
 		// Removing IP from the dynamic whitelist.
-		$todel_ignore = array_diff($previous_ignore, $current_ignore);
+		$todel_ignore = array_unique(array_diff($previous_ignore, $current_ignore));
 		foreach($todel_ignore as $line){
 			if(!in_array($line, $inet)){
-				if (!filter_var($line, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
-					$ips = $this->NSLookUp($line);
-					if(is_array($ips)){
-						foreach($ips as $ip){
-							$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => str_replace("/32","",$line)));
+				$ips = $this->NSLookUp_Check($line);
+				if(is_array($ips)){
+					foreach($ips as $ip){
+						if(!empty($ip)){
+							$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => str_replace("/32","",$ip)));
 							usleep(500000);
 						}
-					}					
-				}
-				else{
-					$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => str_replace("/32","",$line)));
-				}				
+					}
+				}			
 			}
 		}
 
 		// Add IP from the dynamic whitelist.
-		$toadd_ignore = array_diff($current_ignore, $previous_ignore);
+		$toadd_ignore = array_unique(array_diff($current_ignore, $previous_ignore));
 		foreach($toadd_ignore as $line){				
 			if(!in_array($line, $inet)){
-				if (!filter_var($line, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
-					$ips = $this->NSLookUp($line);
-					if(is_array($ips)){
-						foreach($ips as $ip){
+				$ips = $this->NSLookUp_Check($line);
+				if(is_array($ips)){
+					foreach($ips as $ip){
+						if(!empty($ip)){
 							$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => str_replace("/32","",$line)));
 							usleep(500000);
 						}
-					}					
-				}
-				else{
-					$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => str_replace("/32","",$line)));
-				}				
+					}
+				}			
 			} 
 		}
 
-		// Need to refresh and save the whitelist.
+		// Need to refresh and save the whitelist to the database.
+		$this->refresh_dynamic_ignoreip();
+
+		// Check jails integrity
+		$this->runHook("jails-integrity");
+	}
+
+	/**
+	 * refresh_dynamic_ignoreip
+	 * Just wait the end of get-dynamic-ignoreip
+	 *
+	 * @return void
+	 */
+	public function refresh_dynamic_ignoreip(){
+		$flg 	= $this->get_astspooldir()."/tmp/getdyn.flg";
+		$t 		= 0;
+		$maxtime= 60;
+		touch($flg);
 		$this->runHook("get-dynamic-ignoreip");
+		while(file_exists($flg)){
+			sleep(1);
+			$t++;
+			if($t >= $maxtime){
+				dbug("Refresh dynamic ignoreip, timeout exceeded.");
+				break;
+			}
+		}
 	}
 
 	// Ajax calls
@@ -1056,8 +1089,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 								if($this->getConfig("idregextip") != "true" && $this->getConfig("trusted") != "true" && $this->getConfig("local") != "true" && $this->getConfig("other") != "true"){
 									// For the first install only
 									$this->setConfig("custom_whitelist", $IDsetting["ids"]["fail2ban_whitelist"]);
-									$this->updateWhitelist($IDsetting["ids"]["fail2ban_whitelist"]);								
+									$this->updateWhitelist($IDsetting["ids"]["fail2ban_whitelist"]);						
 								}
+								else{
+									$this->updateWhitelist($this->getipzone("all"));
+								}
+								$IDsetting["ids"]["fail2ban_whitelist"] = "";
+								$this->FreePBX->Sysadmin->sync_fw($IDsetting["ids"]);	
 							}						
 						break;
 						case "legacy":
@@ -1082,16 +1120,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				$wl 		= preg_replace('!\n+!', chr(10), $this->getConfig("custom_whitelist"));
 				$wl 		= explode("\n", $wl);
 				foreach($wl as $ip){
-					if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
-						$nsips = $this->NSLookUp($ip);
-						if(is_array($nsips)){
-							foreach($nsips as $nsip){
+					$nsips = $this->NSLookUp_Check($ip);
+					if(is_array($nsips)){
+						foreach($nsips as $nsip){
+							if(!empty($nsip)){
 								$list[] = $nsip;
-							}
-						}					
-					}
-					else{
-						$list[] = $ip;
+							}							
+						}
 					}
 				}
 				$wl 		= !empty($list) ? implode("\n", array_unique($list)) : "";
@@ -1120,17 +1155,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 							if(strpos($ip, "/") !== false){
 								list($ip, $sub) = explode("/", $ip);
 							};
-							if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
-								$nsips = $this->NSLookUp($ip);
-								if(is_array($nsips)){
-									foreach($nsips as $nsip){
+							$nsips = $this->NSLookUp_Check($ip);
+							if(is_array($nsips)){
+								foreach($nsips as $nsip){
+									if(!empty($nsip)){
 										$result[] = array("action" => "", "source" => $nsip, "type" => $key);
 									}
-								}					
-							}
-							else{
-								$result[] = array("action" => "", "source" => $ip, "type" => $key);
-							}							
+								}
+							}						
 						}					
 					}				
 				}
@@ -1144,17 +1176,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 							if(strpos($ip, "/") !== false){
 								list($ip, $sub) = explode("/", $ip);
 							};
-							if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)){
-								$nsips = $this->NSLookUp($ip);
-								if(is_array($nsips)){
-									foreach($nsips as $nsip){
+							$nsips = $this->NSLookUp_Check($ip);
+							if(is_array($nsips)){
+								foreach($nsips as $nsip){
+									if(!empty($nsip)){
 										$result[] = array("action" => "", "source" => $nsip, "type" => $key);
 									}
-								}					
-							}
-							else{
-								$result[] = array("action" => "", "source" => $ip, "type" => $key);
-							}							
+								}
+							}						
 						}				
 					}				
 				}
@@ -1250,21 +1279,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				if (!is_array($nets)) {
 					throw new \Exception("Invalid JSON");
 				}
-				$all_net = array();
-	
-				if($asfw["id_sync_fw"] == "enabled"){
-					$ids 		= $IDsetting["ids"];
-					foreach ($nets as $net) {
-						$this->removeNetwork($net);
-						$ids["fail2ban_whitelist"] = str_replace($net,"",$ids["fail2ban_whitelist"]);
-					}
-					$ids["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]); // remove double new lines
-					$this->FreePBX->Sysadmin->sync_fw($ids);
-				}
-				else{
-					foreach ($nets as $net) {
-						$this->removeNetwork($net);
-					}
+				
+				foreach ($nets as $net) {
+					$this->removeNetwork($net);
 				}
 				return true;
 			case "addnetworktozone":
@@ -1299,12 +1316,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 						break;
 					}
 					$ids = $IDsetting["ids"];
-					$ids["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]."\n".$global_net);
+					$ids["fail2ban_whitelist"] = "";
 				}
-	
-				if($asfw["id_sync_fw"] == "enabled"){
-					$this->FreePBX->Sysadmin->sync_fw($ids);
-				}
+
 				return $network2zone;
 			case "updatenetworks":
 				// We are handed a JSON string
@@ -1331,12 +1345,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 							break;
 						}
 						$ids = $IDsetting["ids"];
-						$ids["fail2ban_whitelist"] = preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]."\n".$global_net);
+						$ids["fail2ban_whitelist"] = "";
 					}
 				}
-				if($asfw["id_sync_fw"] == "enabled"){
-					$this->FreePBX->Sysadmin->sync_fw($ids);
-				}
+
 				return true;
 			case "addrfc":
 				return $this->addRfcNetworks();
