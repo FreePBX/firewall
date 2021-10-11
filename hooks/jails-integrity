@@ -1,0 +1,25 @@
+#!/usr/bin/env php
+<?php
+    require_once '/usr/lib/sysadmin/includes.php';
+    
+    $fw     = new \Sysadmin\Kvstore("Firewall");
+    $FC     = "/usr/bin/fail2ban-client";
+    $cmd    = "$FC status | grep 'Jail list' | cut -f3";
+    $wl     = $fw->getConfig("dynamic_whitelist");
+    $wl     = explode("\n",$wl);
+    exec($cmd, $out, $ret);
+    $jails  = explode(", ",$out[0]);
+    if($ret === 0 && is_array($jails)){
+        foreach($jails as $jail){
+            exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $out2, $ret2);
+            foreach($wl as $ip){
+                if(array_search($ip, $out2) === false){
+                    exec("$FC set $jail addignoreip $ip");
+                }
+            }
+            unset($out2);
+        }
+    }
+    exit();
+
+?>

@@ -15,47 +15,48 @@
     
     $action = empty($settings["action"]) ? ""   : $settings["action"] ;
     $ip     = empty($settings["ip"])     ? ""   : $settings["ip"];
-    if (!filter_var($ip, \FILTER_VALIDATE_IP)) {
-	    throw new \Exception("Not an IP address");
-    }
-
     $FC     = "/usr/bin/fail2ban-client";
-    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
-    exec($cmd, $out, $ret);
-    if($ret === 0 && is_array($out)){
-        foreach($out as $jail){
+    exec("$FC status | grep 'Jail list' | cut -f3", $out, $ret);
+    $jails  = explode(", ",$out[0]);
+    if($ret === 0 && is_array($jails)){
+        foreach($jails as $jail){
             $d = @date("Y-m-d H:i:s");
             switch($action){
                 case "addignoreip" :
                     exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $out2);
                     if(array_search($ip, $out2) === false){
-                        exec("$FC set $jail $action $ip");                       
+                        exec("$FC set $jail $action $ip");
+                        exec("echo '$d : $action $ip in jail $jail' >> /var/log/fail2ban.log");                         
                     }
                     break;
                 case "delignoreip" :
                     exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $out2);
                     if(array_search($ip, $out2) !== false){
                         exec("$FC set $jail $action $ip");
+                        exec("echo '$d : $action $ip in jail $jail' >> /var/log/fail2ban.log");
                     }
                     break;
                 case "banip" :
                     exec("$FC status $jail | grep 'IP list:' | cut -f2", $out2);
-                    if(strpos($out2[0], $ip) !== true){
-                        exec("$FC set $jail $action $ip");                       
+                    if(array_search($ip, $out2) === false){
+                        exec("$FC set $jail $action $ip");
+                        exec("echo '$d : $action $ip in jail $jail' >> /var/log/fail2ban.log");                            
                     }
                     break;
                 case "unbanip" :
-                    exec("$FC status $jail | grep 'IP list:' | cut -f2", $out2);                    
-                    if(strpos($out2[0], $ip) !== false){
+                    exec("$FC status $jail | grep 'IP list:' | cut -f2", $out2);
+                    if(is_array($out2)){
+                        $out2 = implode($out2);
+                    }
+                    if(!empty($out2) && array_search($ip, $out2) !== false){
                         exec("$FC set $jail $action $ip");
+                        exec("echo '$d : $action $ip in jail $jail' >> /var/log/fail2ban.log");
                     }
                     break;
                 default:
-                    $log = strintf(_("No action defined such as %s."), $action);
-                    exec("echo $log >> /var/log/fail2ban.log");
+                    exec("echo 'No action defined.' >> /var/log/fail2ban.log");
             }
             unset($out2);
         }
-    }
-    
+    }    
 ?>
