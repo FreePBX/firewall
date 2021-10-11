@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-27 03:51+0000\n"
+"POT-Creation-Date: 2021-10-11 02:53+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -652,7 +652,7 @@ msgstr "Xóa"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1657
+#: Firewall.class.php:1669
 msgid "Delete Selected"
 msgstr "Xóa những gì được chọn"
 
@@ -942,7 +942,7 @@ msgstr "Dịch vụ Firewall không chạy!"
 msgid "Firewall Wizard"
 msgstr "Thuật sĩ Firewall"
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1614
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1626
 msgid "Firewall can not be disabled"
 msgstr "Không thể vô hiệu Firewall"
 
@@ -1277,11 +1277,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1466
+#: Firewall.class.php:1478
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1466
+#: Firewall.class.php:1478
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1899,7 +1899,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr "Đã xóa %s ra khỏi Danh sách đen."
 
-#: Firewall.class.php:1664
+#: Firewall.class.php:1676
 msgid "Reset"
 msgstr "Cài đặt lại"
 
@@ -2008,12 +2008,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall hiện đã kích hoạt!"
 
-#: Firewall.class.php:1656 Firewall.class.php:1665 views/modal.customsvc.php:37
+#: Firewall.class.php:1668 Firewall.class.php:1677 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Lưu"
 
-#: Firewall.class.php:1659
+#: Firewall.class.php:1671
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2704,7 +2704,7 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Firewall.class.php:1168
+#: Firewall.class.php:1197
 msgid "Unknown"
 msgstr ""
 
@@ -2712,7 +2712,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr "Mục nhập không xác định!"
 
-#: Firewall.class.php:1658
+#: Firewall.class.php:1670
 msgid "Update Interfaces"
 msgstr "Cập nhật các giao diện"
 

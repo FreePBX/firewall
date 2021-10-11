@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-27 03:55+0000\n"
+"POT-Creation-Date: 2021-10-11 02:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -608,7 +608,7 @@ msgstr ""
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1657
+#: Firewall.class.php:1669
 msgid "Delete Selected"
 msgstr ""
 
@@ -889,7 +889,7 @@ msgid "Firewall Wizard"
 msgstr ""
 
 #: Api/Gql/Firewall.php:69
-#: Firewall.class.php:1614
+#: Firewall.class.php:1626
 msgid "Firewall can not be disabled"
 msgstr ""
 
@@ -1187,11 +1187,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1466
+#: Firewall.class.php:1478
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1466
+#: Firewall.class.php:1478
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1776,7 +1776,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1664
+#: Firewall.class.php:1676
 msgid "Reset"
 msgstr ""
 
@@ -1873,15 +1873,15 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1656
-#: Firewall.class.php:1665
+#: Firewall.class.php:1668
+#: Firewall.class.php:1677
 #: views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr ""
 
-#: Firewall.class.php:1659
+#: Firewall.class.php:1671
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2500,7 +2500,7 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Firewall.class.php:1168
+#: Firewall.class.php:1197
 msgid "Unknown"
 msgstr ""
 
@@ -2508,7 +2508,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1658
+#: Firewall.class.php:1670
 msgid "Update Interfaces"
 msgstr ""
 
