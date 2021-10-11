@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-11 02:53+0000\n"
+"POT-Creation-Date: 2021-10-11 07:51+0000\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -513,10 +513,6 @@ msgstr ""
 msgid "Command to run (see --help)"
 msgstr ""
 
-#: firewall.i18n.php:6
-msgid "Connectivity"
-msgstr ""
-
 #: views/intrusion_detection.php:172
 msgid "Control intrusion detection."
 msgstr ""
@@ -845,7 +841,7 @@ msgstr ""
 msgid "Find Time"
 msgstr ""
 
-#: firewall.i18n.php:10 page.firewall.php:12
+#: page.firewall.php:12
 msgid "Firewall"
 msgstr ""
 
@@ -1129,13 +1125,6 @@ msgstr ""
 msgid ""
 "Info: If custom firewall rules are not retrieved correctly, run the "
 "following command to force manual repair of the necessary files."
-msgstr ""
-
-#: firewall.i18n.php:8
-msgid ""
-"Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible "
-"distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
-"further information."
 msgstr ""
 
 #: Firewall.class.php:484
@@ -2045,7 +2034,7 @@ msgstr ""
 msgid "Syncing...."
 msgstr ""
 
-#: Firewall.class.php:423 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:423 views/view.about.php:3
 msgid "System Firewall"
 msgstr ""
 
