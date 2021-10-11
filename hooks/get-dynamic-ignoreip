@@ -1,11 +1,8 @@
 #!/usr/bin/env php
 <?php
-    if (!@include_once(getenv('FREEPBX_CONF') ? getenv('FREEPBX_CONF') : '/etc/freepbx.conf')) { 
-        include_once('/etc/asterisk/freepbx.conf'); 
-        $restrict_mods = array('firewall' => true);
-    }
-
-    $fw         = FreePBX::Firewall();
+    require_once '/usr/lib/sysadmin/includes.php';
+    
+    $fw         = new \Sysadmin\Kvstore("Firewall");
     $advanced   = $fw->getConfig("advancedsettings");
     $hosts      = file("/etc/hosts");
     $ipHosts    = [];
@@ -77,6 +74,6 @@
     }
 
     function fc(){
-        return fpbx_which("fail2ban-client");
+        return "/usr/bin/fail2ban-client";
     }
 ?>

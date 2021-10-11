@@ -1,11 +1,9 @@
 #!/usr/bin/env php
 <?php
-    if (!@include_once(getenv('FREEPBX_CONF') ? getenv('FREEPBX_CONF') : '/etc/freepbx.conf')) { 
-        include_once('/etc/asterisk/freepbx.conf'); 
-        $restrict_mods = array('firewall' => true);
-    }
-    $fw     = FreePBX::Firewall();
-    $FC     = fpbx_which("fail2ban-client");
+    require_once '/usr/lib/sysadmin/includes.php';
+    
+    $fw     = new \Sysadmin\Kvstore("Firewall");
+    $FC     = "/usr/bin/fail2ban-client";
     $cmd    = "$FC status | grep 'Jail list' | cut -f3";
     $wl     = $fw->getConfig("dynamic_whitelist");
     $wl     = explode("\n",$wl);
