@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>14.0.3.15</version>
+	<version>14.0.3.16</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>http://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*14.0.3.16* Packaging of ver 14.0.3.16
 		*14.0.3.15* FREEI-3968 Fixing Fail2ban inconsistent bahaviour 
 		*14.0.3.14* FREEI-3968 Fail2ban inconsistent behavior 
 		*14.0.3.13* FREEPBX-22769 Fail2ban Intrusion Detection Sync Firewall banned trustedIP's 
