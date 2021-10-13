@@ -922,7 +922,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				foreach($nsips as $nsip){
 					if(!empty($nsip)){
 						$list[] = $nsip;
-					}					
+					}				
 				}
 			}
 		}
@@ -1173,13 +1173,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					foreach($value as $ip){
 						if(!empty($ip)){
 							$nsips = $this->NSLookUp_Check($ip);
-							if(is_array($nsips)){
+							if(is_array($nsips) && !empty($nsips[0])){
 								foreach($nsips as $nsip){
 									if(!empty($nsip)){
 										$result[] = array("action" => "", "source" => $nsip, "type" => $key);
 									}
 								}
-							}						
+							}
+							else{
+								$result[] = array("action" => "", "source" => $ip, "type" => "Unresolved!!");
+							}					
 						}				
 					}				
 				}
