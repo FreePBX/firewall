@@ -4,17 +4,79 @@
         include_once('/etc/asterisk/freepbx.conf'); 
         $restrict_mods = array('firewall' => true);
     }
-    $fw     = FreePBX::Firewall();
-    $FC     = "/usr/bin/fail2ban-client";
-    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
-    exec($cmd, $out, $ret);
-    if($ret === 0 && is_array($out)){
-        foreach($out as $jail){
-            exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $out2);
-            $whitelist = implode("\n",array_unique($out2));
-            $fw->setConfig("dynamic_whitelist",str_replace("/32","",$whitelist));
-            break;             
+
+    $fw         = FreePBX::Firewall();
+    $advanced   = $fw->getConfig("advancedsettings");
+    $hosts      = file("/etc/hosts");
+    $ipHosts    = [];
+    foreach ($hosts as $h) {
+        $line = preg_split("/\s+/", trim($h));
+        if (empty($line[0])) {
+            continue;
+        }
+        if (filter_var($line[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            if(!empty($advanced["import_hosts"]) && ($advanced["import_hosts"] != "disabled" && $line[0] != "127.0.0.1")){
+                $ipHosts[] = $line[0];
+                $fw->setConfig("whiteHosts",implode("\n", $ipHosts));
+            }
+            else{
+                $fw->setConfig("whiteHosts");
+            }	
         }
     }
+
+    $FC     = fc();
+    $cmd    = "$FC status | grep 'Jail list' | cut -f3";
+    exec($cmd, $out, $ret);
+    $jails  = explode(", ",$out[0]);
+    if($ret === 0 && is_array($jails)){
+        foreach($jails as $jail){
+            exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $whiteips, $ret2);
+            $whiteips   = array_merge($whiteips, $ipHosts);
+            $arr_ips    = dumplicate_entries($jail, $whiteips);
+            if(!is_array($arr_ips) && $arr_ips === false){
+                continue;
+            }
+            $whitelist  = implode("\n", $arr_ips);
+            $fw->setConfig("dynamic_whitelist",str_replace("/32","",$whitelist));
+            break;      
+        }
+    }
+
+    /**
+     * Removing flag at the end of script.
+     */
+    @unlink($fw->get_astspooldir()."/tmp/getdyn.flg");
     exit();
+
+    /**
+     * Prevent any duplicate entries.
+     *
+     * @param string $jail
+     * @param array $arr
+     * @return array
+     */
+    function dumplicate_entries($jail = "", $arr = []){
+        $FC  = fc();
+        $ips = $arr;
+        if($jail == ""){
+            return false;
+        }
+
+        foreach($arr as $idx => $ip){
+            if(count(array_keys($arr, $ip)) > 1){
+                $cmd = "$FC set $jail delignoreip $ip";
+                exec($cmd, $out, $ret);
+                if($ret !== 0){
+                    continue;
+                }
+                unset($ips[$idx]);
+            }
+        }
+        return array_unique($ips);
+    }
+
+    function fc(){
+        return fpbx_which("fail2ban-client");
+    }
 ?>
