@@ -497,10 +497,6 @@ if ($i_d_conf) {
   }
 
   function actionwlFormatter(value, row, index) {
-	if(row.type == "Unresolved!!"){
-		fpbxToast('Hostname "'+row.source+'" not found, IP address not resolved.','Error','error');
-		return [''].join('');
-	}
 	if(row.type == "Custom"){
 		return [
 		'<i class="fa fa-trash del-custom" title="'+_("Delete this one")+'">'
@@ -557,7 +553,6 @@ if ($i_d_conf) {
   function rowStyle(row, index) {
 
 	switch(row.type){
-		case "Hosts":
 		case "Trusted":
 			return {
 				css: {
@@ -587,11 +582,11 @@ if ($i_d_conf) {
 				css: {
 						background: '#BCF071',
 					}
-			}
+			}	
 		default:
 			return {
 				css: {
-					background: '#F08174'
+					background: '#A2EDBF'
 				}
 			}
 	}
