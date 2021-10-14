@@ -917,12 +917,19 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$both 		= preg_replace('!\n+!', chr(10), $both);
 		$both 		= explode("\n", $both);
 		foreach($both as $ip){
-			$nsips = $this->NSLookUp_Check($ip);
+			if($ip == ""){
+				continue;
+			}
+			$nsips 	= $this->NSLookUp_Check($ip);
+			if($nsips === false || empty($nsips[0])){
+				return array("status" => false, "message" => sprintf("Hostname %s Error. IP address not resolved. Process aborted.", $ip ));
+			}
+
 			if(is_array($nsips)){
 				foreach($nsips as $nsip){
 					if(!empty($nsip)){
 						$list[] = $nsip;
-					}				
+					}			
 				}
 			}
 		}
@@ -1151,10 +1158,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				foreach($list as $key => $value){
 					foreach($value as $ip){
 						if(!empty($ip)){
-							if(strpos($ip, "/") !== false){
-								list($ip, $sub) = explode("/", $ip);
-							};
-							$nsips = $this->NSLookUp_Check($ip);
+							$nsips = $this->NSLookUp_Check(str_replace("/32","",$ip));
 							if(is_array($nsips)){
 								foreach($nsips as $nsip){
 									if(!empty($nsip)){
@@ -1234,7 +1238,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					}
 					
 					if(!empty($_REQUEST["whitelist"])){
-						$this->setConfig("custom_whitelist", $this->buildCustomWhitelist($_REQUEST["whitelist"]) );
+						$result = $this->buildCustomWhitelist($_REQUEST["whitelist"]);
+						if(is_array($result) && !empty($result["message"])){
+							return $result["message"];
+						}
+						$this->setConfig("custom_whitelist", $result );
 					}
 	
 					$list = $this->getipzone("all");

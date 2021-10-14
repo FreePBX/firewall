@@ -26,11 +26,13 @@
     }
 
     $FC     = fc();
-    $cmd    = "$FC status | grep 'Jail list' | cut -f3";
+    /**
+     * cmd line below, ready for Fail2ban 0.11.1 
+     */
+    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
     exec($cmd, $out, $ret);
-    $jails  = explode(", ",$out[0]);
-    if($ret === 0 && is_array($jails)){
-        foreach($jails as $jail){
+    if($ret === 0 && is_array($out)){
+        foreach($out as $jail){
             exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $whiteips, $ret2);
             $whiteips   = array_merge($whiteips, $ipHosts);
             $arr_ips    = dumplicate_entries($jail, $whiteips);

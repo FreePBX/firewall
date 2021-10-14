@@ -498,7 +498,7 @@ if ($i_d_conf) {
 
   function actionwlFormatter(value, row, index) {
 	if(row.type == "Unresolved!!"){
-		fpbxToast('Hostname "'+row.source+'" not found, IP address not resolved.','Error','error');
+		fpbxToast('Hostname "'+row.source+'", IP address not resolved.','Error','error');
 		return [''].join('');
 	}
 	if(row.type == "Custom"){
