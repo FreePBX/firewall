@@ -203,8 +203,6 @@ $fwversion = false;
 // Always run the update the first time.
 $lastfin = 1;
 
-`fwconsole firewall sync`;
-
 while(true) {
 	$fwconf = getSettings();
 	if (!$fwconf['active']) {

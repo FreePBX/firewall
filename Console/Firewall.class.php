@@ -8,7 +8,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class Firewall extends Command {
 
@@ -112,33 +111,11 @@ class Firewall extends Command {
 	public function scan($output){	
 		$fw 		= \FreePBX::Firewall();
 		$sa 		= $fw->sysadmin_info();
-		$progressBar= new ProgressBar($output, 30);
-
 		if(!empty($sa)){
 			$as		= $fw->getAdvancedSettings();
 
 			// need to get F2B status like this way when this one is launch through cron job.
 			$out = shell_exec("pgrep -f fail2ban-server"); 
-			$flush = $fw->flush_fail2ban_whitelist($as["id_sync_fw"]);
-			if($flush != "ok"){
-				$output->writeln($flush);
-				$time = 0;
-				while($time++ < 30){
-					// Let's wait a new process before syncing.
-					$out2 = shell_exec("pgrep -f fail2ban-server"); 
-					$progressBar->advance();
-					if($out != $out2){
-						if($out2 == $out3){
-							break;
-						}
-					}
-					sleep(1);
-					$out3 = shell_exec("pgrep -f fail2ban-server"); 
-				}
-				$progressBar->finish();
-				$output->writeln("");
-			}			
-
 			if (!empty($out) && trim($as["id_sync_fw"]) != "legacy"){
 				$output->writeln("<info>"._("Syncing....")."</info>");
 				$fw->updateWhitelist($fw->getipzone("all"));
