@@ -12,18 +12,26 @@
     if (!is_array($settings)) {
         throw new \Exception("Invalid param");
     }
-    
+
     $action = empty($settings["action"]) ? ""   : $settings["action"] ;
     $ip     = empty($settings["ip"])     ? ""   : $settings["ip"];
-    if (!filter_var($ip, \FILTER_VALIDATE_IP)) {
-	throw new \Exception("Not an IP address");
+
+    // This filter hate a subnet within ip address.
+    @list($ip_part, $subnet_part) = explode("/",$ip);
+    if (!filter_var($ip_part, \FILTER_VALIDATE_IP)) {
+        throw new \Exception("Not an IP address"); 
+    }
+
+    $ip = $ip_part;
+    if(!empty($subnet_part)){
+        $ip = $ip_part."/".$subnet_part; 
     }
 
     $FC     = "/usr/bin/fail2ban-client";
-    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
-    exec($cmd, $out, $ret);
-    if($ret === 0 && is_array($out)){
-        foreach($out as $jail){
+    exec("$FC status | grep 'Jail list' | cut -f3", $out, $ret);
+    $jails  = explode(", ",$out[0]);
+    if($ret === 0 && is_array($jails)){
+        foreach($jails as $jail){
             $d = @date("Y-m-d H:i:s");
             switch($action){
                 case "addignoreip" :
@@ -48,11 +56,10 @@
                     }
                     break;
                 case "unbanip" :
-                    exec("$FC status $jail | grep 'IP list:' | cut -f2", $out3);
-		    if (!empty($out3[0])) {
-			$out2 = explode(' ', $out3[0]);
-		    }
-                    unset($out3);
+                    exec("$FC status $jail | grep 'IP list:' | cut -f2", $out2);
+                    if(is_array($out2)){
+                        $out2 = implode($out2);
+                    }
                     if(!empty($out2) && array_search($ip, $out2) !== false){
                         exec("$FC set $jail $action $ip");
                         exec("echo '$d : $action $ip in jail $jail' >> /var/log/fail2ban.log");
@@ -63,6 +70,5 @@
             }
             unset($out2);
         }
-    }
-    
+    }    
 ?>
