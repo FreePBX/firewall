@@ -17,7 +17,7 @@
         if (filter_var($line[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
             if(!empty($advanced["import_hosts"]) && ($advanced["import_hosts"] != "disabled" && $line[0] != "127.0.0.1")){
                 $ipHosts[] = $line[0];
-                $fw->setConfig("whiteHosts",implode("\n",$ipHosts));
+                $fw->setConfig("whiteHosts",implode("\n", $ipHosts));
             }
             else{
                 $fw->setConfig("whiteHosts");
@@ -26,18 +26,20 @@
     }
 
     $FC     = fc();
-    $cmd    = "$FC status | grep 'Jail list' | cut -f3";
+    /**
+     * cmd line below, ready for Fail2ban 0.11.1 
+     */
+    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
     exec($cmd, $out, $ret);
-    $jails  = explode(", ",$out[0]);
-    if($ret === 0 && is_array($jails)){
-        foreach($jails as $jail){
+    if($ret === 0 && is_array($out)){
+        foreach($out as $jail){
             exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $whiteips, $ret2);
             $whiteips   = array_merge($whiteips, $ipHosts);
             $arr_ips    = dumplicate_entries($jail, $whiteips);
             if(!is_array($arr_ips) && $arr_ips === false){
                 continue;
             }
-            $whitelist  = implode("\n",$arr_ips);
+            $whitelist  = implode("\n", $arr_ips);
             $fw->setConfig("dynamic_whitelist",str_replace("/32","",$whitelist));
             break;      
         }
