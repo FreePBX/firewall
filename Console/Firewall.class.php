@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Helper\Table;
 
 class Firewall extends Command {
 
@@ -73,6 +74,11 @@ class Firewall extends Command {
 			return true;
 		case "sync":
 			return $this->scan($output);
+		case "f2bs":
+		case "f2bstatus":
+			return $this->f2bstatus($output);
+		case "fix_custom_rules":
+			return $this->customRulesFix($output);
 		default:
 			$output->writeln($this->showHelp());
 		}
@@ -91,20 +97,84 @@ class Firewall extends Command {
 			"list [zone]" => _("List all entries in zone 'zone'"),
 			"add [zone] [id id id..]" => _("Add to 'zone' the IDs provided."),
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
-			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist.")
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
-
+			"fix_custom_rules" => _("Create the files for the custom rules if they don't exist and set the permissions and owners correctly."),
+			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist."),
+			"f2bstatus or f2bs" => _("Display ignored and banned IPs. (Only root user).")
 		);
 		foreach ($commands as $o => $t) {
 			$help .= "<info>$o</info> : <comment>$t</comment>\n";
 		}
 
+		$help .= "\n";
 		$help .= _("When adding or deleting from a zone, one or many IDs may be provided.")."\n";
 		$help .= _("These may be IP addresses, hostnames, or networks.")."\n";
 		$help .= _("For example:")."\n\n";
 		$help .="<comment>fwconsole firewall add trusted 10.46.80.0/24 hostname.example.com 1.2.3.4</comment>\n";
 
 		return $help;
+	}
+
+	public function f2bstatus($output){
+		if(get_current_user() != "root"){
+			$table 	= new \Symfony\Component\Console\Helper\Table($output);
+			$fw 	= \FreePBX::Firewall();
+			$as		= $fw->getAdvancedSettings();	
+			$sa 	= $fw->sysadmin_info();
+			if(empty($sa)){
+				$output->writeln("<error>Sysadmin not installed or not enabled.</error>");
+				exit(1);
+			}
+			if($as["id_sync_fw"] == "legacy"){
+				$output->writeln("<error>You are not allowed to execute this command on Legacy mode.</error>");
+				exit(1);
+			}
+
+			$FC     = fpbx_which("fail2ban-client");
+			$cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
+			exec($cmd, $out, $ret);
+			if($ret === 0 && is_array($out)){
+				$output->writeln("");
+				$output->writeln("-=[ List of ignored IPs for each dynamic jail ]=-");
+				$output->writeln("");
+				$table->setHeaders($out);
+				$result = [];
+				foreach($out as $jail){			
+					$result[] = str_replace(array("These IP addresses/networks are ignored:\n", "`- ", "|- "),"", shell_exec("$FC get $jail ignoreip"));
+				}
+				$rows[] = $result;
+				$table->setRows($rows);
+				$table->render();
+
+				/**
+				 * Banned List
+				 */
+				unset($rows);
+				unset($result);
+				$output->writeln("");
+				$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
+				$rows = [];
+				if(count($IDsetting["banned"]) >= 1){
+					$output->writeln("-=[ List of banned IPs ]=-");
+					$output->writeln("");					
+					$table->setHeaders(array("Type", "IPs"));
+					foreach($IDsetting["banned"] as $line){
+						$_ip = explode(" ",$line);
+						preg_match_all('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/m', $_ip[0], $matches, PREG_SET_ORDER, 0);
+						$rows[] = array(!empty($_ip[1]) ? $_ip[1] : _('Unknown'), trim($matches[0][0]));
+					}
+					$table->setRows($rows);
+					$table->render();			
+				}
+				else{
+					$output->writeln("<info>No banned IP right now.</info>");
+					$output->writeln("");
+				}
+			}					
+		}
+		else{
+			$output->writeln("<error>Permission denied. Please run this command as root.</error>");
+		}
 	}
 
 	public function scan($output){	
@@ -365,5 +435,19 @@ class Firewall extends Command {
 				}
 			}
 		}
+	}
+
+	private function customRulesFix($output) {
+		$fw = \FreePBX::Firewall();
+		$log = array();
+		// We pass the array $log as a reference to get the events. 
+		// The data in $log will not overwrite, the new events will be added to the array.
+		$return_fix = $fw->fix_custom_rules_files($log);
+		if ( (! empty($log) ) && ( is_array($log) ) ) {
+			foreach ($log as $log_line) {
+				$output->writeln($log_line);
+			}
+		}
+		return $return_fix;
 	}
 }
