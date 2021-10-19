@@ -116,7 +116,7 @@ class Firewall extends Command {
 	}
 
 	public function f2bstatus($output){
-		if(get_current_user() == "root"){
+		if(get_current_user() == "root" || trim(shell_exec("whoami")) == "root"){
 			$table 	= new \Symfony\Component\Console\Helper\Table($output);
 			$fw 	= \FreePBX::Firewall();
 			$as		= $fw->getAdvancedSettings();	
