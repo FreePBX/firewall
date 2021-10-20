@@ -587,16 +587,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			case "all": 
 				$list = array();
 				if($this->getConfig("idregextip") == "true" ){
-					$list["Ext. Registered"] = explode("\n", $this->getipzone("extregips"));
+					$list["Ext. Registered"] = explode("\n", $this->getExtRegistered());
 				}
 				if($this->getConfig("trusted") == "true"){
-					$list["Trusted"] = explode("\n", $this->getipzone("trusted"));
+					$list["Trusted"] = explode("\n", $this->getTrustedZone("trusted"));
 				}
 				if($this->getConfig("local") == "true"){
-					$list["Local"] = explode("\n", $this->getipzone("local"));
+					$list["Local"] = explode("\n", $this->getTrustedZone("internal"));
 				}
 				if($this->getConfig("other")== "true"){
-					$list["Other"] = explode("\n", $this->getipzone("other"));
+					$list["Other"] = explode("\n", $this->getTrustedZone("other"));
 				}
 				$list["Custom"] = explode("\n",$this->getConfig("custom_whitelist"));
 				$list["Hosts"] = explode("\n",$this->getConfig("whiteHosts"));
@@ -604,6 +604,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			default:
 				$result = "";				
 		}
+
 		return preg_replace('!\n+!', chr(10), $result);
 	}
 
@@ -714,6 +715,16 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				break;
 			}
 		}
+	}
+
+	public function flush_fail2ban_whitelist($asfw = "legacy"){
+		$IDsetting	= $this->FreePBX->Sysadmin->getIntrusionDetection();
+		if($asfw != "legacy" && $IDsetting["ids"]["fail2ban_whitelist"] != ""){
+			$IDsetting["ids"]["fail2ban_whitelist"] = "";
+			$this->FreePBX->Sysadmin->sync_fw($IDsetting["ids"]);
+			return _("Preparing settings. Please wait a while.");
+		}
+		return "ok";
 	}
 
 	// Ajax calls
@@ -926,8 +937,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 						$global_net = ($this->getConfig("other") == "true")? $net."\n" : "";
 					break;
 				}
-				$ids = $IDsetting["ids"];
-				$ids["fail2ban_whitelist"] = "";// preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]."\n".$global_net);
 			}
 
 			return $network2zone;
@@ -955,8 +964,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 							$global_net .= ($this->getConfig("other") == "true")? $net."\n" : "";
 						break;
 					}
-					$ids = $IDsetting["ids"];
-					$ids["fail2ban_whitelist"] = ""; //preg_replace('!\n+!', chr(10), $ids["fail2ban_whitelist"]."\n".$global_net);
 				}
 			}
 
