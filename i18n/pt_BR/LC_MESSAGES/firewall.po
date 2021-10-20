@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-06 06:34+0000\n"
+"POT-Creation-Date: 2021-10-20 08:37+0000\n"
 "PO-Revision-Date: 2017-03-13 19:49+0200\n"
 "Last-Translator: Kingvoice <suporte@kingvoice.com.br>\n"
 "Language-Team: Portuguese (Brazil) <http://weblate.freepbx.org/projects/"
@@ -131,11 +131,11 @@ msgstr "Adicionar Novo"
 msgid "Add etc/hosts as Trusted"
 msgstr ""
 
-#: Console/Firewall.class.php:88
+#: Console/Firewall.class.php:95
 msgid "Add the hostname or IP specified to the Trusted Zone"
 msgstr "Adicione o nome do host ou o IP especificado à Zona Confiável"
 
-#: Console/Firewall.class.php:91
+#: Console/Firewall.class.php:98
 msgid "Add to 'zone' the IDs provided."
 msgstr ""
 
@@ -167,11 +167,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
 
-#: Console/Firewall.class.php:336
+#: Console/Firewall.class.php:429
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:327
+#: Console/Firewall.class.php:420
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -203,7 +203,7 @@ msgid ""
 "acme-challenge folder during an active certificate update request."
 msgstr ""
 
-#: Console/Firewall.class.php:170 Console/Firewall.class.php:186
+#: Console/Firewall.class.php:263 Console/Firewall.class.php:279
 msgid "An error has occurred!"
 msgstr ""
 
@@ -284,17 +284,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr "Ao concluir este assistente, o firewall será automaticamente ativado."
 
-#: Console/Firewall.class.php:215
+#: Console/Firewall.class.php:308
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:236
+#: Console/Firewall.class.php:329
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:287
+#: Console/Firewall.class.php:380
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -373,7 +373,7 @@ msgstr ""
 msgid "Clear All"
 msgstr ""
 
-#: Console/Firewall.class.php:24
+#: Console/Firewall.class.php:26
 msgid "Command to run (see --help)"
 msgstr "Comando a ser executado (consulte --help)"
 
@@ -396,6 +396,12 @@ msgstr ""
 #: views/view.customsvc.php:2
 msgid "Create new Service"
 msgstr "Criar novo Serviço"
+
+#: Console/Firewall.class.php:101
+msgid ""
+"Create the files for the custom rules if they don't exist and set the "
+"permissions and owners correctly."
+msgstr ""
 
 #: views/view.status.php:22
 msgid "Cumulative Total of remote clients:"
@@ -453,7 +459,7 @@ msgstr "Apagar"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1215
+#: Firewall.class.php:1222
 msgid "Delete Selected"
 msgstr ""
 
@@ -461,7 +467,7 @@ msgstr ""
 msgid "Delete entire custom whitelist"
 msgstr ""
 
-#: Console/Firewall.class.php:92
+#: Console/Firewall.class.php:99
 msgid "Delete from 'zone' the IDs provided."
 msgstr ""
 
@@ -477,7 +483,7 @@ msgstr "Desabilitar"
 msgid "Disable Firewall"
 msgstr "Desabilitar Firewall"
 
-#: Console/Firewall.class.php:83
+#: Console/Firewall.class.php:90
 msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
 
@@ -485,6 +491,10 @@ msgstr ""
 #: views/view.settings.php:9 views/view.smart.php:6
 msgid "Disabled"
 msgstr "Desabilitado"
+
+#: Console/Firewall.class.php:103
+msgid "Display ignored and banned IPs. (Only root user)."
+msgstr ""
 
 #: views/intrusion_detection.php:370
 msgid "Do you want to delete ALL custom whitelist entries?"
@@ -535,7 +545,7 @@ msgstr ""
 msgid "Enable Responsive Firewall?"
 msgstr "Habilitar Firewall Responsivo?"
 
-#: Console/Firewall.class.php:87
+#: Console/Firewall.class.php:94
 msgid "Enable or disable Lets Encrypt rules."
 msgstr ""
 
@@ -553,7 +563,7 @@ msgid ""
 "attacker that their traffic has been intercepted."
 msgstr ""
 
-#: Console/Firewall.class.php:141
+#: Console/Firewall.class.php:234
 msgid "Enabling Firewall."
 msgstr "Habilitando Firewall."
 
@@ -575,24 +585,24 @@ msgid ""
 "Enter one IP or one Host per line. No comma allowed for multiple entries."
 msgstr ""
 
-#: Console/Firewall.class.php:56 Console/Firewall.class.php:66
+#: Console/Firewall.class.php:58 Console/Firewall.class.php:68
 msgid "Error!"
 msgstr ""
 
-#: Console/Firewall.class.php:279
+#: Console/Firewall.class.php:372
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:220
+#: Console/Firewall.class.php:313
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
 
-#: Console/Firewall.class.php:156
+#: Console/Firewall.class.php:249
 msgid "Error: Missing argument. Expected 'enable' or 'disable'."
 msgstr ""
 
-#: Console/Firewall.class.php:194
+#: Console/Firewall.class.php:287
 #, php-format
 msgid "Error: Unknown option '%s'. Expected 'enable or 'disable'."
 msgstr ""
@@ -636,7 +646,7 @@ msgstr ""
 "O FTP é usado pelo Gerenciador de Pontos de Extremidade para enviar imagens "
 "de firmware para telefones, bem como dados adicionais."
 
-#: Console/Firewall.class.php:247
+#: Console/Firewall.class.php:340
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -672,11 +682,11 @@ msgstr "Serviço de Firewall não está funcionando!"
 msgid "Firewall Wizard"
 msgstr "Assistente de Firewall"
 
-#: Firewall.class.php:1171
+#: Firewall.class.php:1178
 msgid "Firewall can not be disabled"
 msgstr "O Firewall não pode ser desabilitado"
 
-#: Console/Firewall.class.php:21
+#: Console/Firewall.class.php:23
 msgid "Firewall functions"
 msgstr "Funções do Firewall"
 
@@ -684,7 +694,7 @@ msgstr "Funções do Firewall"
 msgid "Firewall has not started yet!"
 msgstr "Firewall ainda não inicializou!"
 
-#: Console/Firewall.class.php:133
+#: Console/Firewall.class.php:226
 msgid "Firewall is not enabled, can't disable it"
 msgstr "O Firewall não está habilitado, não pode desativá-lo"
 
@@ -696,7 +706,7 @@ msgstr ""
 "Firewall deve agora detectar e configurar automaticamente as configurações "
 "de IP externo. Isso ajudará com NAT ou problemas de conversão."
 
-#: Console/Firewall.class.php:103
+#: Console/Firewall.class.php:112
 msgid "For example:"
 msgstr ""
 
@@ -713,7 +723,7 @@ msgid ""
 "networks to not harm your computer."
 msgstr ""
 
-#: Console/Firewall.class.php:22
+#: Console/Firewall.class.php:24
 msgid "Force Add/Removal of entry"
 msgstr ""
 
@@ -745,7 +755,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Console/Firewall.class.php:279
+#: Console/Firewall.class.php:372
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -770,7 +780,7 @@ msgid ""
 "SIP, but few providers support it."
 msgstr ""
 
-#: Console/Firewall.class.php:26
+#: Console/Firewall.class.php:28
 msgid "IDs to add or remove from a zone"
 msgstr ""
 
@@ -905,11 +915,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1061
+#: Firewall.class.php:1068
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1061
+#: Firewall.class.php:1068
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -919,7 +929,7 @@ msgstr ""
 msgid "Intrusion Detection Sync Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:126
+#: Console/Firewall.class.php:219
 msgid "Intrusion Detection is available for all activated systems only."
 msgstr ""
 
@@ -1001,19 +1011,19 @@ msgstr ""
 msgid "Length of time in seconds a remote IP is banned before being reset."
 msgstr ""
 
-#: Console/Firewall.class.php:190
+#: Console/Firewall.class.php:283
 msgid "Lets Encrypt rules already disabled. Nothing to do."
 msgstr ""
 
-#: Console/Firewall.class.php:174
+#: Console/Firewall.class.php:267
 msgid "Lets Encrypt rules already enabled. Nothing to do"
 msgstr ""
 
-#: Console/Firewall.class.php:183
+#: Console/Firewall.class.php:276
 msgid "Lets Encrypt rules disabled successfully."
 msgstr ""
 
-#: Console/Firewall.class.php:167
+#: Console/Firewall.class.php:260
 msgid "Lets Encrypt rules enabled successfully."
 msgstr ""
 
@@ -1026,7 +1036,7 @@ msgstr ""
 msgid "Linked to Interface %s"
 msgstr ""
 
-#: Console/Firewall.class.php:90
+#: Console/Firewall.class.php:97
 msgid "List all entries in zone 'zone'"
 msgstr ""
 
@@ -1127,7 +1137,7 @@ msgstr ""
 msgid "No hosts!"
 msgstr ""
 
-#: Console/Firewall.class.php:56 Console/Firewall.class.php:66
+#: Console/Firewall.class.php:58 Console/Firewall.class.php:68
 msgid "No network identifiers supplied"
 msgstr ""
 
@@ -1190,7 +1200,7 @@ msgstr ""
 msgid "OpenVPN Server"
 msgstr ""
 
-#: Console/Firewall.class.php:25
+#: Console/Firewall.class.php:27
 msgid "Optional parameter"
 msgstr ""
 
@@ -1258,6 +1268,10 @@ msgstr ""
 
 #: views/page.advanced.php:32
 msgid "Preconfigured"
+msgstr ""
+
+#: Firewall.class.php:725
+msgid "Preparing settings. Please wait a while."
 msgstr ""
 
 #: views/view.shortcuts.php:32
@@ -1341,16 +1355,16 @@ msgstr ""
 msgid "Reject incoming traffic"
 msgstr ""
 
-#: Console/Firewall.class.php:89
+#: Console/Firewall.class.php:96
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:283
+#: Console/Firewall.class.php:376
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1222
+#: Firewall.class.php:1229
 msgid "Reset"
 msgstr "Reiniciar"
 
@@ -1385,7 +1399,7 @@ msgstr ""
 msgid "Responsive firewall threshold parameters"
 msgstr ""
 
-#: Console/Firewall.class.php:86
+#: Console/Firewall.class.php:93
 msgid "Restart the System Firewall"
 msgstr ""
 
@@ -1446,12 +1460,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1214 Firewall.class.php:1223 views/modal.customsvc.php:37
+#: Firewall.class.php:1221 Firewall.class.php:1230 views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
 msgstr "Salvar"
 
-#: Firewall.class.php:1217
+#: Firewall.class.php:1224
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -1491,7 +1505,7 @@ msgstr ""
 msgid "Should your current network be trusted?"
 msgstr ""
 
-#: Console/Firewall.class.php:23
+#: Console/Firewall.class.php:25
 msgid "Show help"
 msgstr ""
 
@@ -1504,7 +1518,7 @@ msgstr ""
 msgid "Source"
 msgstr ""
 
-#: Console/Firewall.class.php:85
+#: Console/Firewall.class.php:92
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
@@ -1520,12 +1534,12 @@ msgstr "Estado"
 msgid "Status Overview"
 msgstr ""
 
-#: Console/Firewall.class.php:84
+#: Console/Firewall.class.php:91
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:217 Console/Firewall.class.php:259
-#: Console/Firewall.class.php:316
+#: Console/Firewall.class.php:310 Console/Firewall.class.php:352
+#: Console/Firewall.class.php:409
 msgid "Success!"
 msgstr ""
 
@@ -1537,19 +1551,19 @@ msgstr ""
 msgid "Summary"
 msgstr ""
 
-#: Console/Firewall.class.php:93
+#: Console/Firewall.class.php:102
 msgid ""
 "Synchronizes all selected zones of the firewall module with the intrusion "
 "detection whitelist."
 msgstr ""
 
-#: Console/Firewall.class.php:122
+#: Console/Firewall.class.php:215
 msgid ""
 "Syncing cannot be performed because the Intrusion Detection Sync Firewall "
 "setting is set to Legacy mode."
 msgstr ""
 
-#: Console/Firewall.class.php:118
+#: Console/Firewall.class.php:211
 msgid "Syncing...."
 msgstr ""
 
@@ -1647,7 +1661,7 @@ msgid ""
 "invalid data, they will be classified as an Attacker."
 msgstr ""
 
-#: Console/Firewall.class.php:102
+#: Console/Firewall.class.php:111
 msgid "These may be IP addresses, hostnames, or networks."
 msgstr ""
 
@@ -1900,15 +1914,15 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Firewall.class.php:809
+#: Console/Firewall.class.php:164 Firewall.class.php:820
 msgid "Unknown"
 msgstr ""
 
-#: Console/Firewall.class.php:308
+#: Console/Firewall.class.php:401
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1216
+#: Firewall.class.php:1223
 msgid "Update Interfaces"
 msgstr ""
 
@@ -1974,7 +1988,7 @@ msgid ""
 "web browser."
 msgstr ""
 
-#: Console/Firewall.class.php:101
+#: Console/Firewall.class.php:110
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr ""
 
