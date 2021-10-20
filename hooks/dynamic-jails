@@ -12,14 +12,29 @@
     if (!is_array($settings)) {
         throw new \Exception("Invalid param");
     }
-    
+
     $action = empty($settings["action"]) ? ""   : $settings["action"] ;
     $ip     = empty($settings["ip"])     ? ""   : $settings["ip"];
+
+    // This filter hate a subnet within ip address.
+    @list($ip_part, $subnet_part) = explode("/",$ip);
+    if (!filter_var($ip_part, \FILTER_VALIDATE_IP)) {
+        throw new \Exception("Not an IP address"); 
+    }
+
+    $ip = $ip_part;
+    if(!empty($subnet_part)){
+        $ip = $ip_part."/".$subnet_part; 
+    }
+
     $FC     = "/usr/bin/fail2ban-client";
-    exec("$FC status | grep 'Jail list' | cut -f3", $out, $ret);
-    $jails  = explode(", ",$out[0]);
-    if($ret === 0 && is_array($jails)){
-        foreach($jails as $jail){
+    /**
+     * cmd line below, ready for Fail2ban 0.11.1 
+     */
+    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
+    exec($cmd, $out, $ret);
+    if($ret === 0 && is_array($out)){
+        foreach($out as $jail){
             $d = @date("Y-m-d H:i:s");
             switch($action){
                 case "addignoreip" :

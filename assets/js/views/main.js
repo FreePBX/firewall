@@ -318,17 +318,20 @@ function save_ids(){
 			  idregextip: window.idregextip,
 			  trusted: window.trusted,
 			  local: window.local,
-			  other: window.other,
-			  whitelist: $("#whitelist").val()
+			  other: window.other
 			};
 	$.ajax({
 		url: window.FreePBX.ajaxurl,
 		data: d,
-		success: function(){
-			$("#needApply").hide();
+		success: function(data){
+			if(data.message !== "unknown"){
+				fpbxToast(data.message,'Error','error');
+			}
+			else{
+				$("#needApply").hide();	
+			}
 		},
 		complete: function(data) {
-			
 			window.location.href = window.location.href;
 		}
 	});

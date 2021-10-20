@@ -8,6 +8,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Helper\Table;
 
 class Firewall extends Command {
 
@@ -72,6 +74,9 @@ class Firewall extends Command {
 			return true;
 		case "sync":
 			return $this->scan($output);
+		case "f2bs":
+		case "f2bstatus":
+			return $this->f2bstatus($output);
 		case "fix_custom_rules":
 			return $this->customRulesFix($output);
 		default:
@@ -94,12 +99,14 @@ class Firewall extends Command {
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
 			"fix_custom_rules" => _("Create the files for the custom rules if they don't exist and set the permissions and owners correctly."),
-			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist.")
+			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist."),
+			"f2bstatus or f2bs" => _("Display ignored and banned IPs. (Only root user).")
 		);
 		foreach ($commands as $o => $t) {
 			$help .= "<info>$o</info> : <comment>$t</comment>\n";
 		}
 
+		$help .= "\n";
 		$help .= _("When adding or deleting from a zone, one or many IDs may be provided.")."\n";
 		$help .= _("These may be IP addresses, hostnames, or networks.")."\n";
 		$help .= _("For example:")."\n\n";
@@ -108,14 +115,98 @@ class Firewall extends Command {
 		return $help;
 	}
 
+	public function f2bstatus($output){
+		if(get_current_user() == "root" || trim(shell_exec("whoami")) == "root"){
+			$table 	= new \Symfony\Component\Console\Helper\Table($output);
+			$fw 	= \FreePBX::Firewall();
+			$as		= $fw->getAdvancedSettings();	
+			$sa 	= $fw->sysadmin_info();
+			if(empty($sa)){
+				$output->writeln("<error>Sysadmin not installed or not enabled.</error>");
+				exit(1);
+			}
+			if($as["id_sync_fw"] == "legacy"){
+				$output->writeln("<error>You are not allowed to execute this command on Legacy mode.</error>");
+				exit(1);
+			}
+
+			$FC     = fpbx_which("fail2ban-client");
+			$cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
+			exec($cmd, $out, $ret);
+			if($ret === 0 && is_array($out)){
+				$output->writeln("");
+				$output->writeln("-=[ List of ignored IPs for each dynamic jail ]=-");
+				$output->writeln("");
+				$table->setHeaders($out);
+				$result = [];
+				foreach($out as $jail){			
+					$result[] = str_replace(array("These IP addresses/networks are ignored:\n", "`- ", "|- "),"", shell_exec("$FC get $jail ignoreip"));
+				}
+				$rows[] = $result;
+				$table->setRows($rows);
+				$table->render();
+
+				/**
+				 * Banned List
+				 */
+				unset($rows);
+				unset($result);
+				$output->writeln("");
+				$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
+				$rows = [];
+				if(count($IDsetting["banned"]) >= 1){
+					$output->writeln("-=[ List of banned IPs ]=-");
+					$output->writeln("");					
+					$table->setHeaders(array("Type", "IPs"));
+					foreach($IDsetting["banned"] as $line){
+						$_ip = explode(" ",$line);
+						preg_match_all('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/m', $_ip[0], $matches, PREG_SET_ORDER, 0);
+						$rows[] = array(!empty($_ip[1]) ? $_ip[1] : _('Unknown'), trim($matches[0][0]));
+					}
+					$table->setRows($rows);
+					$table->render();			
+				}
+				else{
+					$output->writeln("<info>No banned IP right now.</info>");
+					$output->writeln("");
+				}
+			}					
+		}
+		else{
+			$output->writeln("<error>Permission denied. Please run this command as root.</error>");
+		}
+	}
+
 	public function scan($output){	
 		$fw 		= \FreePBX::Firewall();
 		$sa 		= $fw->sysadmin_info();
+		$progressBar= new ProgressBar($output, 30);
+
 		if(!empty($sa)){
 			$as		= $fw->getAdvancedSettings();
 
 			// need to get F2B status like this way when this one is launch through cron job.
-			$out = shell_exec("pgrep -f fail2ban-server"); 
+			$out = shell_exec("pgrep -f fail2ban-server");
+			$flush = $fw->flush_fail2ban_whitelist($as["id_sync_fw"]);
+			if($flush != "ok"){
+				$output->writeln($flush);
+				$time = 0;
+				while($time++ < 30){
+					// Let's wait a new process before syncing.
+					$out2 = shell_exec("pgrep -f fail2ban-server"); 
+					$progressBar->advance();
+					if($out != $out2){
+						if($out2 == $out3){
+							break;
+						}
+					}
+					sleep(1);
+					$out3 = shell_exec("pgrep -f fail2ban-server"); 
+				}
+				$progressBar->finish();
+				$output->writeln("");
+			}			
+
 			if (!empty($out) && trim($as["id_sync_fw"]) != "legacy"){
 				$output->writeln("<info>"._("Syncing....")."</info>");
 				$fw->updateWhitelist($fw->getipzone("all"));
