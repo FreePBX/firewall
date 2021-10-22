@@ -73,7 +73,6 @@ class OOBE {
 		$question = $_REQUEST['question'];
 
 		$qs = $this->getPendingOobeQuestions();
-		dbug($qs);
 		if (!in_array($question, $qs)) {
 			throw new \Exception("Tried to answer a question that wasn't asked");
 		}
