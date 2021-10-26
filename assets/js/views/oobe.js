@@ -55,9 +55,9 @@ function processQuestion(q) {
 	h += "</div>";
 	// Buttons.
 	if (q.default === "yes") {
-		b = "<div class='pull-right clearfix'><button type='button' class='btn btn-default' onClick='buttonNo()'>No</button><button type='button' class='btn btn-default' onclick='buttonYes()'>Yes</button></div>";
+		b = "<div class='pull-right clearfix'><button type='button' class='btn btn-default' onClick='buttonNo()'>No</button><button type='button' class='btn btn-default active' onclick='buttonYes()'>Yes</button></div>";
 	} else {
-		b = "<div class='pull-right clearfix'><button type='button' onClick='buttonNo()' class='btn btn-default'>No</button><button type='button' onClick='buttonYes()' class='btn btn-default'>Yes</button></div>";
+		b = "<div class='pull-right clearfix'><button type='button' class='btn btn-default active' onClick='buttonNo()'>No</button><button type='button' class='btn btn-default' onClick='buttonYes()'>Yes</button></div>";
 	}
 	$("#qdiv").html(h);
 	$("#buttonsdiv").html(b);
@@ -86,4 +86,3 @@ function submitAnswer(q, ans) {
 		success: function(data) { getQuestion(); },
 	});
 }
-
