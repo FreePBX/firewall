@@ -13,7 +13,16 @@ class OOBE {
 			throw new \Exception("No firewall object given");
 		}
 		$this->fw = $fw;
+		$thisnet = $this->fw->detectNetwork();
+		list($net, $mask) = explode("/", $thisnet);		
 		$this->questions = array("enabletrustedhost", "enabletrustednet", "enableresponsive", "othernets", "externsetup");
+		if($this->CheckPrivate($net) !== false){
+			$this->questions = array("enabletrustedhost", "enableresponsive", "othernets", "externsetup");
+		}
+	}
+
+	private function CheckPrivate($ip) {
+		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE |  FILTER_FLAG_NO_RES_RANGE);
 	}
 
 	public function oobeRequest() {
@@ -159,12 +168,13 @@ class OOBE {
 			_("If this is a known secure network, you should add it to the Trusted zone"),
 		);
 		$retarr['helptext'] = $helptext;
-		list($net, $mask) = explode("/", $thisnet);
+		list($net, $mask) = explode("/", $thisnet);		
 		if (filter_var($net, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-			$retarr['alert'] = _("As you are connecting from an IPv6 network it is <strong>highly recommended</strong> to add this network, as IPv6 security extensions may unexpectedly change your IP address.");
+			$retarr['alert'] = sprintf(_("As you are connecting from an IPv6 network, it is %s highly recommended %s to add this network, as IPv6 security extensions may unexpectedly change your IP address."), "<strong>", "</strong>");
 			$retarr['alerttype'] = "danger";
 			$retarr['default'] = "yes";
-		} else {
+		} 
+		else{
 			$retarr['alert'] = _("Please ensure that you are not inadvertently allowing unauthorized hosts access to your machine. You should only select 'Yes' if you are sure the network (above) is not accessible by any unknown third parties.");
 			$retarr['alerttype'] = "warning";
 		}
