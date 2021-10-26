@@ -467,12 +467,13 @@ class Services {
 	}
 
 	private function getSvc_vpn() {
+		$port = \FreePBX::Sysadmin()->getVars('vpnserver_port',array('vpnserver_port'=>1194));
 		$retarr = array(
 			"name" => _("OpenVPN Server"),
 			"defzones" => array("external", "other", "internal"),
 			"descr" => _("This allows clients to connect to an OpenVPN server running on this machine. This is an inherently secure protocol."),
 			"fw" => array(
-				array("protocol" => "udp", "port" => 1194)
+				array("protocol" => "udp", "port" => $port)
 			),
 		);
 		return $retarr;
