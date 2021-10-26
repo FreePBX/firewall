@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-20 08:37+0000\n"
+"POT-Creation-Date: 2021-10-26 06:20+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -280,15 +280,13 @@ msgstr ""
 "Vì máy này gần đây đã được khởi động lại, tường lửa <strong>temporarily</"
 "strong> đang chạy trong Chế độ An toàn, không áp dụng các nguyên tắc."
 
-#: OOBE.class.php:164
+#: OOBE.class.php:172
+#, php-format
 msgid ""
-"As you are connecting from an IPv6 network it is <strong>highly recommended</"
-"strong> to add this network, as IPv6 security extensions may unexpectedly "
-"change your IP address."
+"As you are connecting from an IPv6 network, it is %s highly recommended %s "
+"to add this network, as IPv6 security extensions may unexpectedly change "
+"your IP address."
 msgstr ""
-"Khi bạn đang kết nối từ một mạng IPv6, mạng này <strong>được khuyến cáo</"
-"strong> nên thêm vào vì những máy nhánh bảo mật IPv6 có thể bất ngờ thay đổi "
-"địa chỉ IP của bạn một."
 
 #: views/view.networks.php:15
 msgid "Assigned Zone"
@@ -319,7 +317,7 @@ msgstr "Đang cố xóa %s khỏi Vùng '%s\"... "
 msgid "Automatically add hosts from file /etc/hosts to Trusted Zone"
 msgstr ""
 
-#: OOBE.class.php:232
+#: OOBE.class.php:241
 msgid "Automatically configure Asterisk IP Settings?"
 msgstr "Tự động cấu hình Các cài đặt IP Asterisk?"
 
@@ -560,7 +558,7 @@ msgstr ""
 msgid "Enable / Disable Intrusion Detection service on boot."
 msgstr ""
 
-#: OOBE.class.php:196
+#: OOBE.class.php:205
 msgid "Enable Responsive Firewall?"
 msgstr "Kích hoạt Responsive Firewall?"
 
@@ -590,7 +588,7 @@ msgstr ""
 msgid "Enabling Firewall."
 msgstr "Đang kích hoạt Firewall."
 
-#: OOBE.class.php:198
+#: OOBE.class.php:207
 msgid ""
 "Enabling Responsive Firewall allows remote clients to securely register to "
 "this server without explicitly whitelisting them."
@@ -652,7 +650,7 @@ msgid ""
 "untrusted sources"
 msgstr ""
 
-#: OOBE.class.php:247
+#: OOBE.class.php:256
 #, php-format
 msgid "External Address: %s"
 msgstr "Địa chỉ bên ngoài: %s"
@@ -726,7 +724,7 @@ msgstr "Firewall vãn chưa được khởi động!"
 msgid "Firewall is not enabled, can't disable it"
 msgstr "Firewall không được kích hoạt, không thể vô hiệu hóa nó"
 
-#: OOBE.class.php:234
+#: OOBE.class.php:243
 msgid ""
 "Firewall should now auto-detect and configure External IP settings. This "
 "will assist with NAT or Translation issues."
@@ -760,7 +758,7 @@ msgstr ""
 msgid "Force Add/Removal of entry"
 msgstr "Bắt buộc Them/Xóa bỏ Mục nhập"
 
-#: OOBE.class.php:200
+#: OOBE.class.php:209
 msgid "Further information is available at the PBX Wiki."
 msgstr "Các thông tin khác có sẵn tại  PBX Wiki."
 
@@ -877,7 +875,7 @@ msgstr ""
 "'Known Good\". điều này sẽ cho phép sử dụng giao thức đó và được cấp thêm "
 "quyền truy nhập vào UCP nếu UCP được kích hoạt."
 
-#: OOBE.class.php:159
+#: OOBE.class.php:167
 msgid ""
 "If this is a known secure network, you should add it to the Trusted zone"
 msgstr ""
@@ -1031,7 +1029,7 @@ msgstr ""
 "tiếp tới các trung kế đã biết ( Ví dụ các nhà cung cấp VoIP), và cho phép "
 "bạn giới hạn các dịch vụ mà máy này cung cấp cho các máy khách."
 
-#: OOBE.class.php:126
+#: OOBE.class.php:134
 #, php-format
 msgid ""
 "It is highly recommended that the client you're currently using (%s) should "
@@ -1041,7 +1039,7 @@ msgstr ""
 "Khuyến cáo rằng máy khách bạn đang sử dụng (%s) nên được đánh dấu là Trusted "
 "( An toàn). Điều này sẽ đảm bảo bạn sẽ không bị máy chủ này khóa đột ngột."
 
-#: OOBE.class.php:199
+#: OOBE.class.php:208
 msgid "It is recommended to turn this on if you have remote clients."
 msgstr "Nếu bạn có các máy khách từ xa thì khuyến cáo nên bật nó lên."
 
@@ -1055,7 +1053,7 @@ msgstr ""
 msgid "Known Network Definitions"
 msgstr "Các định nghĩa mạng đã biết"
 
-#: OOBE.class.php:248
+#: OOBE.class.php:257
 msgid "Known Networks:"
 msgstr "Các mạng đã biết:"
 
@@ -1331,7 +1329,7 @@ msgstr ""
 "các mã bảo mật SIP (SIP Secrets) sẽ có sẵn cho những kẻ tấn công mà những kẻ "
 "này có thể giải được các mật mã đó."
 
-#: OOBE.class.php:168
+#: OOBE.class.php:177
 msgid ""
 "Please ensure that you are not inadvertently allowing unauthorized hosts "
 "access to your machine. You should only select 'Yes' if you are sure the "
@@ -1496,7 +1494,7 @@ msgstr ""
 "lĩnh hội và tự động cấp phép cho các thiết bị mà không cần tự động cấu hình "
 "chúng."
 
-#: OOBE.class.php:205
+#: OOBE.class.php:214
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
 msgstr "Responsive Firewall <strong>hiện đã được kích hoạt</strong>."
 
@@ -1571,7 +1569,7 @@ msgstr ""
 "nhiên bằng cách tạm thời vô hiệu firewall nếu máy được khởi động lại 2 lần "
 "liên tục."
 
-#: OOBE.class.php:34
+#: OOBE.class.php:42
 msgid "Sangoma Smart Firewall"
 msgstr "Tường lửa thông minh Sangoma Smart Firewall"
 
@@ -1600,7 +1598,7 @@ msgstr ""
 msgid "See Custom Service page"
 msgstr "Xem trang Custom Service (Dịch vụ tùy chỉnh)"
 
-#: OOBE.class.php:246
+#: OOBE.class.php:255
 msgid ""
 "Selecting 'Yes' will update your current configuration. Selecting 'No' will "
 "not change your current settings."
@@ -1628,11 +1626,11 @@ msgstr ""
 msgid "Settings"
 msgstr "Các cài đặt"
 
-#: OOBE.class.php:124
+#: OOBE.class.php:132
 msgid "Should the client you're using be trusted?"
 msgstr "Liệu máy khách bạn đang sử dụng có an toàn?"
 
-#: OOBE.class.php:153
+#: OOBE.class.php:161
 msgid "Should your current network be trusted?"
 msgstr "Liệu mạng hiện tại của bạn có an toàn?"
 
@@ -1772,7 +1770,7 @@ msgstr ""
 msgid "The firewall module is not enabled!"
 msgstr "Mô đun firewall không được kích hoạt!"
 
-#: OOBE.class.php:158
+#: OOBE.class.php:166
 #, php-format
 msgid ""
 "The network you are currently using (%s) to manage this server isn't marked "
@@ -2145,7 +2143,7 @@ msgstr ""
 msgid "Updating..."
 msgstr "Đang cập nhật..."
 
-#: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
+#: OOBE.class.php:214 OOBE.class.php:255 views/disabled.php:6
 msgid "Warning"
 msgstr "Cảnh báo"
 
@@ -2273,7 +2271,7 @@ msgid ""
 "you can select Clear All to remove all entries from the whitelist.'"
 msgstr ""
 
-#: OOBE.class.php:236
+#: OOBE.class.php:245
 msgid ""
 "You can verify these settings in Sip Settings after this wizard is complete. "
 "If you have a non-static IP address, you may need to use a DDNS provider "
@@ -2291,7 +2289,7 @@ msgstr ""
 "Bạn sẽ nhập các hostname ở đây ( bao gồm các host DNS) mà chúng sẽ được cập "
 "nhật và điều khiển tự động."
 
-#: OOBE.class.php:235
+#: OOBE.class.php:244
 msgid ""
 "You should say 'Yes' to this, unless you have an extremely complex network "
 "with multiple external default gateways."
@@ -2299,7 +2297,7 @@ msgstr ""
 "Bạn nên cài về 'Yes' trừ khi bạn có một mạng cực kỳ phức tạp với nhiều cổng "
 "mặc định từ bên ngoài."
 
-#: OOBE.class.php:127
+#: OOBE.class.php:135
 msgid ""
 "You would normally select <strong>Yes</strong> to this question. The only "
 "time you would pick No is if you are not using the client machine you will "
@@ -2359,6 +2357,15 @@ msgstr ""
 "Là một tường lửa kết hợp chặt chẽ và tích hợp đầy đủ để có thể giám sát liên "
 "tục các máy khách từ xa được cho phép kết nối với máy này và tự động cho "
 "phép truy nhập từ các host hợp lệ."
+
+#~ msgid ""
+#~ "As you are connecting from an IPv6 network it is <strong>highly "
+#~ "recommended</strong> to add this network, as IPv6 security extensions may "
+#~ "unexpectedly change your IP address."
+#~ msgstr ""
+#~ "Khi bạn đang kết nối từ một mạng IPv6, mạng này <strong>được khuyến cáo</"
+#~ "strong> nên thêm vào vì những máy nhánh bảo mật IPv6 có thể bất ngờ thay "
+#~ "đổi địa chỉ IP của bạn một."
 
 #~ msgid "Zulu UC "
 #~ msgstr "Zulu UC "

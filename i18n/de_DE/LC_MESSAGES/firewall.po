@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-20 08:37+0000\n"
+"POT-Creation-Date: 2021-10-26 06:20+0000\n"
 "PO-Revision-Date: 2020-02-05 10:00+0000\n"
 "Last-Translator: florian alberts <alberts@ar-systems.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -284,15 +284,13 @@ msgstr ""
 "<strong>vorübergehend</strong> im abgesicherten Modus, es werden keine "
 "Regeln angewendet."
 
-#: OOBE.class.php:164
+#: OOBE.class.php:172
+#, php-format
 msgid ""
-"As you are connecting from an IPv6 network it is <strong>highly recommended</"
-"strong> to add this network, as IPv6 security extensions may unexpectedly "
-"change your IP address."
+"As you are connecting from an IPv6 network, it is %s highly recommended %s "
+"to add this network, as IPv6 security extensions may unexpectedly change "
+"your IP address."
 msgstr ""
-"Da man sich von einem IPv6-Netzwerk aus verbindet, ist es <strong>stark "
-"empfohlen</strong>, dieses Netzwerk hinzuzufügen, da IPv6 Sicherheits-"
-"Extensions unerwartet die IP-Adresse ändern können."
 
 #: views/view.networks.php:15
 msgid "Assigned Zone"
@@ -323,7 +321,7 @@ msgstr "Versuche, „%s“ aus der Zone „%s“ zu entfernen… "
 msgid "Automatically add hosts from file /etc/hosts to Trusted Zone"
 msgstr ""
 
-#: OOBE.class.php:232
+#: OOBE.class.php:241
 msgid "Automatically configure Asterisk IP Settings?"
 msgstr "Asterisk IP-Einstellungen automatisch konfigurieren?"
 
@@ -562,7 +560,7 @@ msgstr ""
 msgid "Enable / Disable Intrusion Detection service on boot."
 msgstr ""
 
-#: OOBE.class.php:196
+#: OOBE.class.php:205
 msgid "Enable Responsive Firewall?"
 msgstr "Responsive Firewall aktivieren?"
 
@@ -593,7 +591,7 @@ msgstr ""
 msgid "Enabling Firewall."
 msgstr "Aktivieren der Firewall."
 
-#: OOBE.class.php:198
+#: OOBE.class.php:207
 msgid ""
 "Enabling Responsive Firewall allows remote clients to securely register to "
 "this server without explicitly whitelisting them."
@@ -652,7 +650,7 @@ msgid ""
 "untrusted sources"
 msgstr ""
 
-#: OOBE.class.php:247
+#: OOBE.class.php:256
 #, php-format
 msgid "External Address: %s"
 msgstr "Externe Adresse: %s"
@@ -727,7 +725,7 @@ msgstr "Die Firewall ist noch nicht gestartet!"
 msgid "Firewall is not enabled, can't disable it"
 msgstr "Kann die Firewall nicht deaktivieren, da sie nicht aktiviert ist"
 
-#: OOBE.class.php:234
+#: OOBE.class.php:243
 msgid ""
 "Firewall should now auto-detect and configure External IP settings. This "
 "will assist with NAT or Translation issues."
@@ -762,7 +760,7 @@ msgstr ""
 msgid "Force Add/Removal of entry"
 msgstr "Hinzufügen / Entfernen des Eintrags erzwingen"
 
-#: OOBE.class.php:200
+#: OOBE.class.php:209
 msgid "Further information is available at the PBX Wiki."
 msgstr "Weitere Informationen finden Sie im PBX-Wiki."
 
@@ -875,7 +873,7 @@ msgid ""
 "additionally granted access to UCP, if UCP is enabled."
 msgstr ""
 
-#: OOBE.class.php:159
+#: OOBE.class.php:167
 msgid ""
 "If this is a known secure network, you should add it to the Trusted zone"
 msgstr ""
@@ -1006,7 +1004,7 @@ msgid ""
 "you to limit the services this machine provides to clients."
 msgstr ""
 
-#: OOBE.class.php:126
+#: OOBE.class.php:134
 #, php-format
 msgid ""
 "It is highly recommended that the client you're currently using (%s) should "
@@ -1014,7 +1012,7 @@ msgid ""
 "locked out of this server."
 msgstr ""
 
-#: OOBE.class.php:199
+#: OOBE.class.php:208
 msgid "It is recommended to turn this on if you have remote clients."
 msgstr "Es wird empfohlen, dies einzuschalten, wenn Sie Remote-Clients haben."
 
@@ -1028,7 +1026,7 @@ msgstr ""
 msgid "Known Network Definitions"
 msgstr ""
 
-#: OOBE.class.php:248
+#: OOBE.class.php:257
 msgid "Known Networks:"
 msgstr "Bekannte Netzwerke:"
 
@@ -1287,7 +1285,7 @@ msgid ""
 "a knowledgable attacker."
 msgstr ""
 
-#: OOBE.class.php:168
+#: OOBE.class.php:177
 msgid ""
 "Please ensure that you are not inadvertently allowing unauthorized hosts "
 "access to your machine. You should only select 'Yes' if you are sure the "
@@ -1434,7 +1432,7 @@ msgid ""
 "authorized devices, without the need to manually configure them."
 msgstr ""
 
-#: OOBE.class.php:205
+#: OOBE.class.php:214
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
 msgstr "Responsive Firewall ist <strong>derzeit aktiviert</strong>."
 
@@ -1509,7 +1507,7 @@ msgstr ""
 "Fehlkonfiguration zu beheben, indem die Firewall deaktiviert wird, wenn das "
 "System zweimal hintereinander neugestartet wird."
 
-#: OOBE.class.php:34
+#: OOBE.class.php:42
 msgid "Sangoma Smart Firewall"
 msgstr "Sangoma Smart Firewall"
 
@@ -1536,7 +1534,7 @@ msgstr ""
 msgid "See Custom Service page"
 msgstr "Siehe Seite für benutzerdefinierte Dienste"
 
-#: OOBE.class.php:246
+#: OOBE.class.php:255
 msgid ""
 "Selecting 'Yes' will update your current configuration. Selecting 'No' will "
 "not change your current settings."
@@ -1564,11 +1562,11 @@ msgstr ""
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: OOBE.class.php:124
+#: OOBE.class.php:132
 msgid "Should the client you're using be trusted?"
 msgstr "Soll dem Rechner, den Sie verwenden, vertraut werden?"
 
-#: OOBE.class.php:153
+#: OOBE.class.php:161
 msgid "Should your current network be trusted?"
 msgstr "Soll Ihrem momentanen Netzwerk vertraut werden?"
 
@@ -1706,7 +1704,7 @@ msgstr ""
 msgid "The firewall module is not enabled!"
 msgstr "Das Firewall-Modul ist nicht aktiviert!"
 
-#: OOBE.class.php:158
+#: OOBE.class.php:166
 #, php-format
 msgid ""
 "The network you are currently using (%s) to manage this server isn't marked "
@@ -2056,7 +2054,7 @@ msgstr ""
 msgid "Updating..."
 msgstr "Aktualisiere..."
 
-#: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
+#: OOBE.class.php:214 OOBE.class.php:255 views/disabled.php:6
 msgid "Warning"
 msgstr "Warnung"
 
@@ -2172,7 +2170,7 @@ msgid ""
 "you can select Clear All to remove all entries from the whitelist.'"
 msgstr ""
 
-#: OOBE.class.php:236
+#: OOBE.class.php:245
 msgid ""
 "You can verify these settings in Sip Settings after this wizard is complete. "
 "If you have a non-static IP address, you may need to use a DDNS provider "
@@ -2191,7 +2189,7 @@ msgstr ""
 "Sie können hier auch Hostnamen eingeben (einschließlich dynamischer DNS-"
 "Hosts), die automatisch überwacht und aktualisiert werden."
 
-#: OOBE.class.php:235
+#: OOBE.class.php:244
 msgid ""
 "You should say 'Yes' to this, unless you have an extremely complex network "
 "with multiple external default gateways."
@@ -2199,7 +2197,7 @@ msgstr ""
 "Sie sollten dazu 'Ja' sagen, es sei denn, Sie haben ein äußerst komplexes "
 "Netzwerk mit mehreren externen Standardgateways."
 
-#: OOBE.class.php:127
+#: OOBE.class.php:135
 msgid ""
 "You would normally select <strong>Yes</strong> to this question. The only "
 "time you would pick No is if you are not using the client machine you will "
@@ -2264,6 +2262,15 @@ msgstr ""
 "ist eine vollständig integrierte und eng verbundene Firewall, die ständig "
 "überwacht, welche Remoteclients eine Verbindung zu diesem Computer "
 "herstellen dürfen, und den Zugriff von gültigen Hosts automatisch ermöglicht."
+
+#~ msgid ""
+#~ "As you are connecting from an IPv6 network it is <strong>highly "
+#~ "recommended</strong> to add this network, as IPv6 security extensions may "
+#~ "unexpectedly change your IP address."
+#~ msgstr ""
+#~ "Da man sich von einem IPv6-Netzwerk aus verbindet, ist es <strong>stark "
+#~ "empfohlen</strong>, dieses Netzwerk hinzuzufügen, da IPv6 Sicherheits-"
+#~ "Extensions unerwartet die IP-Adresse ändern können."
 
 #~ msgid ""
 #~ "This will allow access to the LetsEncrypt service on Port 80, when it is "
