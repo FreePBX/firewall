@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-20 08:44+0000\n"
+"POT-Creation-Date: 2021-10-26 06:39+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -55,12 +55,12 @@ msgstr ""
 msgid "%s Files Restored OK"
 msgstr ""
 
-#: Services.class.php:669
+#: Services.class.php:670
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr "%s ist eine web-basierte Lösung zur Anrufverwaltung."
 
-#: Services.class.php:665
+#: Services.class.php:666
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s ist nicht richtig konfiguriert."
@@ -392,11 +392,12 @@ msgid ""
 "<strong>temporarily</strong> running in Safe Mode, with no rules applied."
 msgstr ""
 
-#: OOBE.class.php:164
+#: OOBE.class.php:173
+#, php-format
 msgid ""
-"As you are connecting from an IPv6 network it is <strong>highly recommended</"
-"strong> to add this network, as IPv6 security extensions may unexpectedly "
-"change your IP address."
+"As you are connecting from an IPv6 network, it is %s highly recommended %s "
+"to add this network, as IPv6 security extensions may unexpectedly change "
+"your IP address."
 msgstr ""
 
 #: views/view.networks.php:15
@@ -427,7 +428,7 @@ msgstr ""
 msgid "Automatically add hosts from file /etc/hosts to Trusted Zone"
 msgstr ""
 
-#: OOBE.class.php:232
+#: OOBE.class.php:242
 msgid "Automatically configure Asterisk IP Settings?"
 msgstr "Asterisk IP-Einstellungen automatisch konfigurieren?"
 
@@ -713,7 +714,7 @@ msgstr ""
 msgid "Enable / Disable Intrusion Detection service on boot."
 msgstr ""
 
-#: OOBE.class.php:196
+#: OOBE.class.php:206
 msgid "Enable Responsive Firewall?"
 msgstr "Responsive Firewall aktivieren?"
 
@@ -743,7 +744,7 @@ msgstr ""
 msgid "Enabling Firewall."
 msgstr "Aktivieren der Firewall."
 
-#: OOBE.class.php:198
+#: OOBE.class.php:208
 msgid ""
 "Enabling Responsive Firewall allows remote clients to securely register to "
 "this server without explicitly whitelisting them."
@@ -821,7 +822,7 @@ msgid ""
 "untrusted sources"
 msgstr ""
 
-#: OOBE.class.php:247
+#: OOBE.class.php:257
 #, php-format
 msgid "External Address: %s"
 msgstr "Externe Adresse: %s"
@@ -830,11 +831,11 @@ msgstr "Externe Adresse: %s"
 msgid "Extra Services"
 msgstr "Zusatzleistungen"
 
-#: Services.class.php:549
+#: Services.class.php:550
 msgid "FTP"
 msgstr "FTP"
 
-#: Services.class.php:551
+#: Services.class.php:552
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -925,7 +926,7 @@ msgstr "Kann die Firewall nicht deaktivieren, da sie nicht aktiviert ist"
 msgid "Firewall recovery rules: %s"
 msgstr ""
 
-#: OOBE.class.php:234
+#: OOBE.class.php:244
 msgid ""
 "Firewall should now auto-detect and configure External IP settings. This "
 "will assist with NAT or Translation issues."
@@ -956,7 +957,7 @@ msgstr ""
 msgid "Force Add/Removal of entry"
 msgstr "Hinzufügen / Entfernen des Eintrags erzwingen"
 
-#: OOBE.class.php:200
+#: OOBE.class.php:210
 msgid "Further information is available at the PBX Wiki."
 msgstr ""
 
@@ -969,7 +970,7 @@ msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
 "HTTP-Bereitstellung ist beim Port-Management im System-Admin deaktiviert"
 
-#: Services.class.php:499
+#: Services.class.php:500
 msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTP-REST Apps sind beim Port-Management im System-Admin deaktiviert"
 
@@ -982,7 +983,7 @@ msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
 "HTTPS-Bereitstellung ist beim Port-Management im System-Admin deaktiviert"
 
-#: Services.class.php:527
+#: Services.class.php:528
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTPS-REST-Apps sind beim Port-Management im System-Admin deaktiviert"
 
@@ -1091,7 +1092,7 @@ msgid ""
 "additionally granted access to UCP, if UCP is enabled."
 msgstr ""
 
-#: OOBE.class.php:159
+#: OOBE.class.php:168
 msgid ""
 "If this is a known secure network, you should add it to the Trusted zone"
 msgstr ""
@@ -1242,7 +1243,7 @@ msgid ""
 "you to limit the services this machine provides to clients."
 msgstr ""
 
-#: OOBE.class.php:126
+#: OOBE.class.php:135
 #, php-format
 msgid ""
 "It is highly recommended that the client you're currently using (%s) should "
@@ -1250,7 +1251,7 @@ msgid ""
 "locked out of this server."
 msgstr ""
 
-#: OOBE.class.php:199
+#: OOBE.class.php:209
 msgid "It is recommended to turn this on if you have remote clients."
 msgstr "Es wird empfohlen, dies einzuschalten, wenn Sie Remote-Clients haben."
 
@@ -1264,7 +1265,7 @@ msgstr ""
 msgid "Known Network Definitions"
 msgstr ""
 
-#: OOBE.class.php:248
+#: OOBE.class.php:258
 msgid "Known Networks:"
 msgstr "Bekannte Netzwerke:"
 
@@ -1427,11 +1428,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:572
+#: Services.class.php:573
 msgid "NFS"
 msgstr "NFS"
 
-#: Services.class.php:579
+#: Services.class.php:580
 msgid "NFS Services are not available on this machine"
 msgstr "NFS-Dienste sind auf dieser Maschine nicht verfügbar"
 
@@ -1564,7 +1565,7 @@ msgstr "Anzahl der aktuell geblockten Angreifer:"
 msgid "Number of seconds before attempts are reset."
 msgstr ""
 
-#: Services.class.php:471
+#: Services.class.php:472
 msgid "OpenVPN Server"
 msgstr ""
 
@@ -1604,7 +1605,7 @@ msgid ""
 "a knowledgable attacker."
 msgstr ""
 
-#: OOBE.class.php:168
+#: OOBE.class.php:178
 msgid ""
 "Please ensure that you are not inadvertently allowing unauthorized hosts "
 "access to your machine. You should only select 'Yes' if you are sure the "
@@ -1686,19 +1687,19 @@ msgstr "Protokoll: TCP und UDP"
 msgid "Protocol: UDP"
 msgstr "Protokoll: UDP"
 
-#: Services.class.php:483
+#: Services.class.php:484
 msgid "REST Apps (HTTP)"
 msgstr "REST-Apps (HTTP)"
 
-#: Services.class.php:511
+#: Services.class.php:512
 msgid "REST Apps (HTTPS)"
 msgstr "REST-Apps (HTTPS)"
 
-#: Services.class.php:503 Services.class.php:531
+#: Services.class.php:504 Services.class.php:532
 msgid "REST Apps are only available with System Admin"
 msgstr "REST-Apps sind nur mit System-Admin verfügbar"
 
-#: Services.class.php:485 Services.class.php:513
+#: Services.class.php:486 Services.class.php:514
 msgid ""
 "REST Apps are used with intelligent phones to provide an interactive "
 "interface from the phone itself. Note that any devices that are allowed "
@@ -1785,7 +1786,7 @@ msgid ""
 "authorized devices, without the need to manually configure them."
 msgstr ""
 
-#: OOBE.class.php:205
+#: OOBE.class.php:215
 msgid "Responsive Firewall is <strong>currently enabled</strong>."
 msgstr "Responsive Firewall ist <strong>derzeit aktiviert</strong>."
 
@@ -1817,15 +1818,15 @@ msgstr "SIP Protokoll"
 msgid "SIP Protocol (pjsip)"
 msgstr "SIP Protokoll (pjsip)"
 
-#: Services.class.php:629
+#: Services.class.php:630
 msgid "SMB/CIFS"
 msgstr "SMB/CIFS"
 
-#: Services.class.php:635
+#: Services.class.php:636
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr "SMB/CIFS (Samba) ist auf dieser Maschine nicht Installiert"
 
-#: Services.class.php:638
+#: Services.class.php:639
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -1852,7 +1853,7 @@ msgid ""
 "rebooted two times in succession."
 msgstr ""
 
-#: OOBE.class.php:34
+#: OOBE.class.php:43
 msgid "Sangoma Smart Firewall"
 msgstr "Sangoma Smart Firewall"
 
@@ -1883,7 +1884,7 @@ msgstr ""
 msgid "See Custom Service page"
 msgstr "Siehe Seite für benutzerdefinierte Dienste"
 
-#: OOBE.class.php:246
+#: OOBE.class.php:256
 msgid ""
 "Selecting 'Yes' will update your current configuration. Selecting 'No' will "
 "not change your current settings."
@@ -1935,11 +1936,11 @@ msgstr ""
 msgid "Settings"
 msgstr "Einstellung"
 
-#: OOBE.class.php:124
+#: OOBE.class.php:133
 msgid "Should the client you're using be trusted?"
 msgstr ""
 
-#: OOBE.class.php:153
+#: OOBE.class.php:162
 msgid "Should your current network be trusted?"
 msgstr ""
 
@@ -2089,11 +2090,11 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:559
+#: Services.class.php:560
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:561
+#: Services.class.php:562
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
@@ -2157,7 +2158,7 @@ msgstr ""
 msgid "The firewall module is not enabled!"
 msgstr ""
 
-#: OOBE.class.php:158
+#: OOBE.class.php:167
 #, php-format
 msgid ""
 "The network you are currently using (%s) to manage this server isn't marked "
@@ -2196,7 +2197,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:473
+#: Services.class.php:474
 msgid ""
 "This allows clients to connect to an OpenVPN server running on this machine. "
 "This is an inherently secure protocol."
@@ -2209,7 +2210,7 @@ msgid ""
 "is enabled."
 msgstr ""
 
-#: Services.class.php:582
+#: Services.class.php:583
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -2288,7 +2289,7 @@ msgstr ""
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:541
+#: Services.class.php:542
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
@@ -2511,7 +2512,7 @@ msgstr ""
 msgid "Warnging:"
 msgstr ""
 
-#: OOBE.class.php:205 OOBE.class.php:246 views/disabled.php:6
+#: OOBE.class.php:215 OOBE.class.php:256 views/disabled.php:6
 msgid "Warning"
 msgstr "Warnung"
 
@@ -2594,7 +2595,7 @@ msgstr ""
 msgid "Write to firewall"
 msgstr ""
 
-#: Services.class.php:539
+#: Services.class.php:540
 msgid "XMPP"
 msgstr "XMPP"
 
@@ -2630,7 +2631,7 @@ msgid ""
 "you can select Clear All to remove all entries from the whitelist.'"
 msgstr ""
 
-#: OOBE.class.php:236
+#: OOBE.class.php:246
 msgid ""
 "You can verify these settings in Sip Settings after this wizard is complete. "
 "If you have a non-static IP address, you may need to use a DDNS provider "
@@ -2643,13 +2644,13 @@ msgid ""
 "be automatically monitored and updated."
 msgstr ""
 
-#: OOBE.class.php:235
+#: OOBE.class.php:245
 msgid ""
 "You should say 'Yes' to this, unless you have an extremely complex network "
 "with multiple external default gateways."
 msgstr ""
 
-#: OOBE.class.php:127
+#: OOBE.class.php:136
 msgid ""
 "You would normally select <strong>Yes</strong> to this question. The only "
 "time you would pick No is if you are not using the client machine you will "
@@ -2704,7 +2705,7 @@ msgstr ""
 msgid "function"
 msgstr ""
 
-#: Services.class.php:683
+#: Services.class.php:684
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
