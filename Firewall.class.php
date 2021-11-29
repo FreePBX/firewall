@@ -1946,6 +1946,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				$cron->remove($line);
 			}
 		}
+		\FreePBX::Job()->remove('firewall', 'syncIDetection');
 	}
 
 	// Create a cron job that runs every 15 mins that tries to restart firewall
