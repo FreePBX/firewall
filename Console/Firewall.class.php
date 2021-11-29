@@ -235,7 +235,6 @@ class Firewall extends Command {
 							break;
 						case ($ptime >= 550):
 							$msg = "<info>"._("synchronization overlap. Canceling this action for now.")."</info>";
-							break;
 						case ($ptime >= 850):
 							/**
 							 * We protect the case for the key"syncing" where it will not be updated for any reason
