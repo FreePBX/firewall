@@ -323,11 +323,13 @@ function save_ids(){
 	$.ajax({
 		url: window.FreePBX.ajaxurl,
 		data: d,
-		success: function(){
+		success: function(data){
+			if(data.status == false){
+				fpbxToast(data.message,'Note','warning');
+			}			
 			$("#needApply").hide();
 		},
 		complete: function(data) {
-			
 			window.location.href = window.location.href;
 		}
 	});

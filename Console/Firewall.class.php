@@ -183,10 +183,18 @@ class Firewall extends Command {
 		$progressBar= new ProgressBar($output, 30);
 
 		if(!empty($sa)){
-			$as		= $fw->getAdvancedSettings();
+			$as			= $fw->getAdvancedSettings();
 
-			// need to get F2B status like this way when this one is launch through cron job.
-			$out = shell_exec("pgrep -f fail2ban-server");
+			// need to get F2B and firewall status like this way when this one is launch through cron job.
+			$out 		= shell_exec("pgrep -f fail2ban-server");
+			$voipd 		= shell_exec("pgrep -f voipfirewalld");
+			$fwstatus 	= $fw->getConfig("status");
+			if(empty($voipd) || empty($fwstatus)){
+				dbug("The Firewall is not started. Syncing Process canceled.");
+				$output->writeln("<error>"._("The Firewall is not started. Syncing Process canceled.")."</error>");
+				exit();
+			}
+
 			$flush = $fw->flush_fail2ban_whitelist($as["id_sync_fw"]);
 			if($flush != "ok"){
 				$output->writeln($flush);
@@ -206,10 +214,41 @@ class Firewall extends Command {
 				$progressBar->finish();
 				$output->writeln("");
 			}			
-
+			
 			if (!empty($out) && trim($as["id_sync_fw"]) != "legacy"){
-				$output->writeln("<info>"._("Syncing....")."</info>");
-				$fw->updateWhitelist($fw->getipzone("all"));
+				$syncing = $fw->getConfig("syncing");
+				if(empty($syncing)){
+					$fw->setConfig("syncing", "no");
+					$syncing = $fw->getConfig("syncing");
+				}
+
+				if($syncing == "no"){
+					$fw->setConfig("syncing", strtotime("now"));
+					$output->writeln("<info>"._("Syncing....")."</info>");
+					$fw->updateWhitelist($fw->getipzone("all"));					
+				}
+				else{
+					$ptime=(strtotime("now") - $syncing);
+					switch($ptime){
+						case ($ptime < 250):
+							$msg = "<info>"._("Syncing cannot be performed because another synchronization is still in progress.")."</info>";
+							break;
+						case ($ptime >= 550):
+							$msg = "<info>"._("synchronization overlap. Canceling this action for now.")."</info>";
+							break;
+						case ($ptime >= 850):
+							/**
+							 * We protect the case for the key"syncing" where it will not be updated for any reason
+							 * and force the value to "no" for allowing another synchronization.
+							 * Otherwise, the risk will be to lock the syncing for ever.
+							 * For resume, the unlocling will be done in about 15mn.
+							 */
+							$msg = "<info>".sprintf(_("Syncing takes a long time. No news for %d seconds. Unlocking syncing. Please check logs."), $ptime)."</info>";
+							$fw->setConfig("syncing", "no");
+							break;
+					}
+					$output->writeln($msg);					
+				}
 			}
 			elseif($as["id_sync_fw"] == "legacy"){
 				$output->writeln("<error>"._("Syncing cannot be performed because the Intrusion Detection Sync Firewall setting is set to Legacy mode.")."</error>");
