@@ -1069,7 +1069,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$t++;
 			if($t >= $maxtime){
 				dbug("Refresh dynamic ignoreip, timeout exceeded.");
-				nlink($flg);
+				@unlink($flg);
 				break;
 			}
 		}
