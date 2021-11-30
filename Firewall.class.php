@@ -131,6 +131,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				chgrp($file, $this->webgroup);
 			}
 		}
+		$this->setConfig("syncing", "no");
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
 		$this->addsyncjob();
@@ -1019,7 +1020,6 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		foreach($todel_ignore as $line){
 			if(!in_array($line, $inet)){
 				$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => str_replace("/32","",$line)));
-				usleep(500000);		
 			}
 		}
 
@@ -1028,8 +1028,20 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		foreach($toadd_ignore as $line){				
 			if(!in_array($line, $inet)){
 				$this->runHook("dynamic-jails", array("action" => "addignoreip", "ip" => str_replace("/32","",$line)));
-				usleep(500000);		
 			} 
+		}
+		
+		// Remove Banned ip id this one has been whitelisted
+		$IDsetting	= $this->FreePBX->Sysadmin->getIntrusionDetection();
+		foreach($current_ignore as $line){
+			if(count($IDsetting["banned"]) >= 1){
+				foreach($IDsetting["banned"] as $banned){
+					preg_match_all('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/m', $banned, $matches, PREG_SET_ORDER, 0);
+					if(trim($matches[0][0]) == trim($line)){						
+						$this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => trim($line)));						
+					}
+				}
+			}		
 		}
 
 		// Need to refresh and save the whitelist to the database.
@@ -1253,7 +1265,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					}
 					
 					$wl = implode("\n",$wl);
-					$this->updateWhitelist($wl);				
+					if($this->getConfig("syncing") == "no"){
+						$this->setConfig("syncing", strtotime("now"));
+						$this->updateWhitelist($wl);
+						return array("status" => true, "message" => "Save done.");
+					}
+					return array("status" => false, "message" => "Unable to save, sincing in progress.");								
 				}
 				else{
 					/**
@@ -1262,7 +1279,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$ids["fail2ban_whitelist"] 	= empty($_REQUEST["whitelist"]) ? "" : $_REQUEST["whitelist"];
 					$this->FreePBX->Sysadmin->sync_fw($ids);
 				}			
-				return true;
+				return array("status" => true, "message" => "");
 			case "stop_id":
 				$this->FreePBX->Sysadmin->runHook("fail2ban-stop");
 				while($this->intrusion_detection_status() == "running"){
@@ -2358,13 +2375,23 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function addsyncjob(){
 		$cron 		= \FreePBX::Cron();
 		$fwc_path	= $this->FreePBX->Config->get("AMPSBIN")."/fwconsole";
-		$cron->add("*/5 * * * * $fwc_path firewall sync > /dev/null 2>&1");
+		$allJobs	= $cron->getAll();
+		foreach($allJobs as $line){
+			if(strpos($line,"fwconsole firewall sync") !== false){
+				$cron->remove($line);
+			}
+		}
 	}
 
 	public function removesyncjob(){
 		$cron 		= \FreePBX::Cron();
-		$fwc_path	= $this->FreePBX->Config->get("AMPSBIN")."/fwconsole";
-		$cron->remove("*/5 * * * * $fwc_path firewall sync > /dev/null 2>&1");
+		$allJobs	= $cron->getAll();
+		foreach($allJobs as $line){
+			if(strpos($line,"fwconsole firewall sync") !== false){
+				$cron->remove($line);
+			}
+		}
+		\FreePBX::Job()->remove('firewall', 'syncIDetection');
 	}
 
 	public function postrestorehook($restoreid,$backupinfo){
