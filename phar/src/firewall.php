@@ -53,6 +53,9 @@ if (!$fwconf['active']) {
 $ready = false;
 $first = true;
 $sendwarning = false;
+
+`/usr/sbin/fwconsole firewall sync &`;
+
 while (!$ready) {
 
 	$services = getServices();

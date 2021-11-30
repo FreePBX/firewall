@@ -324,12 +324,10 @@ function save_ids(){
 		url: window.FreePBX.ajaxurl,
 		data: d,
 		success: function(data){
-			if(data.message !== "unknown"){
-				fpbxToast(data.message,'Error','error');
-			}
-			else{
-				$("#needApply").hide();	
-			}
+			if(data.status == false){
+				fpbxToast(data.message,'Note','warning');
+			}			
+			$("#needApply").hide();
 		},
 		complete: function(data) {
 			window.location.href = window.location.href;
