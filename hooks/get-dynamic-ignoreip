@@ -40,4 +40,14 @@
             break;      
         }
     }
+
+    /**
+     * Removing flag at the end of script.
+     */
+    @unlink($fw->get_astspooldir()."/tmp/getdyn.flg");
+    exit();
+
+    function fc(){
+        return fpbx_which("fail2ban-client");
+    }
 ?>
