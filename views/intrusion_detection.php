@@ -309,7 +309,7 @@ if($legacy != ""){
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" pattern="'.$wl_filter.'" id="whitelist" name="whitelist" rows="'.(count($ids['fail2ban_whitelist']) + 3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
+					<textarea class="form-control" pattern="'.$wl_filter.'" id="whitelist" name="whitelist" rows="'.(is_array($ids['fail2ban_whitelist'])?count($ids['fail2ban_whitelist']) + 3:3).'"">'.$ids['fail2ban_whitelist'].'</textarea>
 				</div>
 			</div>
 		</div>
