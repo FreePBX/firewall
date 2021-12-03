@@ -55,7 +55,7 @@ class Firewall extends Command {
 		case "add":
 			$ids = $input->getArgument('ids');
 			if (!$ids) {
-				$output->writeln('<error>\e[30m'._("Error!").'\e[0m</error> '._("No network identifiers supplied"));
+				$output->writeln('<fg=black;bg=red>'._("Error!").'</> '._("No network identifiers supplied"));
 				return;
 			}
 			foreach ($ids as $id) {
@@ -65,7 +65,7 @@ class Firewall extends Command {
 		case "del":
 			$ids = $input->getArgument('ids');
 			if (!$ids) {
-				$output->writeln('<error>\e[30m'._("Error!").'\e[0m</error> '._("No network identifiers supplied"));
+				$output->writeln('<fg=black;bg=red>'._("Error!").'</> '._("No network identifiers supplied"));
 				return;
 			}
 			foreach ($ids as $id) {
@@ -122,11 +122,11 @@ class Firewall extends Command {
 			$as		= $fw->getAdvancedSettings();	
 			$sa 	= $fw->sysadmin_info();
 			if(empty($sa)){
-				$output->writeln("<error>\e[30mSysadmin not installed or not enabled.\e[0m</error>");
+				$output->writeln("<fg=black;bg=red>Sysadmin not installed or not enabled.</>");
 				exit(1);
 			}
 			if($as["id_sync_fw"] == "legacy"){
-				$output->writeln("<error>\e[30mYou are not allowed to execute this command on Legacy mode.\e[0m</error>");
+				$output->writeln("<fg=black;bg=red>You are not allowed to execute this command on Legacy mode.</>");
 				exit(1);
 			}
 
@@ -140,7 +140,10 @@ class Firewall extends Command {
 				$table->setHeaders($out);
 				$result = [];
 				foreach($out as $jail){			
-					$result[] = str_replace(array("These IP addresses/networks are ignored:\n", "`- ", "|- "),"", shell_exec("$FC get $jail ignoreip"));
+					$list = str_replace(array("These IP addresses/networks are ignored:\n", "`- ", "|- "),"", shell_exec("$FC get $jail ignoreip"));
+					$_list = explode("\n", $list);
+					sort($_list);
+					$result[] = implode("\n", $_list);
 				}
 				$rows[] = $result;
 				$table->setRows($rows);
@@ -173,7 +176,7 @@ class Firewall extends Command {
 			}					
 		}
 		else{
-			$output->writeln("<error>\e[30mPermission denied. Please run this command as root.\e[0m</error>");
+			$output->writeln("<fg=black;bg=red>Permission denied. Please run this command as root.</>");
 		}
 	}
 
@@ -191,12 +194,12 @@ class Firewall extends Command {
 			$fwstatus 	= $fw->getConfig("status");
 			if(empty($voipd) || empty($fwstatus)){
 				dbug("The Firewall is not started. Syncing Process canceled.");
-				$output->writeln("<error>\e[30m"._("The Firewall is not started. Syncing Process canceled.")."\e[0m</error>");
+				$output->writeln("<fg=black;bg=red>"._("The Firewall is not started. Syncing Process canceled.")."</>");
 				exit();
 			}
 			if(empty($out)){
 				dbug("Fail2ban is not started. Syncing Process canceled.");
-				$output->writeln("<error>\e[30m"._("Fail2ban is not started. Syncing Process canceled.")."\e[0m</error>");
+				$output->writeln("<fg=black;bg=red>"._("Fail2ban is not started. Syncing Process canceled.")."</>");
 				exit();
 			}
 			
@@ -255,18 +258,18 @@ class Firewall extends Command {
 				}
 			}
 			elseif(!empty($out) && trim($as["id_sync_fw"]) == "legacy"){
-				$output->writeln("<error>\e[30m"._("Syncing cannot be performed because the Intrusion Detection Sync Firewall setting is set to Legacy mode.")."\e[0m</error>");
+				$output->writeln("<fg=black;bg=red>"._("Syncing cannot be performed because the Intrusion Detection Sync Firewall setting is set to Legacy mode.")."</>");
 			}
 		}
 		else{
-			$output->writeln("<error>\e[30m"._("Intrusion Detection is available for all activated systems only.")."\e[0m</error>");
+			$output->writeln("<fg=black;bg=red>"._("Intrusion Detection is available for all activated systems only.")."</>");
 		}
 	}
 
 	private function disableFirewall($output) {
 		$fw = \FreePBX::Firewall();
 		if (!$fw->isEnabled()) {
-			$output->writeln("<error>\e[30m"._("Firewall is not enabled, can't disable it")."\e[0m</error>");
+			$output->writeln("<fg=black;bg=red>"._("Firewall is not enabled, can't disable it")."</>");
 		}
 		$fw->setConfig("status", false);
 	}
@@ -274,7 +277,7 @@ class Firewall extends Command {
 	private function startFirewall($output) {
 		$fw = \FreePBX::Firewall();
 		if (!$fw->isEnabled()) {
-			$output->writeln("<error>\e[30m"._("Enabling Firewall.")."\e[0m</error>");
+			$output->writeln("<fg=black;bg=red>"._("Enabling Firewall.")."</>");
 			$fw->setConfig("status", true);
 			touch("/etc/asterisk/firewall.enabled");
 			chown("/etc/asterisk/firewall.enabled", "asterisk");
@@ -289,7 +292,7 @@ class Firewall extends Command {
 	
 	private function lerules($output, $param) {
 		if(empty($param)){
-			$output->writeln("<error>\e[30m"._("Error: Missing argument. Expected 'enable' or 'disable'.")."\e[0m</error>");
+			$output->writeln("<fg=black;bg=red>"._("Error: Missing argument. Expected 'enable' or 'disable'.")."</>");
 			return;
 		}
 
@@ -303,7 +306,7 @@ class Firewall extends Command {
 						$output->writeln("<info>"._("Lets Encrypt rules enabled successfully.")."</info>");
 					}
 					else{
-						$output->writeln("<error>\e[30m"._("An error has occurred!")."\e[0m</error>");
+						$output->writeln("<fg=black;bg=red>"._("An error has occurred!")."</>");
 					}					
 				}
 				else{
@@ -319,7 +322,7 @@ class Firewall extends Command {
 						$output->writeln("<info>"._("Lets Encrypt rules disabled successfully.")."</info>");
 					}
 					else{
-						$output->writeln("<error>\e[30m"._("An error has occurred!")."\e[0m</error>");
+						$output->writeln("<fg=black;bg=red>"._("An error has occurred!")."</>");
 					}				
 				}
 				else{
@@ -327,7 +330,7 @@ class Firewall extends Command {
 				}
 				break;
 			default:
-				$output->writeln("<error>\e[30m".sprintf(_("Error: Unknown option '%s'. Expected 'enable or 'disable'."), $param)."\e[0m</error>");
+				$output->writeln("<fg=black;bg=red>".sprintf(_("Error: Unknown option '%s'. Expected 'enable or 'disable'."), $param)."</>");
 		}
 		return;
 	}
@@ -353,7 +356,7 @@ class Firewall extends Command {
 			$output->writeln("<info>"._("Success!")."</info>");
 			return;
 		default:
-			$output->writeln("<error>\e[30m".sprintf(_("Error: Can't add '%s' to unknown zone '%s'"), $param, $zone)."\e[0m</error>");
+			$output->writeln("<fg=black;bg=red>".sprintf(_("Error: Can't add '%s' to unknown zone '%s'"), $param, $zone)."</>");
 			return;
 		}
 
@@ -380,7 +383,7 @@ class Firewall extends Command {
 
 		// If it's false, or empty, we couldn't add it.
 		if (!$trust) {
-			$output->writeln("<error>\e[30m"._("Failed! Could not validate entry. Please try again.")."\e[0m</error>");
+			$output->writeln("<fg=black;bg=red>"._("Failed! Could not validate entry. Please try again.")."</>");
 			return;
 		}
 		$nets = $fw->getConfig("networkmaps");
@@ -412,7 +415,7 @@ class Firewall extends Command {
 		case "blacklist":
 			// Does this host exist in the blacklist?
 			if (!$fw->getConfig($param, "blacklist")) {
-				$output->writeln("<error>\e[30m"._("Error:")."\e[0m</error> <info>".sprintf(_("Host '%s' is not currently in the blacklist."), "</info>$param<info>")."</info>");
+				$output->writeln("<fg=black;bg=red>"._("Error:")."</> <info>".sprintf(_("Host '%s' is not currently in the blacklist."), "</info>$param<info>")."</info>");
 				return false;
 			}
 			$fw->removeFromBlacklist($param);
@@ -441,7 +444,7 @@ class Firewall extends Command {
 				// Now does it exist?
 				if (!isset($nets[$param])) {
 					// No.
-					$output->writeln("<error>\e[30m"._("Unknown entry!")."\e[0m</error>");
+					$output->writeln("<fg=black;bg=red>"._("Unknown entry!")."</>");
 					return;
 				}
 			}

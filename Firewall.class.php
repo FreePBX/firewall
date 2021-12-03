@@ -134,7 +134,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->setConfig("syncing", "no");
 		// 13.0.54 - Add cronjob to restart it if it crashes
 		$this->addCronJob();
-		$this->addsyncjob();
+		$this->removeOldSyncJob();
 		$nt = \FreePBX::Notifications();
 		$nt->add_warning("firewall", "1", _("Intrusion detection handling method"), _("Intrusion detection handling method is been updated recently. Please clear your browser cache and try if you are having issue with Intrusion Detection Start/Restart/Stop button.") , "", $reset=true, $candelete=true);
 	}
@@ -939,6 +939,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $result;
 	}
 
+	public function firewall_preg_match_ips($ip){
+		preg_match_all('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/m', $ip, $matches, PREG_SET_ORDER, 0);
+		return !empty($matches[0][0]) ? $matches[0][0] : "";
+	}
+
 	public function updateWhitelist($wl = ""){
 		$sa = $this->sysadmin_info();
 		if(empty($sa)){
@@ -1019,6 +1024,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$todel_ignore = array_unique(array_diff($previous_ignore, $current_ignore));
 		foreach($todel_ignore as $line){
 			if(!in_array($line, $inet)){
+				dbug("$line deleted");
 				$this->runHook("dynamic-jails", array("action" => "delignoreip", "ip" => str_replace("/32","",$line)));
 			}
 		}
@@ -1036,8 +1042,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		foreach($current_ignore as $line){
 			if(count($IDsetting["banned"]) >= 1){
 				foreach($IDsetting["banned"] as $banned){
-					preg_match_all('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/m', $banned, $matches, PREG_SET_ORDER, 0);
-					if(trim($matches[0][0]) == trim($line)){						
+					if(trim($this->firewall_preg_match_ips($banned)) == trim($line)){						
 						$this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => trim($line)));						
 					}
 				}
@@ -1209,8 +1214,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				if(count($IDsetting["banned"]) >= 1){
 					foreach($IDsetting["banned"] as $line){
 						$_ip = explode(" ",$line);
-						preg_match_all('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/m', $_ip[0], $matches, PREG_SET_ORDER, 0);
-						$result[] = array("action" => "", "ip" => trim($matches[0][0]), "type" => !empty($_ip[1]) ? $_ip[1] : _('Unknown') );
+						$result[] = array("action" => "", "ip" => trim($this->firewall_preg_match_ips($_ip[0])), "type" => !empty($_ip[1]) ? $_ip[1] : _('Unknown') );
 					}				
 				}
 				return $result;
@@ -1219,8 +1223,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			case "unbanall":
 				if(count($IDsetting["banned"]) >= 1){
 					foreach($IDsetting["banned"] as $line){
-						preg_match_all('/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/m', $line, $matches, PREG_SET_ORDER, 0);
-						$this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => trim($matches[0][0])));
+						$this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => trim($this->firewall_preg_match_ips($line))));
 					}
 				}
 				return true;
@@ -2373,7 +2376,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
-	public function addsyncjob(){
+	public function removeOldSyncJob(){
 		$cron 		= \FreePBX::Cron();
 		$fwc_path	= $this->FreePBX->Config->get("AMPSBIN")."/fwconsole";
 		$allJobs	= $cron->getAll();
