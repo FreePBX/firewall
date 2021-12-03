@@ -35,11 +35,7 @@
         foreach($out as $jail){
             exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $whiteips, $ret2);
             $whiteips   = array_merge($whiteips, $ipHosts);
-            $arr_ips    = dumplicate_entries($jail, $whiteips);
-            if(!is_array($arr_ips) && $arr_ips === false){
-                continue;
-            }
-            $whitelist  = implode("\n",$arr_ips);
+            $whitelist  = implode("\n",array_unique($whiteips));
             $fw->setConfig("dynamic_whitelist",str_replace("/32","",$whitelist));
             break;      
         }
@@ -50,33 +46,6 @@
      */
     @unlink($fw->get_astspooldir()."/tmp/getdyn.flg");
     exit();
-
-    /**
-     * Prevent any duplicate entries.
-     *
-     * @param string $jail
-     * @param array $arr
-     * @return array
-     */
-    function dumplicate_entries($jail = "", $arr = []){
-        $FC  = fc();
-        $ips = $arr;
-        if($jail == ""){
-            return false;
-        }
-
-        foreach($arr as $idx => $ip){
-            if(count(array_keys($arr, $ip)) > 1){
-                $cmd = "$FC set $jail delignoreip $ip";
-                exec($cmd, $out, $ret);
-                if($ret !== 0){
-                    continue;
-                }
-                unset($ips[$idx]);
-            }
-        }
-        return array_unique($ips);
-    }
 
     function fc(){
         return fpbx_which("fail2ban-client");
