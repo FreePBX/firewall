@@ -1042,8 +1042,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		foreach($current_ignore as $line){
 			if(count($IDsetting["banned"]) >= 1){
 				foreach($IDsetting["banned"] as $banned){
-					if(trim($this->firewall_preg_match_ips($banned)) == trim($line)){						
-						$this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => trim($line)));						
+					$banned = str_replace("/32","",preg_replace("/(\s+\(.+)/", "", $banned));
+					$nt1 	= $this->inRange(preg_replace("/(\s+\(.+)/", "", $banned)."/32", $line);					
+					if(($this->firewall_preg_match_ips($banned) == $line) || $nt1 === true){
+						$this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => trim($banned)));						
 					}
 				}
 			}		
@@ -2222,7 +2224,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 
 			// If its ipv6, this needs to be reworked, using net_pton to replace ip2long.
-			if ($cirt === "128") {
+			if ($cidr === "128") {
 				return false;
 			} else {
 				// IPv4: Convert our IPs to decimals for bitwise operations
