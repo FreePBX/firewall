@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-26 06:39+0000\n"
+"POT-Creation-Date: 2021-12-13 07:39+0000\n"
 "PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -92,32 +92,32 @@ msgstr ""
 msgid ","
 msgstr ""
 
-#: Firewall.class.php:314
+#: Firewall.class.php:315
 msgid "- Adjusting owner and permissions... OK!"
 msgstr ""
 
-#: Firewall.class.php:324
+#: Firewall.class.php:325
 #, php-format
 msgid ""
 "- Adjusting owner... ERROR!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:319
+#: Firewall.class.php:320
 #, php-format
 msgid ""
 "- Adjusting permissions... ERROR!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:293
+#: Firewall.class.php:294
 #, php-format
 msgid ""
 "- Does not exist, creating file... ERROR!!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:297
+#: Firewall.class.php:298
 msgid "- Does not exist, creating file... OK!"
 msgstr ""
 
@@ -176,7 +176,7 @@ msgid ""
 "interfering with existing traffic."
 msgstr ""
 
-#: Firewall.class.php:507
+#: Firewall.class.php:508
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -186,7 +186,7 @@ msgstr ""
 "已经检测到一个已设置到信任的网络接口。这是一个错误的设置。为了确保公司系统能"
 "够被安全保护，请修改默认的接口区域设置 '%s'。"
 
-#: Firewall.class.php:497
+#: Firewall.class.php:498
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -285,11 +285,11 @@ msgstr "如果UCP已经开启，终端注册以后，终端的源地址 %s可以
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr "所有隧道接口已经被自动设置为Local"
 
-#: Console/Firewall.class.php:428
+#: Console/Firewall.class.php:474
 msgid "All blacklisted entries."
 msgstr "所有黑名单"
 
-#: Console/Firewall.class.php:419
+#: Console/Firewall.class.php:465
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -319,7 +319,7 @@ msgid ""
 "acme-challenge folder during an active certificate update request."
 msgstr ""
 
-#: Console/Firewall.class.php:262 Console/Firewall.class.php:278
+#: Console/Firewall.class.php:308 Console/Firewall.class.php:324
 msgid "An error has occurred!"
 msgstr ""
 
@@ -403,17 +403,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:307
+#: Console/Firewall.class.php:353
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:328
+#: Console/Firewall.class.php:374
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:379
+#: Console/Firewall.class.php:425
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -507,7 +507,7 @@ msgstr "取消"
 msgid "Check Custrom Rules..."
 msgstr ""
 
-#: Firewall.class.php:287
+#: Firewall.class.php:288
 #, php-format
 msgid "Check file '%s'"
 msgstr ""
@@ -610,7 +610,7 @@ msgstr "删除"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1672
+#: Firewall.class.php:1692
 msgid "Delete Selected"
 msgstr "已删除选项"
 
@@ -731,7 +731,7 @@ msgid ""
 "attacker that their traffic has been intercepted."
 msgstr ""
 
-#: Console/Firewall.class.php:233
+#: Console/Firewall.class.php:279
 msgid "Enabling Firewall."
 msgstr ""
 
@@ -764,7 +764,7 @@ msgstr ""
 msgid "Error checking protocol file (%s)!"
 msgstr ""
 
-#: Firewall.class.php:376
+#: Firewall.class.php:377
 msgid "Error saving data!"
 msgstr ""
 
@@ -777,20 +777,20 @@ msgstr ""
 msgid "Error!! Permission denied copy rules: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:371
+#: Console/Firewall.class.php:417
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:312
+#: Console/Firewall.class.php:358
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
 
-#: Console/Firewall.class.php:248
+#: Console/Firewall.class.php:294
 msgid "Error: Missing argument. Expected 'enable' or 'disable'."
 msgstr ""
 
-#: Console/Firewall.class.php:286
+#: Console/Firewall.class.php:332
 #, php-format
 msgid "Error: Unknown option '%s'. Expected 'enable or 'disable'."
 msgstr ""
@@ -832,11 +832,15 @@ msgid ""
 "as additional data."
 msgstr ""
 
+#: Console/Firewall.class.php:201
+msgid "Fail2ban is not started. Syncing Process canceled."
+msgstr ""
+
 #: assets/js/views/advanced.js:603
 msgid "Failed State Change!"
 msgstr ""
 
-#: Console/Firewall.class.php:339
+#: Console/Firewall.class.php:385
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -860,23 +864,23 @@ msgstr ""
 msgid "Firewall"
 msgstr "防火墙"
 
-#: Firewall.class.php:428
+#: Firewall.class.php:429
 msgid "Firewall Active"
 msgstr "激活防火墙"
 
-#: Firewall.class.php:448
+#: Firewall.class.php:449
 msgid "Firewall Configuration"
 msgstr "防火墙设置"
 
-#: Firewall.class.php:430
+#: Firewall.class.php:431
 msgid "Firewall Disabled"
 msgstr "关闭防火墙"
 
-#: Firewall.class.php:482 Firewall.class.php:483
+#: Firewall.class.php:483 Firewall.class.php:484
 msgid "Firewall Integrity Failed"
 msgstr "防火墙检测失败"
 
-#: Firewall.class.php:442
+#: Firewall.class.php:443
 msgid "Firewall Service not running!"
 msgstr "防火墙服务没有运行"
 
@@ -884,7 +888,7 @@ msgstr "防火墙服务没有运行"
 msgid "Firewall Wizard"
 msgstr "防火墙快速设置"
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1629
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1649
 msgid "Firewall can not be disabled"
 msgstr "防火墙不能关闭"
 
@@ -908,7 +912,7 @@ msgstr ""
 msgid "Firewall has not started yet!"
 msgstr "防火墙没有启动"
 
-#: Console/Firewall.class.php:225
+#: Console/Firewall.class.php:271
 msgid "Firewall is not enabled, can't disable it"
 msgstr ""
 
@@ -976,7 +980,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Console/Firewall.class.php:371
+#: Console/Firewall.class.php:417
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -1149,7 +1153,7 @@ msgid ""
 "further information."
 msgstr ""
 
-#: Firewall.class.php:484
+#: Firewall.class.php:485
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -1178,11 +1182,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1481
+#: Firewall.class.php:1501
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1481
+#: Firewall.class.php:1501
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1192,7 +1196,7 @@ msgstr ""
 msgid "Intrusion Detection Sync Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:218
+#: Console/Firewall.class.php:264
 msgid "Intrusion Detection is available for all activated systems only."
 msgstr ""
 
@@ -1206,11 +1210,11 @@ msgid ""
 "synchronization to the whitelist)."
 msgstr ""
 
-#: Firewall.class.php:138
+#: Firewall.class.php:139
 msgid "Intrusion detection handling method"
 msgstr ""
 
-#: Firewall.class.php:138
+#: Firewall.class.php:139
 msgid ""
 "Intrusion detection handling method is been updated recently. Please clear "
 "your browser cache and try if you are having issue with Intrusion Detection "
@@ -1282,19 +1286,19 @@ msgstr ""
 msgid "Length of time in seconds a remote IP is banned before being reset."
 msgstr ""
 
-#: Console/Firewall.class.php:282
+#: Console/Firewall.class.php:328
 msgid "Lets Encrypt rules already disabled. Nothing to do."
 msgstr ""
 
-#: Console/Firewall.class.php:266
+#: Console/Firewall.class.php:312
 msgid "Lets Encrypt rules already enabled. Nothing to do"
 msgstr ""
 
-#: Console/Firewall.class.php:275
+#: Console/Firewall.class.php:321
 msgid "Lets Encrypt rules disabled successfully."
 msgstr ""
 
-#: Console/Firewall.class.php:259
+#: Console/Firewall.class.php:305
 msgid "Lets Encrypt rules enabled successfully."
 msgstr ""
 
@@ -1358,52 +1362,52 @@ msgstr ""
 msgid "Message for the request"
 msgstr ""
 
-#: Firewall.class.php:313
+#: Firewall.class.php:314
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Adjusting owner and permissions in file "
 "'%s'... OK!"
 msgstr ""
 
-#: Firewall.class.php:323
+#: Firewall.class.php:324
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Error adjusting owner in file '%s'. Error "
 "Message: %s"
 msgstr ""
 
-#: Firewall.class.php:318
+#: Firewall.class.php:319
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Error adjusting permissions in file '%s'. "
 "Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:301
+#: Firewall.class.php:302
 #, php-format
 msgid "Module Firewall - Check Rules - File '%s' exist... OK!"
 msgstr ""
 
-#: Firewall.class.php:296
+#: Firewall.class.php:297
 #, php-format
 msgid "Module Firewall - Check Rules - File '%s' not exist, created OK!"
 msgstr ""
 
-#: Firewall.class.php:292
+#: Firewall.class.php:293
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - File '%s' not exist, error creating. Error "
 "Message: %s"
 msgstr ""
 
-#: Firewall.class.php:401
+#: Firewall.class.php:402
 #, php-format
 msgid ""
 "Module Firewall - Remove File Rules - Error detected by deleting the file "
 "'%s'!. Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:404
+#: Firewall.class.php:405
 #, php-format
 msgid "Module Firewall - Remove File Rules - File '%s' deleted successfully."
 msgstr ""
@@ -1437,11 +1441,11 @@ msgstr ""
 msgid "Networks"
 msgstr ""
 
-#: Firewall.class.php:494 Firewall.class.php:496
+#: Firewall.class.php:495 Firewall.class.php:497
 msgid "New Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:381
+#: Firewall.class.php:382
 msgid "New rules unsent!"
 msgstr ""
 
@@ -1465,15 +1469,15 @@ msgstr ""
 msgid "No IP Addresses assigned to this interface."
 msgstr ""
 
-#: Firewall.class.php:537
+#: Firewall.class.php:538
 msgid "No Trusted Management Network"
 msgstr ""
 
-#: Firewall.class.php:539
+#: Firewall.class.php:540
 msgid "No Trusted Network or Host defined"
 msgstr ""
 
-#: Firewall.class.php:540
+#: Firewall.class.php:541
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -1627,7 +1631,7 @@ msgstr ""
 msgid "Preconfigured"
 msgstr ""
 
-#: Firewall.class.php:1070
+#: Firewall.class.php:1087
 msgid "Preparing settings. Please wait a while."
 msgstr ""
 
@@ -1655,11 +1659,11 @@ msgstr ""
 msgid "Protocol data (%s) saved successfully."
 msgstr ""
 
-#: Firewall.class.php:359 Firewall.class.php:389
+#: Firewall.class.php:360 Firewall.class.php:390
 msgid "Protocol not selected!"
 msgstr ""
 
-#: Firewall.class.php:355 Firewall.class.php:385
+#: Firewall.class.php:356 Firewall.class.php:386
 msgid "Protocol not valid!"
 msgstr ""
 
@@ -1752,12 +1756,12 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:375
+#: Console/Firewall.class.php:421
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1679
+#: Firewall.class.php:1699
 msgid "Reset"
 msgstr "重置"
 
@@ -1853,12 +1857,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1671 Firewall.class.php:1680 views/modal.customsvc.php:37
+#: Firewall.class.php:1691 Firewall.class.php:1700 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "保存"
 
-#: Firewall.class.php:1674
+#: Firewall.class.php:1694
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -1971,7 +1975,7 @@ msgstr ""
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
-#: Firewall.class.php:435
+#: Firewall.class.php:436
 msgid "Starting up"
 msgstr "启动"
 
@@ -2031,8 +2035,8 @@ msgstr ""
 msgid "Stop the System Firewall"
 msgstr "停止系统防火墙"
 
-#: Console/Firewall.class.php:309 Console/Firewall.class.php:351
-#: Console/Firewall.class.php:408
+#: Console/Firewall.class.php:355 Console/Firewall.class.php:397
+#: Console/Firewall.class.php:454
 msgid "Success!"
 msgstr "成功"
 
@@ -2050,17 +2054,30 @@ msgid ""
 "detection whitelist."
 msgstr ""
 
-#: Console/Firewall.class.php:214
+#: Console/Firewall.class.php:241
+msgid ""
+"Syncing cannot be performed because another synchronization is still in "
+"progress."
+msgstr ""
+
+#: Console/Firewall.class.php:260
 msgid ""
 "Syncing cannot be performed because the Intrusion Detection Sync Firewall "
 "setting is set to Legacy mode."
 msgstr ""
 
-#: Console/Firewall.class.php:210
+#: Console/Firewall.class.php:252
+#, php-format
+msgid ""
+"Syncing takes a long time. No news for %d seconds. Unlocking syncing. Please "
+"check logs."
+msgstr ""
+
+#: Console/Firewall.class.php:234
 msgid "Syncing...."
 msgstr ""
 
-#: Firewall.class.php:423 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:424 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr "系统防火墙"
 
@@ -2094,6 +2111,10 @@ msgid ""
 "'Notification Settings'"
 msgstr ""
 
+#: Console/Firewall.class.php:196
+msgid "The Firewall is not started. Syncing Process canceled."
+msgstr ""
+
 #: views/view.advanced_customrules.php:17
 msgid ""
 "The application of custom rules is <b>DISABLED</b>. You can edit them, but "
@@ -2107,7 +2128,7 @@ msgid ""
 "Save button."
 msgstr ""
 
-#: Firewall.class.php:729
+#: Firewall.class.php:730
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -2416,11 +2437,11 @@ msgstr ""
 msgid "Trusted"
 msgstr "可信任的"
 
-#: Firewall.class.php:503 Firewall.class.php:506
+#: Firewall.class.php:504 Firewall.class.php:507
 msgid "Trusted Interface Detected"
 msgstr ""
 
-#: Firewall.class.php:535
+#: Firewall.class.php:536
 msgid "Trusted Management Network defined"
 msgstr ""
 
@@ -2465,15 +2486,15 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Console/Firewall.class.php:163 Firewall.class.php:1200
+#: Console/Firewall.class.php:166 Firewall.class.php:1216
 msgid "Unknown"
 msgstr ""
 
-#: Console/Firewall.class.php:400
+#: Console/Firewall.class.php:446
 msgid "Unknown entry!"
 msgstr ""
 
-#: Firewall.class.php:1673
+#: Firewall.class.php:1693
 msgid "Update Interfaces"
 msgstr ""
 
@@ -2595,7 +2616,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:730
+#: Firewall.class.php:731
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -2708,6 +2729,10 @@ msgstr ""
 
 #: Api/Gql/Firewall.php:301
 msgid "list the configurations details"
+msgstr ""
+
+#: Console/Firewall.class.php:244
+msgid "synchronization overlap. Canceling this action for now."
 msgstr ""
 
 #~ msgid "Save Changes"
