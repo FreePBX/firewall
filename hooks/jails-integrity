@@ -22,6 +22,7 @@
             unset($out2);
         }
     }
+    $fw->setConfig("syncing", "no");
     exit();
 
 ?>
