@@ -53,6 +53,7 @@ if (!$fwconf['active']) {
 $ready = false;
 $first = true;
 $sendwarning = false;
+
 while (!$ready) {
 
 	$services = getServices();
@@ -203,7 +204,7 @@ $fwversion = false;
 // Always run the update the first time.
 $lastfin = 1;
 
-`fwconsole firewall sync`;
+`/usr/sbin/fwconsole firewall sync &`;
 
 while(true) {
 	$fwconf = getSettings();
