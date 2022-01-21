@@ -540,12 +540,31 @@ class Smart {
 						// Ensure a random hostname like 'e.de' doesn't appear to be valid
 						if (filter_var($ipaddr[1], FILTER_VALIDATE_IP)) {
 							$contacts[$ipaddr[1]] = true;
+						} else {
+							// it might be possible that due to 15 digit emergency cid did, asterisk is
+							// striping last few octets of IP due to which VALIDATE IP might fail, hence
+							// pick the ip from the show aor command */
+							if (isset($out[1]) && !empty($out[1])) {
+								$extData = explode('/', $out[1]);
+								$extNum = $extData[0];
+							}
+							if (strlen((string)$extNum) == 15) {
+								$ip = $this->getPjsipContactAOR($extNum);
+								if (filter_var($ip, FILTER_VALIDATE_IP)) {
+									$contacts[$ip] = true;
+								}
+							}
 						}
 					} else {
-						// It's a hostname, likely to be a trunk. Don't resolve,
-						// as we've already done that as part of the registration
-						// print "Unknown host ".$out[2].", trunk?\n";
-						continue;
+						$ip = $this->filterDataByAOR($out);
+						if (!empty($ip)) {
+							$contacts[$ip] = true;
+						} else {
+							// It's a hostname, likely to be a trunk. Don't resolve,
+							// as we've already done that as part of the registration
+							// print "Unknown host ".$out[2].", trunk?\n";
+							continue;
+						}
 					}
 				}
 			}
@@ -615,4 +634,57 @@ class Smart {
 		}
 	}
 
+	private function getPjsipContactAOR($extNum) {
+		$astman = \FreePBX::create()->astman;
+		$command = "pjsip show aor " . $extNum;
+		$response = $astman->send_request('Command',array('Command'=>$command));
+		$lines = explode("\n", $response['data']);
+		$inheader = true;
+		$istrunk = $isendpoint = false;
+		$contacts = array();
+		foreach ($lines as $l) {
+			if ($inheader) {
+				if (isset($l[1]) && $l[1] == "=") {
+					// Last line of the header.
+					$inheader = false;
+				}
+				continue;
+			}
+
+			$l = trim($l);
+			if (!$l) {
+				continue;
+			}
+			// If we have a line starting with 'contact:' then we found one!
+			if (strpos($l, "contact") === 0) {
+				if (strpos($l, " Unavail") !== false) {
+					continue;
+				}
+				// If there is no @, we pick it up as part of a trunk.
+				if (preg_match("/contact\s+:\s+(.+)@(.+)/", $l, $out)) {
+					// Ok, we have a contact. This should be an IP address. Is it?
+					if (preg_match("/(?:\[?)([0-9a-f:\.]+)(?:\]?):(.+)/", $out[2], $ipaddr)) {
+						// Ensure a random hostname like 'e.de' doesn't appear to be valid
+						if (filter_var($ipaddr[1], FILTER_VALIDATE_IP)) {
+							return $ipaddr[1];
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private function filterDataByAOR($out) {
+		if (isset($out[1]) && !empty($out[1])) {
+			$extData = explode('/', $out[1]);
+			$extNum = $extData[0];
+		}
+		if (strlen((string)$extNum) == 15) {
+			$ip = $this->getPjsipContactAOR($extNum);
+			if (!empty($ip)) {
+				return $ip;
+			}
+		}
+		return false;
+	}
 }
