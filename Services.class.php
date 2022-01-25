@@ -295,11 +295,16 @@ class Services {
 	}
 
 	private function getSvc_sngconnect_sng_phone_svc() {
+		$retarr = array();
 		$fpbx = \FreePBX::Create();
 		if ($fpbx->Modules->checkStatus("sangomaconnect")) {
 			$sngc = $fpbx->Sangomaconnect();
-			$retarr = $sngc->firewallService();
-		}else {
+			if (method_exists($sngc, 'firewallService')) {
+				$retarr = $sngc->firewallService();
+			}
+		}
+
+		if (empty($retarr)) {
 			$retarr['descr'] = _("Sangoma Phone Desktop Client Service is not available or licensed to use. Please make sure the sangomaconnect module is installed and enabled.");
 			$retarr['disabled'] = true;
 			$retarr['fw'] = array();
