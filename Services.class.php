@@ -12,7 +12,7 @@ class Services {
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl", "ntp");
-		$this->extraservices = array("zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
+		$this->extraservices = array("sngconnect_sng_phone_svc","zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
 	}
@@ -291,6 +291,19 @@ class Services {
 		}
 
 		$retarr['fw'] = array(array("protocol" => "tcp", "port" => $zuluport, "ratelimit" => true));
+		return $retarr;
+	}
+
+	private function getSvc_sngconnect_sng_phone_svc() {
+		$fpbx = \FreePBX::Create();
+		if ($fpbx->Modules->checkStatus("sangomaconnect")) {
+			$sngc = $fpbx->Sangomaconnect();
+			$retarr = $sngc->firewallService();
+		}else {
+			$retarr['descr'] = _("Sangoma Phone Desktop Client Service is not available or licensed to use. Please make sure the sangomaconnect module is installed and enabled.");
+			$retarr['disabled'] = true;
+			$retarr['fw'] = array();
+		}
 		return $retarr;
 	}
 
