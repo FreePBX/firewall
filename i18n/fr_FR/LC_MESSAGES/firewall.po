@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-13 07:39+0000\n"
+"POT-Creation-Date: 2022-01-25 02:46+0000\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -56,12 +56,12 @@ msgstr ""
 msgid "%s Files Restored OK"
 msgstr ""
 
-#: Services.class.php:670
+#: Services.class.php:688
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr ""
 
-#: Services.class.php:666
+#: Services.class.php:684
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s n'est pas configuré correctement."
@@ -483,11 +483,11 @@ msgid ""
 "attacker, and they may move on to a different target."
 msgstr ""
 
-#: Services.class.php:397
+#: Services.class.php:415
 msgid "CHANSIP is not available on this machine"
 msgstr ""
 
-#: Services.class.php:356
+#: Services.class.php:374
 msgid "CHAN_SIP Protocol"
 msgstr ""
 
@@ -818,11 +818,11 @@ msgstr ""
 msgid "Extra Services"
 msgstr ""
 
-#: Services.class.php:550
+#: Services.class.php:568
 msgid "FTP"
 msgstr ""
 
-#: Services.class.php:552
+#: Services.class.php:570
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -952,27 +952,27 @@ msgstr ""
 msgid "Further information is available at the PBX Wiki."
 msgstr ""
 
-#: Services.class.php:419
+#: Services.class.php:437
 msgid "HTTP Provisioning"
 msgstr ""
 
-#: Services.class.php:434
+#: Services.class.php:452
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Services.class.php:500
+#: Services.class.php:518
 msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Services.class.php:445
+#: Services.class.php:463
 msgid "HTTPS Provisioning"
 msgstr ""
 
-#: Services.class.php:460
+#: Services.class.php:478
 msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Services.class.php:528
+#: Services.class.php:546
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
@@ -991,11 +991,11 @@ msgid ""
 "updated with the latest settings!"
 msgstr ""
 
-#: Services.class.php:405 Smart.class.php:51
+#: Services.class.php:423 Smart.class.php:51
 msgid "IAX Protocol"
 msgstr ""
 
-#: Services.class.php:407
+#: Services.class.php:425
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
@@ -1417,11 +1417,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:573
+#: Services.class.php:591
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:580
+#: Services.class.php:598
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -1553,7 +1553,7 @@ msgstr ""
 msgid "Number of seconds before attempts are reset."
 msgstr ""
 
-#: Services.class.php:472
+#: Services.class.php:490
 msgid "OpenVPN Server"
 msgstr ""
 
@@ -1573,11 +1573,11 @@ msgstr ""
 msgid "Other Zone"
 msgstr ""
 
-#: Services.class.php:348
+#: Services.class.php:366
 msgid "PJSIP is not available on this machine"
 msgstr ""
 
-#: Services.class.php:421
+#: Services.class.php:439
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTP provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
@@ -1585,7 +1585,7 @@ msgid ""
 "a knowledgable attacker."
 msgstr ""
 
-#: Services.class.php:447
+#: Services.class.php:465
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTPS provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
@@ -1675,19 +1675,19 @@ msgstr ""
 msgid "Protocol: UDP"
 msgstr ""
 
-#: Services.class.php:484
+#: Services.class.php:502
 msgid "REST Apps (HTTP)"
 msgstr ""
 
-#: Services.class.php:512
+#: Services.class.php:530
 msgid "REST Apps (HTTPS)"
 msgstr ""
 
-#: Services.class.php:504 Services.class.php:532
+#: Services.class.php:522 Services.class.php:550
 msgid "REST Apps are only available with System Admin"
 msgstr ""
 
-#: Services.class.php:486 Services.class.php:514
+#: Services.class.php:504 Services.class.php:532
 msgid ""
 "REST Apps are used with intelligent phones to provide an interactive "
 "interface from the phone itself. Note that any devices that are allowed "
@@ -1796,7 +1796,7 @@ msgstr ""
 msgid "Restart the System Firewall"
 msgstr ""
 
-#: Services.class.php:299
+#: Services.class.php:317
 msgid "SIP Protocol"
 msgstr ""
 
@@ -1804,15 +1804,15 @@ msgstr ""
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 
-#: Services.class.php:630
+#: Services.class.php:648
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:636
+#: Services.class.php:654
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr ""
 
-#: Services.class.php:639
+#: Services.class.php:657
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -1837,6 +1837,12 @@ msgid ""
 "Safe mode gives you the ability to recover from an accidental "
 "misconfiguration by temporarily disabling the firewall if the machine is "
 "rebooted two times in succession."
+msgstr ""
+
+#: Services.class.php:308
+msgid ""
+"Sangoma Phone Desktop Client Service is not available or licensed to use. "
+"Please make sure the sangomaconnect module is installed and enabled."
 msgstr ""
 
 #: OOBE.class.php:43
@@ -2089,11 +2095,11 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:560
+#: Services.class.php:578
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:562
+#: Services.class.php:580
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
@@ -2200,7 +2206,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:474
+#: Services.class.php:492
 msgid ""
 "This allows clients to connect to an OpenVPN server running on this machine. "
 "This is an inherently secure protocol."
@@ -2213,7 +2219,7 @@ msgid ""
 "is enabled."
 msgstr ""
 
-#: Services.class.php:583
+#: Services.class.php:601
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -2288,17 +2294,17 @@ msgid ""
 "extension configuration of your PBX."
 msgstr ""
 
-#: Services.class.php:301
+#: Services.class.php:319
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:542
+#: Services.class.php:560
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
 msgstr ""
 
-#: Services.class.php:358
+#: Services.class.php:376
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
@@ -2330,7 +2336,7 @@ msgid ""
 "Disable %s Responsive LetsEncrypt Rules %s to manage access here."
 msgstr ""
 
-#: Services.class.php:306 Services.class.php:363 Services.class.php:412
+#: Services.class.php:324 Services.class.php:381 Services.class.php:430
 msgid ""
 "This protocol is being managed by the Responsive Firewall. You "
 "<strong>should not</strong> enable access from the 'Internet' zone, or "
@@ -2598,7 +2604,7 @@ msgstr ""
 msgid "Write to firewall"
 msgstr ""
 
-#: Services.class.php:540
+#: Services.class.php:558
 msgid "XMPP"
 msgstr ""
 
@@ -2708,7 +2714,7 @@ msgstr ""
 msgid "function"
 msgstr ""
 
-#: Services.class.php:684
+#: Services.class.php:702
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
