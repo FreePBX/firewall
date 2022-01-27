@@ -12,7 +12,7 @@ class Services {
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl", "ntp");
-		$this->extraservices = array("sngconnect_sng_phone_svc","zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
+		$this->extraservices = array("sng_phone_svc","zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
 	}
@@ -294,7 +294,7 @@ class Services {
 		return $retarr;
 	}
 
-	private function getSvc_sngconnect_sng_phone_svc() {
+	private function getSvc_sng_phone_svc() {
 		$retarr = array();
 		$fpbx = \FreePBX::Create();
 		if ($fpbx->Modules->checkStatus("sangomaconnect")) {
