@@ -306,6 +306,7 @@ class Services {
 
 		if (empty($retarr)) {
 			$retarr['descr'] = _("Sangoma Phone Desktop Client Service is not available or licensed to use. Please make sure the sangomaconnect module is installed and enabled.");
+			$retarr['defzones'] = array("external", "other", "internal");
 			$retarr['disabled'] = true;
 			$retarr['fw'] = array();
 		}
