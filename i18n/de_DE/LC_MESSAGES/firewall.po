@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-02-04 05:30+0000\n"
+"POT-Creation-Date: 2022-03-30 08:53+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -55,12 +55,12 @@ msgstr ""
 msgid "%s Files Restored OK"
 msgstr ""
 
-#: Services.class.php:689
+#: Services.class.php:720
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr "%s ist eine web-basierte Lösung zur Anrufverwaltung."
 
-#: Services.class.php:685
+#: Services.class.php:716
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s ist nicht richtig konfiguriert."
@@ -495,11 +495,11 @@ msgid ""
 "attacker, and they may move on to a different target."
 msgstr ""
 
-#: Services.class.php:416
+#: Services.class.php:447
 msgid "CHANSIP is not available on this machine"
 msgstr "CHANSIP ist auf dieser Maschine nicht verfügbar"
 
-#: Services.class.php:375
+#: Services.class.php:406
 msgid "CHAN_SIP Protocol"
 msgstr "CHAN_SIP Protokoll"
 
@@ -594,7 +594,11 @@ msgid ""
 "same port and protocol."
 msgstr ""
 
-#: Services.class.php:190
+#: Services.class.php:225
+msgid "Dedicated UCP SSL access is disabled in Sysadmin Port Management"
+msgstr ""
+
+#: Services.class.php:187
 msgid "Dedicated UCP access is disabled in Sysadmin Port Management"
 msgstr ""
 
@@ -831,11 +835,11 @@ msgstr "Externe Adresse: %s"
 msgid "Extra Services"
 msgstr "Zusatzleistungen"
 
-#: Services.class.php:569
+#: Services.class.php:600
 msgid "FTP"
 msgstr "FTP"
 
-#: Services.class.php:571
+#: Services.class.php:602
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -965,29 +969,29 @@ msgstr "Hinzufügen / Entfernen des Eintrags erzwingen"
 msgid "Further information is available at the PBX Wiki."
 msgstr ""
 
-#: Services.class.php:438
+#: Services.class.php:469
 msgid "HTTP Provisioning"
 msgstr "HTTP-Bereitstellung"
 
-#: Services.class.php:453
+#: Services.class.php:484
 msgid "HTTP Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
 "HTTP-Bereitstellung ist beim Port-Management im System-Admin deaktiviert"
 
-#: Services.class.php:519
+#: Services.class.php:550
 msgid "HTTP REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTP-REST Apps sind beim Port-Management im System-Admin deaktiviert"
 
-#: Services.class.php:464
+#: Services.class.php:495
 msgid "HTTPS Provisioning"
 msgstr "HTTPS-Bereitstellung"
 
-#: Services.class.php:479
+#: Services.class.php:510
 msgid "HTTPS Provisioning is disabled in Sysadmin Port Management"
 msgstr ""
 "HTTPS-Bereitstellung ist beim Port-Management im System-Admin deaktiviert"
 
-#: Services.class.php:547
+#: Services.class.php:578
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTPS-REST-Apps sind beim Port-Management im System-Admin deaktiviert"
 
@@ -1006,11 +1010,11 @@ msgid ""
 "updated with the latest settings!"
 msgstr ""
 
-#: Services.class.php:424 Smart.class.php:51
+#: Services.class.php:455 Smart.class.php:51
 msgid "IAX Protocol"
 msgstr "IAX Protokoll"
 
-#: Services.class.php:426
+#: Services.class.php:457
 msgid ""
 "IAX stands for Inter Asterisk eXchange. It is more bandwidth efficient than "
 "SIP, but few providers support it."
@@ -1313,7 +1317,7 @@ msgstr ""
 msgid "Lets Encrypt rules enabled successfully."
 msgstr ""
 
-#: Services.class.php:238
+#: Services.class.php:269
 msgid "LetsEncrypt"
 msgstr ""
 
@@ -1432,11 +1436,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:592
+#: Services.class.php:623
 msgid "NFS"
 msgstr "NFS"
 
-#: Services.class.php:599
+#: Services.class.php:630
 msgid "NFS Services are not available on this machine"
 msgstr "NFS-Dienste sind auf dieser Maschine nicht verfügbar"
 
@@ -1569,7 +1573,7 @@ msgstr "Anzahl der aktuell geblockten Angreifer:"
 msgid "Number of seconds before attempts are reset."
 msgstr ""
 
-#: Services.class.php:491
+#: Services.class.php:522
 msgid "OpenVPN Server"
 msgstr ""
 
@@ -1589,11 +1593,11 @@ msgstr ""
 msgid "Other Zone"
 msgstr ""
 
-#: Services.class.php:367
+#: Services.class.php:398
 msgid "PJSIP is not available on this machine"
 msgstr "PJSIP ist auf dieser Maschine nicht verfügbar"
 
-#: Services.class.php:440
+#: Services.class.php:471
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTP provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
@@ -1601,7 +1605,7 @@ msgid ""
 "a knowledgable attacker."
 msgstr ""
 
-#: Services.class.php:466
+#: Services.class.php:497
 msgid ""
 "Phones that are configured via Endpoint Manager to use HTTPS provisioning "
 "will use this port to download its configuration. It is NOT ADVISED to "
@@ -1691,19 +1695,19 @@ msgstr "Protokoll: TCP und UDP"
 msgid "Protocol: UDP"
 msgstr "Protokoll: UDP"
 
-#: Services.class.php:503
+#: Services.class.php:534
 msgid "REST Apps (HTTP)"
 msgstr "REST-Apps (HTTP)"
 
-#: Services.class.php:531
+#: Services.class.php:562
 msgid "REST Apps (HTTPS)"
 msgstr "REST-Apps (HTTPS)"
 
-#: Services.class.php:523 Services.class.php:551
+#: Services.class.php:554 Services.class.php:582
 msgid "REST Apps are only available with System Admin"
 msgstr "REST-Apps sind nur mit System-Admin verfügbar"
 
-#: Services.class.php:505 Services.class.php:533
+#: Services.class.php:536 Services.class.php:564
 msgid ""
 "REST Apps are used with intelligent phones to provide an interactive "
 "interface from the phone itself. Note that any devices that are allowed "
@@ -1814,7 +1818,7 @@ msgstr ""
 msgid "Restart the System Firewall"
 msgstr ""
 
-#: Services.class.php:318
+#: Services.class.php:349
 msgid "SIP Protocol"
 msgstr "SIP Protokoll"
 
@@ -1822,15 +1826,15 @@ msgstr "SIP Protokoll"
 msgid "SIP Protocol (pjsip)"
 msgstr "SIP Protokoll (pjsip)"
 
-#: Services.class.php:649
+#: Services.class.php:680
 msgid "SMB/CIFS"
 msgstr "SMB/CIFS"
 
-#: Services.class.php:655
+#: Services.class.php:686
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr "SMB/CIFS (Samba) ist auf dieser Maschine nicht Installiert"
 
-#: Services.class.php:658
+#: Services.class.php:689
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -1857,7 +1861,7 @@ msgid ""
 "rebooted two times in succession."
 msgstr ""
 
-#: Services.class.php:308
+#: Services.class.php:339
 msgid ""
 "Sangoma Phone Desktop Client Service is not available or licensed to use. "
 "Please make sure the sangomaconnect module is installed and enabled."
@@ -2113,11 +2117,11 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:579
+#: Services.class.php:610
 msgid "TFTP"
 msgstr ""
 
-#: Services.class.php:581
+#: Services.class.php:612
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
@@ -2224,7 +2228,7 @@ msgid ""
 "traffic through."
 msgstr ""
 
-#: Services.class.php:493
+#: Services.class.php:524
 msgid ""
 "This allows clients to connect to an OpenVPN server running on this machine. "
 "This is an inherently secure protocol."
@@ -2237,7 +2241,7 @@ msgid ""
 "is enabled."
 msgstr ""
 
-#: Services.class.php:602
+#: Services.class.php:633
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -2312,21 +2316,21 @@ msgid ""
 "extension configuration of your PBX."
 msgstr ""
 
-#: Services.class.php:320
+#: Services.class.php:351
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:561
+#: Services.class.php:592
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
 msgstr ""
 
-#: Services.class.php:377
+#: Services.class.php:408
 msgid "This is the legacy chan_sip driver."
 msgstr ""
 
-#: Services.class.php:256
+#: Services.class.php:287
 #, php-format
 msgid ""
 "This must be allowed access from the 'Internet' zone unless %s Responsive "
@@ -2347,14 +2351,14 @@ msgstr ""
 msgid "This page gives you a summary of the status of the Responsive Firewall."
 msgstr ""
 
-#: Services.class.php:260
+#: Services.class.php:291
 #, php-format
 msgid ""
 "This protocol is being managed by %s Responsive LetsEncrypt Rules. %s "
 "Disable %s Responsive LetsEncrypt Rules %s to manage access here."
 msgstr ""
 
-#: Services.class.php:325 Services.class.php:382 Services.class.php:431
+#: Services.class.php:356 Services.class.php:413 Services.class.php:462
 msgid ""
 "This protocol is being managed by the Responsive Firewall. You "
 "<strong>should not</strong> enable access from the 'Internet' zone, or "
@@ -2384,7 +2388,7 @@ msgid ""
 "<strong>Enabled</strong>"
 msgstr ""
 
-#: Services.class.php:239
+#: Services.class.php:270
 msgid "This will allow access to the LetsEncrypt service when it is enabled."
 msgstr ""
 
@@ -2477,12 +2481,22 @@ msgstr ""
 msgid "UCP"
 msgstr "UCP (Benutzerkontrollzentrum)"
 
+#: Services.class.php:207
+msgid "UCP (Secure)"
+msgstr ""
+
+#: Services.class.php:209
+msgid ""
+"UCP (Secure) - User Control Panel - is the main user interface to the PBX, "
+"and allows people to control their phone. Note that if you want to allow "
+"users to use their web browsers to make calls through UCP (HTTPS) you also "
+"need to add WebRTC to the same zone(s)."
+msgstr ""
+
 #: Services.class.php:171
 msgid ""
 "UCP - User Control Panel - is the main user interface to the PBX, and allows "
-"people to control their phone. Note that if you want to allow users to use "
-"their web browsers to make calls through UCP you also need to add WebRTC to "
-"the same zone(s)."
+"people to control their phone."
 msgstr ""
 
 #: views/modal.customsvc.php:22
@@ -2583,11 +2597,11 @@ msgstr ""
 msgid "Web management interface for your PBX. This is the https interface."
 msgstr ""
 
-#: Services.class.php:224
+#: Services.class.php:255
 msgid "WebRTC"
 msgstr "WebRTC"
 
-#: Services.class.php:226
+#: Services.class.php:257
 msgid ""
 "WebRTC is used by UCP (and other services) to enable calls to be made via a "
 "web browser."
@@ -2622,7 +2636,7 @@ msgstr ""
 msgid "Write to firewall"
 msgstr ""
 
-#: Services.class.php:559
+#: Services.class.php:590
 msgid "XMPP"
 msgstr "XMPP"
 
@@ -2696,11 +2710,11 @@ msgstr ""
 msgid "Zone can be either internal,external,trusted,other"
 msgstr ""
 
-#: Services.class.php:269
+#: Services.class.php:300
 msgid "Zulu UC"
 msgstr ""
 
-#: Services.class.php:272
+#: Services.class.php:303
 msgid ""
 "Zulu UC Desktop and softphone integration unifies the most popular business "
 "communication tools & applications enhancing user productivity and mobility. "
@@ -2710,7 +2724,7 @@ msgid ""
 "zones."
 msgstr ""
 
-#: Services.class.php:287
+#: Services.class.php:318
 msgid "Zulu is not not available on this machine"
 msgstr ""
 
@@ -2732,7 +2746,7 @@ msgstr ""
 msgid "function"
 msgstr ""
 
-#: Services.class.php:703
+#: Services.class.php:734
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
