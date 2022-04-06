@@ -588,7 +588,7 @@ class Services {
 	private function getSvc_xmpp() {
 		$retarr = array(
 			"name" => _("XMPP"),
-			"defzones" => array("external", "other", "internal"),
+			"defzones" => array("internal"),
 			"descr" => _("This is the XMPP server. If you wish to connect to it using an external Jabber client, you need to open this port."),
 			"fw" => array(array("protocol" => "tcp", "port" => 5222)),
 		);
