@@ -8,6 +8,7 @@ class Smart {
 	private $chansip = false; // This machine uses chansip
 	private $pjsip = false; // This machine uses pjsip
 	private $iax = false; // This machine uses IAX
+	private $firewall;
 
 	public function __construct($db = false) {
 
@@ -35,6 +36,7 @@ class Smart {
 		}
 
 		$this->iax = $this->usesIax();
+		$this->firewall = \FreePBX::Firewall();
 	}
 
 	public function getSettings() {
@@ -52,20 +54,20 @@ class Smart {
 		}
 
 		
-		if (\FreePBX::Firewall()->getConfig("responsivefw")) {
+		if ($this->firewall->getConfig("responsivefw")) {
 			$retarr['responsive'] = true;
 			foreach ($retarr['rprotocols'] as $id => $null) {
-				$retarr['rprotocols'][$id]['state'] = \FreePBX::Firewall()->getConfig($id, "rfw");
+				$retarr['rprotocols'][$id]['state'] = $this->firewall->getConfig($id, "rfw");
 			}
-			$retarr['fail2banbypass'] = \FreePBX::Firewall()->getConfig("fail2banbypass");
+			$retarr['fail2banbypass'] = $this->firewall->getConfig("fail2banbypass");
 		}
 		//responsive firewall 
-		$retarr['fpbxratelimit']['TIER1'] = \FreePBX::Firewall()->getConfig('TIER1','fpbxratelimit');
-		$retarr['fpbxratelimit']['TIER2'] = \FreePBX::Firewall()->getConfig('TIER2','fpbxratelimit');
-		$retarr['fpbxratelimit']['TIER3'] = \FreePBX::Firewall()->getConfig('TIER3','fpbxratelimit');
-		$retarr['fpbxrfw']['TIERA'] = \FreePBX::Firewall()->getConfig('TIERA','fpbxrfw');
-		$retarr['fpbxrfw']['TIERB'] = \FreePBX::Firewall()->getConfig('TIERB','fpbxrfw');
-		$retarr['fpbxrfw']['TIERC'] = \FreePBX::Firewall()->getConfig('TIERC','fpbxrfw');
+		$retarr['fpbxratelimit']['TIER1'] = $this->firewall->getConfig('TIER1','fpbxratelimit');
+		$retarr['fpbxratelimit']['TIER2'] = $this->firewall->getConfig('TIER2','fpbxratelimit');
+		$retarr['fpbxratelimit']['TIER3'] = $this->firewall->getConfig('TIER3','fpbxratelimit');
+		$retarr['fpbxrfw']['TIERA'] = $this->firewall->getConfig('TIERA','fpbxrfw');
+		$retarr['fpbxrfw']['TIERB'] = $this->firewall->getConfig('TIERB','fpbxrfw');
+		$retarr['fpbxrfw']['TIERC'] = $this->firewall->getConfig('TIERC','fpbxrfw');
 
 		return $retarr;
 	}
