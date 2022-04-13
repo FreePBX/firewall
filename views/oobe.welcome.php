@@ -4,12 +4,6 @@
   <div class='col-sm-12' align="center">
     <img src='modules/firewall/assets/firewall-logo.png' class='img-responsive'>
   </div>
-  <div class='col-sm-12'>
-    <div class='alert alert-danger'>
-      <p><?php echo _("To receive the full benefits of the Sangoma Smart Firewall, you should ensure that <strong>no other firewall</strong> is intercepting traffic to this machine. This is normally accomplished by configuring your internet connection to place this machine in the 'DMZ' of your gateway."); ?></p>
-      <p><?php echo _("If you are unable to do this, it is unlikely that Responsive Firewall will work correctly, if at all."); ?></p>
-    </div>
-  </div>
 </div>
 
 <div class='row s2' style='display: none'>
