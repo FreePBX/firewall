@@ -788,7 +788,7 @@ class Services {
 	 * @return void
 	 */
 	public function setFirewallConfigurations($input) {
-		//$this->firewall = \FreePBX::Firewall();
+		$this->firewall = \FreePBX::Firewall();
 
 		// Firewall should be enabled
 		$this->firewall->setConfig("status", $input['status']);
@@ -826,7 +826,7 @@ class Services {
 	 * @return void
 	 */
 	public function getFirewallConfigurations() {
-		//$this->firewall = \FreePBX::Firewall();
+		$this->firewall = \FreePBX::Firewall();
 
 		$firewallStatus = $this->firewall->getConfig("status");
 		$responsiveFirewall = $this->firewall->getConfig("responsivefw");
