@@ -8,6 +8,9 @@ if (file_exists("/var/run/firewalld.safemode")) {
 	exit;
 }
 
+//sleep added to test filrewall wizard issue
+sleep(10);
+
 // This adds a network, or networks, to the trusted zone.
 // Used by 'preconfigured'
 
