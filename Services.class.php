@@ -13,7 +13,7 @@ class Services {
 
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
-		$this->coreservices = array("ssh", "http", "https", "ucp", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl", "ntp");
+		$this->coreservices = array("ssh", "http", "https", "ucp","ucp_ssl", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl", "ntp");
 		$this->extraservices = array("sng_phone_svc","zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
@@ -175,8 +175,8 @@ class Services {
 		$retarr = array(
 			"name" => _("UCP"),
 			"defzones" => array("other", "internal"),
-			"descr" => _("UCP - User Control Panel - is the main user interface to the PBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP you also need to add WebRTC to the same zone(s)."),
-			"fw" => array(array("protocol" => "tcp", "port" => 81, "leport" => true)),
+			"descr" => _("UCP - User Control Panel - is the main user interface to the PBX, and allows people to control their phone."),
+			"fw" => array(array("protocol" => "tcp", "port" => 81)),
 		);
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
@@ -187,9 +187,6 @@ class Services {
 
 			if (isset($ports['ucp']) && $ports['ucp'] !== 'disabled' && $ports['ucp'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['ucp'], "leport" => true);
-			}
-			if (isset($ports['sslucp']) && $ports['sslucp'] !== 'disabled' && $ports['sslucp'] >= 80) {
-				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslucp']);
 			}
 			// Were there any ports discovered?
 			if (!$retarr['fw']) {
@@ -209,7 +206,41 @@ class Services {
 		if ($nodejs) {
 			$retarr['fw'][] = array("protocol" => "tcp", "port" => $nodejs);
 		}
-		$nodejstls = $this->config->get('NODEJSHTTPSBINDPORT');
+		return $retarr;
+	}
+
+	private function getSvc_ucp_ssl() {
+		$retarr = array(
+			"name" => _("UCP (Secure)"),
+			"defzones" => array("other", "internal"),
+			"descr" => _("UCP (Secure) - User Control Panel - is the main user interface to the PBX, and allows people to control their phone. Note that if you want to allow users to use their web browsers to make calls through UCP (HTTPS) you also need to add WebRTC to the same zone(s)."),
+			"fw" => array(array("protocol" => "tcp", "port" => 4443)),
+		);
+		// TODO: This is not portable for machines that don't have sysadmin.
+		// Ask sysadmin for the REAL port of the admin interface
+		try {
+			$ports = \FreePBX::Sysadmin()->getPorts();
+			// Sysadmin is installed
+			$retarr['fw'] = array();
+
+			if (isset($ports['sslucp']) && $ports['sslucp'] !== 'disabled' && $ports['sslucp'] >= 80) {
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslucp']);
+			}
+			// Were there any ports discovered?
+			if (!$retarr['fw']) {
+				// No port are assigned to restapps, it's not enabled in sysadmin
+				$retarr['descr'] = _("Dedicated UCP SSL access is disabled in Sysadmin Port Management");
+				$retarr['disabled'] = true;
+				// Don't return the nodejs stuff if UCP is disabled
+				return $retarr;
+			}
+		} catch (\Exception $e) {
+			// Ignore. User will have to manually add whatever ports
+			// they have configured UCP to listen on.
+		}
+
+		// Add nodejs listen port, if it's installed.
+		$nodejstls = \FreePBX::Config()->get('NODEJSHTTPSBINDPORT');
 		if ($nodejstls) {
 			$retarr['fw'][] = array("protocol" => "tcp", "port" => $nodejstls);
 		}
@@ -564,7 +595,7 @@ class Services {
 	private function getSvc_xmpp() {
 		$retarr = array(
 			"name" => _("XMPP"),
-			"defzones" => array("external", "other", "internal"),
+			"defzones" => array("internal"),
 			"descr" => _("This is the XMPP server. If you wish to connect to it using an external Jabber client, you need to open this port."),
 			"fw" => array(array("protocol" => "tcp", "port" => 5222)),
 		);
