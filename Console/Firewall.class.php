@@ -359,6 +359,30 @@ class Firewall extends Command {
 			return;
 		}
 
+        $nsips 	= $fw->NSLookUp_Check($param);
+		$noip 	= false;
+		if($nsips === false || empty($nsips[0])){			
+			$noip = true;
+		}
+		else{
+			if(is_array($nsips)){
+				foreach($nsips as $nsip){
+					if(!empty($nsip)){
+						$param = $nsip;
+						break;
+					}			
+				}
+			}
+			else{
+				$noip = true;
+			}
+		}
+
+		if($noip){
+			$output->writeln("<fg=black;bg=red>".sprintf("Hostname %s Error. IP address not resolved. Process aborted.", $param)."</>");
+			return;
+		}
+
 		// Is this an IP address? If it matches an IP address, then it doesn't have a
 		// subnet. Add one, depending on what it is.
 		if (filter_var($param, \FILTER_VALIDATE_IP)) {
