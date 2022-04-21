@@ -2357,7 +2357,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$hookfile = $this->get_astspooldir()."/incron/firewall.firewall";
 		$enabledfile = $this->get_astetcdir()."/firewall.enabled";
 		$line = "*/15 * * * * [ -e $enabledfile ] && touch $hookfile";
-		$this->cron->add($line);
+		$cron->add($line);
 	}
 
 	public function removeCronJob() {
@@ -2365,7 +2365,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$hookfile = $this->get_astspooldir()."/incron/firewall.firewall";
 		$enabledfile = $this->get_astetcdir()."/firewall.enabled";
 		$line = "*/15 * * * * [ -e $enabledfile ] && touch $hookfile";
-		$this->cron->remove($line);
+		$cron->remove($line);
 	}
 
 	// Hooks
@@ -2381,20 +2381,20 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function removeOldSyncJob(){
 		$cron 		= \FreePBX::Cron();
 		$fwc_path	= $this->FreePBX->Config->get("AMPSBIN")."/fwconsole";
-		$allJobs	= $this->cron->getAll();
+		$allJobs	= $cron->getAll();
 		foreach($allJobs as $line){
 			if(strpos($line,"fwconsole firewall sync") !== false){
-				$this->cron->remove($line);
+				$cron->remove($line);
 			}
 		}
 	}
 
 	public function removesyncjob(){
 		$cron 		= \FreePBX::Cron();
-		$allJobs	= $this->cron->getAll();
+		$allJobs	= $cron->getAll();
 		foreach($allJobs as $line){
 			if(strpos($line,"fwconsole firewall sync") !== false){
-				$this->cron->remove($line);
+				$cron->remove($line);
 			}
 		}
 		\FreePBX::Job()->remove('firewall', 'syncIDetection');
