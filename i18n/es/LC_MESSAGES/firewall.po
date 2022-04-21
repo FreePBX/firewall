@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-30 08:53+0000\n"
+"POT-Creation-Date: 2022-04-21 03:20+0000\n"
 "PO-Revision-Date: 2020-09-02 11:50+0000\n"
 "Last-Translator: Javier Pastor <jpastor@cerebelum.net>\n"
 "Language-Team: Spanish <http://*/projects/freepbx/firewall/es/>\n"
@@ -295,11 +295,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr "Todas las Interfaces de Túnel se establecen automáticamente en Local"
 
-#: Console/Firewall.class.php:474
+#: Console/Firewall.class.php:498
 msgid "All blacklisted entries."
 msgstr "Todas las entradas de la lista negra."
 
-#: Console/Firewall.class.php:465
+#: Console/Firewall.class.php:489
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr "Todas las entradas en la zona '%s':"
@@ -432,7 +432,7 @@ msgstr ""
 msgid "Assigned Zone"
 msgstr "Zona Asignada"
 
-#: views/oobe.welcome.php:23
+#: views/oobe.welcome.php:17
 msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
@@ -443,12 +443,12 @@ msgstr ""
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr "Intentando agregar '%s' a la lista negra ... "
 
-#: Console/Firewall.class.php:374
+#: Console/Firewall.class.php:398
 #, fuzzy, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr "Intentando agregar '%s' a la Zona '%s' ... "
 
-#: Console/Firewall.class.php:425
+#: Console/Firewall.class.php:449
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr "Intentando eliminar '%s' de la zona '%s' ... "
@@ -837,7 +837,7 @@ msgstr "Error!"
 msgid "Error!! Permission denied copy rules: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:417
+#: Console/Firewall.class.php:441
 msgid "Error:"
 msgstr "Error:"
 
@@ -906,7 +906,7 @@ msgstr ""
 msgid "Failed State Change!"
 msgstr ""
 
-#: Console/Firewall.class.php:385
+#: Console/Firewall.class.php:409
 msgid "Failed! Could not validate entry. Please try again."
 msgstr "¡Ha fallado! No se pudo validar la entrada. Inténtalo de nuevo."
 
@@ -1056,7 +1056,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: Console/Firewall.class.php:417
+#: Console/Firewall.class.php:441
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -1065,7 +1065,7 @@ msgstr ""
 msgid "How many times a remote IP can try to connect during the find time."
 msgstr ""
 
-#: views/oobe.welcome.php:30
+#: views/oobe.welcome.php:24
 msgid ""
 "However, if you continue, your machine and firewall will be automatically "
 "updated with the latest settings!"
@@ -1180,12 +1180,6 @@ msgid ""
 "information available here."
 msgstr ""
 
-#: views/oobe.welcome.php:10
-msgid ""
-"If you are unable to do this, it is unlikely that Responsive Firewall will "
-"work correctly, if at all."
-msgstr ""
-
 #: views/view.blocked.php:20 views/view.blocked.php:34
 msgid ""
 "If you believe one of the hosts has been added in error, you can click the "
@@ -1193,7 +1187,7 @@ msgid ""
 "will be automatically re-added."
 msgstr ""
 
-#: views/oobe.welcome.php:22
+#: views/oobe.welcome.php:16
 msgid ""
 "If you do not wish to use Sangoma Smart Firewall, simply click 'Abort'. You "
 "may return to this setup wizard via the 'Firewall' option in the "
@@ -1832,7 +1826,7 @@ msgstr ""
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:421
+#: Console/Firewall.class.php:445
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
@@ -1929,7 +1923,7 @@ msgstr ""
 msgid "Sangoma Smart Firewall"
 msgstr ""
 
-#: views/oobe.welcome.php:20
+#: views/oobe.welcome.php:14
 msgid ""
 "Sangoma Smart Firewall is a revolutionary Open Source Firewall solution, "
 "designed from the ground up to completely secure your VoIP system."
@@ -2117,8 +2111,8 @@ msgstr ""
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:355 Console/Firewall.class.php:397
-#: Console/Firewall.class.php:454
+#: Console/Firewall.class.php:355 Console/Firewall.class.php:421
+#: Console/Firewall.class.php:478
 msgid "Success!"
 msgstr ""
 
@@ -2183,7 +2177,7 @@ msgstr "TFTP"
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
-#: views/oobe.welcome.php:28
+#: views/oobe.welcome.php:22
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
@@ -2481,15 +2475,7 @@ msgstr ""
 msgid "To enable/disable safe mode"
 msgstr ""
 
-#: views/oobe.welcome.php:9
-msgid ""
-"To receive the full benefits of the Sangoma Smart Firewall, you should "
-"ensure that <strong>no other firewall</strong> is intercepting traffic to "
-"this machine. This is normally accomplished by configuring your internet "
-"connection to place this machine in the 'DMZ' of your gateway."
-msgstr ""
-
-#: views/oobe.welcome.php:21
+#: views/oobe.welcome.php:15
 msgid ""
 "To start using Sangoma Smart Firewall you simply need to answer a couple of "
 "questions, and your Firewall will be configured and activated immediately."
@@ -2582,7 +2568,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: Console/Firewall.class.php:446
+#: Console/Firewall.class.php:470
 msgid "Unknown entry!"
 msgstr ""
 
@@ -2630,7 +2616,7 @@ msgstr ""
 msgid "Warning: Unable to resolve this entry!"
 msgstr ""
 
-#: views/oobe.welcome.php:29
+#: views/oobe.welcome.php:23
 msgid ""
 "We hope you're enjoying it! There's some additional questions you should "
 "answer. If you don't want to answer them at this time, just click Abort, and "
