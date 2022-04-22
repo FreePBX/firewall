@@ -8,12 +8,9 @@ if (file_exists("/var/run/firewalld.safemode")) {
 	exit;
 }
 
-//sleep added to test filrewall wizard issue
-sleep(10);
 
 // This adds a network, or networks, to the trusted zone.
 // Used by 'preconfigured'
-
 // Make sure we have a param
 if (empty($argv[1])) {
 	throw new \Exception("Needs a param");
@@ -22,9 +19,14 @@ if (empty($argv[1])) {
 // Underp the base64 that the param is using.
 $b = str_replace('_', '/', $argv[1]);
 $settings = @json_decode(gzuncompress(@base64_decode($b)), true);
-
 if (!is_array($settings)) {
 	throw new \Exception("Invalid param");
+}
+
+//sleep added to test filrewall wizard issue
+if (isset($settings['sleep'])) {
+	unset($settings['sleep']);
+	sleep(10);
 }
 
 // ///////////////////////////////////// //

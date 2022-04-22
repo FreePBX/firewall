@@ -1386,7 +1386,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				}
 				$nets[$thishost] = "trusted";
 				$this->setConfig("networkmaps", $nets);
-				return $this->runHook('addnetwork', array('trusted' => array($thishost)));
+				return $this->runHook('addnetwork', array('trusted' => array($thishost),'sleep'=>1));
 			case "addthisnetwork":
 				$thisnet = $this->detectNetwork();
 				$nets = $this->getConfig("networkmaps");
@@ -1395,7 +1395,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				}
 				$nets[$thisnet] = "trusted";
 				$this->setConfig("networkmaps", $nets);
-				return $this->runHook('addnetwork', array('trusted' => array($thisnet)));
+				return $this->runHook('addnetwork', array('trusted' => array($thisnet),'sleep'=>1));
 			case "updateinterfaces":
 				// Extract our interfaces
 				$ints = @json_decode($_REQUEST['ints'], true);
