@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-24 02:41+0000\n"
-"PO-Revision-Date: 2022-04-13 14:01+0000\n"
+"PO-Revision-Date: 2022-04-27 14:43+0000\n"
 "Last-Translator: Santiago Pioli <spioli@sangoma.com>\n"
 "Language-Team: Spanish <http://weblate.freepbx.org/projects/freepbx/firewall/"
 "es/>\n"
@@ -1719,10 +1719,14 @@ msgid ""
 "rebooting your machine without your knowledge. Otherwise it should be left "
 "<strong>Enabled</strong>"
 msgstr ""
+"Eso debería estar deshabilitado si hay posibilidad de que individuos "
+"maliciosos reinicien su máquina sin su conocimiento. De lo contrario, "
+"debería estar <strong>habilitado</strong>"
 
 #: Services.class.php:188
 msgid "This will allow access to the LetsEncrypt service when it is enabled."
 msgstr ""
+"Esto permitirá acceso al servicio LetsEncrypt cuando se encuentre habilitado."
 
 #: views/view.blacklist.php:2
 msgid ""
@@ -1731,6 +1735,10 @@ msgid ""
 "that their traffic has been administratively blocked. They will NOT be "
 "permitted to access the Responsive Firewall service."
 msgstr ""
+"Para mitigar cualquier potencial ataque, puede agregar cualquier cantidad de "
+"hosts o redes aquí y el tráfico desde éstos recibirá una respuesta que su "
+"tráfico ha sido bloqueado administrativamente. NO se les será permitido el "
+"acceso al servicio de Responsive Firewall."
 
 #: views/oobe.welcome.php:9
 msgid ""
@@ -1739,40 +1747,47 @@ msgid ""
 "this machine. This is normally accomplished by configuring your internet "
 "connection to place this machine in the 'DMZ' of your gateway."
 msgstr ""
+"Para recibir los todos beneficios del Sangoma Smart Firewall, debería "
+"asegurarse que <strong>NINGUN OTRO FIREWALL</strong> intercepta tráfico a "
+"esta máquina. Esto es normalmente logrado configurando su conexión de "
+"internet y colocar a la máquina en la 'DMZ' de su puerta de enlace."
 
 #: views/oobe.welcome.php:21
 msgid ""
 "To start using Sangoma Smart Firewall you simply need to answer a couple of "
 "questions, and your Firewall will be configured and activated immediately."
 msgstr ""
+"Para empezar a usar Sangoma Smart Firewall tiene que simplemente responder "
+"un par de preguntas, y su cortafuegos será configurado y activado "
+"inmediatamente."
 
 #: views/view.status.php:20
 msgid "Total number of Attackers detected:"
-msgstr ""
+msgstr "Número total de Atacantes detectados:"
 
 #: views/view.status.php:18
 msgid "Total number of Rate-Limited Clients:"
-msgstr ""
+msgstr "Número total de Clientes Limitados en Velocidad:"
 
 #: views/view.status.php:17
 msgid "Total number of Registered Clients:"
-msgstr ""
+msgstr "Número total de Clientes Registrados:"
 
 #: Zones.class.php:13
 msgid "Trusted"
-msgstr ""
+msgstr "Confiado"
 
 #: Firewall.class.php:182 Firewall.class.php:185
 msgid "Trusted Interface Detected"
-msgstr ""
+msgstr "Interfaz de confianza detectada"
 
 #: Firewall.class.php:214
 msgid "Trusted Management Network defined"
-msgstr ""
+msgstr "Red de Administración de Confianza definida"
 
 #: Services.class.php:118
 msgid "UCP"
-msgstr ""
+msgstr "UCP"
 
 #: Services.class.php:120
 msgid ""
@@ -1781,26 +1796,30 @@ msgid ""
 "their web browsers to make calls through UCP you also need to add WebRTC to "
 "the same zone(s)."
 msgstr ""
+"UCP - Panel de Control de Usuario - es la interfaz principal del usuario a "
+"la PBX, y permite a la gente controlar sus teléfonos. Tenga en cuenta que si "
+"quiere permitir a los usuarios utilizar sus navegadores web para hacer "
+"llamadas a través de UCP, necesitará agregar WebRTC a la misma zona(s)."
 
 #: views/modal.customsvc.php:22
 msgid "UDP"
-msgstr ""
+msgstr "UDP"
 
 #: views/view.portmaps.php:54
 msgid "UDP Port:"
-msgstr ""
+msgstr "Puerto UDP:"
 
 #: views/view.portmaps.php:57
 msgid "UDP Ports:"
-msgstr ""
+msgstr "Puertos UDP:"
 
 #: Console/Firewall.class.php:284
 msgid "Unknown entry!"
-msgstr ""
+msgstr "¡Entrada desconocida!"
 
 #: Firewall.class.php:682
 msgid "Update Interfaces"
-msgstr ""
+msgstr "Actualizar Interfaces"
 
 #: assets/js/views/advanced.js:20
 msgid "Updating..."
@@ -1816,10 +1835,14 @@ msgid ""
 "This is <strong>expected</strong> when viewing through the Web Interface. "
 "The correct port, as configured, will be used in the firewall service."
 msgstr ""
+"Advertencia: No es posible leer /etc/ssh/sshd_config - este puerto puede ser "
+"incorrecto. Esto es <strong>de esperar</strong> cuando se ve a través de la "
+"Interfaz Web. El puerto correcto, según lo configurado, será usado en el "
+"servicio de cortafuegos."
 
 #: views/view.blacklist.php:19
 msgid "Warning: Unable to resolve this entry!"
-msgstr ""
+msgstr "¡Advertencia: No se puede resolver esta entrada!"
 
 #: views/oobe.welcome.php:29
 msgid ""
@@ -1827,6 +1850,10 @@ msgid ""
 "answer. If you don't want to answer them at this time, just click Abort, and "
 "no changes will be made to your existing Firewall setup."
 msgstr ""
+"¡Esperamos que lo estés disfrutando! Hay algunas preguntas adicionales que "
+"deberá responder. Si no desea responderlas en este momento, sólo haga click "
+"en Abortar, y ningún cambio será hecho en su configuración actual del "
+"Cortafuegos."
 
 #: Services.class.php:78
 msgid "Web Management"
@@ -1834,31 +1861,37 @@ msgstr "Administración Web"
 
 #: Services.class.php:99
 msgid "Web Management (Secure)"
-msgstr ""
+msgstr "Administración Web (Segura)"
 
 #: Services.class.php:80
 msgid ""
 "Web management interface for your PBX. This is the http, not https (secure) "
 "interface."
 msgstr ""
+"Interfaz de administración web de su PBX. Esta es la interfaz HTTP, no HTTPS "
+"(segura)."
 
 #: Services.class.php:101
 msgid "Web management interface for your PBX. This is the https interface."
-msgstr ""
+msgstr "Interfaz de administración web de su PBX. Esta es la interfaz HTTPS."
 
 #: Services.class.php:173
 msgid "WebRTC"
-msgstr ""
+msgstr "WebRTC"
 
 #: Services.class.php:175
 msgid ""
 "WebRTC is used by UCP (and other services) to enable calls to be made via a "
 "web browser."
 msgstr ""
+"WebRTC es usado por UCP (y otros servicios) para habilitar llamadas hechas "
+"desde el navegador web."
 
 #: Console/Firewall.class.php:98
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr ""
+"Cuando se agregan o eliminan de una zona, una o varias IDs pueden ser "
+"provistas."
 
 #: views/view.smart.php:25
 msgid ""
@@ -1866,6 +1899,9 @@ msgid ""
 "otherwise rejected are <strong>not blocked</strong>, and instead allowed a "
 "<strong>very limited</strong> amount of registration attempts."
 msgstr ""
+"Cuando está habilitado, cualquier intento de conexión VoIP entrante que "
+"sería de otro modo rechazada <strong>no es bloqueada</strong>, en cambio "
+"permite una <strong>limitada</strong> cantidad de intentos de registración."
 
 #: Services.class.php:488
 msgid "XMPP"
