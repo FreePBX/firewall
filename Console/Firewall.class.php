@@ -360,30 +360,6 @@ class Firewall extends Command {
 			return;
 		}
 
-		$nsips 	= $fw->NSLookUp_Check($param);
-		$noip 	= false;
-		if($nsips === false || empty($nsips[0])){			
-			$noip = true;
-		}
-		else{
-			if(is_array($nsips)){
-				foreach($nsips as $nsip){
-					if(!empty($nsip)){
-						$param = $nsip;
-						break;
-					}			
-				}
-			}
-			else{
-				$noip = true;
-			}
-		}
-
-		if($noip){
-			$output->writeln("<fg=black;bg=red>".sprintf("Hostname %s Error. IP address not resolved. Process aborted.", $param)."</>");
-			return;
-		}
-
 		// Is this an IP address? If it matches an IP address, then it doesn't have a
 		// subnet. Add one, depending on what it is.
 		if (filter_var($param, \FILTER_VALIDATE_IP)) {
@@ -399,10 +375,12 @@ class Firewall extends Command {
 		$output->write("<info>".sprintf(_("Attempting to add '%s' to Zone '%s' ... "), "</info>$param<info>", "</info>$zone<info>")."</info>");
 
 		// Is this a network? If it has a slash, assume it does.
+		$isHost = false;
 		if (strpos($param, "/") !== false) {
 			$trust = $so->returnCidr($param);
 		} else {
-			$trust = $so->lookup($param);
+			$trust = $so->lookup($param, false);
+			$isHost = true;
 		}
 
 		// If it's false, or empty, we couldn't add it.
@@ -411,14 +389,27 @@ class Firewall extends Command {
 			return;
 		}
 		$nets = $fw->getConfig("networkmaps");
+		$hosts = $fw->getConfig("hostmaps");
+
 		if (!is_array($nets)) {
 			$nets = array();
 		}
 
-		$nets[$param] = $zone;
-		$fw->setConfig("networkmaps", $nets);
-		$params = array($zone => array("$param"));
-		$fw->runHook('addnetwork', $params);
+		if (!is_array($hosts)) {
+			$hosts = array();
+		}
+
+		if ($isHost) {
+			$hosts[$param] = $zone;
+			$fw->setConfig("hostmaps", $hosts);
+			$fw->addHostToZone($param, $zone, $descr);		
+		} else {
+			$nets[$param] = $zone;
+			$fw->setConfig("networkmaps", $nets);
+			$params = array($zone => array("$param"));
+			$fw->runHook('addnetwork', $params);
+		}		
+		
 		$output->writeln("<info>"._("Success!")."</info>");
 	}
 
@@ -429,6 +420,16 @@ class Firewall extends Command {
 	private function removeFromZone($output, $zone, $param) {
 		$fw = \FreePBX::Firewall();
 		$so = $fw->getSmartObj();
+
+		// Is this an IP address? If it matches an IP address, then it doesn't have a
+		// subnet. Add one, depending on what it is.
+		$isHost = false;
+		if (!filter_var($param, \FILTER_VALIDATE_IP)) {
+			$ip 		= $so->lookup($param, false);
+			$hostname 	= $param;
+			$param 		= $ip[0]; 
+			$isHost 	= (!empty($ip) && is_array($ip)) ? true : false;
+		}
 
 		switch ($zone) {
 		case "trusted":
@@ -447,33 +448,49 @@ class Firewall extends Command {
 			return;
 		}
 
-		$output->write("<info>".sprintf(_("Attempting to remove %s from '%s' Zone ... "), "</info>$param<info>", "</info>$zone<info>")."</info>");
+		$what = (empty($hostname)) ? $param : $hostname;
+		$output->write("<info>".sprintf(_("Attempting to remove %s from '%s' Zone ... "), "</info>$what<info>", "</info>$zone<info>")."</info>");
+
 		$nets = $fw->getConfig("networkmaps");
 		if (!is_array($nets)) {
 			$nets = array();
-		}
+		}	
 
-		if (!isset($nets[$param])) {
-			// It doesn't exist. Is this an IP address? If it matches an IP address,
-			// and it doesn't have a subnet, add one and try again.
-			if (filter_var($param, \FILTER_VALIDATE_IP)) {
-				// Is this an IPv4 address? Add /32
-				if (filter_var($param, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-					$param = "$param/32";
-				} else {
-					// It's IPv6. 
-					$param = "$param/128";
-				}
-
-				// Now does it exist?
-				if (!isset($nets[$param])) {
-					// No.
-					$output->writeln("<fg=black;bg=red>"._("Unknown entry!")."</>");
-					return;
+		if ( !$isHost ) {	
+			if (!isset($nets[$param])) {
+				// It doesn't exist. Is this an IP address? If it matches an IP address,
+				// and it doesn't have a subnet, add one and try again.
+				if (filter_var($param, \FILTER_VALIDATE_IP)) {
+					// Is this an IPv4 address? Add /32
+					if (filter_var($param, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+						$param = "$param/32";
+					} else {
+						// It's IPv6. 
+						$param = "$param/128";
+					}
+	
+					// Now does it exist?
+					if (!isset($nets[$param])) {
+						// No.
+						$output->writeln("<fg=black;bg=red>"._("Unknown entry!")."</>");
+						return;
+					}
 				}
 			}
+			
+			unset($nets[$param]);
+		} else {
+			// This is a hostname.
+			$hosts = $fw->getConfig("hostmaps");
+			if (!is_array($hosts)) {
+				$hosts = array();
+			}
+
+			unset($hosts[$hostname]);
+			unset($nets[$hostname]);
+			$fw->setConfig("hostmaps", $hosts);
 		}
-		unset($nets[$param]);
+
 		$fw->setConfig("networkmaps", $nets);
 		$fw->runHook("removenetwork", array("network" => $param, "zone" => $zone));
 		$output->writeln("<info>"._("Success!")."</info>");
