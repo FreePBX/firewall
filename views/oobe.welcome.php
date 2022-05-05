@@ -2,7 +2,7 @@
 <h2 class='s1'><?php echo _("Sangoma Smart Firewall is now enabled!"); ?></h2>
 <div class='row s1'>
   <div class='col-sm-12' align="center">
-    <img src='modules/firewall/assets/firewall-logo.png' class='img-responsive'>
+    <img src='modules/firewall/assets/firewall-logo.png' class='img-fluid'>
   </div>
 </div>
 
@@ -30,7 +30,7 @@ echo "<p>"._("However, if you continue, your machine and firewall will be automa
     </div>
   </div>
   <div class='col-sm-4'>
-    <img src='modules/firewall/assets/firewall-logo.png' class='img-responsive'>
+    <img src='modules/firewall/assets/firewall-logo.png' class='img-fluid'>
   </div>
 </div>
 <div class='row s2' style='display: none'>

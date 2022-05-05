@@ -26,14 +26,14 @@ if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->get
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
-    <li role="presentation" data-name="status" class="<?php echo $status; ?>">
-        <a href="#status" aria-controls="status" role="tab" data-toggle="tab"><?php echo _("Status Overview")?> </a>
+    <li role="presentation" data-name="status" >
+        <a class="nav-link <?php echo $status; ?>" href="#status" aria-controls="status" role="tab" data-toggle="tab"><?php echo _("Status Overview")?> </a>
       </li>
-      <li role="presentation" data-name="registered" class="<?php echo $registered; ?>">
-        <a href="#registered" aria-controls="registered" role="tab" data-toggle="tab"><?php echo _("Registered Endpoints")?> </a>
+      <li role="presentation" data-name="registered" >
+        <a class="nav-link <?php echo $registered; ?>" href="#registered" aria-controls="registered" role="tab" data-toggle="tab"><?php echo _("Registered Endpoints")?> </a>
       </li>
-      <li role="presentation" data-name="blockedtab"  class="<?php echo $blockedtab; ?>">
-        <a href="#blockedtab" aria-controls="blockedtab" role="tab" data-toggle="tab"><?php echo _("Blocked Hosts")?> </a>
+      <li role="presentation" data-name="blockedtab"  >
+        <a class="nav-link <?php echo $blockedtab; ?>" href="#blockedtab" aria-controls="blockedtab" role="tab" data-toggle="tab"><?php echo _("Blocked Hosts")?> </a>
       </li>
     </ul>
     <div class="tab-content display">

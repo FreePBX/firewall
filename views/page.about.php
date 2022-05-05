@@ -43,21 +43,21 @@ if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->get
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
-      <li role="presentation" data-name="about" class="<?php echo $about; ?>">
-        <a href="#about" aria-controls="about" role="tab" data-toggle="tab"><?php echo _("Settings")?> </a>
+      <li role="presentation" data-name="about">
+        <a  class="nav-link <?php echo $about; ?>" href="#about" aria-controls="about" role="tab" data-toggle="tab"><?php echo _("Settings")?> </a>
       </li>
-      <li role="presentation" data-name="smart" class="<?php echo $smart; ?>">
-        <a href="#smart" aria-controls="smart" role="tab" data-toggle="tab"><?php echo _("Responsive Firewall")?> </a>
+      <li role="presentation" data-name="smart">
+        <a  class="nav-link <?php echo $smart; ?>" href="#smart" aria-controls="smart" role="tab" data-toggle="tab"><?php echo _("Responsive Firewall")?> </a>
       </li>
-      <li role="presentation" data-name="interfaces" class="<?php echo $interfaces; ?>">
-        <a href="#interfaces" aria-controls="interfaces" role="tab" data-toggle="tab"><?php echo _("Interfaces")?> </a>
+      <li role="presentation" data-name="interfaces" >
+        <a class="nav-link <?php echo $interfaces; ?>" href="#interfaces" aria-controls="interfaces" role="tab" data-toggle="tab"><?php echo _("Interfaces")?> </a>
       </li>
-      <li role="presentation" data-name="networks" class="<?php echo $networks; ?>">
-        <a href="#networks" aria-controls="networks" role="tab" data-toggle="tab"><?php echo _("Networks")?> </a>
+      <li role="presentation" data-name="networks" >
+        <a class="nav-link <?php echo $networks; ?>" href="#networks" aria-controls="networks" role="tab" data-toggle="tab"><?php echo _("Networks")?> </a>
       </li>
       <?php if($salic) { ?>
-      <li role="presentation" data-name="intrusion_detection" class="<?php echo $intrusion_detection; ?>">
-        <a href="#intrusion_detection" aria-controls="intrusion_detection" role="tab" data-toggle="tab"><?php echo _("Intrusion Detection")?> </a>
+      <li role="presentation" data-name="intrusion_detection" >
+        <a class="nav-link <?php echo $intrusion_detection; ?>" href="#intrusion_detection" aria-controls="intrusion_detection" role="tab" data-toggle="tab"><?php echo _("Intrusion Detection")?> </a>
       </li>
       <?php } ?>
     </ul>

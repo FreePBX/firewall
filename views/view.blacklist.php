@@ -22,7 +22,7 @@ foreach ($b as $entry => $resolved) {
 		}
 	}
 	print "      <button type='button' class='pull-right x-btn btn btn-danger blbutton' data-action='remove' data-id='$i' title='$del'>\n";
-	print "        <span class='glyphicon glyphicon-remove'></span>\n";
+	print "        <span class='fa fa-remove'></span>\n";
 	print "      </button>\n";
 	print "    </div>\n";
 	print "  </div>\n";
@@ -38,7 +38,7 @@ foreach ($b as $entry => $resolved) {
     </div>
     <div class='col-sm-8 col-md-9'>
       <button type='button' class='pull-right x-btn btn btn-success blbutton' data-action='create' data-id='new' title='<?php echo _("Add New"); ?>'>
-        <span class='glyphicon glyphicon-plus'></span>
+        <span class='fa fa-plus'></span>
       </button>
     </div>
   </div>

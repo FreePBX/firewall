@@ -28,17 +28,17 @@ $extrasvc = $services['extra'];
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
-      <li role="presentation" data-name="services" class="<?php echo $servicestab; ?>">
-        <a href="#servicestab" aria-controls="servicestab" role="tab" data-toggle="tab"><?php echo _("Services")?></a>
+      <li role="presentation" data-name="services">
+        <a class="nav-link <?php echo $servicestab; ?>" href="#servicestab" aria-controls="servicestab" role="tab" data-toggle="tab"><?php echo _("Services")?></a>
       </li>
-      <li role="presentation" data-name="extraservices" class="<?php echo $extraservices; ?>">
-        <a href="#extraservices" aria-controls="extraservices" role="tab" data-toggle="tab"><?php echo _("Extra Services")?></a>
+      <li role="presentation" data-name="extraservices">
+        <a class="nav-link <?php echo $extraservices; ?>" href="#extraservices" aria-controls="extraservices" role="tab" data-toggle="tab"><?php echo _("Extra Services")?></a>
       </li>
-      <li role="presentation" data-name="customsvc" class="<?php echo $customsvc; ?>">
-        <a href="#customsvc" aria-controls="customsvc" role="tab" data-toggle="tab"><?php echo _("Custom Services")?></a>
+      <li role="presentation" data-name="customsvc">
+        <a class="nav-link <?php echo $customsvc; ?>" href="#customsvc" aria-controls="customsvc" role="tab" data-toggle="tab"><?php echo _("Custom Services")?></a>
       </li>
-      <li role="presentation" data-name="blacklist" class="<?php echo $blacklist; ?>">
-        <a href="#blacklist" aria-controls="blacklist" role="tab" data-toggle="tab"><?php echo _("Blacklist")?></a>
+      <li role="presentation" data-name="blacklist">
+        <a class="nav-link <?php echo $blacklist; ?>" href="#blacklist" aria-controls="blacklist" role="tab" data-toggle="tab"><?php echo _("Blacklist")?></a>
       </li>
     </ul>
     <div class="tab-content display">

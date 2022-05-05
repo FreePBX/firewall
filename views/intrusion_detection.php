@@ -34,8 +34,8 @@ if ($i_d_conf) {
 
 ?>
 <div class="element-container">
-	<div class="row">
-		<div class="form-group">
+	<div class="">
+		<div class="row form-group">
 			<div class="col-md-6">
 				<h1><?php echo _("Intrusion Detection")?></h1>
 			</div>
@@ -55,8 +55,8 @@ if ($i_d_conf) {
 								<div class="modal-body text-left">
 									<div class="fpbx-container">
 										<div class="element-container">	
-											<div class="row">
-												<div class="form-group">
+											<div class="">
+												<div class="row form-group">
 													<div class="col-md-7">
 														<label class="control-label" for="INTRUSION_DETECTION_SERVICE"><?php echo _("Intrusion Detection Service") ?></label>
 														<i class="fa fa-question-circle fpbx-help-icon" data-for="INTRUSION_DETECTION_SERVICE"></i>&nbsp;
@@ -86,8 +86,8 @@ if ($i_d_conf) {
 											</div>
 										</div>
 										<div class="element-container">	
-										<div class="row">
-												<div class="form-group">
+										<div class="">
+												<div class="row form-group">
 													<div class="col-md-7">
 														<label class="control-label" for="IDSF"><?php echo _("Intrusion Detection Sync Firewall") ?></label>
 														<i class="fa fa-question-circle fpbx-help-icon" data-for="IDSF"></i>&nbsp;
@@ -130,8 +130,8 @@ if ($i_d_conf) {
 <form class="fpbx-submit" method="post" action="">
 <!--Status-->
 <div class="element-container">
-	<div class="row">
-		<div class="form-group">
+	<div class="">
+		<div class="row form-group">
 			<div class="col-md-3">
 				<label class="control-label" for="sw"><?php echo _("Status") ?></label>
 			</div>
@@ -144,8 +144,8 @@ if ($i_d_conf) {
 <!--END Status-->
 <!--Intrusion Detection-->
 <div class="element-container">
-	<div class="row">
-		<div class="form-group">
+	<div class="">
+		<div class="row form-group">
 			<div class="col-md-3">
 				<label class="control-label" for="idwrap"><?php echo _("Intrusion Detection") ?></label>
 				<i class="fa fa-question-circle fpbx-help-icon" data-for="idwrap"></i>
@@ -179,8 +179,8 @@ if ($i_d_conf) {
 
 $ftbhtml = '<!--Ban Time-->
 <div class="element-container" '.$idstatus.'>
-	<div class="row">
-		<div class="form-group">
+	<div class="">
+		<div class="row form-group">
 			<div class="col-md-3">
 				<label class="control-label" for="ban_time">'. _("Ban Time") .'</label>
 				<i class="fa fa-question-circle fpbx-help-icon" data-for="ban_time"></i>
@@ -199,8 +199,8 @@ $ftbhtml = '<!--Ban Time-->
 <!--END Ban Time-->
 <!--Max Retry-->
 <div class="element-container" '.$idstatus.'>
-	<div class="row">
-		<div class="form-group">
+	<div class="">
+		<div class="row form-group">
 			<div class="col-md-3">
 				<label class="control-label" for="max_retry">'. _("Max Retry") .'</label>
 				<i class="fa fa-question-circle fpbx-help-icon" data-for="max_retry"></i>
@@ -219,8 +219,8 @@ $ftbhtml = '<!--Ban Time-->
 <!--END Max Retry-->
 <!--Find Time-->
 <div class="element-container" '.$idstatus.'>
-	<div class="row">
-		<div class="form-group">
+	<div class="">
+		<div class="row form-group">
 			<div class="col-md-3">
 				<label class="control-label" for="find_time">'. _("Find Time") .'</label>
 				<i class="fa fa-question-circle fpbx-help-icon" data-for="find_time"></i>
@@ -239,8 +239,8 @@ $ftbhtml = '<!--Ban Time-->
 <!--END Find Time-->
 <!--E-mail-->
 <div class="element-container" '.$idstatus.'>
-	<div class="row">
-		<div class="form-group">
+	<div class="">
+		<div class="row form-group">
 			<div class="col-md-3">
 				<label class="control-label" for="email">'. _("E-mail:") .'</label>
 				<i class="fa fa-question-circle fpbx-help-icon" data-for="email"></i>
@@ -259,8 +259,8 @@ $ftbhtml = '<!--Ban Time-->
 <!--END E-mail:-->
 <!-- Sync -->
 <div class="element-container" '.$legacy.' '.$idstatus.' >
-	<div class="row">
-		<div class="form-group">
+	<div class="">
+		<div class="row form-group">
 			<div class="col-md-3">
 				<label class="control-label" for="import">'. _("Import:") .'</label>
 				<i class="fa fa-question-circle fpbx-help-icon" data-for="import"></i>
@@ -302,8 +302,8 @@ if($legacy != ""){
 	$ftbhtml.='
 	<!--Whitelist-->
 	<div class="element-container" '.$idstatus.'>
-		<div class="row">
-			<div class="form-group">
+		<div class="">
+			<div class="row form-group">
 				<div class="col-md-3">
 					<label class="control-label" for="whitelist">'. _("Whitelist") .'</label>
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
@@ -336,8 +336,8 @@ else{
 	$ftbhtml.='
 	<!--Whitelist-->
 	<div class="element-container" '.$idstatus.'>
-		<div class="row">
-			<div class="form-group">
+		<div class="">
+			<div class="row form-group">
 				<div class="col-md-3">
 					<label class="control-label" for="whitelist">'. _("Custom Whitelist") .'</label>
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>

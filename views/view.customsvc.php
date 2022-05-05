@@ -40,9 +40,9 @@ function displayCustomService($svc, $svcid, $zones, $currentzones) {
 
 	}
 	print "</span>\n";
-	print "<button type='button' class='btn x-btn btn-success csbutton $svcid' data-action='save' data-svcid='$svcid' title='"._("Save")."'><span data-action='save' data-svcid='$svcid' class='glyphicon glyphicon-ok'></span></button>";
-	print "<button type='button' class='btn x-btn btn-warning csbutton $svcid' data-action='edit' data-svcid='$svcid' title='"._("Edit")."'><span data-action='edit' data-svcid='$svcid' class='glyphicon glyphicon-pencil'></span></button>";
-	print "<button type='button' class='btn x-btn btn-danger csbutton $svcid' data-action='delete' data-svcid='$svcid' title='"._("Delete")."'><span data-action='delete' data-svcid='$svcid' class='glyphicon glyphicon-remove'></span></button>";
+	print "<button type='button' class='btn x-btn btn-success csbutton $svcid' data-action='save' data-svcid='$svcid' title='"._("Save")."'><span data-action='save' data-svcid='$svcid' class='fa fa-check'></span></button>";
+	print "<button type='button' class='btn x-btn btn-warning csbutton $svcid' data-action='edit' data-svcid='$svcid' title='"._("Edit")."'><span data-action='edit' data-svcid='$svcid' class='fa fa-pencil'></span></button>";
+	print "<button type='button' class='btn x-btn btn-danger csbutton $svcid' data-action='delete' data-svcid='$svcid' title='"._("Delete")."'><span data-action='delete' data-svcid='$svcid' class='fa fa-remove'></span></button>";
 	print "</div>\n";
 	
 	// What does this service do?

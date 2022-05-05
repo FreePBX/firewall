@@ -81,7 +81,7 @@ function render_network($name, $current, $desc, $counter, $zones) {
 	
 	// Are we displaying the 'add' button?
 	if (!$name) {
-		print "<button data-counter='$counter' class='addnetwork btn x-btn btn-success pull-right' title='"._("Add New")."'><i data-counter='$counter' class='glyphicon glyphicon-plus'></i></button>";
+		print "<button data-counter='$counter' class='addnetwork btn x-btn btn-success pull-right' title='"._("Add New")."'><i data-counter='$counter' class='fa fa-plus'></i></button>";
 	}
 
 	print "</tr></td>";
