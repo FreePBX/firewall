@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 03:20+0000\n"
+"POT-Creation-Date: 2022-05-05 10:50+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -284,11 +284,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
 
-#: Console/Firewall.class.php:498
+#: Console/Firewall.class.php:515
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:489
+#: Console/Firewall.class.php:506
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -414,12 +414,12 @@ msgstr ""
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:398
+#: Console/Firewall.class.php:374
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:449
+#: Console/Firewall.class.php:451
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -790,7 +790,7 @@ msgstr ""
 msgid "Error!! Permission denied copy rules: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:441
+#: Console/Firewall.class.php:442
 msgid "Error:"
 msgstr ""
 
@@ -853,7 +853,7 @@ msgstr ""
 msgid "Failed State Change!"
 msgstr ""
 
-#: Console/Firewall.class.php:409
+#: Console/Firewall.class.php:387
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -995,7 +995,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTPS-REST-Apps sind beim Port-Management im System-Admin deaktiviert"
 
-#: Console/Firewall.class.php:441
+#: Console/Firewall.class.php:442
 #, php-format
 msgid "Host '%s' is not currently in the blacklist."
 msgstr ""
@@ -1768,7 +1768,7 @@ msgstr ""
 "Entfernen Sie den Hostname oder die IP-Adresse aus der vertrauenswürdigen "
 "Zone"
 
-#: Console/Firewall.class.php:445
+#: Console/Firewall.class.php:446
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
@@ -2053,8 +2053,8 @@ msgstr ""
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:355 Console/Firewall.class.php:421
-#: Console/Firewall.class.php:478
+#: Console/Firewall.class.php:355 Console/Firewall.class.php:412
+#: Console/Firewall.class.php:495
 msgid "Success!"
 msgstr ""
 
@@ -2510,7 +2510,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: Console/Firewall.class.php:470
+#: Console/Firewall.class.php:474
 msgid "Unknown entry!"
 msgstr ""
 
