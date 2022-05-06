@@ -27,20 +27,20 @@ default:
 <div class="display no-border">
   <div class="nav-container">
     <ul class="nav nav-tabs list" role="tablist">
-      <li role="presentation" data-name="zoneinfo" class="<?php echo $zoneinfo; ?>">
-        <a href="#zoneinfo" aria-controls="zoneinfo" role="tab" data-toggle="tab"><?php echo _("Zone Information")?> </a>
+      <li role="presentation" data-name="zoneinfo">
+        <a class="nav-link <?php echo $zoneinfo; ?>" href="#zoneinfo" aria-controls="zoneinfo" role="tab" data-toggle="tab"><?php echo _("Zone Information")?> </a>
       </li>
-      <li role="presentation" data-name="services" class="<?php echo $services; ?>">
-        <a href="#services" aria-controls="services" role="tab" data-toggle="tab"><?php echo _("Port/Service Maps")?> </a>
+      <li role="presentation" data-name="services">
+        <a class="nav-link <?php echo $services; ?>" href="#services" aria-controls="services" role="tab" data-toggle="tab"><?php echo _("Port/Service Maps")?> </a>
       </li>
-      <li role="presentation" data-name="shortcuts" class="<?php echo $shortcuts; ?>">
-        <a href="#shortcuts" aria-controls="shortcuts" role="tab" data-toggle="tab"><?php echo _("Preconfigured")?> </a>
+      <li role="presentation" data-name="shortcuts">
+        <a class="nav-link <?php echo $shortcuts; ?>" href="#shortcuts" aria-controls="shortcuts" role="tab" data-toggle="tab"><?php echo _("Preconfigured")?> </a>
       </li>
-      <li role="presentation" data-name="settings" class="<?php echo $settings; ?>">
-        <a href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><?php echo _("Advanced Settings")?> </a>
+      <li role="presentation" data-name="settings">
+        <a class="nav-link <?php echo $settings; ?>" href="#settings" aria-controls="settings" role="tab" data-toggle="tab"><?php echo _("Advanced Settings")?> </a>
       </li>
-      <li role="presentation" data-name="advanced_customrules" class="<?php echo $advanced_customrules; ?>">
-        <a href="#advanced_customrules" aria-controls="advanced_customrules" role="tab" data-toggle="tab"><?php echo _("Advanced Custom Rules")?> </a>
+      <li role="presentation" data-name="advanced_customrules">
+        <a class="nav-link <?php echo $advanced_customrules; ?>" href="#advanced_customrules" aria-controls="advanced_customrules" role="tab" data-toggle="tab"><?php echo _("Advanced Custom Rules")?> </a>
       </li>
     </ul>
     <div class="tab-content display">
