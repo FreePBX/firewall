@@ -79,8 +79,8 @@ foreach ($sections as $key => $tmparr) {
 	foreach ($tmparr['docs'] as $row) {
 		print "	<p>$row</p>";
 	}
-	print "		<div class='row'>";
-	print "			<div class='form-horizontal clearfix'>";
+	print "		<div class=''>";
+	print "			<div class='row form-horizontal clearfix'>";
 	print "				<div class='col-sm-4'>";
 	print "					<label class='control-label' for='$key'>".$tmparr['desc']."</label>";
 	print "				</div>";

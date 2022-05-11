@@ -41,8 +41,8 @@ if (file_exists("/etc/asterisk/firewall.lock")) {
 
 ?>
 
-<div class='row'>
-  <div class='form-horizontal clearfix'>
+<div class=''>
+  <div class='row form-horizontal clearfix'>
     <div class='col-sm-4'>
       <label class='control-label' for='ssf'><?php echo $ssf; ?></label>
     </div>
@@ -56,8 +56,8 @@ if (file_exists("/etc/asterisk/firewall.lock")) {
   </div>
 </div>
 
-<div class='row'>
-  <div class='form-horizontal clearfix'>
+<div class=''>
+  <div class='row form-horizontal clearfix'>
     <div class='col-sm-4'>
       <label class='control-label' for='ssfwiz'><?php echo _("Firewall Wizard"); ?></label>
     </div>
