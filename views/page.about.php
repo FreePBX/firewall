@@ -42,7 +42,7 @@ if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->get
 <form method='post'>
 <div class="display no-border">
   <div class="nav-container">
-    <ul class="nav nav-tabs list" role="tablist">
+    <ul class="nav nav-tabs list pb-0" role="tablist">
       <li role="presentation" data-name="about">
         <a  class="nav-link <?php echo $about; ?>" href="#about" aria-controls="about" role="tab" data-toggle="tab"><?php echo _("Settings")?> </a>
       </li>

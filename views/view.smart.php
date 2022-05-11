@@ -32,8 +32,8 @@ foreach ($docs as $p) {
 	print "<p>$p</p>\n";
 }
 ?>
-<div class='row'>
-  <div class='form-horizontal clearfix'>
+<div class=''>
+  <div class='row form-horizontal clearfix'>
     <div class='col-sm-4'>
       <label class='control-label' for='rfwstat'><?php echo $rf; ?></label>
     </div>
@@ -60,8 +60,8 @@ foreach ($protocols as $id => $tmparr) {
 		$off = "checked";
 	}
 ?>
-<div class='row'>
-  <div class='form-horizontal clearfix'>
+<div class=''>
+  <div class='row form-horizontal clearfix'>
     <div class='col-sm-4'>
       <label class='control-label' for='<?php echo $id; ?>'><?php echo $desc; ?></label>
     </div>
@@ -89,7 +89,7 @@ foreach ($protocols as $id => $tmparr) {
 </div>
   </div>
   
-    <div class="section" data-id="Reponsive" style="display: none;">  
+    <div class="section w-100" data-id="Reponsive" style="display: none;">  
 		<div class="section-title" data-for="Ratelimit"><h3><i class="fa fa-minus"></i> Ratelimit threshold</h3></div>
 			<div class="section" data-id="Ratelimit">
 				<form  id="formreponsiveset" name="formreponsiveset">
@@ -97,8 +97,8 @@ foreach ($protocols as $id => $tmparr) {
 				foreach($smart['fpbxratelimit'] as $key => $value){
 				?>
 				<div class="element-container">
-					<div class='row'>
-						<div class='form-horizontal '>
+					<div class=''>
+						<div class='row form-horizontal '>
 							<div class='col-sm-2'>
 								<label class='control-label' for='ratelimitth'><?php echo _($key); ?></label>
 							</div>
@@ -125,8 +125,8 @@ foreach ($protocols as $id => $tmparr) {
 					foreach($smart['fpbxrfw'] as $key => $value){
 				?>
 					<div class="element-container">
-						<div class='row'>
-							<div class='form-horizontal '>
+						<div class=''>
+							<div class='row form-horizontal '>
 								<div class='col-sm-2'>
 									<label class='control-label' for='fpbxrfwth'><?php echo _($key); ?></label>
 								</div>
@@ -177,8 +177,8 @@ if (\FreePBX::Firewall()->getConfig('fail2banbypass')) {
 		$off = "checked";
 	}
 ?>
-<div class='row'>
-  <div class='form-horizontal clearfix'>
+<div class=''>
+  <div class='row form-horizontal clearfix'>
     <div class='col-sm-4'>
       <label class='control-label' for='fail2banbypass'>Fail2Ban Bypass</label>
     </div>
