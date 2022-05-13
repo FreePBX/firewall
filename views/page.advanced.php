@@ -26,7 +26,7 @@ default:
 <script type='text/javascript' src='modules/firewall/vendor/npm-asset/codemirror/addon/display/fullscreen.js'></script>
 <div class="display no-border">
   <div class="nav-container">
-    <ul class="nav nav-tabs list" role="tablist">
+    <ul class="nav nav-tabs list pb-0" role="tablist">
       <li role="presentation" data-name="zoneinfo">
         <a class="nav-link <?php echo $zoneinfo; ?>" href="#zoneinfo" aria-controls="zoneinfo" role="tab" data-toggle="tab"><?php echo _("Zone Information")?> </a>
       </li>

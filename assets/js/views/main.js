@@ -66,7 +66,7 @@ $(document).ready(function() {
 	// If we're not looking at the network or interface tab on page load, hide the action bar.
 	// This needs work, as it's hacky.
 	update_actionbar();
-	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces" && $("#page_body li.active").data('name') !== "intrusion_detection") {
+	if ($("#page_body li a.active").parent().data('name') !== "networks" && $("#page_body li a.active").parent().data('name') !== "interfaces" && $("#page_body li a.active").parent().data('name') !== "intrusion_detection") {
 		$("#action-bar").hide();
 	}
 
@@ -584,13 +584,13 @@ function update_actionbar() {
 	}
 	
 	// If we're not looking at networks or interfaces, hide it.
-	if ($("#page_body li.active").data('name') !== "networks" && $("#page_body li.active").data('name') !== "interfaces" && $("#page_body li.active").data('name') !== "intrusion_detection") {
+	if ($("#page_body li a.active").parent().data('name') !== "networks" && $("#page_body li a.active").parent().data('name') !== "interfaces" && $("#page_body li a.active").parent().data('name') !== "intrusion_detection") {
 		$("#action-bar").hide();
 		return;
 	}
 
 	// If we're looking at networks, we want 'save' and 'delete selected'
-	if ($("#page_body li.active").data('name') === "networks") {
+	if ($("#page_body li a.active").parent().data('name') === "networks") {
 		$("#action-bar").show();
 		$("#savenets,#delsel").show();
 		$("#saveints,#saveids").hide();
@@ -598,7 +598,7 @@ function update_actionbar() {
 	}
 
 	// If we're looking at interfaces, we only want 'save interfaces'
-	if ($("#page_body li.active").data('name') === "interfaces") {
+	if ($("#page_body li a.active").parent().data('name') === "interfaces") {
 		$("#action-bar").show();
 		$("#saveints").show();
 		$("#savenets,#delsel,#saveids").hide();
@@ -607,7 +607,7 @@ function update_actionbar() {
 	}
 
 	// If we're looking at intrusion detection, we only want 'save intrusion detection'
-	if ($("#page_body li.active").data('name') === "intrusion_detection") {
+	if ($("#page_body li a.active").parent().data('name') === "intrusion_detection") {
 		$("#action-bar").show();
 		$("#savenets,#delsel").hide();
 		$("#saveints").hide();

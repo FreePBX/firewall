@@ -27,7 +27,7 @@ $extrasvc = $services['extra'];
 
 <div class="display no-border">
   <div class="nav-container">
-    <ul class="nav nav-tabs list" role="tablist">
+    <ul class="nav nav-tabs list pb-0" role="tablist">
       <li role="presentation" data-name="services">
         <a class="nav-link <?php echo $servicestab; ?>" href="#servicestab" aria-controls="servicestab" role="tab" data-toggle="tab"><?php echo _("Services")?></a>
       </li>
