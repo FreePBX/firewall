@@ -25,7 +25,7 @@ if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->get
 <script type='text/javascript' src='modules/firewall/assets/js/views/status.js'></script>
 <div class="display no-border">
   <div class="nav-container">
-    <ul class="nav nav-tabs list" role="tablist">
+    <ul class="nav nav-tabs list pb-0" role="tablist">
     <li role="presentation" data-name="status" >
         <a class="nav-link <?php echo $status; ?>" href="#status" aria-controls="status" role="tab" data-toggle="tab"><?php echo _("Status Overview")?> </a>
       </li>
