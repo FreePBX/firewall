@@ -2,20 +2,20 @@
   <div class='modal-dialog'>
     <div class='modal-content'>
       <div class='modal-header'>
+        <h3 id='mheader' class="mr-auto">Header</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<h3 id='mheader'>Header</h4>
       </div>
       <div class='modal-body'>
         <form class='form-horizontal' id='customport'>
           <div class="form-group clearfix">
 	    <label for="cportname" class="col-sm-3 control-label"><?php echo _("Description"); ?></label>
-            <div class="col-sm-9">
+            <div class="col-sm-12">
 	      <input id="cportname" name="cportname" class="form-control autofocus" type="text" placeholder="<?php echo _("Any name"); ?>">
             </div>
           </div>
           <div class="form-group clearfix">
 	    <label for="cprotocol" class="col-sm-3 control-label"><?php echo _("Protocol"); ?></label>
-            <div class="col-sm-9">
+            <div class="col-sm-12">
 	      <select id="cprotocol" name="cprotocol" class="form-control">
 		<option value='both'><?php echo _("Both (TCP and UDP)"); ?></option>
 		<option value='tcp'><?php echo _("TCP"); ?></option>
@@ -25,7 +25,7 @@
           </div>
           <div class="form-group clearfix">
 	    <label for="cportrange" class="col-sm-3 control-label"><?php echo _("Port Range"); ?></label>
-            <div class="col-sm-9">
+            <div class="col-sm-12">
 	      <input id="cportrange" name="cportrange" class="form-control" type="text" aria-describedby="porthelptext">
             </div>
           </div>
