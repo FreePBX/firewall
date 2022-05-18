@@ -483,5 +483,291 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
     //status 200 success check
     $this->assertEquals(400, $response->getStatusCode());
    }
+
+    /**
+   * test_fetchInterface_should_return_listof_interfaces
+   *
+   * @return void
+   */
+  public function test_fetchInterface_should_return_listof_interfaces(){
+
+    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Services::class)
+		->disableOriginalConstructor()
+		->disableOriginalClone()
+		->setMethods(array('getFirewallInterfaces'))
+    ->getMock();
+
+	  $mockfirewall->method('getFirewallInterfaces')
+		->willReturn(array(array("ints" => "eth0", "zone" => "Internet (Default Firewall)", "description" => _("description for firewall interface"))));
+
+    self::$freepbx->firewall->setServices($mockfirewall);
+
+    $response = $this->request("query{
+      fetchInterface {
+        status
+        message
+        interfaces {
+            ints
+            zone
+            description
+        }
+      }
+    }");
+
+    $json = (string)$response->getBody();
+    $this->assertEquals('{"data":{"fetchInterface":{"status":true,"message":"List of firewall interface and default zones","interfaces":[{"ints":"eth0","zone":"Internet (Default Firewall)","description":"description for firewall interface"}]}}}',$json);
+
+    //status 200 success check
+    $this->assertEquals(200, $response->getStatusCode());
+   }
+
+    /**
+   * test_updateFirewallInterface_when_all_good_should_return_true
+   *
+   * @return void
+   */
+  public function test_updateFirewallInterface_when_all_good_should_return_true(){
+
+    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Network::class)
+		->disableOriginalConstructor()
+		->disableOriginalClone()
+		->setMethods(array('updateInterfaceZone','discoverInterfaces'))
+    ->getMock();
+
+	  $mockfirewall->method('updateInterfaceZone')->willReturn([]);
+
+    $mockfirewall->method('discoverInterfaces')->willReturn(array
+                                                            (
+                                                              "eth0" => array
+                                                                  (
+                                                                      "addresses" => array
+                                                                          (
+                                                                              "0" => array
+                                                                                  (
+                                                                                      "0" => "10.10.14.1",
+                                                                                      "1" => "eth0",
+                                                                                      "2" => "21",
+                                                                                  ),
+                                                                              "1" => array
+                                                                                  (
+                                                                                      "0" => "2001:4c8:1023:108:250:56ff:febb:7a14",
+                                                                                      "1" => "eth0",
+                                                                                      "2" => "64",
+                                                                                  )
+                                                                                  ),
+                                                                      "config" => array
+                                                                          (
+                                                                              "TYPE" => "Ethernet",
+                                                                              "PROXY_METHOD" => "none",
+                                                                              "BROWSER_ONLY" => "no",
+                                                                              "BOOTPROTO" => "dhcp",
+                                                                              "DEFROUTE" => "yes",
+                                                                              "IPV4_FAILURE_FATAL" => "no",
+                                                                              "IPV6INIT" => "yes",
+                                                                              "IPV6_AUTOCONF" => "yes",
+                                                                              "IPV6_DEFROUTE" => "yes",
+                                                                              "IPV6_FAILURE_FATAL" => "no",
+                                                                              "IPV6_ADDR_GEN_MODE" => "stable-privacy",
+                                                                              "NAME" => "eth0",
+                                                                              "UUID" => "c7d6575a-0ee5-4aeb-a13c-2e10eed2a130",
+                                                                              "DEVICE" => "eth0",
+                                                                              "ONBOOT" => "yes",
+                                                                              "ZONE" => "external",
+                                                                              "DESCRIPTION" => "dsfdsfds",
+                                                                              "PARENT" => ""
+                                                                          )
+                                                                  )
+                                                          ));
+
+    self::$freepbx->firewall->setNetwork($mockfirewall);
+
+    $response = $this->request('mutation {
+          updateFirewallInterface(input: {
+          ints: "eth0"
+          zone:"external",
+          description:"dsfdsfds",
+          clientMutationId: "12432"
+        }) {
+            clientMutationId
+            ints
+            zone
+            description
+            message
+        }
+      }');
+
+    $json = (string)$response->getBody();
+
+    $this->assertEquals('{"data":{"updateFirewallInterface":{"clientMutationId":"12432","ints":"eth0","zone":"external","description":"dsfdsfds","message":"Firewall Interface updated successfully"}}}',$json);
+
+    //status 200 success check
+    $this->assertEquals(200, $response->getStatusCode());
+  }
+
+    /**
+   * test_updateFirewallInterface_when_invalid_zone_passed_should_return_false
+   *
+   * @return void
+   */
+  public function test_updateFirewallInterface_when_invalid_zone_passed_should_return_false(){
+
+    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Network::class)
+		->disableOriginalConstructor()
+		->disableOriginalClone()
+		->setMethods(array('updateInterfaceZone','discoverInterfaces'))
+    ->getMock();
+
+	  $mockfirewall->method('updateInterfaceZone')->willReturn([]);
+
+    $mockfirewall->method('discoverInterfaces')->willReturn(array
+                                                            (
+                                                              "eth0" => array
+                                                                  (
+                                                                      "addresses" => array
+                                                                          (
+                                                                              "0" => array
+                                                                                  (
+                                                                                      "0" => "10.10.14.1",
+                                                                                      "1" => "eth0",
+                                                                                      "2" => "21",
+                                                                                  ),
+                                                                              "1" => array
+                                                                                  (
+                                                                                      "0" => "2001:4c8:1023:108:250:56ff:febb:7a14",
+                                                                                      "1" => "eth0",
+                                                                                      "2" => "64",
+                                                                                  )
+                                                                                  ),
+                                                                      "config" => array
+                                                                          (
+                                                                              "TYPE" => "Ethernet",
+                                                                              "PROXY_METHOD" => "none",
+                                                                              "BROWSER_ONLY" => "no",
+                                                                              "BOOTPROTO" => "dhcp",
+                                                                              "DEFROUTE" => "yes",
+                                                                              "IPV4_FAILURE_FATAL" => "no",
+                                                                              "IPV6INIT" => "yes",
+                                                                              "IPV6_AUTOCONF" => "yes",
+                                                                              "IPV6_DEFROUTE" => "yes",
+                                                                              "IPV6_FAILURE_FATAL" => "no",
+                                                                              "IPV6_ADDR_GEN_MODE" => "stable-privacy",
+                                                                              "NAME" => "eth0",
+                                                                              "UUID" => "c7d6575a-0ee5-4aeb-a13c-2e10eed2a130",
+                                                                              "DEVICE" => "eth0",
+                                                                              "ONBOOT" => "yes",
+                                                                              "ZONE" => "external",
+                                                                              "DESCRIPTION" => "dsfdsfds",
+                                                                              "PARENT" => ""
+                                                                          )
+                                                                  )
+                                                          ));
+
+    self::$freepbx->firewall->setNetwork($mockfirewall);
+
+    $response = $this->request('mutation {
+          updateFirewallInterface(input: {
+          ints: "eth0"
+          zone:"unknown",
+          description:"dsfdsfds",
+          clientMutationId: "12432"
+        }) {
+            clientMutationId
+            ints
+            zone
+            description
+            message
+        }
+      }');
+
+    $json = (string)$response->getBody();
+
+    $this->assertEquals('{"data":{"updateFirewallInterface":{"clientMutationId":"12432","ints":"eth0","zone":"unknown","description":"dsfdsfds","message":"Invalid zone '."'unknown'".' provided"}}}',$json);
+
+    //status 200 success check
+    $this->assertEquals(200, $response->getStatusCode());
+  }
+
+    /**
+   * test_updateFirewallInterface_when_invalid_interface_passed_should_return_false
+   *
+   * @return void
+   */
+  public function test_updateFirewallInterface_when_invalid_interface_passed_should_return_false(){
+
+    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Network::class)
+		->disableOriginalConstructor()
+		->disableOriginalClone()
+		->setMethods(array('updateInterfaceZone','discoverInterfaces'))
+    ->getMock();
+
+	  $mockfirewall->method('updateInterfaceZone')->willReturn([]);
+
+    $mockfirewall->method('discoverInterfaces')->willReturn(array
+                                                            (
+                                                              "eth0" => array
+                                                                  (
+                                                                      "addresses" => array
+                                                                          (
+                                                                              "0" => array
+                                                                                  (
+                                                                                      "0" => "10.10.14.1",
+                                                                                      "1" => "eth0",
+                                                                                      "2" => "21",
+                                                                                  ),
+                                                                              "1" => array
+                                                                                  (
+                                                                                      "0" => "2001:4c8:1023:108:250:56ff:febb:7a14",
+                                                                                      "1" => "eth0",
+                                                                                      "2" => "64",
+                                                                                  )
+                                                                                  ),
+                                                                      "config" => array
+                                                                          (
+                                                                              "TYPE" => "Ethernet",
+                                                                              "PROXY_METHOD" => "none",
+                                                                              "BROWSER_ONLY" => "no",
+                                                                              "BOOTPROTO" => "dhcp",
+                                                                              "DEFROUTE" => "yes",
+                                                                              "IPV4_FAILURE_FATAL" => "no",
+                                                                              "IPV6INIT" => "yes",
+                                                                              "IPV6_AUTOCONF" => "yes",
+                                                                              "IPV6_DEFROUTE" => "yes",
+                                                                              "IPV6_FAILURE_FATAL" => "no",
+                                                                              "IPV6_ADDR_GEN_MODE" => "stable-privacy",
+                                                                              "NAME" => "eth0",
+                                                                              "UUID" => "c7d6575a-0ee5-4aeb-a13c-2e10eed2a130",
+                                                                              "DEVICE" => "eth0",
+                                                                              "ONBOOT" => "yes",
+                                                                              "ZONE" => "external",
+                                                                              "DESCRIPTION" => "dsfdsfds",
+                                                                              "PARENT" => ""
+                                                                          )
+                                                                  )
+                                                          ));
+
+    self::$freepbx->firewall->setNetwork($mockfirewall);
+
+    $response = $this->request('mutation {
+          updateFirewallInterface(input: {
+          ints: "eth11"
+          zone:"external",
+          description:"dsfdsfds",
+          clientMutationId: "12432"
+        }) {
+            clientMutationId
+            ints
+            zone
+            description
+            message
+        }
+      }');
+
+    $json = (string)$response->getBody();
+
+    $this->assertEquals('{"data":{"updateFirewallInterface":{"clientMutationId":"12432","ints":"eth11","zone":"external","description":"dsfdsfds","message":"Unknown interface '."'eth11'".' provided"}}}',$json);
+
+    //status 200 success check
+    $this->assertEquals(200, $response->getStatusCode());
+  }
 }
 ?>
