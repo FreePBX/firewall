@@ -839,7 +839,7 @@ class Services {
 	 * @return void
 	 */
 	public function addToWhitelist($input){
-		$this->addToZone($input['sourceIp'], $input['zone'], $input['hidden']); 
+		$this->addToZone($input['sourceIp'], $input['zone'], $input['hidden']);
 		return true;
 	}
 	
