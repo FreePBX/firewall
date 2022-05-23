@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>16.0.52</version>
+	<version>17.0.1</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,73 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
-		*16.0.52* Packaging of ver 16.0.52
-		*16.0.51* FREEI-4793 
-		*16.0.50* FREEI-4793 
-		*16.0.49* FREEI-4793 
-		*16.0.48* FREEPBX-22496 
-		*16.0.47* FREEPBX-22496 and FREEI-2809 
-		*16.0.46* FREEI-4501 Set default firewall zone for XMPP 
-		*16.0.45* FREEPBX-15243 
-		*16.0.44* FREEPBX-23286 
-		*16.0.43* bump 
-		*16.0.42.15* Packaging of ver 16.0.42.15
-		*16.0.42.14* Packaging of ver 16.0.42.14
-		*16.0.42.13* Packaging of ver 16.0.42.13
-		*16.0.42.12* FREEI-4218 Need to unban the IP during whitelist 
-		*16.0.42.11* FREEPBX-22928 and FREEPBX-22943 
-		*16.0.42.10* FREEI-3968 and FREEPBX-22933 
-		*16.0.42.9* Packaging of ver 16.0.42.9
-		*16.0.42.8* FREEI-3968 Fixing firewall inconsistent behaviour 
-		*16.0.42.7* FREEPBX-22654 Don't use null values for restapi ports 
-		*16.0.42.6* FREEPBX-22769 Fail2ban Intrusion Detection Sync Firewall banned trustedIP's 
-		*16.0.42.5* Packaging of ver 16.0.42.5
-		*16.0.42.4* FREEPBX-22653, FREEPBX-22666 and FREEPBX-22674 
-		*16.0.42.3* Packaging of ver 16.0.42.3
-		*16.0.42.2* FREEI-3677 Removing unused argument from get_registered API 
-		*16.0.42.1* FREEPBX-22654 Don'\''t use disabled as port for restapi 
-		*16.0.42* FREEPBX-22550 NTP/Chrony doesn't respond until configured in firewall 
-		*16.0.41* Packaging of ver 16.0.41
-		*16.0.40* Packaging of ver 16.0.40
-		*16.0.39* Packaging of ver 16.0.39
-		*16.0.38* FREEI-3244 adding is set on array elements 
-		*16.0.37* Packaging of ver 16.0.37
-		*16.0.36* Fixing FREEI-3517 Chan_sip options displayed in firewall even when chan_sip is disabled 
-		*16.0.35* Packaging of ver 16.0.35
-		*16.0.34* Packaging of ver 16.0.34
-		*16.0.33* Packaging of ver 16.0.33
-		*16.0.32* Packaging of ver 16.0.32
-		*16.0.31* FREEPBX-21095 
-		*16.0.30* FREEPBX-22196 RFW Threshold settings UI fixes 
-		*16.0.29* Packaging of ver 16.0.29
-		*16.0.28* FREEI-3160 
-		*16.0.27* FREEI-3242 allowing only internal,external,trusted,other for zone 
-		*16.0.26* FREEI-3244 
-		*16.0.25* Packaging of ver 16.0.25
-		*16.0.24* FREEI-3232 adding support for nested muations instead of string of objects 
-		*16.0.23* FREEPBX-22453 - Allow user to bypass Fail2Ban when RFW is enabled 
-		*16.0.22* FREEPBX-22371 
-		*16.0.21* FREEI-3145 adding GQL api for whitelisting IP along with utest 
-		*16.0.20* Fixing FREEI-3202 
-		*16.0.19* Packaging of ver 16.0.19
-		*16.0.18* Packaging of ver 16.0.18
-		*16.0.17* FREEI-2745 Update tool tip for intrusion detection whitelist 
-		*16.0.16* FREEI-2675 bug resolved for firewall services class 
-		*16.0.15* FREEI-2675 firewall gql api's and utest 
-		*16.0.14* FREEPBX-22131 - remove logs secction 
-		*16.0.13* Jerrmlerules 
-		*16.0.12* Packaging of ver 16.0.12
-		*16.0.11* FREEPBX-21627: reload firewall rules after enable or disable custom rules. 
-		*16.0.10* FREEPBX-21625: Add button for clean log. 
-		*16.0.9* FREEI-1848 Define a good location for tmp and log file for the Firewall module 
-		*16.0.8* FREEI-1659 Changing firewall wizard imaging 
-		*16.0.7* FREEPBX-21613 Clicking on save rules button in Firewall - Advanced custom rules page without making any changes gives response in some spanish language. 
-		*16.0.6* FREEPBX-21612 - Fix: The log list does not show data. 
-		*16.0.5* FREEPBX-21612 
-		*16.0.4* FREEPBX-21609: Add button only save rules. 
-		*16.0.3* FREEPBX-21472: Correct layout 
-		*16.0.2* FREEPBX-21053, backup and restore custom rules
-		*16.0.1alpha* 16.0.1 alpha release
+		*17.0.1alpha* 17.0.1 alpha release
 	</changelog>
 	<depends>
 		<file>/usr/lib/sysadmin/includes.php</file>
@@ -91,7 +25,7 @@
 	<location>compatibility</location>
 	<md5sum>compatibility</md5sum>
 	<supported>
-		<version>16.0</version>
+		<version>17.0</version>
 	</supported>
 	<console>
 		<command>
