@@ -6,6 +6,9 @@ include __DIR__."/vendor/autoload.php";
 
 class Firewall extends \FreePBX_Helpers implements \BMO {
 
+	private $network='';
+	private $zones='';
+
 	public function __construct($freepbx = null) {
 		if ($freepbx == null)
 			throw new \Exception("Not given a FreePBX Object");
@@ -41,6 +44,30 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			self::$services = new Firewall\Services();
 		}
 		return self::$services;
+	}
+
+	public function setNetwork($networkObj){
+		$this->network = $networkObj;
+	}
+
+	public function network() {
+		if (!$this->network) {
+			include 'Network.class.php';
+			$this->network = new Firewall\Network();
+		}
+		return $this->network;
+	}
+
+	public function setZones($zoneObj){
+		$this->zones = $zoneObj;
+	}
+
+	public function zones() {
+		if (!$this->zones) {
+			include 'Zones.class.php';
+			$this->zones = new Firewall\Zones();
+		}
+		return $this->zones;
 	}
 
 	public function getTrustedZone($from){
@@ -2381,7 +2408,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function removeOldSyncJob(){
 		$cron 		= \FreePBX::Cron();
 		$fwc_path	= $this->FreePBX->Config->get("AMPSBIN")."/fwconsole";
-		$allJobs	= $cron->getAll();
+		$allJobs        = $cron->getAll();
 		foreach($allJobs as $line){
 			if(strpos($line,"fwconsole firewall sync") !== false){
 				$cron->remove($line);
@@ -2391,7 +2418,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function removesyncjob(){
 		$cron 		= \FreePBX::Cron();
-		$allJobs	= $cron->getAll();
+		$allJobs        = $cron->getAll();
 		foreach($allJobs as $line){
 			if(strpos($line,"fwconsole firewall sync") !== false){
 				$cron->remove($line);
