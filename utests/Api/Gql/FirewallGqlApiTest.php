@@ -154,6 +154,8 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
       
 	  $mockfirewall->method('runHook','preEnableFW')
     ->willReturn(true);
+
+    self::$freepbx->firewall->setFirewall($mockfirewall);
     
     $response = $this->request("mutation {
       enableFirewall(input: { }){
@@ -182,6 +184,8 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
 		->disableOriginalClone()
 		->setMethods(array('setConfig'))
     ->getMock();
+
+    self::$freepbx->firewall->setFirewall($mockfirewall);
       
 	  $mockfirewall->method('setConfig')
 		->willReturn(true);
@@ -769,5 +773,91 @@ class FirewallGqlApiTest extends ApiBaseTestCase {
     //status 200 success check
     $this->assertEquals(200, $response->getStatusCode());
   }
+
+  /**
+   * test_fetchFirewall_advancesettings_should_return_listof_settings
+   *
+   * @return void
+   */
+  public function test_fetchFirewall_advancesettings_should_return_listof_settings(){
+
+    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Firewall::class)
+		->disableOriginalConstructor()
+		->disableOriginalClone()
+		->setMethods(array('getAdvancedSettings'))
+    ->getMock();
+
+    self::$freepbx->firewall->setFirewall($mockfirewall);
+
+	  $mockfirewall->method('getAdvancedSettings')
+		->willReturn(array("safemode" => "disabled", "masq" => "disabled","lefilter" => "disabled", "customrules" => "enabled", "rejectpackets" => "enabled", "id_service" => "enabled", "id_sync_fw" => "enabled", "import_hosts" => "enabled"));
+
+    $response = $this->request("query{
+      fetchFirewallAdvanceSettings {
+        status
+        message
+        advanceSettings {
+            safemode
+            masq
+            lefilter
+            customrules
+            rejectpackets
+            id_service
+            id_sync_fw
+            import_hosts
+        }
+      }
+    }");
+
+    $json = (string)$response->getBody();
+    $this->assertEquals('{"data":{"fetchFirewallAdvanceSettings":{"status":true,"message":"List of firewall advance settings","advanceSettings":{"safemode":"disabled","masq":"disabled","lefilter":"disabled","customrules":"enabled","rejectpackets":"enabled","id_service":"enabled","id_sync_fw":"enabled","import_hosts":"enabled"}}}}',$json);
+
+    //status 200 success check
+    $this->assertEquals(200, $response->getStatusCode());
+   }
+
+   /**
+   * test_updateFirewall_advancesettings_when_all_good_should_return_true
+   *
+   * @return void
+   */
+  public function test_updateFirewall_advancesettings_when_all_good_should_return_true(){
+
+    $mockfirewall = $this->getMockBuilder(\FreePBX\modules\firewall\Firewall::class)
+		->disableOriginalConstructor()
+		->disableOriginalClone()
+		->setMethods(array('getAdvancedSettings','setAdvancedSetting'))
+    ->getMock();
+
+    self::$freepbx->firewall->setFirewall($mockfirewall);
+
+	  $mockfirewall->method('getAdvancedSettings')
+		->willReturn(array("safemode" => "disabled", "masq" => "disabled","lefilter" => "disabled", "customrules" => "enabled", "rejectpackets" => "enabled", "id_service" => "enabled", "id_sync_fw" => "enabled", "import_hosts" => "enabled"));
+
+    $mockfirewall->method('setAdvancedSetting')
+		->willReturn(array( "import_hosts" => "enabled"));
+
+    $response = $this->request('mutation {
+        updateFirewallAdvanceSettings(input: {
+        safemode: "enabled"
+        masq: "enabled"
+        lefilter: "disabled"
+        customrules: "disabled"
+        rejectpackets: "disabled"
+        id_service: "enabled"
+        id_sync_fw: "enabled"
+        import_hosts: "disabled"
+      }) {
+          status
+          message
+      }
+    }');
+
+    $json = (string)$response->getBody();
+    $this->assertEquals('{"data":{"updateFirewallAdvanceSettings":{"status":true,"message":"Firewall advance settings updated succefully"}}}',$json);
+
+    //status 200 success check
+    $this->assertEquals(200, $response->getStatusCode());
+   }
 }
 ?>

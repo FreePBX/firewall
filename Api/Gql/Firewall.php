@@ -162,6 +162,26 @@ class Firewall extends Base {
 							return ['ints' => $input['ints'],'zone' => $input['zone'],'description' => $input['description'],'message' => $inputVal['message']];
 						}
 					]),
+					'updateFirewallAdvanceSettings' => Relay::mutationWithClientMutationId([
+						'name' => 'updateFirewallAdvanceSettings',
+						'description' => _('update firewall advance settings'),
+						'inputFields' => $this->getFirewallAdvanceSettingsInputFields(),
+						'outputFields' => $this->getOutputFields(),
+						'mutateAndGetPayload' => function ($input) {
+							foreach ($input as $key => $value) {
+								if($value != 'enabled' && $key == 'id_sync_fw') {
+									$value = 'legacy';
+								} else if($value != 'enabled') {
+									$value = 'disabled';
+								}
+								$res=$this->freepbx->firewall->getFirewall()->setAdvancedSetting($key,$value);
+							}
+							if($res){
+								return ['message' =>_("Firewall advance settings updated succefully"), 'status' => true];
+							}
+							return ['message' =>_("Sorry, failed to update firewall advance settings"), 'status' => false];
+						}
+					]),
 				];
 			};
 		}
@@ -225,6 +245,18 @@ class Firewall extends Base {
 								return ['response'=> $list,'message'=> _('List of firewall interface and default zones'),'status'=>true];
 							}else{
 								return ['message'=> _("Sorry, failed to list firewall  interface and default zones"),'status' => false];
+							}
+						},
+					],
+					'fetchFirewallAdvanceSettings' => [
+						'type' => $this->typeContainer->get('firewall')->getConnectionType(),
+						'description' => _('Fetch firewall advance settings'),
+						'resolve' => function($root, $args) {
+							$list = $this->freepbx->firewall->getFirewall()->getAdvancedSettings();
+							if(isset($list) && $list != null){
+								return ['response'=> $list,'message'=> _('List of firewall advance settings'),'status'=>true];
+							}else{
+								return ['message'=> _("Sorry, failed to list firewall advace settings"),'status' => false];
 							}
 						},
 					]
@@ -332,6 +364,42 @@ class Firewall extends Base {
 					'type' => Type::string(),
 					'description' => _('Description'),
 				 ],
+				 'safemode' => [
+					'type' => Type::string(),
+					'description' => _('Safe Mode'),
+				],
+				'masq' => [
+					'type' => Type::string(),
+					'description' => _('masq'),
+				],
+				'masq' => [
+					'type' => Type::string(),
+					'description' => _('masq'),
+				],
+				'lefilter' => [
+					'type' => Type::string(),
+					'description' => _('Responsive LetsEncrypt Rules'),
+				],
+				'customrules' => [
+					'type' => Type::string(),
+					'description' => _('Custom Firewall Rules'),
+				],
+				'rejectpackets' => [
+					'type' => Type::string(),
+					'description' => _('Reject Packets'),
+				],
+				'id_service' => [
+					'type' => Type::string(),
+					'description' => _('Intrusion Detection Service'),
+				],
+				'id_sync_fw' => [
+					'type' => Type::string(),
+					'description' => _('Intrusion Detection Sync Firewall'),
+				],
+				'import_hosts' => [
+					'type' => Type::string(),
+					'description' => _('Add etc/hosts as Trusted'),
+				],
 			];
 		});
 
@@ -386,6 +454,16 @@ class Firewall extends Base {
 				'interfaces' => [
 					'type' =>  Type::listOf($this->typeContainer->get('firewall')->getObject()),
 					'description' => _('list of interfaces'),
+					'resolve' => function($root, $args) {
+						$data = array_map(function($row){
+							return $row;
+						},isset($root['response']) ? $root['response'] : []);
+						return $data;
+					}
+				],
+				'advanceSettings' => [
+					'type' =>  $this->typeContainer->get('firewall')->getObject(),
+					'description' => _('list of advance settings'),
 					'resolve' => function($root, $args) {
 						$data = array_map(function($row){
 							return $row;
@@ -548,5 +626,55 @@ class Firewall extends Base {
 		} else {
 			return ['status' => false,'message' => _('Failed to update Firewall Interface')];
 		}
+	}
+
+	/**
+	 * get firewall advance settings
+	 *
+	 * @return void
+	 */
+	private function getFirewallAdvanceSettingsInputFields() {
+		return [
+			'safemode' => [
+				'type' => Type::string(),
+				'description' => _('To enable/disable safe mode'),
+				'defaultValue' => "disabled",
+			],
+			'masq' => [
+				'type' => Type::string(),
+				'description' => _('To enable/disable masq'),
+				'defaultValue' => "disabled"
+			],
+			'lefilter' => [
+				'type' => Type::string(),
+				'description' => _('To enable/disable Responsive LetsEncrypt Rules'),
+				'defaultValue' => "disabled"
+			],
+			'customrules' => [
+				'type' => Type::string(),
+				'description' => _('To enable/disable Custom Firewall Rules'),
+				'defaultValue' => "disabled"
+			],
+			'rejectpackets' => [
+				'type' => Type::string(),
+				'description' => _('To enable/disable Reject Packets'),
+				'defaultValue' => "disabled"
+			],
+			'id_service' => [
+				'type' => Type::string(),
+				'description' => _('To enable/disable Intrusion Detection Service'),
+				'defaultValue' => "disabled"
+			],
+			'id_sync_fw' => [
+				'type' => Type::string(),
+				'description' => _('To enable/legacy Intrusion Detection Sync Firewall'),
+				'defaultValue' => "legacy"
+			],
+			'import_hosts' => [
+				'type' => Type::string(),
+				'description' => _('To enable/legacy Add etc/disable as Trusted'),
+				'defaultValue' => "disabled"
+			],
+		];
 	}
 }
