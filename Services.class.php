@@ -15,6 +15,7 @@ class Services {
 		$this->extraservices = array("sng_phone_svc","zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
+
 	}
 
 	public function getCoreServices() {
@@ -950,6 +951,27 @@ class Services {
 		$response_array = array();
 		foreach($res as $key => $val){
 			array_push($response_array,array('sourceIp' => $key , 'trusted' => $val));
+		}
+		return $response_array;
+	}
+
+	/**
+	 * getFirwallInterfaces
+	 *
+	 * @return void
+	 */
+	public function getFirewallInterfaces() {
+		$res = $this->firewall->getInterfaces();
+		$zns = $this ->firewall->getZones();
+		$response_array = array();
+		foreach($res as $key => $val){
+			if(array_key_exists($val['config']['ZONE'],$zns)){
+				$zone = $zns[$val['config']['ZONE']];
+				$zoneName = $zone['name']. ' (' . $zone['summary'] . ')';
+			} else {
+				$zoneName = '';
+			}
+			array_push($response_array,array('ints' => $key , 'zone' => $zoneName , 'description' => $val['config']['DESCRIPTION']));
 		}
 		return $response_array;
 	}

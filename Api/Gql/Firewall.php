@@ -129,6 +129,39 @@ class Firewall extends Base {
 							}
 						}
 					]),
+					'updateFirewallInterface' => Relay::mutationWithClientMutationId([
+						'name' => 'updateFirewallInterface',
+						'description' => _('Update interface default zone.'),
+						'inputFields' => [
+							'ints' => [
+								'type' => Type::nonNull(Type::string())
+							],
+							'zone' => [
+								'type' => Type::nonNull(Type::string())
+							],
+							'description' => [
+								'type' => Type::string()
+							]
+						],
+						'outputFields' => [
+							'ints' => [
+								'type' => Type::string()
+							],
+							'zone' => [
+								'type' => Type::string()
+							],
+							'description' => [
+								'type' => Type::string()
+							],
+							'message'=> [
+								'type' => Type::string()
+							],
+						] ,
+						'mutateAndGetPayload' => function ($input) {
+							$inputVal=$this->validateAndUpdateInterface($input);
+							return ['ints' => $input['ints'],'zone' => $input['zone'],'description' => $input['description'],'message' => $inputVal['message']];
+						}
+					]),
 					'updateFirewallAdvanceSettings' => Relay::mutationWithClientMutationId([
 						'name' => 'updateFirewallAdvanceSettings',
 						'description' => _('update firewall advance settings'),
@@ -200,6 +233,18 @@ class Firewall extends Base {
 								return ['response'=> $list,'message'=> _('List of firewall configurations'),'status'=>true];
 							}else{
 								return ['message'=> _("Sorry, failed to list firewall configuration"),'status' => false];
+							}
+						},
+					],
+					'fetchInterface' => [
+						'type' => $this->typeContainer->get('firewall')->getConnectionType(),
+						'description' => _('Fetch firewall interfaces'),
+						'resolve' => function($root, $args) {
+							$list = $this->freepbx->firewall->services()->getFirewallInterfaces();
+							if(isset($list) && $list != null){
+								return ['response'=> $list,'message'=> _('List of firewall interface and default zones'),'status'=>true];
+							}else{
+								return ['message'=> _("Sorry, failed to list firewall  interface and default zones"),'status' => false];
 							}
 						},
 					],
@@ -307,7 +352,19 @@ class Firewall extends Base {
 						return $row['trusted'] == "trusted" ? true : false;
 					}
 				],
-				'safemode' => [
+				'ints' => [
+					'type' => Type::string(),
+					'description' => _('Interface name'),
+				 ],
+				 'zone' => [
+					'type' => Type::string(),
+					'description' => _('Default zone for the interface'),
+				 ],
+				 'description' => [
+					'type' => Type::string(),
+					'description' => _('Description'),
+				 ],
+				 'safemode' => [
 					'type' => Type::string(),
 					'description' => _('Safe Mode'),
 				],
@@ -387,6 +444,16 @@ class Firewall extends Base {
 				'blacklistIps' => [
 					'type' =>  Type::listOf($this->typeContainer->get('firewall')->getObject()),
 					'description' => _('list of whitelistIps'),
+					'resolve' => function($root, $args) {
+						$data = array_map(function($row){
+							return $row;
+						},isset($root['response']) ? $root['response'] : []);
+						return $data;
+					}
+				],
+				'interfaces' => [
+					'type' =>  Type::listOf($this->typeContainer->get('firewall')->getObject()),
+					'description' => _('list of interfaces'),
 					'resolve' => function($root, $args) {
 						$data = array_map(function($row){
 							return $row;
@@ -527,6 +594,41 @@ class Firewall extends Base {
 		];
 	}
 
+	/**
+	 * function to validate inputs for update interface API
+	 */
+	private function validateAndUpdateInterface($input)
+	{
+		$ifaces = $this->freepbx->firewall->network()->discoverInterfaces();
+		$zones = $this->freepbx->firewall->zones()->getZones();
+		$interface = $input['ints'];
+		$newzone = $input['zone'];
+		$descr = '';
+		if (!isset($zones[$newzone])) {
+			return ['status' => false,'message' => sprintf(_("Invalid zone '%s' provided"), $newzone)];
+		}
+		if (!isset($ifaces[$interface])) {
+			return ['status' => false,'message' => sprintf(_("Unknown interface '%s' provided"), $interface)];
+		}
+		if (!isset($input['description']) || trim($input['description']) == "") {
+			$descr = "unset";
+		} else {
+			$descr = trim($input['description']);
+		}
+
+		$settings['ints'][$interface] = [
+			"zone" => $newzone,
+			"description" => $descr
+		];
+		$res = $this->freepbx->firewall->runHook("updateinterfaces",$settings);
+		if($res) {
+			return ['status' => true,'message' => _('Firewall Interface updated successfully')];
+		} else {
+			return ['status' => false,'message' => _('Failed to update Firewall Interface')];
+		}
+	}
+
+	
 	/**
 	 * get firewall advance settings
 	 *
