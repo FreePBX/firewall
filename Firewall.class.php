@@ -9,7 +9,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	private $network='';
 	private $zones='';
 
-	private static $firewalls;
+	private static $fwObject;
 
 	public function __construct($freepbx = null) {
 		if ($freepbx == null)
@@ -90,7 +90,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	 * @return void
 	 */
 	public function setFirewall($firewallObj){
-		self::$firewalls = $firewallObj;
+		self::$fwObject = $firewallObj;
 	}
 
 	/**
@@ -99,10 +99,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	 * @return void
 	 */
 	public function getFirewall() {
-		if (!self::$firewalls) {
-			self::$firewalls = $this->FreePBX->Firewall;
+		if (!self::$fwObject) {
+			self::$fwObject = $this->FreePBX->Firewall;
 		}
-		return self::$firewalls;
+		return self::$fwObject;
 	}
 
 	public function intrusion_detection_status() { 
