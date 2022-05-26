@@ -9,6 +9,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	private $network='';
 	private $zones='';
 
+	private static $firewalls;
+
 	public function __construct($freepbx = null) {
 		if ($freepbx == null)
 			throw new \Exception("Not given a FreePBX Object");
@@ -79,6 +81,28 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}
 		}
 		return $trusted;
+	}
+
+	/**
+	 * setFirewall
+	 *
+	 * @param  mixed $firewallObj
+	 * @return void
+	 */
+	public function setFirewall($firewallObj){
+		self::$firewalls = $firewallObj;
+	}
+
+	/**
+	 * firewall
+	 *
+	 * @return void
+	 */
+	public function getFirewall() {
+		if (!self::$firewalls) {
+			self::$firewalls = $this->FreePBX->Firewall;
+		}
+		return self::$firewalls;
 	}
 
 	public function intrusion_detection_status() { 

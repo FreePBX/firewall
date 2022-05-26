@@ -840,7 +840,7 @@ class Services {
 	 * @return void
 	 */
 	public function addToWhitelist($input){
-		$this->addToZone($input['sourceIp'], $input['zone'], $input['hidden']); 
+		$this->addToZone($input['sourceIp'], $input['zone'], $input['hidden']);
 		return true;
 	}
 	
@@ -961,8 +961,8 @@ class Services {
 	 * @return void
 	 */
 	public function getFirewallInterfaces() {
-		$res = $this->firewall->getInterfaces();
-		$zns = $this ->firewall->getZones();
+		$res = \FreePBX::Firewall()->getInterfaces();
+		$zns = \FreePBX::Firewall()->getZones();
 		$response_array = array();
 		foreach($res as $key => $val){
 			if(array_key_exists($val['config']['ZONE'],$zns)){
