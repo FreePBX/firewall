@@ -66,15 +66,10 @@ if (!is_array($ints)) {
 }
 
 $v->secureInclude('Zones.class.php');
-$v->secureInclude('Driver.class.php');
 $v->secureInclude('Network.class.php');
 
 use FreePBX\modules\Firewall\Zones;
-use FreePBX\modules\Firewall\Driver;
 use FreePBX\modules\Firewall\Network;
-
-$d = new Driver;
-$driver = $d->getDriver();
 
 // Get our list of interfaces and zones to validate against
 $n = new Network;
