@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-26 10:14+0000\n"
+"POT-Creation-Date: 2022-05-30 11:19+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -907,7 +907,7 @@ msgstr ""
 msgid "Failed State Change!"
 msgstr ""
 
-#: Api/Gql/Firewall.php:627
+#: Api/Gql/Firewall.php:630
 msgid "Failed to update Firewall Interface"
 msgstr ""
 
@@ -960,7 +960,7 @@ msgstr "Firewall đã bị vô hiệu"
 msgid "Firewall Integrity Failed"
 msgstr "Tính toàn vẹn Firewall bị sự cố"
 
-#: Api/Gql/Firewall.php:625
+#: Api/Gql/Firewall.php:628
 msgid "Firewall Interface updated successfully"
 msgstr ""
 
@@ -2679,19 +2679,19 @@ msgstr ""
 "phản hồi thông báo rằng lưu lượng truy cập của chúng đã bị cấm về mặt hành "
 "chính. Chúng KHÔNG được phép truy cập vào dịch vụ Responsive Firewall."
 
-#: Api/Gql/Firewall.php:656
+#: Api/Gql/Firewall.php:659
 msgid "To enable/disable Custom Firewall Rules"
 msgstr ""
 
-#: Api/Gql/Firewall.php:666
+#: Api/Gql/Firewall.php:669
 msgid "To enable/disable Intrusion Detection Service"
 msgstr ""
 
-#: Api/Gql/Firewall.php:661
+#: Api/Gql/Firewall.php:664
 msgid "To enable/disable Reject Packets"
 msgstr ""
 
-#: Api/Gql/Firewall.php:651
+#: Api/Gql/Firewall.php:654
 msgid "To enable/disable Responsive LetsEncrypt Rules"
 msgstr ""
 
@@ -2703,19 +2703,19 @@ msgstr ""
 msgid "To enable/disable a responsive firewall"
 msgstr ""
 
-#: Api/Gql/Firewall.php:646
+#: Api/Gql/Firewall.php:649
 msgid "To enable/disable masq"
 msgstr ""
 
-#: Api/Gql/Firewall.php:543 Api/Gql/Firewall.php:641
+#: Api/Gql/Firewall.php:543 Api/Gql/Firewall.php:644
 msgid "To enable/disable safe mode"
 msgstr ""
 
-#: Api/Gql/Firewall.php:676
+#: Api/Gql/Firewall.php:679
 msgid "To enable/legacy Add etc/disable as Trusted"
 msgstr ""
 
-#: Api/Gql/Firewall.php:671
+#: Api/Gql/Firewall.php:674
 msgid "To enable/legacy Intrusion Detection Sync Firewall"
 msgstr ""
 
