@@ -616,10 +616,13 @@ class Firewall extends Base {
 			$descr = trim($input['description']);
 		}
 
-		$settings['ints'][$interface] = [
-			"zone" => $newzone,
-			"description" => $descr
+		$interfaceDetails = [
+			$interface => [
+				"zone" => $newzone,
+				"description" => $descr
+			]
 		];
+		$settings['ints'] = json_encode($interfaceDetails);
 		$res = $this->freepbx->firewall->runHook("updateinterfaces",$settings);
 		if($res) {
 			return ['status' => true,'message' => _('Firewall Interface updated successfully')];
