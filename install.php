@@ -71,5 +71,3 @@ if ($repair) {
 $file = "/var/spool/asterisk/incron/firewall.firewall";
 fclose(fopen($file, "c"));
 
-$fwc = fpbx_which("fwconsole");
-\FreePBX::Job()->addCommand('firewall', 'syncIDetection', '[ -e '.$fwc.' ] && '.$fwc.' firewall sync', '*/5 * * * *', 0);
