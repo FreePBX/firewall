@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-30 11:20+0000\n"
+"POT-Creation-Date: 2022-06-06 08:48+0000\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -92,32 +92,32 @@ msgstr ""
 msgid ","
 msgstr ""
 
-#: Firewall.class.php:366
+#: Firewall.class.php:365
 msgid "- Adjusting owner and permissions... OK!"
 msgstr ""
 
-#: Firewall.class.php:376
+#: Firewall.class.php:375
 #, php-format
 msgid ""
 "- Adjusting owner... ERROR!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:371
+#: Firewall.class.php:370
 #, php-format
 msgid ""
 "- Adjusting permissions... ERROR!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:345
+#: Firewall.class.php:344
 #, php-format
 msgid ""
 "- Does not exist, creating file... ERROR!!\n"
 " >> Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:349
+#: Firewall.class.php:348
 msgid "- Does not exist, creating file... OK!"
 msgstr ""
 
@@ -181,7 +181,7 @@ msgstr ""
 "được khám phá được cài đặt vào vùng này nên chúng có thể được cấu hình chính "
 "xác mà không bị gián đoạn bởi các lưu lượng hiện có."
 
-#: Firewall.class.php:559
+#: Firewall.class.php:558
 #, php-format
 msgid ""
 "A network interface that is assigned to the 'Trusted' zone has been "
@@ -192,7 +192,7 @@ msgstr ""
 "hiện. Đây là một cấu hình sai. Để đảm bảo hệ thống của bạn được bảo vệ khỏi "
 "các cuộc tấn công, vui lòng thay đổi vùng mặc định của giao diện '%s'."
 
-#: Firewall.class.php:549
+#: Firewall.class.php:548
 #, php-format
 msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
@@ -544,7 +544,7 @@ msgstr "Hủy"
 msgid "Check Custrom Rules..."
 msgstr ""
 
-#: Firewall.class.php:339
+#: Firewall.class.php:338
 #, php-format
 msgid "Check file '%s'"
 msgstr ""
@@ -658,7 +658,7 @@ msgstr "Xóa"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1743
+#: Firewall.class.php:1742
 msgid "Delete Selected"
 msgstr "Xóa những gì được chọn"
 
@@ -825,7 +825,7 @@ msgstr ""
 msgid "Error checking protocol file (%s)!"
 msgstr ""
 
-#: Firewall.class.php:428
+#: Firewall.class.php:427
 msgid "Error saving data!"
 msgstr ""
 
@@ -944,19 +944,19 @@ msgstr ""
 msgid "Firewall"
 msgstr "Tường lửa"
 
-#: Firewall.class.php:480
+#: Firewall.class.php:479
 msgid "Firewall Active"
 msgstr "Firewall hoạt động"
 
-#: Firewall.class.php:500
+#: Firewall.class.php:499
 msgid "Firewall Configuration"
 msgstr "Cấu hình Firewall"
 
-#: Firewall.class.php:482
+#: Firewall.class.php:481
 msgid "Firewall Disabled"
 msgstr "Firewall đã bị vô hiệu"
 
-#: Firewall.class.php:534 Firewall.class.php:535
+#: Firewall.class.php:533 Firewall.class.php:534
 msgid "Firewall Integrity Failed"
 msgstr "Tính toàn vẹn Firewall bị sự cố"
 
@@ -964,7 +964,7 @@ msgstr "Tính toàn vẹn Firewall bị sự cố"
 msgid "Firewall Interface updated successfully"
 msgstr ""
 
-#: Firewall.class.php:494
+#: Firewall.class.php:493
 msgid "Firewall Service not running!"
 msgstr "Dịch vụ Firewall không chạy!"
 
@@ -976,7 +976,7 @@ msgstr "Thuật sĩ Firewall"
 msgid "Firewall advance settings updated succefully"
 msgstr ""
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1700
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1699
 msgid "Firewall can not be disabled"
 msgstr "Không thể vô hiệu Firewall"
 
@@ -1271,7 +1271,7 @@ msgstr ""
 "thích của RHEL6 và RHEL 7. Lưu ý: Điều này yêu cầu phải có Sysadmin RPM. Vui "
 "lòng xem wiki để có thêm thông tin."
 
-#: Firewall.class.php:536
+#: Firewall.class.php:535
 #, php-format
 msgid ""
 "Interface %s is not in the correct zone. This can be caused by manual "
@@ -1308,11 +1308,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1552
+#: Firewall.class.php:1551
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1552
+#: Firewall.class.php:1551
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1507,52 +1507,52 @@ msgstr ""
 msgid "Message for the request"
 msgstr ""
 
-#: Firewall.class.php:365
+#: Firewall.class.php:364
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Adjusting owner and permissions in file "
 "'%s'... OK!"
 msgstr ""
 
-#: Firewall.class.php:375
+#: Firewall.class.php:374
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Error adjusting owner in file '%s'. Error "
 "Message: %s"
 msgstr ""
 
-#: Firewall.class.php:370
+#: Firewall.class.php:369
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - Error adjusting permissions in file '%s'. "
 "Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:353
+#: Firewall.class.php:352
 #, php-format
 msgid "Module Firewall - Check Rules - File '%s' exist... OK!"
 msgstr ""
 
-#: Firewall.class.php:348
+#: Firewall.class.php:347
 #, php-format
 msgid "Module Firewall - Check Rules - File '%s' not exist, created OK!"
 msgstr ""
 
-#: Firewall.class.php:344
+#: Firewall.class.php:343
 #, php-format
 msgid ""
 "Module Firewall - Check Rules - File '%s' not exist, error creating. Error "
 "Message: %s"
 msgstr ""
 
-#: Firewall.class.php:453
+#: Firewall.class.php:452
 #, php-format
 msgid ""
 "Module Firewall - Remove File Rules - Error detected by deleting the file "
 "'%s'!. Error Message: %s"
 msgstr ""
 
-#: Firewall.class.php:456
+#: Firewall.class.php:455
 #, php-format
 msgid "Module Firewall - Remove File Rules - File '%s' deleted successfully."
 msgstr ""
@@ -1586,11 +1586,11 @@ msgstr "Mạng/host"
 msgid "Networks"
 msgstr "Mạng"
 
-#: Firewall.class.php:546 Firewall.class.php:548
+#: Firewall.class.php:545 Firewall.class.php:547
 msgid "New Interface Detected"
 msgstr "Đã phát hiện một giao diện mới"
 
-#: Firewall.class.php:433
+#: Firewall.class.php:432
 msgid "New rules unsent!"
 msgstr ""
 
@@ -1614,15 +1614,15 @@ msgstr "Không có Enpoint nào được cho phép đi qua Responsive Firewall"
 msgid "No IP Addresses assigned to this interface."
 msgstr "Không có địa chỉ IP nào được gán vào giao diện này."
 
-#: Firewall.class.php:589
+#: Firewall.class.php:588
 msgid "No Trusted Management Network"
 msgstr "Không có mạng quản lý an toàn"
 
-#: Firewall.class.php:591
+#: Firewall.class.php:590
 msgid "No Trusted Network or Host defined"
 msgstr "Không có mạng an toàn hay Host xác định nào"
 
-#: Firewall.class.php:592
+#: Firewall.class.php:591
 msgid ""
 "No Trusted Network or Host has been defined. Every server should have a "
 "'Trusted' host or network to ensure that in case of configuration error, the "
@@ -1807,7 +1807,7 @@ msgstr "Sơ đồ của Cổng giao tiếp/ dịch vụ"
 msgid "Preconfigured"
 msgstr "Được cấu hình sẵn"
 
-#: Firewall.class.php:1138
+#: Firewall.class.php:1137
 msgid "Preparing settings. Please wait a while."
 msgstr ""
 
@@ -1835,11 +1835,11 @@ msgstr ""
 msgid "Protocol data (%s) saved successfully."
 msgstr ""
 
-#: Firewall.class.php:411 Firewall.class.php:441
+#: Firewall.class.php:410 Firewall.class.php:440
 msgid "Protocol not selected!"
 msgstr ""
 
-#: Firewall.class.php:407 Firewall.class.php:437
+#: Firewall.class.php:406 Firewall.class.php:436
 msgid "Protocol not valid!"
 msgstr ""
 
@@ -1948,7 +1948,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr "Đã xóa %s ra khỏi Danh sách đen."
 
-#: Firewall.class.php:1750
+#: Firewall.class.php:1749
 msgid "Reset"
 msgstr "Cài đặt lại"
 
@@ -2063,12 +2063,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall hiện đã kích hoạt!"
 
-#: Firewall.class.php:1742 Firewall.class.php:1751 views/modal.customsvc.php:37
+#: Firewall.class.php:1741 Firewall.class.php:1750 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Lưu"
 
-#: Firewall.class.php:1745
+#: Firewall.class.php:1744
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2197,7 +2197,7 @@ msgstr ""
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr "Khởi động ( bật lên nếu đang bị vô hiệu) Firewall hệ thống"
 
-#: Firewall.class.php:487
+#: Firewall.class.php:486
 msgid "Starting up"
 msgstr "Khởi động"
 
@@ -2299,7 +2299,7 @@ msgstr ""
 msgid "Syncing...."
 msgstr ""
 
-#: Firewall.class.php:475 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:474 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr "Firewall Hệ thống"
 
@@ -2350,7 +2350,7 @@ msgid ""
 "Save button."
 msgstr ""
 
-#: Firewall.class.php:781
+#: Firewall.class.php:780
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -2751,11 +2751,11 @@ msgstr ""
 msgid "Trusted"
 msgstr "Trusted (An toàn)"
 
-#: Firewall.class.php:555 Firewall.class.php:558
+#: Firewall.class.php:554 Firewall.class.php:557
 msgid "Trusted Interface Detected"
 msgstr "Giao diện an toàn được phát hiện"
 
-#: Firewall.class.php:587
+#: Firewall.class.php:586
 msgid "Trusted Management Network defined"
 msgstr "Mạng quản lý an toàn (Trusted Management Network) được xác định"
 
@@ -2810,7 +2810,7 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Console/Firewall.class.php:166 Firewall.class.php:1267
+#: Console/Firewall.class.php:166 Firewall.class.php:1266
 msgid "Unknown"
 msgstr ""
 
@@ -2823,7 +2823,7 @@ msgstr "Mục nhập không xác định!"
 msgid "Unknown interface '%s' provided"
 msgstr ""
 
-#: Firewall.class.php:1744
+#: Firewall.class.php:1743
 msgid "Update Interfaces"
 msgstr "Cập nhật các giao diện"
 
@@ -2965,7 +2965,7 @@ msgstr ""
 "Bạn có thể thêm các host và các mạng riêng lẻ để ghi đè sự cho phép mặc định "
 "của một giao diện."
 
-#: Firewall.class.php:782
+#: Firewall.class.php:781
 msgid "You can add the host automatically here."
 msgstr "Bạn có thể tự động thêm host ở đây."
 
