@@ -8,6 +8,8 @@ class Services {
 	private $coreservices;
 	private $extraservices;
 	private $firewall;
+	private $sysAdmin;
+	private $config;
 
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
@@ -95,7 +97,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			if (isset($ports['restapi']) && (int) $ports['restapi'] > 1) {
 				$retarr['fw'][0]['port'] = $ports['restapi'];
 			}
@@ -115,7 +117,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			if (isset($ports['sslrestapi']) && (int) $ports['sslrestapi'] > 1) {
 				$retarr['fw'][0]['port'] = $ports['sslrestapi'];
 			}
@@ -136,7 +138,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			if (isset($ports['acp']) && $ports['acp'] >= 80) {
 				$retarr['fw'][0]['port'] = $ports['acp'];
 			}
@@ -155,7 +157,7 @@ class Services {
 			"noreject" => true,
 		);
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			if (isset($ports['sslacp']) && $ports['sslacp'] >= 80) {
 				$retarr['fw'][0]['port'] = $ports['sslacp'];
 			}
@@ -175,7 +177,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			// Sysadmin is installed
 			$retarr['fw'] = array();
 
@@ -196,7 +198,7 @@ class Services {
 		}
 
 		// Add nodejs listen port, if it's installed.
-		$nodejs = \FreePBX::Config()->get('NODEJSBINDPORT');
+		$nodejs = $this->getConfigObj()->get('NODEJSBINDPORT');
 		if ($nodejs) {
 			$retarr['fw'][] = array("protocol" => "tcp", "port" => $nodejs);
 		}
@@ -213,7 +215,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			// Sysadmin is installed
 			$retarr['fw'] = array();
 
@@ -234,7 +236,7 @@ class Services {
 		}
 
 		// Add nodejs listen port, if it's installed.
-		$nodejstls = \FreePBX::Config()->get('NODEJSHTTPSBINDPORT');
+		$nodejstls = $this->getConfigObj()->get('NODEJSHTTPSBINDPORT');
 		if ($nodejstls) {
 			$retarr['fw'][] = array("protocol" => "tcp", "port" => $nodejstls);
 		}
@@ -242,8 +244,8 @@ class Services {
 	}
 
 	private function getSvc_webrtc() {
-		$websocket = \FreePBX::Config()->get('HTTPBINDPORT');
-		$tlssocket = \FreePBX::Config()->get('HTTPTLSBINDPORT');
+		$websocket = $this->getConfigObj()->get('HTTPBINDPORT');
+		$tlssocket = $this->getConfigObj()->get('HTTPTLSBINDPORT');
 
 		if (!$websocket) {
 			$websocket = 8088;
@@ -275,7 +277,7 @@ class Services {
 		);
 
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 		} catch (\Exception $e) {
 			$ports = array( "leport" => 0 );
 		}
@@ -283,7 +285,7 @@ class Services {
 		if (isset($ports['leport']) && $ports['leport'] >= 80) {
 			$retarr['fw'] = array(array("protocol" => "tcp", "port" => $ports['leport'], "leport" => true),);
 			$advancedsettingsurl = "<a href=?display=firewall&page=advanced&tab=settings>";
-			$as = \FreePBX::Firewall()->getAdvancedSettings();
+			$as = $this->getFirewallObj()->getAdvancedSettings();
 			if ($as['lefilter'] == "disabled") {
 				$retarr["descr"] .= "<div class='well'>".sprintf(_("This must be allowed access from the 'Internet' zone unless %s Responsive LetsEncrypt Rules %s are enabled. Enabling %s Responsive LetsEncrypt Rules %s is recommended"), $advancedsettingsurl, "</a>", $advancedsettingsurl, "</a>")."</div>";
 				$retarr['defzones'] = array("external");
@@ -308,7 +310,7 @@ class Services {
 		try {
 			$lic = \FreePBX::Zulu()->licensed();
 			if ($lic) {
-				$zuluport = \FreePBX::Config()->get('ZULUBINDPORT');
+				$zuluport = $this->getConfigObj()->get('ZULUBINDPORT');
 			}
 		} catch (\Exception $e) {
 			// ignore
@@ -353,11 +355,11 @@ class Services {
 			"fw" => array(),
 		);
 
-		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("pjsip", "rfw")) {
+		if ($this->getFirewallObj()->getConfig('responsivefw') && $this->getFirewallObj()->getConfig("pjsip", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 
-		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
+		$driver = $this->getConfigObj()->get('ASTSIPDRIVER');
 		if ($driver == "both" || $driver == "chan_pjsip") {
 			$ss = \FreePBX::Sipsettings();
 			$allBinds = $ss->getConfig("binds");
@@ -375,7 +377,7 @@ class Services {
 						continue;
 					}
 					if ($type == "ws" || $type == "wss") {
-						$websocket = \FreePBX::Config()->get('HTTPBINDPORT');
+						$websocket = $this->getConfigObj()->get('HTTPBINDPORT');
 						continue;
 					}
 
@@ -410,11 +412,11 @@ class Services {
 			"fw" => array(),
 		);
 
-		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("chansip", "rfw")) {
+		if ($this->getFirewallObj()->getConfig('responsivefw') && $this->getFirewallObj()->getConfig("chansip", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 
-		$driver = \FreePBX::Config()->get('ASTSIPDRIVER');
+		$driver = $this->getConfigObj()->get('ASTSIPDRIVER');
 		if ($driver == "both" || $driver == "chan_sip") {
 			$sipport = 5060;
 			$tlsport = false;
@@ -459,7 +461,7 @@ class Services {
 			// If you're using IAX on a non standard port, stop it. You're doing it wrong.
 			"fw" => array(array("protocol" => "udp", "port" => 4569)),
 		);
-		if (\FreePBX::Firewall()->getConfig('responsivefw') && \FreePBX::Firewall()->getConfig("iax", "rfw")) {
+		if ($this->getFirewallObj()->getConfig('responsivefw') && $this->getFirewallObj()->getConfig("iax", "rfw")) {
 			$retarr['descr'] .= "<div class='well'>"._("This protocol is being managed by the Responsive Firewall. You <strong>should not</strong> enable access from the 'Internet' zone, or Responsive Firewall will be bypassed.")."</div>";
 		}
 		return $retarr;
@@ -475,7 +477,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			$retarr['fw'] = array();
 			if (isset($ports['hpro']) && $ports['hpro'] !== 'disabled' && $ports['hpro'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['hpro'], "ratelimit" => true, "leport" => true);
@@ -501,7 +503,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			$retarr['fw'] = array();
 			if (isset($ports['sslhpro']) && $ports['sslhpro'] !== 'disabled' && $ports['sslhpro'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslhpro'], "ratelimit" => true);
@@ -540,7 +542,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			if (isset($ports['restapps']) && $ports['restapps'] !== 'disabled' &&  $ports['restapps'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['restapps'], "leport" => true);
 			}
@@ -568,7 +570,7 @@ class Services {
 		// TODO: This is not portable for machines that don't have sysadmin.
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
-			$ports = \FreePBX::Sysadmin()->getPorts();
+			$ports = $this->getSysadminObj()->getPorts();
 			if (isset($ports['sslrestapps']) && $ports['sslrestapps'] !== 'disabled' && $ports['sslrestapps'] >= 80) {
 				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslrestapps']);
 			}
@@ -749,7 +751,7 @@ class Services {
 		// Make sure we can look this host up, and it's a valid thing to 
 		// add to the blacklist.
 		//
-		$smart = \FreePBX::Firewall()->getSmartObj();
+		$smart = $this->getFirewallObj()->getSmartObj();
 		// Is this a network? If it has a slash, assume it does.
 		if (strpos($host, "/") !== false) {
 			$rawnet = true;
@@ -768,9 +770,9 @@ class Services {
 		// If this is a network, make sure we use the returnCidr value,
 		// because that's actually correct.
 		if ($rawnet) {
-			\FreePBX::Firewall()->setConfig($trust, true, "blacklist");
+			$this->getFirewallObj()->setConfig($trust, true, "blacklist");
 		} else {
-			\FreePBX::Firewall()->setConfig($host, true, "blacklist");
+			$this->getFirewallObj()->setConfig($host, true, "blacklist");
 		}
 	}
 	
@@ -781,7 +783,7 @@ class Services {
 	 * @return void
 	 */
 	public function removeFromBlacklist($host) {
-		\FreePBX::Firewall()->setConfig($host, false, "blacklist");
+		$this->getFirewallObj()->setConfig($host, false, "blacklist");
 	}
 	
 	/**
@@ -790,8 +792,8 @@ class Services {
 	 * @return void
 	 */
 	public function getBlacklist() {
-		$hosts = array_keys(\FreePBX::Firewall()->getAll("blacklist"));
-		$smart = \FreePBX::Firewall()->getSmartObj();
+		$hosts = array_keys($this->getFirewallObj()->getAll("blacklist"));
+		$smart = $this->getFirewallObj()->getSmartObj();
 		$retarr = array();
 		foreach ($hosts as $h) {
 			// Is this an IP address?
@@ -813,7 +815,7 @@ class Services {
 	 * @return void
 	 */
 	public function setFirewallConfigurations($input) {
-		$this->firewall = \FreePBX::Firewall();
+		$this->firewall = $this->getFirewallObj();
 
 		// Firewall should be enabled
 		$this->firewall->setConfig("status", $input['status']);
@@ -851,7 +853,7 @@ class Services {
 	 * @return void
 	 */
 	public function getFirewallConfigurations() {
-		$this->firewall = \FreePBX::Firewall();
+		$this->firewall = $this->getFirewallObj();
 
 		$firewallStatus = $this->firewall->getConfig("status");
 		$responsiveFirewall = $this->firewall->getConfig("responsivefw");
@@ -872,7 +874,7 @@ class Services {
 	 * @return void
 	 */
 	public function setServiceZones($service, $zones) {
-		$this->firewall = \FreePBX::Firewall();
+		$this->firewall = $this->getFirewallObj();
 		if (!is_array($zones)) {
 			throw new \Exception("No zones provided for service $service");
 		}
@@ -889,7 +891,7 @@ class Services {
 	 * @return void
 	 */
 	public function addToZone($srcip, $zone, $hide = false, $apply = true) {
-		$this->firewall = \FreePBX::Firewall();
+		$this->firewall = $this->getFirewallObj();
 		$split = explode("/", $srcip);
 
 		if (!filter_var($split[0], \FILTER_VALIDATE_IP)) {
@@ -947,7 +949,7 @@ class Services {
 	 * @return void
 	 */
 	public function getServiceZones() {
-		$res =  \FreePBX::Firewall()->get_networkmaps();
+		$res =  $this->getFirewallObj()->get_networkmaps();
 		$response_array = array();
 		foreach($res as $key => $val){
 			array_push($response_array,array('sourceIp' => $key , 'trusted' => $val));
@@ -961,8 +963,8 @@ class Services {
 	 * @return void
 	 */
 	public function getFirewallInterfaces() {
-		$res = \FreePBX::Firewall()->getInterfaces();
-		$zns = \FreePBX::Firewall()->getZones();
+		$res = $this->getFirewallObj()->getInterfaces();
+		$zns = $this->getFirewallObj()->getZones();
 		$response_array = array();
 		foreach($res as $key => $val){
 			if(array_key_exists($val['config']['ZONE'],$zns)){
@@ -974,5 +976,26 @@ class Services {
 			array_push($response_array,array('ints' => $key , 'zone' => $zoneName , 'description' => $val['config']['DESCRIPTION']));
 		}
 		return $response_array;
+	}
+
+	function getSysadminObj() {
+		if (!$this->sysAdmin) {
+			$this->sysAdmin = \FreePBX::Sysadmin();
+		}
+		return $this->sysAdmin;
+	}
+
+	function getFirewallObj() {
+		if (!$this->firewall) {
+			$this->firewall = \FreePBX::Firewall();
+		}
+		return $this->firewall;
+	}
+
+	function getConfigObj() {
+		if (!$this->config) {
+			$this->config = \FreePBX::Config();
+		}
+		return $this->config;
 	}
 }
