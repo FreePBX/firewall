@@ -169,10 +169,10 @@ class Firewall extends Base {
 						'outputFields' => $this->getOutputFields(),
 						'mutateAndGetPayload' => function ($input) {
 							foreach ($input as $key => $value) {
-								if($value != 'enabled' && $key == 'id_sync_fw') {
-									$value = 'legacy';
-								} else if($value != 'enabled') {
-									$value = 'disabled';
+								if($key == 'id_sync_fw' && !in_array($value,['enabled','legacy'])) {
+									return ['message' => sprintf(_("invalid value for %s"),$key), 'status' => false];
+								} else if($key != 'id_sync_fw' && !in_array($value,['enabled','disabled'])) {
+									return ['message' => sprintf(_("invalid value for %s"),$key), 'status' => false];
 								}
 								$res=$this->freepbx->firewall->getFirewall()->setAdvancedSetting($key,$value);
 							}
@@ -367,14 +367,6 @@ class Firewall extends Base {
 				 'safemode' => [
 					'type' => Type::string(),
 					'description' => _('Safe Mode'),
-				],
-				'masq' => [
-					'type' => Type::string(),
-					'description' => _('masq'),
-				],
-				'masq' => [
-					'type' => Type::string(),
-					'description' => _('masq'),
 				],
 				'lefilter' => [
 					'type' => Type::string(),
@@ -641,42 +633,30 @@ class Firewall extends Base {
 			'safemode' => [
 				'type' => Type::string(),
 				'description' => _('To enable/disable safe mode'),
-				'defaultValue' => "disabled",
-			],
-			'masq' => [
-				'type' => Type::string(),
-				'description' => _('To enable/disable masq'),
-				'defaultValue' => "disabled"
 			],
 			'lefilter' => [
 				'type' => Type::string(),
 				'description' => _('To enable/disable Responsive LetsEncrypt Rules'),
-				'defaultValue' => "disabled"
 			],
 			'customrules' => [
 				'type' => Type::string(),
 				'description' => _('To enable/disable Custom Firewall Rules'),
-				'defaultValue' => "disabled"
 			],
 			'rejectpackets' => [
 				'type' => Type::string(),
 				'description' => _('To enable/disable Reject Packets'),
-				'defaultValue' => "disabled"
 			],
 			'id_service' => [
 				'type' => Type::string(),
 				'description' => _('To enable/disable Intrusion Detection Service'),
-				'defaultValue' => "disabled"
 			],
 			'id_sync_fw' => [
 				'type' => Type::string(),
 				'description' => _('To enable/legacy Intrusion Detection Sync Firewall'),
-				'defaultValue' => "legacy"
 			],
 			'import_hosts' => [
 				'type' => Type::string(),
 				'description' => _('To enable/legacy Add etc/disable as Trusted'),
-				'defaultValue' => "disabled"
 			],
 		];
 	}
