@@ -159,7 +159,7 @@ class Firewall extends Base {
 						] ,
 						'mutateAndGetPayload' => function ($input) {
 							$inputVal=$this->validateAndUpdateInterface($input);
-							return ['ints' => $input['ints'],'zone' => $input['zone'],'description' => $input['description'],'message' => $inputVal['message']];
+							return ['ints' => $input['ints'],'zone' => $input['zone'],'description' => (isset($input['description'])) ? $input['description'] : '','message' => $inputVal['message']];
 						}
 					]),
 					'updateFirewallAdvanceSettings' => Relay::mutationWithClientMutationId([
