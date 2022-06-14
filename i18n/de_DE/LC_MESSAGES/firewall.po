@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-07 10:37+0000\n"
+"POT-Creation-Date: 2022-06-14 15:24+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -231,7 +231,7 @@ msgstr "Neue hinzufügen"
 msgid "Add a whiltelisted IP"
 msgstr ""
 
-#: Api/Gql/Firewall.php:401 views/view.settings.php:53
+#: Api/Gql/Firewall.php:393 views/view.settings.php:53
 msgid "Add etc/hosts as Trusted"
 msgstr ""
 
@@ -455,7 +455,7 @@ msgstr ""
 msgid "Blacklist"
 msgstr ""
 
-#: Api/Gql/Firewall.php:509
+#: Api/Gql/Firewall.php:501
 msgid "Blacklist port"
 msgstr ""
 
@@ -558,7 +558,7 @@ msgstr ""
 msgid "Cumulative Total of remote clients:"
 msgstr "Kumulative Anzahl der Remote-Clients:"
 
-#: Api/Gql/Firewall.php:385 views/view.settings.php:29
+#: Api/Gql/Firewall.php:377 views/view.settings.php:29
 msgid "Custom Firewall Rules"
 msgstr ""
 
@@ -857,7 +857,7 @@ msgstr ""
 msgid "Failed State Change!"
 msgstr ""
 
-#: Api/Gql/Firewall.php:630
+#: Api/Gql/Firewall.php:622
 msgid "Failed to update Firewall Interface"
 msgstr ""
 
@@ -909,7 +909,7 @@ msgstr "Firewall deaktiviert"
 msgid "Firewall Integrity Failed"
 msgstr "Firewall-Integrität fehlgeschlagen"
 
-#: Api/Gql/Firewall.php:628
+#: Api/Gql/Firewall.php:620
 msgid "Firewall Interface updated successfully"
 msgstr ""
 
@@ -1064,7 +1064,7 @@ msgstr "IP Adressen: "
 msgid "IP Banned"
 msgstr ""
 
-#: Api/Gql/Firewall.php:583
+#: Api/Gql/Firewall.php:575
 msgid "IP address of the source"
 msgstr ""
 
@@ -1088,7 +1088,7 @@ msgstr ""
 msgid "IP's that are currently trusted."
 msgstr ""
 
-#: Api/Gql/Firewall.php:418
+#: Api/Gql/Firewall.php:410
 msgid "IPs black listed"
 msgstr ""
 
@@ -1215,7 +1215,7 @@ msgstr ""
 msgid "Intrusion Detection"
 msgstr ""
 
-#: Api/Gql/Firewall.php:393 views/intrusion_detection.php:61
+#: Api/Gql/Firewall.php:385 views/intrusion_detection.php:61
 #: views/view.settings.php:42
 msgid "Intrusion Detection Service"
 msgstr ""
@@ -1230,7 +1230,7 @@ msgid ""
 "service using the link below."
 msgstr ""
 
-#: Api/Gql/Firewall.php:397 views/intrusion_detection.php:92
+#: Api/Gql/Firewall.php:389 views/intrusion_detection.php:92
 #: views/view.settings.php:48
 msgid "Intrusion Detection Sync Firewall"
 msgstr ""
@@ -1260,7 +1260,7 @@ msgid ""
 "Start/Restart/Stop button."
 msgstr ""
 
-#: Api/Gql/Firewall.php:608
+#: Api/Gql/Firewall.php:600
 #, php-format
 msgid "Invalid zone '%s' provided"
 msgstr ""
@@ -1410,7 +1410,7 @@ msgstr ""
 msgid "Max Retry"
 msgstr ""
 
-#: Api/Gql/Firewall.php:414 Api/Gql/Firewall.php:487
+#: Api/Gql/Firewall.php:406 Api/Gql/Firewall.php:479
 msgid "Message for the request"
 msgstr ""
 
@@ -1789,7 +1789,7 @@ msgstr ""
 msgid "Reject"
 msgstr "Ablehnen"
 
-#: Api/Gql/Firewall.php:389 views/view.settings.php:35
+#: Api/Gql/Firewall.php:381 views/view.settings.php:35
 msgid "Reject Packets"
 msgstr ""
 
@@ -1843,7 +1843,7 @@ msgstr "Responsive Firewall ist <strong>aktiviert</strong>."
 msgid "Responsive Firewall is not enabled."
 msgstr ""
 
-#: Api/Gql/Firewall.php:381 views/view.settings.php:14
+#: Api/Gql/Firewall.php:373 views/view.settings.php:14
 msgid "Responsive LetsEncrypt Rules"
 msgstr ""
 
@@ -1955,31 +1955,31 @@ msgid ""
 "connections matching the zones."
 msgstr ""
 
-#: Api/Gql/Firewall.php:563
+#: Api/Gql/Firewall.php:555
 msgid "Set OOBE answered enabled/disabled, default is true"
 msgstr ""
 
-#: Api/Gql/Firewall.php:568
+#: Api/Gql/Firewall.php:560
 msgid "Set external setup oprion, default is true"
 msgstr ""
 
-#: Api/Gql/Firewall.php:538
+#: Api/Gql/Firewall.php:530
 msgid "Set the PjSIP Configuration"
 msgstr ""
 
-#: Api/Gql/Firewall.php:533
+#: Api/Gql/Firewall.php:525
 msgid "Set the chainSIP configuration"
 msgstr ""
 
-#: Api/Gql/Firewall.php:548
+#: Api/Gql/Firewall.php:540
 msgid "Set the current Jiffer value, default is 1000"
 msgstr ""
 
-#: Api/Gql/Firewall.php:553
+#: Api/Gql/Firewall.php:545
 msgid "Set the service zone options"
 msgstr ""
 
-#: Api/Gql/Firewall.php:558
+#: Api/Gql/Firewall.php:550
 msgid "Set the trusted host, default is true"
 msgstr ""
 
@@ -2080,7 +2080,7 @@ msgstr ""
 msgid "Status for the provision"
 msgstr ""
 
-#: Api/Gql/Firewall.php:422 Api/Gql/Firewall.php:491
+#: Api/Gql/Firewall.php:414 Api/Gql/Firewall.php:483
 msgid "Status for the request"
 msgstr ""
 
@@ -2460,43 +2460,39 @@ msgid ""
 "permitted to access the Responsive Firewall service."
 msgstr ""
 
-#: Api/Gql/Firewall.php:658
+#: Api/Gql/Firewall.php:643
 msgid "To enable/disable Custom Firewall Rules"
 msgstr ""
 
-#: Api/Gql/Firewall.php:668
+#: Api/Gql/Firewall.php:651
 msgid "To enable/disable Intrusion Detection Service"
 msgstr ""
 
-#: Api/Gql/Firewall.php:663
+#: Api/Gql/Firewall.php:647
 msgid "To enable/disable Reject Packets"
 msgstr ""
 
-#: Api/Gql/Firewall.php:653
+#: Api/Gql/Firewall.php:639
 msgid "To enable/disable Responsive LetsEncrypt Rules"
 msgstr ""
 
-#: Api/Gql/Firewall.php:523
+#: Api/Gql/Firewall.php:515
 msgid "To enable/disable a firewall"
 msgstr ""
 
-#: Api/Gql/Firewall.php:528
+#: Api/Gql/Firewall.php:520
 msgid "To enable/disable a responsive firewall"
 msgstr ""
 
-#: Api/Gql/Firewall.php:648
-msgid "To enable/disable masq"
-msgstr ""
-
-#: Api/Gql/Firewall.php:543 Api/Gql/Firewall.php:643
+#: Api/Gql/Firewall.php:535 Api/Gql/Firewall.php:635
 msgid "To enable/disable safe mode"
 msgstr ""
 
-#: Api/Gql/Firewall.php:678
+#: Api/Gql/Firewall.php:659
 msgid "To enable/legacy Add etc/disable as Trusted"
 msgstr ""
 
-#: Api/Gql/Firewall.php:673
+#: Api/Gql/Firewall.php:655
 msgid "To enable/legacy Intrusion Detection Sync Firewall"
 msgstr ""
 
@@ -2518,11 +2514,11 @@ msgstr ""
 msgid "Total number of Registered Clients:"
 msgstr ""
 
-#: Api/Gql/Firewall.php:495
+#: Api/Gql/Firewall.php:487
 msgid "Transaction for the request"
 msgstr ""
 
-#: Api/Gql/Firewall.php:591
+#: Api/Gql/Firewall.php:583
 msgid "True/false value for hidden"
 msgstr ""
 
@@ -2597,7 +2593,7 @@ msgstr ""
 msgid "Unknown entry!"
 msgstr ""
 
-#: Api/Gql/Firewall.php:611
+#: Api/Gql/Firewall.php:603
 #, php-format
 msgid "Unknown interface '%s' provided"
 msgstr ""
@@ -2784,7 +2780,7 @@ msgstr ""
 msgid "Zone Information"
 msgstr ""
 
-#: Api/Gql/Firewall.php:119 Api/Gql/Firewall.php:587
+#: Api/Gql/Firewall.php:119 Api/Gql/Firewall.php:579
 msgid "Zone can be either internal,external,trusted,other"
 msgstr ""
 
@@ -2832,6 +2828,11 @@ msgstr ""
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
+#: Api/Gql/Firewall.php:173 Api/Gql/Firewall.php:175
+#, php-format
+msgid "invalid value for %s"
+msgstr ""
+
 #: views/view.about.php:9
 msgid ""
 "is a fully integrated and tightly coupled firewall that constantly monitors "
@@ -2839,24 +2840,20 @@ msgid ""
 "allows access from valid hosts."
 msgstr ""
 
-#: Api/Gql/Firewall.php:466
+#: Api/Gql/Firewall.php:458
 msgid "list of advance settings"
 msgstr ""
 
-#: Api/Gql/Firewall.php:456
+#: Api/Gql/Firewall.php:448
 msgid "list of interfaces"
 msgstr ""
 
-#: Api/Gql/Firewall.php:436 Api/Gql/Firewall.php:446
+#: Api/Gql/Firewall.php:428 Api/Gql/Firewall.php:438
 msgid "list of whitelistIps"
 msgstr ""
 
-#: Api/Gql/Firewall.php:426
+#: Api/Gql/Firewall.php:418
 msgid "list the configurations details"
-msgstr ""
-
-#: Api/Gql/Firewall.php:373 Api/Gql/Firewall.php:377
-msgid "masq"
 msgstr ""
 
 #: Console/Firewall.class.php:244
