@@ -2161,8 +2161,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("descriptions", $descriptions, "network");
 		}
 
-		// Disable hook
-		// return $this->runHook("changenetwork", array("network" => $net, "newzone" => $zone));
+		return $this->runHook("changenetwork", array("network" => $net, "newzone" => $zone));
 	}
 
 	// Add RFC1918 addresses to the trusted zone
