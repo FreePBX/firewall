@@ -10,13 +10,17 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-24 02:41+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2022-07-02 06:31+0000\n"
+"Last-Translator: Dmitriy Q <krotesk@ya.ru>\n"
+"Language-Team: Russian <http://weblate.freepbx.org/projects/freepbx/firewall/"
+"ru/>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
+"4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.0.1\n"
 
 #: Services.class.php:618
 #, php-format
@@ -94,12 +98,12 @@ msgstr ""
 
 #: views/bootnav.php:8
 msgid "Advanced"
-msgstr ""
+msgstr "Расширенный"
 
 #: views/page.advanced.php:35
 #: views/view.settings.php:3
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Дополнительные настройки"
 
 #: views/view.about.php:28
 #, php-format
@@ -232,7 +236,7 @@ msgstr ""
 
 #: views/page.services.php:41
 msgid "Blacklist"
-msgstr ""
+msgstr "Черный список"
 
 #: views/view.blocked.php:18
 msgid "Blocked Attackers"
@@ -267,7 +271,7 @@ msgstr ""
 
 #: views/modal.customsvc.php:36
 msgid "Cancel"
-msgstr ""
+msgstr "Отмена"
 
 #: Console/Firewall.class.php:24
 msgid "Command to run (see --help)"
@@ -275,7 +279,7 @@ msgstr ""
 
 #: firewall.i18n.php:6
 msgid "Connectivity"
-msgstr ""
+msgstr "Подключения"
 
 #: views/view.portmaps.php:11
 #: views/view.services.php:2
@@ -326,11 +330,11 @@ msgstr ""
 #: views/view.blacklist.php:9
 #: views/view.customsvc.php:45
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 #: Firewall.class.php:681
 msgid "Delete Selected"
-msgstr ""
+msgstr "Удалить выбранный"
 
 #: Console/Firewall.class.php:90
 msgid "Delete from 'zone' the IDs provided."
@@ -338,11 +342,11 @@ msgstr ""
 
 #: views/modal.customsvc.php:11
 msgid "Description"
-msgstr ""
+msgstr "Описание"
 
 #: views/view.smart.php:43
 msgid "Disable"
-msgstr ""
+msgstr "Выключить"
 
 #: views/view.about.php:51
 msgid "Disable Firewall"
@@ -355,7 +359,7 @@ msgstr ""
 #: views/view.settings.php:8
 #: views/view.smart.php:6
 msgid "Disabled"
-msgstr ""
+msgstr "Выключено"
 
 #: views/view.zoneinfo.php:4
 msgid ""
@@ -367,11 +371,11 @@ msgstr ""
 
 #: views/view.customsvc.php:44
 msgid "Edit"
-msgstr ""
+msgstr "Редактировать"
 
 #: views/view.smart.php:45
 msgid "Enable"
-msgstr ""
+msgstr "Включить"
 
 #: OOBE.class.php:196
 msgid "Enable Responsive Firewall?"
@@ -384,7 +388,7 @@ msgstr ""
 #: views/view.settings.php:7
 #: views/view.smart.php:5
 msgid "Enabled"
-msgstr ""
+msgstr "Включено"
 
 #: views/view.settings.php:41
 msgid ""
@@ -454,7 +458,7 @@ msgstr ""
 
 #: Services.class.php:498
 msgid "FTP"
-msgstr ""
+msgstr "FTP"
 
 #: Services.class.php:500
 msgid ""
@@ -762,7 +766,7 @@ msgstr ""
 #: views/view.registered.php:15
 #: views/view.status.php:15
 msgid "Loading..."
-msgstr ""
+msgstr "Загрузка..."
 
 #: Zones.class.php:10
 msgid "Local"
@@ -906,7 +910,7 @@ msgstr ""
 
 #: Zones.class.php:11
 msgid "Other"
-msgstr ""
+msgstr "Другое"
 
 #: Zones.class.php:11
 msgid "Other Traffic"
@@ -1035,7 +1039,7 @@ msgstr ""
 
 #: Zones.class.php:12
 msgid "Reject"
-msgstr ""
+msgstr "Отклонить"
 
 #: views/view.settings.php:39
 msgid "Reject Packets"
@@ -1056,7 +1060,7 @@ msgstr ""
 
 #: Firewall.class.php:687
 msgid "Reset"
-msgstr ""
+msgstr "Сброс"
 
 #: views/page.about.php:32
 #: views/view.smart.php:3
@@ -1113,7 +1117,7 @@ msgstr ""
 
 #: Services.class.php:50
 msgid "SSH"
-msgstr ""
+msgstr "SSH"
 
 #: Services.class.php:52
 msgid ""
@@ -1152,7 +1156,7 @@ msgstr ""
 #: views/modal.customsvc.php:37
 #: views/view.customsvc.php:43
 msgid "Save"
-msgstr ""
+msgstr "Сохранить"
 
 #: views/view.portmaps.php:36
 msgid "See Custom Service page"
@@ -1181,7 +1185,7 @@ msgstr ""
 
 #: views/page.about.php:29
 msgid "Settings"
-msgstr ""
+msgstr "Настройки"
 
 #: OOBE.class.php:124
 msgid "Should the client you're using be trusted?"
@@ -1210,7 +1214,7 @@ msgstr ""
 
 #: views/bootnav.php:6
 msgid "Status"
-msgstr ""
+msgstr "Состояние"
 
 #: views/page.status.php:25
 msgid "Status Overview"
@@ -1224,7 +1228,7 @@ msgstr ""
 #: Console/Firewall.class.php:235
 #: Console/Firewall.class.php:292
 msgid "Success!"
-msgstr ""
+msgstr "Успешно!"
 
 #: views/view.registered.php:3
 msgid "Successfully Registered Endpoints"
@@ -1232,7 +1236,7 @@ msgstr ""
 
 #: views/view.status.php:3
 msgid "Summary"
-msgstr ""
+msgstr "Краткая сводка"
 
 #: Firewall.class.php:101
 #: firewall.i18n.php:4
@@ -1534,7 +1538,7 @@ msgstr ""
 
 #: Services.class.php:118
 msgid "UCP"
-msgstr ""
+msgstr "UCP"
 
 #: Services.class.php:120
 msgid ""
@@ -1566,13 +1570,13 @@ msgstr ""
 
 #: assets/js/views/advanced.js:20
 msgid "Updating..."
-msgstr ""
+msgstr "Обновление..."
 
 #: OOBE.class.php:205
 #: OOBE.class.php:246
 #: views/disabled.php:6
 msgid "Warning"
-msgstr ""
+msgstr "Предупреждение"
 
 #: Services.class.php:55
 msgid ""
