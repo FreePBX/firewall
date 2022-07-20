@@ -965,13 +965,13 @@ class Services {
 		$zns = \FreePBX::Firewall()->getZones();
 		$response_array = array();
 		foreach($res as $key => $val){
-			if(array_key_exists($val['config']['ZONE'],$zns)){
+			if(isset($val['config']['ZONE']) && array_key_exists($val['config']['ZONE'],$zns)){
 				$zone = $zns[$val['config']['ZONE']];
 				$zoneName = $zone['name']. ' (' . $zone['summary'] . ')';
 			} else {
 				$zoneName = '';
 			}
-			array_push($response_array,array('ints' => $key , 'zone' => $zoneName , 'description' => $val['config']['DESCRIPTION']));
+			array_push($response_array,array('ints' => $key , 'zone' => $zoneName , 'description' => isset($val['config']['DESCRIPTION']) ? $val['config']['DESCRIPTION'] :''));
 		}
 		return $response_array;
 	}
