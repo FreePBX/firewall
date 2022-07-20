@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>15.0.40</version>
+	<version>15.0.41</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*15.0.41* FREEPBX-23571, FREEI-5002 and FREEI-4869 
 		*15.0.40* FREEI-4870  and FREEI-4869 for GQL API related fixes 
 		*15.0.39* FREEI-4148 Move cron jobs to fwconsole job instead of asterisks crontab 
 		*15.0.38* Packaging of ver 15.0.38
