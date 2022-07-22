@@ -343,18 +343,9 @@ class Firewall extends Command {
 		$fw = \FreePBX::Firewall();
 		$so = $fw->getSmartObj();
 		$isHost = false;
-
-		// Is this an IP address? If it matches an IP address, then it doesn't have a
-		// subnet. Add one, depending on what it is.
-		if (filter_var($param, \FILTER_VALIDATE_IP)) {
-			// Is this an IPv4 address? Add /32
-			if (filter_var($param, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-				$param = "$param/32";
-			} else {
-				// It's IPv6. 
-				$param = "$param/128";
-			}
-		}
+      
+      	$subnet = [ "/32", "/128" ];
+		$param = str_replace( $subnet, "", $param);
 
 		$res = $so->lookup($param, false);
 		$isHost = false;
@@ -427,17 +418,8 @@ class Firewall extends Command {
 		$fw = \FreePBX::Firewall();
 		$so = $fw->getSmartObj();
 
-		// Is this an IP address? If it matches an IP address, then it doesn't have a
-		// subnet. Add one, depending on what it is.
-		if (filter_var($param, \FILTER_VALIDATE_IP)) {
-			// Is this an IPv4 address? Add /32
-			if (filter_var($param, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-				$param = "$param/32";
-			} else {
-				// It's IPv6. 
-				$param = "$param/128";
-			}
-		}
+      	$subnet = [ "/32", "/128" ];
+		$param = str_replace( $subnet, "", $param);
 
 		$res = $so->lookup($param, false);
 		$isHost = false;
