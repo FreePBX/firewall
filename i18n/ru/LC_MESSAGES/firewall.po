@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-24 02:41+0000\n"
-"PO-Revision-Date: 2022-07-23 08:00+0000\n"
+"PO-Revision-Date: 2022-07-28 08:00+0000\n"
 "Last-Translator: Dmitriy Q <krotesk@ya.ru>\n"
 "Language-Team: Russian <http://weblate.freepbx.org/projects/freepbx/firewall/"
 "ru/>\n"
@@ -39,6 +39,11 @@ msgid ""
 "hosted clients unrestricted access to your machine! Please use common sense "
 "to make sure that you are only allowing known trusted networks."
 msgstr ""
+"<strong>Важное предупреждение!</strong> Если вы находитесь на хостинге ("
+"например, AWS) и включаете это, вы можете непреднамеренно разрешить другим "
+"размещенным клиентам неограниченный доступ к вашей машине! Пожалуйста, "
+"руководствуйтесь здравым смыслом и убедитесь что разрешаете только известные "
+"доверенные сети."
 
 #: views/view.interfaces.php:11
 msgid ""
@@ -47,6 +52,10 @@ msgid ""
 "interfaces are set to this zone so they can be configured correctly without "
 "interfering with existing traffic."
 msgstr ""
+"\"Доверенный\" интерфейс означает, что <strong>никакая фильтрация</strong> "
+"не будет применяться к любому трафику, поступающему на этот интерфейс. Вновь "
+"обнаруженные интерфейсы устанавливаются в эту зону, чтобы их можно было "
+"правильно настроить, не создавая помех существующему трафику."
 
 #: Firewall.class.php:186
 #, php-format
@@ -55,6 +64,9 @@ msgid ""
 "detected. This is a misconfiguration. To ensure your system is protected "
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
+"Обнаружен сетевой интерфейс, назначенный \"Доверенной\" зоне. Это "
+"неправильная конфигурация. Чтобы убедиться, что система защищена от атак, "
+"пожалуйста, измените зону интерфейса по умолчанию \"%s\"."
 
 #: Firewall.class.php:176
 #, php-format
@@ -62,39 +74,41 @@ msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
 "interface '%s' to a zone."
 msgstr ""
+"Обнаружен новый, несконфигурированный сетевой интерфейс. Пожалуйста, "
+"назначьте интерфейсу '%s' зону."
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
-msgstr ""
+msgstr "О зонах"
 
 #: views/view.shortcuts.php:15
 msgid "Add Host"
-msgstr ""
+msgstr "Добавить узел"
 
 #: views/view.shortcuts.php:14
 msgid "Add Network"
-msgstr ""
+msgstr "Добавить сеть"
 
 #: views/view.blacklist.php:40
 #: views/view.networks.php:83
 msgid "Add New"
-msgstr ""
+msgstr "Добавить новый"
 
 #: Console/Firewall.class.php:86
 msgid "Add the hostname or IP specified to the Trusted Zone"
-msgstr ""
+msgstr "Добавьте хостнейм или IP-адрес в Доверенную зону"
 
 #: Console/Firewall.class.php:89
 msgid "Add to 'zone' the IDs provided."
-msgstr ""
+msgstr "Добавьте в \"зону\" предоставленные ID."
 
 #: views/view.shortcuts.php:7
 msgid "Add to Trusted"
-msgstr ""
+msgstr "Добавить в доверенные"
 
 #: assets/js/views/advanced.js:25
 msgid "Added"
-msgstr ""
+msgstr "Добавлено"
 
 #: views/bootnav.php:8
 msgid "Advanced"
@@ -111,19 +125,21 @@ msgid ""
 "After an endpoint is registered, the source of that endpoint is %s "
 "permission to use UCP, if UCP is enabled."
 msgstr ""
+"После регистрации конечной точки источником этой конечной точки является "
+"внутренний номер %s на использование UCP, если UCP включен."
 
 #: views/view.interfaces.php:46
 msgid "All Tunnel Interfaces are automatically set to Local"
-msgstr ""
+msgstr "Все туннельные интерфейсы автоматически устанавливаются на локальные"
 
 #: Console/Firewall.class.php:312
 msgid "All blacklisted entries."
-msgstr ""
+msgstr "Все записи черного списка."
 
 #: Console/Firewall.class.php:303
 #, php-format
 msgid "All entries in zone '%s':"
-msgstr ""
+msgstr "Все записи в зоне \"%s\":"
 
 #: views/view.interfaces.php:9
 msgid ""
@@ -131,29 +147,39 @@ msgid ""
 "this interface, unless overridden in Networks, will have access to the "
 "services available to this zone."
 msgstr ""
+"Все интерфейсы должны быть отнесены к зоне по умолчанию. Любой трафик, "
+"полученный этим интерфейсом, если он не переопределен в сетях, будет иметь "
+"доступ к услугам, доступным для этой зоны."
 
 #: Zones.class.php:13
 msgid ""
 "All network connections are accepted. No firewalling is done on this "
 "interface."
 msgstr ""
+"Принимаются все сетевые подключения. На этом интерфейсе не выполняется "
+"брандмауэр."
 
 #: views/view.settings.php:19
 msgid ""
 "Allows <strong>temporary</strong> Internet zone access to the LetsEncrypt "
 "acme-challenge folder during an active certificate update request."
 msgstr ""
+"Разрешает <strong>временный</strong>доступ в интернет-зону к папке "
+"LetsEncrypt acme-challenge во время активного запроса на обновление "
+"сертификата."
 
 #: Console/Firewall.class.php:146
 #: Console/Firewall.class.php:162
 msgid "An error has occurred!"
-msgstr ""
+msgstr "Произошла ошибка!"
 
 #: views/warning.notready.php:5
 msgid ""
 "Any changes you make will be saved, but will not take effect until the "
 "firewall is started."
 msgstr ""
+"Любые внесенные вами изменения будут сохранены, но не вступят в силу до тех "
+"пор, пока не будет запущен брандмауэр."
 
 #: views/view.blocked.php:19
 msgid ""
@@ -161,12 +187,17 @@ msgid ""
 "from them will be ignored until they cease attempting to contact the server "
 "for more than 24 hours."
 msgstr ""
+"Любые хосты в этом разделе были классифицированы как злоумышленники. Весь "
+"трафик от них будет игнорироваться до тех пор, пока они не прекратят попытки "
+"связаться с сервером более чем на 24 часа."
 
 #: views/view.blocked.php:7
 msgid ""
 "Any hosts in this section have been rate limited, because they have sent too "
 "much data to this machine without successfully registering."
 msgstr ""
+"У всех хостов в этом разделе была ограничена скорость, потому что они "
+"отправляли слишком много данных на этот компьютер без успешной регистрации."
 
 #: Zones.class.php:12
 msgid ""
@@ -174,10 +205,13 @@ msgid ""
 "RTP traffic, but no other ports are listening by default. You rarely want to "
 "use this."
 msgstr ""
+"Все входящие сетевые пакеты отклоняются. Обратите внимание, что эта зона по-"
+"прежнему принимает трафик RTP, но по умолчанию никакие другие порты не "
+"прослушиваются. Вы редко будете использовать это."
 
 #: views/modal.customsvc.php:13
 msgid "Any name"
-msgstr ""
+msgstr "Любое имя"
 
 #: views/view.networks.php:7
 msgid ""
@@ -1598,11 +1632,11 @@ msgstr ""
 
 #: Services.class.php:78
 msgid "Web Management"
-msgstr ""
+msgstr "Веб-управление"
 
 #: Services.class.php:99
 msgid "Web Management (Secure)"
-msgstr ""
+msgstr "Веб-управление (безопасное)"
 
 #: Services.class.php:80
 msgid ""
@@ -1616,7 +1650,7 @@ msgstr ""
 
 #: Services.class.php:173
 msgid "WebRTC"
-msgstr ""
+msgstr "WebRTC"
 
 #: Services.class.php:175
 msgid ""
@@ -1637,7 +1671,7 @@ msgstr ""
 
 #: Services.class.php:488
 msgid "XMPP"
-msgstr ""
+msgstr "XMPP"
 
 #: views/view.networks.php:5
 msgid ""
