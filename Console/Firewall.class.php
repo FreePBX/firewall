@@ -343,9 +343,18 @@ class Firewall extends Command {
 		$fw = \FreePBX::Firewall();
 		$so = $fw->getSmartObj();
 		$isHost = false;
-      
-      	$subnet = [ "/32", "/128" ];
-		$param = str_replace( $subnet, "", $param);
+
+		// Is this an IP address? If it matches an IP address, then it doesn't have a
+		// subnet. Add one, depending on what it is.
+		if (filter_var($param, \FILTER_VALIDATE_IP)) {
+			// Is this an IPv4 address? Add /32
+			if (filter_var($param, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+				$param = "$param/32";
+			} else {
+				// It's IPv6. 
+				$param = "$param/128";
+			}
+		}
 
 		$res = $so->lookup($param, false);
 		$isHost = false;
@@ -418,8 +427,17 @@ class Firewall extends Command {
 		$fw = \FreePBX::Firewall();
 		$so = $fw->getSmartObj();
 
-      	$subnet = [ "/32", "/128" ];
-		$param = str_replace( $subnet, "", $param);
+		// Is this an IP address? If it matches an IP address, then it doesn't have a
+		// subnet. Add one, depending on what it is.
+		if (filter_var($param, \FILTER_VALIDATE_IP)) {
+			// Is this an IPv4 address? Add /32
+			if (filter_var($param, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+				$param = "$param/32";
+			} else {
+				// It's IPv6. 
+				$param = "$param/128";
+			}
+		}
 
 		$res = $so->lookup($param, false);
 		$isHost = false;
@@ -427,20 +445,20 @@ class Firewall extends Command {
 			$isHost = true;
 		}
 		switch ($zone) {
-		case "trusted":
-		case "other":
-		case "internal":
-		case "external":
-			break;
-		case "blacklist":
-			// Does this host exist in the blacklist?
-			if (!$fw->getConfig($param, "blacklist")) {
-				$output->writeln("<fg=black;bg=red>"._("Error:")."</> <info>".sprintf(_("Host '%s' is not currently in the blacklist."), "</info>$param<info>")."</info>");
-				return false;
-			}
-			$fw->removeFromBlacklist($param);
-			$output->writeln("<info>".sprintf(_("Removed %s from Blacklist."), "</info>$param<info>")."</info>");
-			return;
+			case "trusted":
+			case "other":
+			case "internal":
+			case "external":
+				break;
+			case "blacklist":
+				// Does this host exist in the blacklist?
+				if (!$fw->getConfig(str_replace(["/32", "/128"],"", $param), "blacklist")) {
+					$output->writeln("<fg=black;bg=red>"._("Error:")."</> <info>".sprintf(_("%s is not currently in the blacklist."), "</info>$param<info>")."</info>");
+					return false;
+				}
+				$fw->removeFromBlacklist(str_replace(["/32", "/128"],"", $param));
+				$output->writeln("<info>".sprintf(_("Removed %s from Blacklist."), "</info>$param<info>")."</info>");
+				return;
 		}
 
 		$what = (empty($hostname)) ? $param : $hostname;
