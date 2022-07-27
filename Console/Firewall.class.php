@@ -445,20 +445,20 @@ class Firewall extends Command {
 			$isHost = true;
 		}
 		switch ($zone) {
-		case "trusted":
-		case "other":
-		case "internal":
-		case "external":
-			break;
-		case "blacklist":
-			// Does this host exist in the blacklist?
-			if (!$fw->getConfig($param, "blacklist")) {
-				$output->writeln("<fg=black;bg=red>"._("Error:")."</> <info>".sprintf(_("Host '%s' is not currently in the blacklist."), "</info>$param<info>")."</info>");
-				return false;
-			}
-			$fw->removeFromBlacklist($param);
-			$output->writeln("<info>".sprintf(_("Removed %s from Blacklist."), "</info>$param<info>")."</info>");
-			return;
+			case "trusted":
+			case "other":
+			case "internal":
+			case "external":
+				break;
+			case "blacklist":
+				// Does this host exist in the blacklist?
+				if (!$fw->getConfig(str_replace(["/32", "/128"],"", $param), "blacklist")) {
+					$output->writeln("<fg=black;bg=red>"._("Error:")."</> <info>".sprintf(_("%s is not currently in the blacklist."), "</info>$param<info>")."</info>");
+					return false;
+				}
+				$fw->removeFromBlacklist(str_replace(["/32", "/128"],"", $param));
+				$output->writeln("<info>".sprintf(_("Removed %s from Blacklist."), "</info>$param<info>")."</info>");
+				return;
 		}
 
 		$what = (empty($hostname)) ? $param : $hostname;
