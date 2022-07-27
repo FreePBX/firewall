@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-14 15:23+0000\n"
+"POT-Creation-Date: 2022-07-27 02:58+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -64,6 +64,11 @@ msgstr "%s ist eine web-basierte Lösung zur Anrufverwaltung."
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s ist nicht richtig konfiguriert."
+
+#: Console/Firewall.class.php:456
+#, php-format
+msgid "%s is not currently in the blacklist."
+msgstr ""
 
 #: vendor/npm-asset/codemirror/mode/tiddlywiki/tiddlywiki.js:250
 msgid ""
@@ -284,11 +289,11 @@ msgstr ""
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
 
-#: Console/Firewall.class.php:516
+#: Console/Firewall.class.php:529
 msgid "All blacklisted entries."
 msgstr ""
 
-#: Console/Firewall.class.php:507
+#: Console/Firewall.class.php:520
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -409,17 +414,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:354
+#: Console/Firewall.class.php:373
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:375
+#: Console/Firewall.class.php:382
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:452
+#: Console/Firewall.class.php:465
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -794,11 +799,11 @@ msgstr ""
 msgid "Error!! Permission denied copy rules: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:443
+#: Console/Firewall.class.php:456
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:359
+#: Console/Firewall.class.php:378
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
@@ -861,7 +866,7 @@ msgstr ""
 msgid "Failed to update Firewall Interface"
 msgstr ""
 
-#: Console/Firewall.class.php:388
+#: Console/Firewall.class.php:394
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -1018,11 +1023,6 @@ msgstr ""
 #: Services.class.php:579
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr "HTTPS-REST-Apps sind beim Port-Management im System-Admin deaktiviert"
-
-#: Console/Firewall.class.php:443
-#, php-format
-msgid "Host '%s' is not currently in the blacklist."
-msgstr ""
 
 #: views/intrusion_detection.php:215
 msgid "How many times a remote IP can try to connect during the find time."
@@ -1811,7 +1811,7 @@ msgstr ""
 "Entfernen Sie den Hostname oder die IP-Adresse aus der vertrauenswürdigen "
 "Zone"
 
-#: Console/Firewall.class.php:447
+#: Console/Firewall.class.php:460
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
@@ -2108,8 +2108,8 @@ msgstr ""
 msgid "Stop the System Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:356 Console/Firewall.class.php:413
-#: Console/Firewall.class.php:496
+#: Console/Firewall.class.php:375 Console/Firewall.class.php:419
+#: Console/Firewall.class.php:509
 msgid "Success!"
 msgstr ""
 
@@ -2589,7 +2589,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: Console/Firewall.class.php:475
+#: Console/Firewall.class.php:488
 msgid "Unknown entry!"
 msgstr ""
 
