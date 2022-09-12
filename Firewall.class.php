@@ -668,7 +668,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 
 		// Put our contents there, if there are any.
-		fwrite($fh, $contents);
+		//fwrite($fh, $contents);
 
 		// As soon as we close it, incron does its thing.
 		fclose($fh);
