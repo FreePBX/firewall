@@ -24,6 +24,12 @@ if (!is_array($settings)) {
 	throw new \Exception("Invalid param");
 }
 
+//sleep added to test filrewall wizard issue
+if (isset($settings['sleep'])) {
+	unset($settings['sleep']);
+	sleep(10);
+}
+
 // ///////////////////////////////////// //
 // BOILERPLATE SECURITY VALIDATION CODE: // 
 // ------------------------------------- //
