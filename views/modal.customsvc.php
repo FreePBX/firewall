@@ -7,15 +7,15 @@
       </div>
       <div class='modal-body'>
         <form class='form-horizontal' id='customport'>
-          <div class="form-group clearfix">
-	    <label for="cportname" class="col-sm-3 control-label"><?php echo _("Description"); ?></label>
-            <div class="col-sm-12">
+          <div class="form-group clearfix row">
+	    <label for="cportname" class="col-lg-3 col-sm-3 control-label"><?php echo _("Description"); ?></label>
+            <div class="col-sm-12 col-lg-9">
 	      <input id="cportname" name="cportname" class="form-control autofocus" type="text" placeholder="<?php echo _("Any name"); ?>">
             </div>
           </div>
-          <div class="form-group clearfix">
-	    <label for="cprotocol" class="col-sm-3 control-label"><?php echo _("Protocol"); ?></label>
-            <div class="col-sm-12">
+          <div class="form-group clearfix row">
+	    <label for="cprotocol" class="col-lg-3 col-sm-3 control-label"><?php echo _("Protocol"); ?></label>
+            <div class="col-sm-12 col-lg-9">
 	      <select id="cprotocol" name="cprotocol" class="form-control">
 		<option value='both'><?php echo _("Both (TCP and UDP)"); ?></option>
 		<option value='tcp'><?php echo _("TCP"); ?></option>
@@ -23,9 +23,9 @@
 	      </select>
             </div>
           </div>
-          <div class="form-group clearfix">
-	    <label for="cportrange" class="col-sm-3 control-label"><?php echo _("Port Range"); ?></label>
-            <div class="col-sm-12">
+          <div class="form-group clearfix row">
+	    <label for="cportrange" class="col-lg-3 col-sm-3 control-label"><?php echo _("Port Range"); ?></label>
+            <div class="col-sm-12 col-lg-9">
 	      <input id="cportrange" name="cportrange" class="form-control" type="text" aria-describedby="porthelptext">
             </div>
           </div>
