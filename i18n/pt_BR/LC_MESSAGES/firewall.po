@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-27 03:07+0000\n"
+"POT-Creation-Date: 2022-10-11 06:25+0000\n"
 "PO-Revision-Date: 2017-03-13 19:49+0200\n"
 "Last-Translator: Kingvoice <suporte@kingvoice.com.br>\n"
 "Language-Team: Portuguese (Brazil) <http://weblate.freepbx.org/projects/"
@@ -546,10 +546,6 @@ msgstr ""
 msgid "Command to run (see --help)"
 msgstr "Comando a ser executado (consulte --help)"
 
-#: firewall.i18n.php:6
-msgid "Connectivity"
-msgstr "Conectividade"
-
 #: views/intrusion_detection.php:172
 msgid "Control intrusion detection."
 msgstr ""
@@ -648,7 +644,7 @@ msgstr "Apagar"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1742
+#: Firewall.class.php:1743
 msgid "Delete Selected"
 msgstr ""
 
@@ -920,7 +916,7 @@ msgstr ""
 msgid "Find Time"
 msgstr ""
 
-#: firewall.i18n.php:10 page.firewall.php:12
+#: page.firewall.php:12
 msgid "Firewall"
 msgstr "Firewall"
 
@@ -956,7 +952,7 @@ msgstr "Assistente de Firewall"
 msgid "Firewall advance settings updated succefully"
 msgstr ""
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1699
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1700
 msgid "Firewall can not be disabled"
 msgstr "O Firewall não pode ser desabilitado"
 
@@ -1205,13 +1201,6 @@ msgid ""
 "following command to force manual repair of the necessary files."
 msgstr ""
 
-#: firewall.i18n.php:8
-msgid ""
-"Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible "
-"distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
-"further information."
-msgstr ""
-
 #: Firewall.class.php:535
 #, php-format
 msgid ""
@@ -1246,11 +1235,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1551
+#: Firewall.class.php:1552
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1551
+#: Firewall.class.php:1552
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1839,7 +1828,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1749
+#: Firewall.class.php:1750
 msgid "Reset"
 msgstr "Reiniciar"
 
@@ -1941,12 +1930,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1741 Firewall.class.php:1750 views/modal.customsvc.php:37
+#: Firewall.class.php:1742 Firewall.class.php:1751 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Salvar"
 
-#: Firewall.class.php:1744
+#: Firewall.class.php:1745
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2173,7 +2162,7 @@ msgstr ""
 msgid "Syncing...."
 msgstr ""
 
-#: Firewall.class.php:474 firewall.i18n.php:4 views/view.about.php:3
+#: Firewall.class.php:474 views/view.about.php:3
 msgid "System Firewall"
 msgstr ""
 
@@ -2621,7 +2610,7 @@ msgstr ""
 msgid "Unknown interface '%s' provided"
 msgstr ""
 
-#: Firewall.class.php:1743
+#: Firewall.class.php:1744
 msgid "Update Interfaces"
 msgstr ""
 
@@ -2886,6 +2875,9 @@ msgstr ""
 #: Api/Gql/Firewall.php:167
 msgid "update firewall advance settings"
 msgstr ""
+
+#~ msgid "Connectivity"
+#~ msgstr "Conectividade"
 
 #~ msgid "<strong>Responsive Firewall is not enabled</strong>."
 #~ msgstr "<strong>Firewall Responsivo não está habilitado</strong>."
