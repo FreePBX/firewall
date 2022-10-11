@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-27 02:58+0000\n"
+"POT-Creation-Date: 2022-10-11 06:20+0000\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -631,7 +631,7 @@ msgstr "Löschen"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1745
+#: Firewall.class.php:1746
 msgid "Delete Selected"
 msgstr ""
 
@@ -930,7 +930,7 @@ msgstr "Firewall-Assistent"
 msgid "Firewall advance settings updated succefully"
 msgstr ""
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1702
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1703
 msgid "Firewall can not be disabled"
 msgstr "Die Firewall kann nicht deaktiviert werden"
 
@@ -1220,11 +1220,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1554
+#: Firewall.class.php:1555
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1554
+#: Firewall.class.php:1555
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1816,7 +1816,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1752
+#: Firewall.class.php:1753
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -1918,12 +1918,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall ist jetzt aktiviert!"
 
-#: Firewall.class.php:1744 Firewall.class.php:1753 views/modal.customsvc.php:37
+#: Firewall.class.php:1745 Firewall.class.php:1754 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Speichern"
 
-#: Firewall.class.php:1747
+#: Firewall.class.php:1748
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2598,7 +2598,7 @@ msgstr ""
 msgid "Unknown interface '%s' provided"
 msgstr ""
 
-#: Firewall.class.php:1746
+#: Firewall.class.php:1747
 msgid "Update Interfaces"
 msgstr ""
 
