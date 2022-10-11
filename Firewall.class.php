@@ -1404,6 +1404,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				if (!is_array($nets)) {
 					throw new \Exception("Invalid JSON");
 				}
+
 				foreach ($nets as $net => $tmparr) {
 					$global_net = "";
 					$this->changeNetworksZone($net, $tmparr['zone'], $tmparr['description']);
@@ -2144,6 +2145,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			// It's a host, not a network
 			$hostmap[$net] = $zone;
 			$this->setConfig("hostmaps", $hostmap);
+		}
+		
+		if((!empty($nets[$net]) && $nets[$net] == trim($zone)) || (!empty($hostmap[$net]) && $hostmap[$net] == trim($zone))){
+			/**
+			 * No need to update or change something that already exists!
+			 * The risk is to break something else through the hook.
+			 */
+			return;
 		}
 
 		// Update and save the map...
