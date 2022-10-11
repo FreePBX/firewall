@@ -349,7 +349,8 @@ class Smart {
 			// Is there an SRV record?
 			$srvdns = @dns_get_record('_sip._udp.'.$d, \DNS_SRV);
 			if (!$srvdns) {
-				dbug("An error occured on SRV record _sip._udp.$d : ");
+				// Avoid to flood logs.
+				//dbug("An error occured on SRV record _sip._udp.$d : ");
 				$srvdns = false;
 			}
 			
