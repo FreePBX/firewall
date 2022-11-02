@@ -266,7 +266,7 @@ class OOBE {
 
 	private function answer_externsetup() {
 		if ($_REQUEST['answer'] != "yes") {
-			return;
+			return $this->fw->restartFirewall();
 		}
 
 		include 'Natget.class.php';
@@ -316,6 +316,6 @@ class OOBE {
 			}
 		}
 		$ssroutes = \FreePBX::Sipsettings()->setConfig('localnets', $ssroutes);
-		return true;
+		return $this->fw->restartFirewall();
 	}
 }

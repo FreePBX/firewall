@@ -1663,6 +1663,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		
 		// Start FW
 		$this->startFirewall();
+
+		return true;
 	}
 
 	public function preEnableFW($skip = "on"){
