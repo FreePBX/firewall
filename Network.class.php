@@ -162,10 +162,10 @@ class Network {
 		return array("interface" => $int, "router" => $router);
 	}
 
-	public function updateInterfaceZone($iface, $newzone = false, $descr = false) {
+	public function updateInterfaceZone($iface, $newzone = false, $descr = false) {dbug('---1----');
 		// SHMZ/CentOS/RHEL/etc - Update the zone in ifcfg-$iface
 		$srcfile = "/etc/sysconfig/network-scripts/ifcfg-$iface";
-
+dbug($srcfile);
 		// If this is a tunnel interface, don't do anything
 		if (strpos($iface, "tun") === 0) {
 			return true;
@@ -192,7 +192,7 @@ class Network {
 		$needsupdate = false;
 
 		$ifcfg = @parse_ini_string($rawfile, false, \INI_SCANNER_RAW);
-
+dbug($ifcfg);
 		// If it doesn't have a zone
 		if (!isset($ifcfg['ZONE'])) {
 			// Add it
@@ -213,7 +213,7 @@ class Network {
 		// Clean up descr by removing any EXISTING quotes, and passing it through
 		// escapeshellcmd
 		$descr = escapeshellcmd(str_replace(array('\'', '"'), "", $descr));
-
+dbug($descr);
 		if (!isset($ifcfg['DESCRIPTION'])) {
 			$rawfile .= "\nDESCRIPTION=\"$descr\"\n";
 			$needsupdate = true;
@@ -228,6 +228,7 @@ class Network {
 		if ($needsupdate) {
 			// Remove any blank lines
 			$clean = preg_replace('/\n+/m', "\n", $rawfile);
+dbug($clean);
 			file_put_contents($srcfile, $clean);
 		}
 		// Ensure permissions are sane
