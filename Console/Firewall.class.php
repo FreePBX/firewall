@@ -130,7 +130,7 @@ class Firewall extends Command {
 
 	public function listzones($output){
 		$dico = $this->dico;
-		$table = new Table($output);
+		$table = new \Symfony\Component\Console\Helper\Table($output);
 		foreach($dico as $key => $word){
 			$entry[] = [$key, $word];
 		}
