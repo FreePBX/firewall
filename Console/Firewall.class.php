@@ -16,6 +16,17 @@ class Firewall extends Command {
 
 	private $bindir = "/var/www/html/admin/modules/sysadmin/bin";
 
+	private $dico = [
+		"external" 	=> "external",
+		"internet" 	=> "external",
+		"local" 	=> "internal",
+		"internal"	=> "internal",
+		"other" 	=> "other",
+		"trusted" 	=> "trusted",
+		"reject" 	=> "blacklist",
+		"blacklist" => "blacklist",
+	];
+
 	// This is the fwconsole __construct equivalent
 	protected function configure(){
 		$this->setName('firewall')
@@ -71,6 +82,8 @@ class Firewall extends Command {
 				$this->removeFromZone($output, $input->getArgument('opt'), $id);
 			}
 			return true;
+		case "listzones":
+			return $this->listzones($output);
 		case "sync":
 			return $this->scan($output);
 		case "f2bs":
@@ -96,6 +109,7 @@ class Firewall extends Command {
 			"list [zone]" => _("List all entries in zone 'zone'"),
 			"add [zone] [id id id..]" => _("Add to 'zone' the IDs provided."),
 			"del [zone] [id id id..]" => _("Delete from 'zone' the IDs provided."),
+			"listzones" => _("Show zones that can be used to add and del."),
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
 			"fix_custom_rules" => _("Create the files for the custom rules if they don't exist and set the permissions and owners correctly."),
 			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist."),
@@ -114,6 +128,19 @@ class Firewall extends Command {
 		return $help;
 	}
 
+	public function listzones($output){
+		$dico = $this->dico;
+		$table = new \Symfony\Component\Console\Helper\Table($output);
+		foreach($dico as $key => $word){
+			$entry[] = [$key, $word];
+		}
+        $table
+            ->setHeaders([_("Zone"), _("Equal")])
+            ->setRows($entry)
+        ;
+		$table->render();
+		return true;
+	}
 	public function f2bstatus($output){
 		if(get_current_user() == "root" || trim(shell_exec("whoami")) == "root"){				
 			$table 	= new \Symfony\Component\Console\Helper\Table($output);
@@ -361,21 +388,29 @@ class Firewall extends Command {
 			$isHost = true;
 		}
 
+		$zone = strtolower($zone);
+		$Tgui = (!empty($this->dico[$zone])) ? $this->dico[$zone] : "" ;
+
+		if($zone != $Tgui){
+			$output->write("<info>".sprintf( _("Zone %s = %s "),$zone, $Tgui)."</info>\n");
+			$zone = $Tgui; 
+		}
+		
 		switch ($zone) {
-		case "trusted":
-		case "other":
-		case "internal":
-		case "external":
-			break;
-		case 'blacklist':
-			// If it's adding to blacklist, let the firewall object do it
-			$output->write("<info>".sprintf(_("Attempting to add '%s' to Blacklist ... "), "</info>$param<info>")."</info>");
-			$fw->addToBlacklist($param);
-			$output->writeln("<info>"._("Success!")."</info>");
-			return;
-		default:
-			$output->writeln("<fg=black;bg=red>".sprintf(_("Error: Can't add '%s' to unknown zone '%s'"), $param, $zone)."</>");
-			return;
+			case "trusted":
+			case "other":
+			case "internal":
+			case "external":
+				break;
+			case 'blacklist':
+				// If it's adding to blacklist, let the firewall object do it
+				$output->write("<info>".sprintf(_("Attempting to add '%s' to Blacklist ... "), "</info>$param<info>")."</info>");
+				$fw->addToBlacklist($param);
+				$output->writeln("<info>"._("Success!")."</info>");
+				return;
+			default:
+				$output->writeln("<fg=black;bg=red>".sprintf(_("Error: Can't add '%s' to unknown zone '%s'"), $param, $zone)."</>");
+				return;
 		}
 
 		$output->write("<info>".sprintf(_("Attempting to add '%s' to Zone '%s' ... "), "</info>$param<info>", "</info>$zone<info>")."</info>");
@@ -443,6 +478,15 @@ class Firewall extends Command {
 		if( !empty($res[0]) && $res[0] != $param ){
 			$isHost = true;
 		}
+
+		$zone = strtolower($zone);
+		$Tgui = (!empty($this->dico[$zone])) ? $this->dico[$zone] : "" ;
+
+		if($zone != $Tgui){
+			$output->write("<info>".sprintf( _("Zone %s = %s "),$zone, $Tgui)."</info>\n");
+			$zone = $Tgui; 
+		}
+
 		switch ($zone) {
 			case "trusted":
 			case "other":
