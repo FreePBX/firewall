@@ -692,10 +692,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function startFirewall() {
 		$this->runHook("firewall");
+		return 0;
 	}
 
 	public function stopFirewall() {
 		$this->runHook("stopfirewall");
+		return 0;
 	}
 
 	public function fixCustomRules($tiemout = 0) {

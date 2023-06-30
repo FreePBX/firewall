@@ -66,22 +66,22 @@ class Firewall extends Command {
 			$ids = $input->getArgument('ids');
 			if (!$ids) {
 				$output->writeln('<fg=black;bg=red>'._("Error!").'</> '._("No network identifiers supplied"));
-				return;
+				return -1;
 			}
 			foreach ($ids as $id) {
 				$this->addToZone($output, $input->getArgument('opt'), $id);
 			}
-			return true;
+			return 0;
 		case "del":
 			$ids = $input->getArgument('ids');
 			if (!$ids) {
 				$output->writeln('<fg=black;bg=red>'._("Error!").'</> '._("No network identifiers supplied"));
-				return;
+				return -1;
 			}
 			foreach ($ids as $id) {
 				$this->removeFromZone($output, $input->getArgument('opt'), $id);
 			}
-			return true;
+			return 0;
 		case "listzones":
 			return $this->listzones($output);
 		case "sync":
@@ -94,6 +94,7 @@ class Firewall extends Command {
 		default:
 			$output->writeln($this->showHelp());
 		}
+		return 0;
 	}
 
 	private function showHelp() {
@@ -139,7 +140,7 @@ class Firewall extends Command {
             ->setRows($entry)
         ;
 		$table->render();
-		return true;
+		return 0;
 	}
 	public function f2bstatus($output){
 		if(get_current_user() == "root" || trim(shell_exec("whoami")) == "root"){				
@@ -314,12 +315,13 @@ class Firewall extends Command {
 	private function stopFirewall() {
 		$fw = \FreePBX::Firewall();
 		$fw->stopFirewall();
+		return 0;
 	}
 	
 	private function lerules($output, $param) {
 		if(empty($param)){
 			$output->writeln("<fg=black;bg=red>"._("Error: Missing argument. Expected 'enable' or 'disable'.")."</>");
-			return;
+			return -1;
 		}
 
 		switch ($param){
@@ -358,11 +360,12 @@ class Firewall extends Command {
 			default:
 				$output->writeln("<fg=black;bg=red>".sprintf(_("Error: Unknown option '%s'. Expected 'enable or 'disable'."), $param)."</>");
 		}
-		return;
+		return 0;
 	}
 
 	private function trustEntry($output, $param) {
 		$this->addToZone($output, "trusted", $param);
+		return 0;
 	}
 
 	private function addToZone($output, $zone, $param) {
@@ -566,7 +569,7 @@ class Firewall extends Command {
 					$output->writeln("\t$n");
 				}
 			}
-			return true;
+			return 0;
 		case 'blacklist':
 			$bl = \FreePBX::Firewall()->getBlacklist();
 			$output->writeln("<info>"._("All blacklisted entries.")."</info>");
@@ -578,6 +581,7 @@ class Firewall extends Command {
 				}
 			}
 		}
+		return 0;
 	}
 
 	private function customRulesFix($output) {
