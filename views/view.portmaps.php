@@ -38,7 +38,7 @@ function displayService($fw, $svc) {
 		$s = $fw->getService($svc);
 		$err = _("Service unavailable");
 	}
-	print "<div class='element-container'><div class='row'><div class='col-sm-4'><h4>".$s['name']."</h4></div>\n";
+	print "<div class='element-container'><div class='row'><div class='col-sm-4'><h4>". ($s['name'] ?? '')."</h4></div>\n";
 	if (!isset($s['fw']) || !is_array($s['fw'])) {
 		print "<div class='col-sm-8'>$err</div>";
 	} else {

@@ -13,7 +13,7 @@
 	// Get our list of pages
 	$list_items = "";
 	foreach ($names as $name => $p) {
-		if ($thispage["page"] == $name){
+		if (($thispage["page"] ?? '') == $name){
 			$active = "active";
 		} else {
 			$active = "";

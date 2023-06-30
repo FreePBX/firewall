@@ -15,7 +15,7 @@ case 'registered':
 default:
 	$status = "active";
 }
-
+$salic = false;
 if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->getIntrusionDetection() != false){
   $salic    = true;
 }

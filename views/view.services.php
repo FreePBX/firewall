@@ -18,7 +18,7 @@ foreach ($coresvc as $s) {
 
 function displayService($sn, $svc, $z, $currentzones) {
 	print "<div class='element-container'><div class='row'><div class='col-sm-3 col-md-4'><label class='control-label' for='svc[$sn]'>";
-	print $svc['name']."</label></div><div class='col-sm-9 col-md-8 noright'><span class='radioset'>";
+	print $svc['name'] ?? ''."</label></div><div class='col-sm-9 col-md-8 noright'><span class='radioset'>";
 	// Display the buttons
 	foreach ($z as $zn => $zone) {
 		if (!$zone['selectable']) {
