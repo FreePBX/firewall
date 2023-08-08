@@ -68,7 +68,7 @@ class Restore Extends Base\RestoreBase{
 			//Run Hook
 			$fw->fixCustomRules();
 
-			$timeoutDef = 10;
+			$i = $timeoutDef = 10;
 			$completed = false;
 			while ( $i >= 0 ) {
 				$completed = $fw->check_custom_rules_files();
