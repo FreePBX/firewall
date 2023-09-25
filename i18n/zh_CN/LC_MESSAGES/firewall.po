@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-06 02:10+0000\n"
+"POT-Creation-Date: 2023-09-25 11:55+0530\n"
 "PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -66,7 +66,7 @@ msgstr "%s 是基于页面的呼叫管理解决方案。"
 msgid "%s is not configured correctly."
 msgstr "还没有成功配置%s 。"
 
-#: Console/Firewall.class.php:499
+#: Console/Firewall.class.php:502
 #, php-format
 msgid "%s is not currently in the blacklist."
 msgstr ""
@@ -218,7 +218,7 @@ msgstr ""
 msgid "About Zones"
 msgstr "关于安全区域设置"
 
-#: views/intrusion_detection.php:392 views/intrusion_detection.php:430
+#: views/intrusion_detection.php:433 views/intrusion_detection.php:471
 msgid "Action"
 msgstr ""
 
@@ -242,11 +242,11 @@ msgstr ""
 msgid "Add etc/hosts as Trusted"
 msgstr ""
 
-#: Console/Firewall.class.php:107
+#: Console/Firewall.class.php:108
 msgid "Add the hostname or IP specified to the Trusted Zone"
 msgstr "为可信赖域添加主机名或指定地址"
 
-#: Console/Firewall.class.php:110
+#: Console/Firewall.class.php:111
 msgid "Add to 'zone' the IDs provided."
 msgstr ""
 
@@ -274,7 +274,7 @@ msgstr "高级"
 msgid "Advanced Custom Rules"
 msgstr ""
 
-#: views/intrusion_detection.php:50 views/page.advanced.php:40
+#: views/intrusion_detection.php:59 views/page.advanced.php:40
 #: views/view.settings.php:68
 msgid "Advanced Settings"
 msgstr "高级设置"
@@ -290,11 +290,11 @@ msgstr "如果UCP已经开启，终端注册以后，终端的源地址 %s可以
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr "所有隧道接口已经被自动设置为Local"
 
-#: Console/Firewall.class.php:572
+#: Console/Firewall.class.php:575
 msgid "All blacklisted entries."
 msgstr "所有黑名单"
 
-#: Console/Firewall.class.php:563
+#: Console/Firewall.class.php:566
 #, php-format
 msgid "All entries in zone '%s':"
 msgstr ""
@@ -324,7 +324,7 @@ msgid ""
 "acme-challenge folder during an active certificate update request."
 msgstr ""
 
-#: Console/Firewall.class.php:335 Console/Firewall.class.php:351
+#: Console/Firewall.class.php:337 Console/Firewall.class.php:353
 msgid "An error has occurred!"
 msgstr ""
 
@@ -381,7 +381,7 @@ msgstr ""
 msgid "Are you sure to save the data?"
 msgstr ""
 
-#: views/intrusion_detection.php:370
+#: views/intrusion_detection.php:411
 msgid "Are you sure?"
 msgstr ""
 
@@ -408,17 +408,17 @@ msgid ""
 "At the completion of this wizard, the firewall will be automatically enabled."
 msgstr ""
 
-#: Console/Firewall.class.php:407
+#: Console/Firewall.class.php:410
 #, php-format
 msgid "Attempting to add '%s' to Blacklist ... "
 msgstr ""
 
-#: Console/Firewall.class.php:416
+#: Console/Firewall.class.php:419
 #, php-format
 msgid "Attempting to add '%s' to Zone '%s' ... "
 msgstr ""
 
-#: Console/Firewall.class.php:508
+#: Console/Firewall.class.php:511
 #, php-format
 msgid "Attempting to remove %s from '%s' Zone ... "
 msgstr ""
@@ -431,14 +431,14 @@ msgstr ""
 msgid "Automatically configure Asterisk IP Settings?"
 msgstr ""
 
-#: views/intrusion_detection.php:108
+#: views/intrusion_detection.php:143
 msgid ""
 "Automatically synchronize IPs from specific firewall zones to the whitelist. "
 "E.g: When you add to a trusted zone, local or otherwise, they will be added "
 "to the Intrusion Detection whitelist"
 msgstr ""
 
-#: views/intrusion_detection.php:185
+#: views/intrusion_detection.php:226
 msgid "Ban Time"
 msgstr ""
 
@@ -517,7 +517,7 @@ msgstr ""
 msgid "Check file '%s'"
 msgstr ""
 
-#: views/intrusion_detection.php:286
+#: views/intrusion_detection.php:327
 msgid "Clear All"
 msgstr ""
 
@@ -529,7 +529,7 @@ msgstr "命令运行"
 msgid "Connectivity"
 msgstr "通信接口连接"
 
-#: views/intrusion_detection.php:172
+#: views/intrusion_detection.php:212
 msgid "Control intrusion detection."
 msgstr ""
 
@@ -545,7 +545,7 @@ msgstr ""
 msgid "Create new Service"
 msgstr "创建新服务"
 
-#: Console/Firewall.class.php:114
+#: Console/Firewall.class.php:115
 msgid ""
 "Create the files for the custom rules if they don't exist and set the "
 "permissions and owners correctly."
@@ -559,7 +559,7 @@ msgstr ""
 msgid "Custom Firewall Rules"
 msgstr ""
 
-#: views/intrusion_detection.php:353
+#: views/intrusion_detection.php:394
 msgid "Custom IP's that can never be banned."
 msgstr ""
 
@@ -580,7 +580,7 @@ msgstr ""
 msgid "Custom Services"
 msgstr ""
 
-#: views/intrusion_detection.php:342
+#: views/intrusion_detection.php:383
 msgid "Custom Whitelist"
 msgstr ""
 
@@ -619,19 +619,19 @@ msgstr ""
 msgid "Delete"
 msgstr "删除"
 
-#: views/intrusion_detection.php:369
+#: views/intrusion_detection.php:410
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1743
+#: Firewall.class.php:1745
 msgid "Delete Selected"
 msgstr "已删除选项"
 
-#: views/intrusion_detection.php:369
+#: views/intrusion_detection.php:410
 msgid "Delete entire custom whitelist"
 msgstr ""
 
-#: Console/Firewall.class.php:111
+#: Console/Firewall.class.php:112
 msgid "Delete from 'zone' the IDs provided."
 msgstr ""
 
@@ -651,20 +651,20 @@ msgstr ""
 msgid "Disable firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:102
+#: Console/Firewall.class.php:103
 msgid "Disable the System Firewall. This will shut it down cleanly."
 msgstr ""
 
-#: views/intrusion_detection.php:70 views/intrusion_detection.php:79
+#: views/intrusion_detection.php:93 views/intrusion_detection.php:104
 #: views/view.settings.php:5 views/view.smart.php:6
 msgid "Disabled"
 msgstr "禁用"
 
-#: Console/Firewall.class.php:116
+#: Console/Firewall.class.php:117
 msgid "Display ignored and banned IPs. (Only root user)."
 msgstr ""
 
-#: views/intrusion_detection.php:370
+#: views/intrusion_detection.php:411
 msgid "Do you want to delete ALL custom whitelist entries?"
 msgstr ""
 
@@ -672,7 +672,7 @@ msgstr ""
 msgid "Duration(s)"
 msgstr ""
 
-#: views/intrusion_detection.php:245
+#: views/intrusion_detection.php:286
 msgid "E-mail:"
 msgstr ""
 
@@ -702,7 +702,7 @@ msgstr ""
 msgid "Edit"
 msgstr "编辑"
 
-#: views/intrusion_detection.php:255
+#: views/intrusion_detection.php:296
 msgid "Email Address to send Notifications to."
 msgstr ""
 
@@ -710,7 +710,7 @@ msgstr ""
 msgid "Enable"
 msgstr "启用"
 
-#: views/intrusion_detection.php:77
+#: views/intrusion_detection.php:102
 msgid "Enable / Disable"
 msgstr ""
 
@@ -726,12 +726,12 @@ msgstr ""
 msgid "Enable firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:106
+#: Console/Firewall.class.php:107
 msgid "Enable or disable Lets Encrypt rules."
 msgstr ""
 
-#: views/intrusion_detection.php:68 views/intrusion_detection.php:78
-#: views/intrusion_detection.php:99 views/intrusion_detection.php:108
+#: views/intrusion_detection.php:87 views/intrusion_detection.php:103
+#: views/intrusion_detection.php:130 views/intrusion_detection.php:143
 #: views/view.settings.php:3 views/view.smart.php:5
 msgid "Enabled"
 msgstr "启用"
@@ -744,7 +744,7 @@ msgid ""
 "attacker that their traffic has been intercepted."
 msgstr ""
 
-#: Console/Firewall.class.php:306
+#: Console/Firewall.class.php:307
 msgid "Enabling Firewall."
 msgstr ""
 
@@ -758,12 +758,12 @@ msgstr ""
 msgid "Enter new IP or Hostname here"
 msgstr ""
 
-#: views/intrusion_detection.php:353
+#: views/intrusion_detection.php:394
 msgid ""
 "Enter one IP or one Host per line. No comma allowed for multiple entries."
 msgstr ""
 
-#: Console/Firewall.class.php:138
+#: Console/Firewall.class.php:139
 msgid "Equal"
 msgstr ""
 
@@ -794,20 +794,20 @@ msgstr ""
 msgid "Error!! Permission denied copy rules: %s"
 msgstr ""
 
-#: Console/Firewall.class.php:499
+#: Console/Firewall.class.php:502
 msgid "Error:"
 msgstr ""
 
-#: Console/Firewall.class.php:412
+#: Console/Firewall.class.php:415
 #, php-format
 msgid "Error: Can't add '%s' to unknown zone '%s'"
 msgstr ""
 
-#: Console/Firewall.class.php:321
+#: Console/Firewall.class.php:323
 msgid "Error: Missing argument. Expected 'enable' or 'disable'."
 msgstr ""
 
-#: Console/Firewall.class.php:359
+#: Console/Firewall.class.php:361
 #, php-format
 msgid "Error: Unknown option '%s'. Expected 'enable or 'disable'."
 msgstr ""
@@ -849,7 +849,7 @@ msgid ""
 "as additional data."
 msgstr ""
 
-#: Console/Firewall.class.php:228
+#: Console/Firewall.class.php:229
 msgid "Fail2ban is not started. Syncing Process canceled."
 msgstr ""
 
@@ -861,7 +861,7 @@ msgstr ""
 msgid "Failed to update Firewall Interface"
 msgstr ""
 
-#: Console/Firewall.class.php:428
+#: Console/Firewall.class.php:431
 msgid "Failed! Could not validate entry. Please try again."
 msgstr ""
 
@@ -885,7 +885,7 @@ msgstr ""
 msgid "Fetch firewall interfaces"
 msgstr ""
 
-#: views/intrusion_detection.php:225
+#: views/intrusion_detection.php:266
 msgid "Find Time"
 msgstr ""
 
@@ -925,7 +925,7 @@ msgstr "防火墙快速设置"
 msgid "Firewall advance settings updated succefully"
 msgstr ""
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1700
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1702
 msgid "Firewall can not be disabled"
 msgstr "防火墙不能关闭"
 
@@ -949,7 +949,7 @@ msgstr ""
 msgid "Firewall has not started yet!"
 msgstr "防火墙没有启动"
 
-#: Console/Firewall.class.php:298
+#: Console/Firewall.class.php:299
 msgid "Firewall is not enabled, can't disable it"
 msgstr ""
 
@@ -968,7 +968,7 @@ msgstr ""
 msgid "Firewall.lock doest not exists"
 msgstr ""
 
-#: Console/Firewall.class.php:125
+#: Console/Firewall.class.php:126
 msgid "For example:"
 msgstr ""
 
@@ -1017,7 +1017,7 @@ msgstr ""
 msgid "HTTPS REST Apps are disabled in Sysadmin Port Management"
 msgstr ""
 
-#: views/intrusion_detection.php:215
+#: views/intrusion_detection.php:256
 msgid "How many times a remote IP can try to connect during the find time."
 msgstr ""
 
@@ -1053,7 +1053,7 @@ msgstr ""
 msgid "IP Addresses: "
 msgstr ""
 
-#: views/intrusion_detection.php:431
+#: views/intrusion_detection.php:472
 msgid "IP Banned"
 msgstr ""
 
@@ -1073,11 +1073,11 @@ msgstr ""
 msgid "IP removed from blacklist"
 msgstr ""
 
-#: views/intrusion_detection.php:406
+#: views/intrusion_detection.php:447
 msgid "IP's that are currently banned."
 msgstr ""
 
-#: views/intrusion_detection.php:365
+#: views/intrusion_detection.php:406
 msgid "IP's that are currently trusted."
 msgstr ""
 
@@ -1085,7 +1085,7 @@ msgstr ""
 msgid "IPs black listed"
 msgstr ""
 
-#: views/intrusion_detection.php:326
+#: views/intrusion_detection.php:367
 msgid "IPs that are currently banned."
 msgstr ""
 
@@ -1150,11 +1150,11 @@ msgid ""
 "Connectivity menu."
 msgstr ""
 
-#: views/intrusion_detection.php:294
+#: views/intrusion_detection.php:335
 msgid "Import all IP addresses from all source types."
 msgstr ""
 
-#: views/intrusion_detection.php:265
+#: views/intrusion_detection.php:306
 msgid "Import:"
 msgstr ""
 
@@ -1203,40 +1203,40 @@ msgstr ""
 msgid "Internet"
 msgstr ""
 
-#: views/intrusion_detection.php:40 views/intrusion_detection.php:150
+#: views/intrusion_detection.php:45 views/intrusion_detection.php:188
 #: views/page.about.php:60
 msgid "Intrusion Detection"
 msgstr ""
 
-#: Api/Gql/Firewall.php:385 views/intrusion_detection.php:61
+#: Api/Gql/Firewall.php:385 views/intrusion_detection.php:72
 #: views/view.settings.php:42
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1552
+#: Firewall.class.php:1554
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1552
+#: Firewall.class.php:1554
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
 msgstr ""
 
-#: Api/Gql/Firewall.php:389 views/intrusion_detection.php:92
+#: Api/Gql/Firewall.php:389 views/intrusion_detection.php:118
 #: views/view.settings.php:48
 msgid "Intrusion Detection Sync Firewall"
 msgstr ""
 
-#: Console/Firewall.class.php:291
+#: Console/Firewall.class.php:292
 msgid "Intrusion Detection is available for all activated systems only."
 msgstr ""
 
-#: views/intrusion_detection.php:77
+#: views/intrusion_detection.php:102
 msgid "Intrusion Detection service on boot."
 msgstr ""
 
-#: views/intrusion_detection.php:109
+#: views/intrusion_detection.php:144
 msgid ""
 "Intrusion Detection whitelist will work like in the past with no automated "
 "synchronization to the whitelist)."
@@ -1285,7 +1285,7 @@ msgstr ""
 msgid "It is recommended to turn this on if you have remote clients."
 msgstr ""
 
-#: views/intrusion_detection.php:32
+#: views/intrusion_detection.php:36
 msgid ""
 "It seems that you are missing the necessary files to start Intrusion "
 "Detection."
@@ -1310,7 +1310,7 @@ msgid ""
 "equivalent package install command as per your OS and try again."
 msgstr ""
 
-#: views/intrusion_detection.php:101 views/intrusion_detection.php:109
+#: views/intrusion_detection.php:135 views/intrusion_detection.php:144
 #: views/view.settings.php:4
 msgid "Legacy"
 msgstr ""
@@ -1319,23 +1319,23 @@ msgstr ""
 msgid "Legacy SIP (chan_sip)"
 msgstr ""
 
-#: views/intrusion_detection.php:195
+#: views/intrusion_detection.php:236
 msgid "Length of time in seconds a remote IP is banned before being reset."
 msgstr ""
 
-#: Console/Firewall.class.php:355
+#: Console/Firewall.class.php:357
 msgid "Lets Encrypt rules already disabled. Nothing to do."
 msgstr ""
 
-#: Console/Firewall.class.php:339
+#: Console/Firewall.class.php:341
 msgid "Lets Encrypt rules already enabled. Nothing to do"
 msgstr ""
 
-#: Console/Firewall.class.php:348
+#: Console/Firewall.class.php:350
 msgid "Lets Encrypt rules disabled successfully."
 msgstr ""
 
-#: Console/Firewall.class.php:332
+#: Console/Firewall.class.php:334
 msgid "Lets Encrypt rules enabled successfully."
 msgstr ""
 
@@ -1348,11 +1348,11 @@ msgstr ""
 msgid "Linked to Interface %s"
 msgstr ""
 
-#: Console/Firewall.class.php:109
+#: Console/Firewall.class.php:110
 msgid "List all entries in zone 'zone'"
 msgstr ""
 
-#: views/intrusion_detection.php:319
+#: views/intrusion_detection.php:360
 msgid ""
 "List of IPv4/6 addresses that will never be banned by Intrusion Detection. "
 "One address per line with no separators."
@@ -1387,7 +1387,7 @@ msgstr ""
 msgid "Local"
 msgstr ""
 
-#: views/intrusion_detection.php:280
+#: views/intrusion_detection.php:321
 msgid "Local Zone"
 msgstr ""
 
@@ -1399,7 +1399,7 @@ msgstr ""
 msgid "Main"
 msgstr ""
 
-#: views/intrusion_detection.php:205
+#: views/intrusion_detection.php:246
 msgid "Max Retry"
 msgstr ""
 
@@ -1498,7 +1498,7 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#: views/intrusion_detection.php:329
+#: views/intrusion_detection.php:370
 msgid "No Banned IP's"
 msgstr ""
 
@@ -1578,7 +1578,7 @@ msgid ""
 "upstream firewall or proxy redirects requests to the server port."
 msgstr ""
 
-#: views/intrusion_detection.php:11 views/page.about.php:37
+#: views/intrusion_detection.php:14 views/page.about.php:37
 msgid ""
 "Note: The Intrusion Detection handling method has been updated recently. "
 "Please clear your browser cache and refresh if you are having issues seeing "
@@ -1598,7 +1598,7 @@ msgstr ""
 msgid "Number of currently blocked Attackers:"
 msgstr ""
 
-#: views/intrusion_detection.php:235
+#: views/intrusion_detection.php:276
 msgid "Number of seconds before attempts are reset."
 msgstr ""
 
@@ -1618,7 +1618,7 @@ msgstr ""
 msgid "Other Traffic"
 msgstr ""
 
-#: views/intrusion_detection.php:283
+#: views/intrusion_detection.php:324
 msgid "Other Zone"
 msgstr ""
 
@@ -1676,7 +1676,7 @@ msgstr ""
 msgid "Preconfigured"
 msgstr ""
 
-#: Firewall.class.php:1137
+#: Firewall.class.php:1139
 msgid "Preparing settings. Please wait a while."
 msgstr ""
 
@@ -1773,7 +1773,7 @@ msgstr ""
 msgid "Registered Endpoints"
 msgstr ""
 
-#: views/intrusion_detection.php:274
+#: views/intrusion_detection.php:315
 msgid "Registered Ext. IPs"
 msgstr ""
 
@@ -1797,16 +1797,16 @@ msgstr ""
 msgid "Remove from blacklist"
 msgstr ""
 
-#: Console/Firewall.class.php:108
+#: Console/Firewall.class.php:109
 msgid "Remove the hostname or IP specified from the Trusted Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:503
+#: Console/Firewall.class.php:506
 #, php-format
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1750
+#: Firewall.class.php:1752
 msgid "Reset"
 msgstr "重置"
 
@@ -1841,7 +1841,7 @@ msgstr ""
 msgid "Responsive firewall threshold parameters"
 msgstr ""
 
-#: Console/Firewall.class.php:105
+#: Console/Firewall.class.php:106
 msgid "Restart the System Firewall"
 msgstr ""
 
@@ -1908,12 +1908,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr ""
 
-#: Firewall.class.php:1742 Firewall.class.php:1751 views/modal.customsvc.php:37
+#: Firewall.class.php:1744 Firewall.class.php:1753 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "保存"
 
-#: Firewall.class.php:1745
+#: Firewall.class.php:1747
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -1989,7 +1989,7 @@ msgstr ""
 msgid "Show help"
 msgstr ""
 
-#: Console/Firewall.class.php:112
+#: Console/Firewall.class.php:113
 msgid "Show zones that can be used to add and del."
 msgstr ""
 
@@ -2034,11 +2034,11 @@ msgstr ""
 msgid "Sorry,Firewall configurations has failed"
 msgstr ""
 
-#: views/intrusion_detection.php:393
+#: views/intrusion_detection.php:434
 msgid "Source"
 msgstr ""
 
-#: Console/Firewall.class.php:104
+#: Console/Firewall.class.php:105
 msgid "Start (and enable, if disabled) the System Firewall"
 msgstr ""
 
@@ -2050,7 +2050,7 @@ msgstr "启动"
 msgid "State Change Successful"
 msgstr ""
 
-#: views/bootnav.php:5 views/intrusion_detection.php:136
+#: views/bootnav.php:5 views/intrusion_detection.php:172
 msgid "Status"
 msgstr "状态"
 
@@ -2098,12 +2098,12 @@ msgstr ""
 msgid "Status responsive enabled"
 msgstr ""
 
-#: Console/Firewall.class.php:103
+#: Console/Firewall.class.php:104
 msgid "Stop the System Firewall"
 msgstr "停止系统防火墙"
 
-#: Console/Firewall.class.php:409 Console/Firewall.class.php:453
-#: Console/Firewall.class.php:552
+#: Console/Firewall.class.php:412 Console/Firewall.class.php:456
+#: Console/Firewall.class.php:555
 msgid "Success!"
 msgstr "成功"
 
@@ -2115,32 +2115,32 @@ msgstr ""
 msgid "Summary"
 msgstr "汇总"
 
-#: Console/Firewall.class.php:115
+#: Console/Firewall.class.php:116
 msgid ""
 "Synchronizes all selected zones of the firewall module with the intrusion "
 "detection whitelist."
 msgstr ""
 
-#: Console/Firewall.class.php:268
+#: Console/Firewall.class.php:269
 msgid ""
 "Syncing cannot be performed because another synchronization is still in "
 "progress."
 msgstr ""
 
-#: Console/Firewall.class.php:287
+#: Console/Firewall.class.php:288
 msgid ""
 "Syncing cannot be performed because the Intrusion Detection Sync Firewall "
 "setting is set to Legacy mode."
 msgstr ""
 
-#: Console/Firewall.class.php:279
+#: Console/Firewall.class.php:280
 #, php-format
 msgid ""
 "Syncing takes a long time. No news for %d seconds. Unlocking syncing. Please "
 "check logs."
 msgstr ""
 
-#: Console/Firewall.class.php:261
+#: Console/Firewall.class.php:262
 msgid "Syncing...."
 msgstr ""
 
@@ -2172,13 +2172,13 @@ msgstr ""
 msgid "Thanks for using Sangoma Smart Firewall!"
 msgstr ""
 
-#: views/intrusion_detection.php:255
+#: views/intrusion_detection.php:296
 msgid ""
 "The 'From' address that emails appear to come from is configured in "
 "'Notification Settings'"
 msgstr ""
 
-#: Console/Firewall.class.php:223
+#: Console/Firewall.class.php:224
 msgid "The Firewall is not started. Syncing Process canceled."
 msgstr ""
 
@@ -2188,14 +2188,14 @@ msgid ""
 "they will not be applied."
 msgstr ""
 
-#: views/intrusion_detection.php:360
+#: views/intrusion_detection.php:401
 msgid ""
 "The changes are not yet applied. They will be applied during the next "
 "synchronization. However, you can apply them immediately by clicking the "
 "Save button."
 msgstr ""
 
-#: Firewall.class.php:780
+#: Firewall.class.php:782
 #, php-format
 msgid ""
 "The client machine you are using to manage this server (<tt>%s</tt>) is "
@@ -2260,7 +2260,7 @@ msgid ""
 "invalid data, they will be classified as an Attacker."
 msgstr ""
 
-#: Console/Firewall.class.php:124
+#: Console/Firewall.class.php:125
 msgid "These may be IP addresses, hostnames, or networks."
 msgstr ""
 
@@ -2408,11 +2408,11 @@ msgid ""
 "Responsive Firewall will be bypassed."
 msgstr ""
 
-#: views/intrusion_detection.php:78
+#: views/intrusion_detection.php:103
 msgid "This service will be started on boot."
 msgstr ""
 
-#: views/intrusion_detection.php:79
+#: views/intrusion_detection.php:104
 msgid ""
 "This service will be stopped and Intrusion Detection will not run on boot. "
 "Intrusion Detection will be stopped as well."
@@ -2528,11 +2528,11 @@ msgstr ""
 msgid "Trusted Management Network defined"
 msgstr ""
 
-#: views/intrusion_detection.php:277
+#: views/intrusion_detection.php:318
 msgid "Trusted Zone"
 msgstr ""
 
-#: views/intrusion_detection.php:394 views/intrusion_detection.php:432
+#: views/intrusion_detection.php:435 views/intrusion_detection.php:473
 msgid "Type"
 msgstr ""
 
@@ -2575,15 +2575,15 @@ msgstr ""
 msgid "Unable to read file: %s"
 msgstr ""
 
-#: views/intrusion_detection.php:410
+#: views/intrusion_detection.php:451
 msgid "Unban All"
 msgstr ""
 
-#: Console/Firewall.class.php:193 Firewall.class.php:1266
+#: Console/Firewall.class.php:194 Firewall.class.php:1268
 msgid "Unknown"
 msgstr ""
 
-#: Console/Firewall.class.php:531
+#: Console/Firewall.class.php:534
 msgid "Unknown entry!"
 msgstr ""
 
@@ -2592,7 +2592,7 @@ msgstr ""
 msgid "Unknown interface '%s' provided"
 msgstr ""
 
-#: Firewall.class.php:1744
+#: Firewall.class.php:1746
 msgid "Update Interfaces"
 msgstr ""
 
@@ -2600,7 +2600,7 @@ msgstr ""
 msgid "Update interface default zone."
 msgstr ""
 
-#: views/intrusion_detection.php:271
+#: views/intrusion_detection.php:312
 msgid "Updates the whitelist according to the options chosen."
 msgstr ""
 
@@ -2625,7 +2625,7 @@ msgstr ""
 msgid "Warning"
 msgstr "警告"
 
-#: views/intrusion_detection.php:10 views/page.about.php:36
+#: views/intrusion_detection.php:12 views/page.about.php:36
 msgid "Warning!"
 msgstr ""
 
@@ -2675,11 +2675,11 @@ msgid ""
 "web browser."
 msgstr ""
 
-#: Console/Firewall.class.php:123
+#: Console/Firewall.class.php:124
 msgid "When adding or deleting from a zone, one or many IDs may be provided."
 msgstr ""
 
-#: views/intrusion_detection.php:15
+#: views/intrusion_detection.php:18
 msgid ""
 "When the service is running, attempts to compromise your system are logged. "
 "If the attempts exceed the\n"
@@ -2696,7 +2696,7 @@ msgid ""
 "<strong>very limited</strong> amount of registration attempts."
 msgstr ""
 
-#: views/intrusion_detection.php:308
+#: views/intrusion_detection.php:349
 msgid "Whitelist"
 msgstr ""
 
@@ -2718,7 +2718,7 @@ msgid ""
 "for an interface."
 msgstr ""
 
-#: Firewall.class.php:781
+#: Firewall.class.php:783
 msgid "You can add the host automatically here."
 msgstr ""
 
@@ -2734,7 +2734,7 @@ msgstr ""
 msgid "You can enter a short description for this network here."
 msgstr ""
 
-#: views/intrusion_detection.php:294
+#: views/intrusion_detection.php:335
 msgid ""
 "You can select Registered Extension IPs, and various zones at once. Also, "
 "you can select Clear All to remove all entries from the whitelist.'"
@@ -2770,11 +2770,11 @@ msgstr ""
 msgid "Your Client"
 msgstr "用户端"
 
-#: Console/Firewall.class.php:138
+#: Console/Firewall.class.php:139
 msgid "Zone"
 msgstr ""
 
-#: Console/Firewall.class.php:395 Console/Firewall.class.php:486
+#: Console/Firewall.class.php:398 Console/Firewall.class.php:489
 #, php-format
 msgid "Zone %s = %s "
 msgstr ""
@@ -2859,7 +2859,7 @@ msgstr ""
 msgid "list the configurations details"
 msgstr ""
 
-#: Console/Firewall.class.php:271
+#: Console/Firewall.class.php:272
 msgid "synchronization overlap. Canceling this action for now."
 msgstr ""
 
