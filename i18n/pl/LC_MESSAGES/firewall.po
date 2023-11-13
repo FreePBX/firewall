@@ -10,23 +10,28 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-24 02:41+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-11-14 17:00+0000\n"
+"Last-Translator: Szymon Wysokinski <szymon.wysokinski@sqspolska.pl>\n"
+"Language-Team: Polish <http://weblate.freepbx.org/projects/freepbx/firewall/"
+"pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 3.0.1\n"
 
 #: Services.class.php:618
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr ""
+"%s to posiadający panel www system zarządzania połączeniami telefonicznymi."
 
 #: Services.class.php:614
 #, php-format
 msgid "%s is not configured correctly."
-msgstr ""
+msgstr "%s nie zostało skonfiguroowane poprawnie"
 
 #: views/view.shortcuts.php:6
 msgid ""
@@ -35,6 +40,10 @@ msgid ""
 "hosted clients unrestricted access to your machine! Please use common sense "
 "to make sure that you are only allowing known trusted networks."
 msgstr ""
+"<strong>Ważne ostrzeżenie</strong> Jeśli korzystasz z z takich rozwiązań jak "
+"AWS i włączysz tę opcję, możesz spowodować, że inni klienci takiej usługi, "
+"będą mieli dostęp do twojej maszyny. Upewnij się, że udostępniasz "
+"nieograniczony dostęp do systemu wyłącznie znanymi zaufanym sieciom."
 
 #: views/view.interfaces.php:11
 msgid ""
@@ -43,6 +52,11 @@ msgid ""
 "interfaces are set to this zone so they can be configured correctly without "
 "interfering with existing traffic."
 msgstr ""
+"Zaufany interfejs oznacza, że <strong>żadne filtrowanie</strong> nie będzie "
+"stosowane w stosunku do jakiegokolwiek ruchu przychodzącego na ten "
+"interfejs. Nowo uruchomione interfejsy zostaną przypisane do tej strefy, "
+"abyś mógł je poprawnie skonfigurować bez ingerencji w istniejący ruch "
+"sieciowy."
 
 #: Firewall.class.php:186
 #, php-format
@@ -51,6 +65,9 @@ msgid ""
 "detected. This is a misconfiguration. To ensure your system is protected "
 "from attacks, please change the default zone of interface '%s'."
 msgstr ""
+"Wykryto interfejs sieciowy przypisany do strefy Zaufany. To błąd. Aby "
+"upewnić się, ż twój system jest chroniony przed atakami, zmień domyślną "
+"strefę interfejsu '%s'."
 
 #: Firewall.class.php:176
 #, php-format
@@ -58,48 +75,50 @@ msgid ""
 "A new, unconfigured, network interface has been detected. Please assign "
 "interface '%s' to a zone."
 msgstr ""
+"Został wykryty nowy, nieskonfigurowany interfejs. Przypisz interfejs '%s' do "
+"strefy."
 
 #: views/view.zoneinfo.php:2
 msgid "About Zones"
-msgstr ""
+msgstr "O strefach"
 
 #: views/view.shortcuts.php:15
 msgid "Add Host"
-msgstr ""
+msgstr "Dodaj host"
 
 #: views/view.shortcuts.php:14
 msgid "Add Network"
-msgstr ""
+msgstr "Dodaj sieć"
 
 #: views/view.blacklist.php:40
 #: views/view.networks.php:83
 msgid "Add New"
-msgstr ""
+msgstr "Dodaj nowy"
 
 #: Console/Firewall.class.php:86
 msgid "Add the hostname or IP specified to the Trusted Zone"
-msgstr ""
+msgstr "Dodaj hostname lub adres IP do strefy Zaufanej"
 
 #: Console/Firewall.class.php:89
 msgid "Add to 'zone' the IDs provided."
-msgstr ""
+msgstr "Dodaj dostarczone ID do strefy"
 
 #: views/view.shortcuts.php:7
 msgid "Add to Trusted"
-msgstr ""
+msgstr "Dodaj do Zaufanej"
 
 #: assets/js/views/advanced.js:25
 msgid "Added"
-msgstr ""
+msgstr "Dodano"
 
 #: views/bootnav.php:8
 msgid "Advanced"
-msgstr ""
+msgstr "Zaawansowane"
 
 #: views/page.advanced.php:35
 #: views/view.settings.php:3
 msgid "Advanced Settings"
-msgstr ""
+msgstr "Zaawansowane ustawienia"
 
 #: views/view.about.php:28
 #, php-format
@@ -107,19 +126,22 @@ msgid ""
 "After an endpoint is registered, the source of that endpoint is %s "
 "permission to use UCP, if UCP is enabled."
 msgstr ""
+"Po zarejestrowaniu urządzenia, źródło tego urządzenia otrzymuje uprawnienie %"
+"s do użycia UPC, jeżeli jest on włączony."
 
 #: views/view.interfaces.php:46
 msgid "All Tunnel Interfaces are automatically set to Local"
 msgstr ""
+"Wszystkie interfejsy tunelowe są automatycznie ustawione na strefę lokalną"
 
 #: Console/Firewall.class.php:312
 msgid "All blacklisted entries."
-msgstr ""
+msgstr "Wszystkie wpisy na czarną listę"
 
 #: Console/Firewall.class.php:303
 #, php-format
 msgid "All entries in zone '%s':"
-msgstr ""
+msgstr "Wszystkie wpisy w strefie '%s':"
 
 #: views/view.interfaces.php:9
 msgid ""
