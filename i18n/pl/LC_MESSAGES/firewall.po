@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-24 02:41+0000\n"
-"PO-Revision-Date: 2023-11-14 17:00+0000\n"
+"PO-Revision-Date: 2023-11-18 17:01+0000\n"
 "Last-Translator: Szymon Wysokinski <szymon.wysokinski@sqspolska.pl>\n"
 "Language-Team: Polish <http://weblate.freepbx.org/projects/freepbx/firewall/"
 "pl/>\n"
@@ -118,7 +118,7 @@ msgstr "Zaawansowane"
 #: views/page.advanced.php:35
 #: views/view.settings.php:3
 msgid "Advanced Settings"
-msgstr "Zaawansowane ustawienia"
+msgstr "Ustawienia zaawansowane"
 
 #: views/view.about.php:28
 #, php-format
@@ -149,12 +149,17 @@ msgid ""
 "this interface, unless overridden in Networks, will have access to the "
 "services available to this zone."
 msgstr ""
+"Wszystkie interfejsy muszą być przypisane do strefy domyślnej. Cały ruch "
+"odbierany przez ten interfejs, chyba że zostanie zastąpiony w ustawieniach "
+"Sieci, będzie miał dostęp do usług dostępnych w tej strefie."
 
 #: Zones.class.php:13
 msgid ""
 "All network connections are accepted. No firewalling is done on this "
 "interface."
 msgstr ""
+"Wszystkie połączenia sieciowe są akceptowane. Na tym interfejsie nie jest "
+"wykonywana żadna zapora ogniowa."
 
 #: views/view.settings.php:19
 msgid ""
