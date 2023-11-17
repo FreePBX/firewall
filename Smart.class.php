@@ -149,25 +149,36 @@ class Smart {
 	}
 
 	public function getIaxPort() {
-		$sql = "SELECT `keyword`, `data` FROM `iaxsettings` WHERE `keyword` LIKE 'bind%'";
-		$q = $this->db->query($sql);
-		$iax = $q->fetchAll(\PDO::FETCH_ASSOC);
-
 		$bindport = 4569;
-		$bindaddr = "0.0.0.0";
+        $bindaddr = "0.0.0.0";
+		/*Note if the IAX settings module isn't installed this table won't exist*/ 
+    	try {
+        	$sql = "SELECT `keyword`, `data` FROM `iaxsettings` WHERE `keyword` LIKE 'bind%'";
+        	$query = $this->db->query($sql);
+        	$iaxSettings = $query->fetchAll(\PDO::FETCH_ASSOC);
+			
+        	foreach ($iaxSettings as $setting) {
+            	if (empty($setting['data'])) {
+                	continue;
+            	}
 
-		foreach ($iax as $res) {
-			if (empty($res['data'])) {
-				continue;
-			}
-			if ($res['keyword'] == "bindport") {
-				$bindport = $res['data'];
-			} elseif ($res['keyword'] == "bindaddr") {
-				$bindaddr = $res['data'];
-			}
-		}
-		return array("dest" => $bindaddr, "dport" => $bindport, "name" => "iax");
+            	switch ($setting['keyword']) {
+                	case "bindport":
+                    	$bindport = $setting['data'];
+                    break;
+                	case "bindaddr":
+                    	$bindaddr = $setting['data'];
+                    break;
+            	}
+        	}
+    	} catch (\PDOException $exception) {
+        	// Log the exception or handle it as needed
+        	error_log("PDOException: " . $exception->getMessage());
+    	}
+		
+		return ["dest" => $bindaddr, "dport" => $bindport, "name" => "iax"];
 	}
+
 
 	public function getSipPorts() {
 		// Returns an array of ports or ranges used by SIP or PJSIP.
