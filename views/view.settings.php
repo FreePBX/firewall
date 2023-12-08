@@ -92,7 +92,7 @@ foreach ($sections as $key => $tmparr) {
 		} else {
 			$checked = "";
 		}
-		print "					<input $checked type='radio' class='advsetting $key' name='$key' id='${key}_$k' value='$k' ><label for='${key}_$k'>$v</label>";
+		print "					<input $checked type='radio' class='advsetting $key' name='$key' id='{$key}_$k' value='$k' ><label for='{$key}_$k'>$v</label>";
 	}
 	print "					</span>";
 	print "				</div>";
