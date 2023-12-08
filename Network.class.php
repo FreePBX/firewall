@@ -113,11 +113,11 @@ class Network {
 	}
 
 	public function getRedhatInterfaceConfig($int) {
-		if (!is_readable("/etc/sysconfig/network-scripts/ifcfg-$int")) {
+		if (!is_readable("/etc/network/interfaces.d/ifcfg-$int")) {
 			// No config
 			$conf = array();
 		} else {
-			$conf = @parse_ini_file("/etc/sysconfig/network-scripts/ifcfg-$int", false, \INI_SCANNER_RAW);
+			$conf = @parse_ini_file("/etc/network/interfaces.d/ifcfg-$int", false, \INI_SCANNER_RAW);
 		}
 
 		// Is it a VLAN? 
@@ -164,7 +164,7 @@ class Network {
 
 	public function updateInterfaceZone($iface, $newzone = false, $descr = false) {
 		// SHMZ/CentOS/RHEL/etc - Update the zone in ifcfg-$iface
-		$srcfile = "/etc/sysconfig/network-scripts/ifcfg-$iface";
+		$srcfile = "/etc/network/interfaces.d/ifcfg-$iface";
 
 		// If this is a tunnel interface, don't do anything
 		if (strpos($iface, "tun") === 0) {
