@@ -384,7 +384,7 @@ else {
 					<i class="fa fa-question-circle fpbx-help-icon" data-for="whitelist"></i>
 				</div>
 				<div class="col-md-9">
-					<textarea class="form-control" pattern="' . $wl_filter . '" id="whitelist" name="whitelist" rows="' . (is_array($ids['whitelist']) ? count(array( $ids['whitelist'] )) : 0 + 1) . '"">' . $ids['whitelist'] . '</textarea>
+					<textarea class="form-control" pattern="' . $wl_filter . '" id="whitelist" name="whitelist" rows="' . ((isset($ids['whitelist']) && is_array($ids['whitelist'])) ? count(array( $ids['whitelist'] )) : 0 + 1) . '"">' . (isset($ids['whitelist']) && $ids['whitelist'] ?? '') . '</textarea>
 				</div>
 			</div>
 		</div>
