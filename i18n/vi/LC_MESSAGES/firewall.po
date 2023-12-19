@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-20 09:34+0000\n"
+"POT-Creation-Date: 2023-12-19 03:26-0500\n"
 "PO-Revision-Date: 2017-08-09 11:27+0200\n"
 "Last-Translator: PETER <ftek@ymail.com>\n"
 "Language-Team: Vietnamese <http://weblate.freepbx.org/projects/freepbx/"
@@ -562,6 +562,10 @@ msgstr ""
 msgid "Command to run (see --help)"
 msgstr "Lệnh chạy (see--help)"
 
+#: firewall.i18n.php:6
+msgid "Connectivity"
+msgstr "Khả năng kết nối"
+
 #: views/intrusion_detection.php:212
 msgid "Control intrusion detection."
 msgstr ""
@@ -945,7 +949,7 @@ msgstr ""
 msgid "Find Time"
 msgstr ""
 
-#: page.firewall.php:12
+#: firewall.i18n.php:10 page.firewall.php:12
 msgid "Firewall"
 msgstr "Tường lửa"
 
@@ -1260,6 +1264,16 @@ msgid ""
 "Info: If custom firewall rules are not retrieved correctly, run the "
 "following command to force manual repair of the necessary files."
 msgstr ""
+
+#: firewall.i18n.php:8
+msgid ""
+"Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible "
+"distributions. Note: This requires the Sysadmin RPM. Please see wiki for "
+"further information."
+msgstr ""
+"Firewall PBX đã được tích hợp hiện đang làm việc với các phân phối tương "
+"thích của RHEL6 và RHEL 7. Lưu ý: Điều này yêu cầu phải có Sysadmin RPM. Vui "
+"lòng xem wiki để có thêm thông tin."
 
 #: Firewall.class.php:535
 #, php-format
@@ -2293,7 +2307,7 @@ msgstr ""
 msgid "Syncing...."
 msgstr ""
 
-#: Firewall.class.php:474 views/view.about.php:3
+#: Firewall.class.php:474 firewall.i18n.php:4 views/view.about.php:3
 msgid "System Firewall"
 msgstr "Firewall Hệ thống"
 
@@ -3120,18 +3134,6 @@ msgstr ""
 #: Api/Gql/Firewall.php:167
 msgid "update firewall advance settings"
 msgstr ""
-
-#~ msgid "Connectivity"
-#~ msgstr "Khả năng kết nối"
-
-#~ msgid ""
-#~ "Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 "
-#~ "compatible distributions. Note: This requires the Sysadmin RPM. Please "
-#~ "see wiki for further information."
-#~ msgstr ""
-#~ "Firewall PBX đã được tích hợp hiện đang làm việc với các phân phối tương "
-#~ "thích của RHEL6 và RHEL 7. Lưu ý: Điều này yêu cầu phải có Sysadmin RPM. "
-#~ "Vui lòng xem wiki để có thêm thông tin."
 
 #~ msgid "Host '%s' is not currently in the blacklist."
 #~ msgstr "Host '%s' hiện không thuộc danh sách đen."
