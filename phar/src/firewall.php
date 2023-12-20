@@ -314,7 +314,7 @@ function getSettings() {
 	 * Need to get location for tmp and log directory
 	 */
 	$sth = $pdo->prepare('SELECT keyword,value FROM `freepbx_settings` where keyword="ASTSPOOLDIR" OR keyword="ASTLOGDIR" OR keyword="ASTRUNDIR"');
-	$sth->execute(array('FreePBX\modules\Firewall'));
+	$sth->execute();
 	$res = $sth->fetchAll(\PDO::FETCH_ASSOC);
 	foreach($res as $dir){
 		if(!empty($dir)){
