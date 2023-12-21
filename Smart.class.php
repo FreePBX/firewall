@@ -129,9 +129,9 @@ class Smart {
 
 	public function getUDPTLports() {
 		exec("grep -i \"^udptlstart\" /etc/asterisk/udptl_custom.conf | sed -r 's/.+=//g'", $out, $ret);
-		$start = (int) $out[0];
+		$start = (int) $out[0] ?? '0';
 		exec("grep -i \"^udptlend\" /etc/asterisk/udptl_custom.conf | sed -r 's/.+=//g'", $outend, $ret);
-		$end = (int) $outend[0];
+		$end = (int) $outend[0] ?? '0';
 		if ($start < 1024) {
 			//Either not configured or port is wrong.  Use defaults.
 			$start = 4000;
