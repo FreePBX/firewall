@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>17.0.1.3</version>
+	<version>17.0.1.4</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,14 +11,14 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
-		*17.0.1.3* Packaging of ver 17.0.1.3
+		*17.0.1.4* Packaging of ver 17.0.1.4
 		*17.0.1* 17.0.1 alpha release
 	</changelog>
 	<depends>
 		<file>/usr/lib/sysadmin/includes.php</file>
-		<module>sipsettings ge 13.0.23.1</module>
-		<module>manager ge 13.0.2.5</module>
-		<version>15.0.6.18</version>
+		<module>sipsettings ge 17.0.1</module>
+		<module>manager ge 17.0.1</module>
+		<version>17.0.1</version>
 	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>
