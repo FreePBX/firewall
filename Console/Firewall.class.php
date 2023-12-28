@@ -440,7 +440,7 @@ class Firewall extends Command {
 
 			$hosts[$param] = $zone;
 			$fw->setConfig("hostmaps", $hosts);
-			$fw->addHostToZone($param, $zone, $descr);		
+			$fw->addHostToZone($param, $zone);		
 		} else {
 			$nets = $fw->getConfig("networkmaps");
 			if (!is_array($nets)) {
