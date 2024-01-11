@@ -108,9 +108,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	public function intrusion_detection_status() { 
 		exec('pgrep -f fail2ban-server', $out, $ret);
 		if ($ret == 0) {
-			return "running";
-		} else {
 			return "stopped";
+		} else {
+			return "running";
 		} 
 	} 
 
