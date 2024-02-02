@@ -187,7 +187,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->addCronJob();
 		$this->removeOldSyncJob();
 		$nt = \FreePBX::Notifications();
-		$nt->add_warning("firewall", "1", _("Intrusion detection handling method"), _("Intrusion detection handling method is been updated recently. Please clear your browser cache and try if you are having issue with Intrusion Detection Start/Restart/Stop button.") , "", $reset=true, $candelete=true);
+		if($nt->exists("firewall", "1")) {
+			$nt->delete("firewall", "1");
+		}
 	}
 	
 	public function uninstall() {
