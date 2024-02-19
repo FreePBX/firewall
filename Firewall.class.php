@@ -736,9 +736,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			foreach ($allservices as $services) {
 				foreach($services as $service) {
 					$s = $this->getService($service);
-					if (!$s['disabled']) { 
+					if (!isset($s['disabled']) || !$s['disabled']) { 
 						foreach ($s['fw'] as $fw) { 
-							if ($fw['leport']) {
+							if (isset($fw['leport']) && $fw['leport']) {
 								$leports[] = $fw['port'];
 							}
 						}
