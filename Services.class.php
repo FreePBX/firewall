@@ -14,7 +14,7 @@ class Services {
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp","ucp_ssl", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl", "ntp");
-		$this->extraservices = array("sng_phone_svc","zulu", "isymphony", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
+		$this->extraservices = array("sng_phone_svc", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
 
@@ -339,6 +339,9 @@ class Services {
 		}
 
 		if (empty($retarr)) {
+			if(!isset($retarr['name'])) {
+				$retarr['name'] = _("Sangoma Phone Desktop Client Service");
+			}
 			$retarr['descr'] = _("Sangoma Phone Desktop Client Service is not available or licensed to use. Please make sure the sangomaconnect module is installed and enabled.");
 			$retarr['defzones'] = array("external", "other", "internal");
 			$retarr['disabled'] = true;
