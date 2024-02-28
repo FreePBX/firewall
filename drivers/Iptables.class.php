@@ -18,10 +18,12 @@ class Iptables {
 	}
 
 	public function l($str) {
-		if (function_exists("fwLog")) {
-			fwLog($str);
-		} else {
-			print "LOG: $str\n";
+		if(is_string(is_string($str))) {
+			if (function_exists("fwLog")) {
+				fwLog($str);
+			} else {
+				print "LOG: $str\n";
+			}
 		}
 	}
 
@@ -94,8 +96,11 @@ class Iptables {
 
 	// Root process
 	public function addNetworkToZone($zone = false, $network = false, $cidr = false) {
+		$this->l("adding network to zone ...");
 		$this->checkFpbxFirewall();
 
+		// make sure chain exists
+		$this->checkChain("fpbxnets");
 		// Make sure this zone exists
 		$this->checkTarget("zone-$zone");
 
@@ -107,10 +112,10 @@ class Iptables {
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
 		// them later
 		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-			$ipt = "/sbin/ip6tables ".$this->wlock;
+			$ipt = "/sbin/ip6tables ";
 			$nets = &$current['ipv6']['filter']['fpbxnets'];
 		} elseif (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-			$ipt = "/sbin/iptables ".$this->wlock;
+			$ipt = "/sbin/iptables ";
 			$nets = &$current['ipv4']['filter']['fpbxnets'];
 		} else {
 			throw new \Exception("Not an IP address $network");
@@ -144,12 +149,14 @@ class Iptables {
 			$cmd = "$ipt -A fpbxnets -s $network/$cidr -j zone-$zone";
 		} else {
 			// Splice it into the array
-			array_splice($nets, $i, 0, $p);
-			$i++;
-			$cmd = "$ipt -I fpbxnets $i -s $network/$cidr -j zone-$zone";
+			// array_splice($nets, $i, 0, $p);
+			// $i++;
+			$cmd = "$ipt -I fpbxnets -s $network/$cidr -j zone-$zone";
 		}
+		$this->l("Adding zone to chain...");
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
+		$this->l(".......done");
 		return $ret;
 	}
 
@@ -166,10 +173,10 @@ class Iptables {
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
 		// them later
 		if (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
-			$ipt = "/sbin/ip6tables ".$this->wlock;
+			$ipt = "/sbin/ip6tables ";
 			$nets = &$current['ipv6']['filter']['fpbxnets'];
 		} elseif (filter_var($network, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
-			$ipt = "/sbin/iptables ".$this->wlock;
+			$ipt = "/sbin/iptables ";
 			$nets = &$current['ipv4']['filter']['fpbxnets'];
 		} else {
 			throw new \Exception("Not an IP address $network");
@@ -187,7 +194,7 @@ class Iptables {
 				array_splice($nets, $i, 1);
 				// And remove it from real life
 				$i++;
-				$cmd = "$ipt -D fpbxnets $i";
+				$cmd = "$ipt -I zone-$zone -s $network/$cidr -j ACCEPT";
 				$this->l($cmd);
 				exec($cmd, $output, $ret);
 				return $ret;
@@ -1267,7 +1274,7 @@ class Iptables {
 			// And add our defaults in
 			$this->loadDefaultRules($f2b_rules);
 			//Now, if custom rules are enabled, we need to add those rules
-			$advSvc = getServices();
+			$advSvc = \FreePBX::Firewall()->getServices();
 			if (!empty($advSvc['advancedsettings']['customrules']) && $advSvc['advancedsettings']['customrules'] === 'enabled') {
 				importCustomRules();
 			}
@@ -1275,6 +1282,7 @@ class Iptables {
 	}
 
 	private function backupFail2ban($ipt) {
+		$f2b_rules = [];
 		//ipv4
 		foreach($ipt['ipv4']['filter']['INPUT'] as $i => $r) {
 			if ((strpos($r, "fail2ban") !== false)
@@ -1836,6 +1844,7 @@ class Iptables {
 	}
 
 	private function checkTarget($target = false) {
+		$this->l("Checking Target.....".$target);
 		if (!$target) {
 			throw new \Exception("No Target");
 		}
@@ -1859,9 +1868,13 @@ class Iptables {
 		// It doesn't exist.
 
 		// IPv4
-		$cmd = "/sbin/iptables ".$this->wlock." -N ".escapeshellcmd($target);
+		$this->l("Adding Target.....".$target);
+		$cmd = "/sbin/iptables -N ".escapeshellcmd($target);
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
+		$this->l("Added Target.....".$target);
+		$this->l($output);
+		$this->l("Added Target ret val.....".$ret);
 		if ($ret == 0) {
 			$this->currentconf['ipv4']['filter'][$target] = array();
 		}
@@ -1963,6 +1976,43 @@ class Iptables {
 			$this->l($cmd);
 			exec($cmd, $output, $ret);
 			unset($current[$ipv]['filter'][$svcname]);
+		}
+	}
+
+	private function checkChain($chain = false) {
+		if (!$chain) {
+			throw new \Exception("No Chain");
+		}
+
+		//check chain exists
+		// IPv4
+		$this->l("Checking chain existence...".$chain);
+		$cmd = "/sbin/iptables -L ".escapeshellcmd($chain);
+		$this->l($cmd);
+		exec($cmd, $output, $ret);
+		$this->l($output);
+		$this->l("existence ret value".$ret);
+		if ($ret == 0) {
+			$this->l("Adding new chain ".$chain);
+			$cmdadd = "/sbin/iptables -N ".escapeshellcmd($chain);
+			$this->l($cmdadd);
+			exec($cmdadd, $outputadd, $retadd);
+			if ($outputadd == 0) {
+				$this->currentconf['ipv4']['filter'][$chain] = array();
+			}
+		}
+
+		// IPv6
+		$cmd = "/sbin/ip6tables -L ".escapeshellcmd($chain);
+		$this->l($cmd);
+		exec($cmd, $output, $ret);
+		if ($ret == 0) {
+			$cmdadd = "/sbin/ip6tables -N ".escapeshellcmd($chain);
+			$this->l($cmdadd);
+			exec($cmdadd, $outputadd, $retadd);
+			if ($outputadd == 0) {
+				$this->currentconf['ipv6']['filter'][$chain] = array();
+			}
 		}
 	}
 }
