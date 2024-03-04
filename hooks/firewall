@@ -38,6 +38,6 @@ try {
 
 // Start the daemon
 chmod($fd, 0755);
-exec("nohup $fd &>> ".$logfile." &");
+exec("nohup $fd >> ".$logfile." 2>&1 &");
 chown($logfile, $webuser);
 chgrp($logfile, $webgroup);
