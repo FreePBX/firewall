@@ -297,37 +297,6 @@ class Services {
 		return $retarr;
 	}
 
-	private function getSvc_zulu() {
-		// See if Zulu is installed and licenced.
-		$retarr = array(
-			"name" => _("Zulu UC"),
-			"defzones" => array("external", "other", "internal"),
-			// Taken from https://www.freepbx.org/store/zulu/
-			"descr" => _("Zulu UC Desktop and softphone integration unifies the most popular business communication tools & applications enhancing user productivity and mobility. Zulu uses a token-based secure authentication method and is safe to expose to the public internet, as it rate limits (and then blocks) attackers. Note that rate limits are not applied to clients in the 'Trusted' or 'Internal' zones."),
-		);
-
-		$zuluport = false;
-		try {
-			$lic = \FreePBX::Zulu()->licensed();
-			if ($lic) {
-				$zuluport = $this->getConfigObj()->get('ZULUBINDPORT');
-			}
-		} catch (\Exception $e) {
-			// ignore
-		}
-
-		// If zulu is not installed and active
-		if (!$zuluport) {
-			$retarr['descr'] = _("Zulu is not not available on this machine");
-			$retarr['disabled'] = true;
-			$retarr['fw'] = array();
-			return $retarr;
-		}
-
-		$retarr['fw'] = array(array("protocol" => "tcp", "port" => $zuluport, "ratelimit" => true));
-		return $retarr;
-	}
-
 	private function getSvc_sng_phone_svc() {
 		$retarr = array();
 		$fpbx = \FreePBX::Create();
