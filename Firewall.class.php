@@ -1965,7 +1965,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			// Put it back into IPv6 format and give it back
 			return inet_ntop(pack("H32", $map))."/64";
 		} else {
-			throw new \Exception("Unkown client $client");
+			throw new \Exception("Unknown client $client");
 		}
 	}
 
