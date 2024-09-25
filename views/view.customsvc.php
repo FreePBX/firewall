@@ -56,13 +56,13 @@ function displayCustomService($svc, $svcid, $zones, $currentzones) {
 	}
 
 	// Port range?
-	if (strpos($c['port'], ":") !== false) {
+	if (isset($c['port']) && (strpos($c['port'], ":") !== false)) {
 		$port = sprintf(_("Port Range: %s"), $c['port']);
-	} elseif (strpos($c['port'], ",") !== false) {
+	} elseif (isset($c['port']) && (strpos($c['port'], ",") !== false)) {
 		$port = sprintf(_("Multiple Ports: %s"), $c['port']);
 	} else {
 		// Single port!
-		$port = sprintf(_("Single Port: %s"), (int) $c['port']);
+		$port = sprintf(_("Single Port: %s"), isset($c['port']) ? (int) $c['port'] : (int)'0');
 	}
 
 	print "<div class='hidden-xs col-sm-11 col-sm-offset-1 col-md-10 col-md-offset-2'><span class='help-block'>$protocol</br>$port</span></div>\n";
