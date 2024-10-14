@@ -1015,6 +1015,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function updateWhitelist($wl = ""){
+		$list = '';
 		$sa = $this->sysadmin_info();
 		if(empty($sa)){
 			return false;
@@ -1343,7 +1344,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 						$this->updateWhitelist($wl);
 						return array("status" => true, "message" => "Save done.");
 					}
-					return array("status" => false, "message" => "Unable to save, sincing in progress.");								
+					return array("status" => false, "message" => "Unable to save, syncing in progress.");								
 				}
 				else{
 					/**
