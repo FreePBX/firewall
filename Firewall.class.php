@@ -1015,7 +1015,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function updateWhitelist($wl = ""){
-		$list = '';
+		$list = [];
 		$sa = $this->sysadmin_info();
 		if(empty($sa)){
 			return false;
@@ -1211,6 +1211,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				$this->setConfig("custom_whitelist", "");
 				return true;
 			case "del_custom" :
+				$list = [];
 				$wl 		= preg_replace('!\n+!', chr(10), $this->getConfig("custom_whitelist"));
 				$wl 		= explode("\n", $wl);
 				foreach($wl as $ip){
@@ -1310,6 +1311,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				$ids["fail2ban_find_time"] 	= $_REQUEST["find_time"];
 				$ids["fail2ban_email"] 		= $_REQUEST["email"];
 				$diff = array_diff($current_ids, $ids);
+				$wl = [];
 				if($asfw["id_sync_fw"] != "legacy"){
 					/**
 					 * Enabled and Disabled mode
