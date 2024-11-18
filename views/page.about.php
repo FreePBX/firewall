@@ -24,6 +24,10 @@ $salic  = false;
 if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->getIntrusionDetection() != false){
   $salic    = true;
   $indetec  = $fw->getIDDataPage();
+  $indetec['idregextip'] =$indetec['idregextip'].'='.(!empty($indetec['idregextip']) ? 'true' : '');
+  $indetec['trusted'] 	 =$indetec['trusted'].'='.(!empty($indetec['trusted']) ? 'true' : '');
+  $indetec['local'] 	   =$indetec['local'].'='.(!empty($indetec['local']) ? 'true' : '');
+  $indetec['other'] 	   =$indetec['other'].'='.(!empty($indetec['other']) ? 'true' : '');
 }
 ?>
 
