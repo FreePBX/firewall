@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-15 07:20-0500\n"
+"POT-Creation-Date: 2024-11-18 07:35-0500\n"
 "PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -1195,7 +1195,7 @@ msgstr ""
 msgid "Interface name"
 msgstr ""
 
-#: views/page.about.php:53
+#: views/page.about.php:57
 msgid "Interfaces"
 msgstr ""
 
@@ -1204,7 +1204,7 @@ msgid "Internet"
 msgstr ""
 
 #: views/intrusion_detection.php:45 views/intrusion_detection.php:188
-#: views/page.about.php:60
+#: views/page.about.php:64
 msgid "Intrusion Detection"
 msgstr ""
 
@@ -1471,7 +1471,7 @@ msgstr ""
 msgid "Network/Host"
 msgstr ""
 
-#: views/page.about.php:56
+#: views/page.about.php:60
 msgid "Networks"
 msgstr ""
 
@@ -1567,7 +1567,7 @@ msgid ""
 "upstream firewall or proxy redirects requests to the server port."
 msgstr ""
 
-#: views/intrusion_detection.php:14 views/page.about.php:37
+#: views/intrusion_detection.php:14 views/page.about.php:41
 msgid ""
 "Note: The Intrusion Detection handling method has been updated recently. "
 "Please clear your browser cache and refresh if you are having issues seeing "
@@ -1799,7 +1799,7 @@ msgstr ""
 msgid "Reset"
 msgstr "重置"
 
-#: views/page.about.php:50 views/view.smart.php:3
+#: views/page.about.php:54 views/view.smart.php:3
 msgid "Responsive Firewall"
 msgstr ""
 
@@ -1966,7 +1966,7 @@ msgstr ""
 msgid "Set the trusted host, default is true"
 msgstr ""
 
-#: views/page.about.php:47
+#: views/page.about.php:51
 msgid "Settings"
 msgstr "设置"
 
@@ -2618,7 +2618,7 @@ msgstr ""
 msgid "Warning"
 msgstr "警告"
 
-#: views/intrusion_detection.php:12 views/page.about.php:36
+#: views/intrusion_detection.php:12 views/page.about.php:40
 msgid "Warning!"
 msgstr ""
 
