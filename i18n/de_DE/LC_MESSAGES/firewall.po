@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-18 07:35-0500\n"
+"POT-Creation-Date: 2025-01-15 00:29-0500\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -631,7 +631,7 @@ msgstr "Löschen"
 msgid "Delete Custom Whitelist"
 msgstr ""
 
-#: Firewall.class.php:1766
+#: Firewall.class.php:1770
 msgid "Delete Selected"
 msgstr ""
 
@@ -934,7 +934,7 @@ msgstr "Firewall-Assistent"
 msgid "Firewall advance settings updated succefully"
 msgstr ""
 
-#: Api/Gql/Firewall.php:69 Firewall.class.php:1723
+#: Api/Gql/Firewall.php:69 Firewall.class.php:1727
 msgid "Firewall can not be disabled"
 msgstr "Die Firewall kann nicht deaktiviert werden"
 
@@ -1224,11 +1224,11 @@ msgstr ""
 msgid "Intrusion Detection Service"
 msgstr ""
 
-#: Firewall.class.php:1575
+#: Firewall.class.php:1579
 msgid "Intrusion Detection Service Disabled"
 msgstr ""
 
-#: Firewall.class.php:1575
+#: Firewall.class.php:1579
 msgid ""
 "Intrusion Detection Service will not be run on boot. Please, enable this "
 "service using the link below."
@@ -1677,7 +1677,7 @@ msgstr ""
 msgid "Preconfigured"
 msgstr "Vorkonfiguriert"
 
-#: Firewall.class.php:1158
+#: Firewall.class.php:1159
 msgid "Preparing settings. Please wait a while."
 msgstr ""
 
@@ -1809,7 +1809,7 @@ msgstr ""
 msgid "Removed %s from Blacklist."
 msgstr ""
 
-#: Firewall.class.php:1773
+#: Firewall.class.php:1777
 msgid "Reset"
 msgstr "Zurücksetzen"
 
@@ -1915,12 +1915,12 @@ msgstr ""
 msgid "Sangoma Smart Firewall is now enabled!"
 msgstr "Sangoma Smart Firewall ist jetzt aktiviert!"
 
-#: Firewall.class.php:1765 Firewall.class.php:1774 views/modal.customsvc.php:37
+#: Firewall.class.php:1769 Firewall.class.php:1778 views/modal.customsvc.php:37
 #: views/view.advanced_customrules.php:69 views/view.customsvc.php:43
 msgid "Save"
 msgstr "Speichern"
 
-#: Firewall.class.php:1768
+#: Firewall.class.php:1772
 msgid "Save Intrusion Detection"
 msgstr ""
 
@@ -2586,7 +2586,7 @@ msgstr ""
 msgid "Unban All"
 msgstr ""
 
-#: Console/Firewall.class.php:194 Firewall.class.php:1288
+#: Console/Firewall.class.php:194 Firewall.class.php:1292
 msgid "Unknown"
 msgstr ""
 
@@ -2599,7 +2599,7 @@ msgstr ""
 msgid "Unknown interface '%s' provided"
 msgstr ""
 
-#: Firewall.class.php:1767
+#: Firewall.class.php:1771
 msgid "Update Interfaces"
 msgstr ""
 
