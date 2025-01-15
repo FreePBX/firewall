@@ -184,7 +184,7 @@ class Firewall extends Command {
 				$output->writeln("");
 				$IDsetting	= \FreePBX::Sysadmin()->getIntrusionDetection();
 				$rows = [];
-				if(count($IDsetting["banned"]) >= 1){
+				if($IDsetting && count($IDsetting["banned"]) >= 1){
 					$output->writeln("-=[ List of banned IPs ]=-");
 					$output->writeln("");					
 					$table->setHeaders(array("Type", "IPs"));

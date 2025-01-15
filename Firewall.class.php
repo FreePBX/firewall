@@ -1152,10 +1152,12 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function flush_fail2ban_whitelist($asfw = "legacy"){
 		$IDsetting	= $this->FreePBX->Sysadmin->getIntrusionDetection();
-		if($asfw != "legacy" && $IDsetting["ids"]["fail2ban_whitelist"] != ""){
-			$IDsetting["ids"]["fail2ban_whitelist"] = "";
-			$this->FreePBX->Sysadmin->sync_fw($IDsetting["ids"]);
-			return _("Preparing settings. Please wait a while.");
+		if ($IDsetting && isset($IDsetting["ids"])) {
+			if($asfw != "legacy" && $IDsetting["ids"]["fail2ban_whitelist"] != ""){
+				$IDsetting["ids"]["fail2ban_whitelist"] = "";
+				$this->FreePBX->Sysadmin->sync_fw($IDsetting["ids"]);
+				return _("Preparing settings. Please wait a while.");
+			}
 		}
 		return "ok";
 	}
@@ -1182,8 +1184,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 								// That was legacy to become enabled
 								if($this->getConfig("idregextip") != "true" && $this->getConfig("trusted") != "true" && $this->getConfig("local") != "true" && $this->getConfig("other") != "true"){
 									// For the first install only
-									$this->setConfig("custom_whitelist", $IDsetting["ids"]["fail2ban_whitelist"]);
-									$this->updateWhitelist($IDsetting["ids"]["fail2ban_whitelist"]);						
+									if ($IDsetting && isset($IDsetting["ids"])) {
+										$this->setConfig("custom_whitelist", $IDsetting["ids"]["fail2ban_whitelist"]);
+										$this->updateWhitelist($IDsetting["ids"]["fail2ban_whitelist"]);						
+									}
 								}
 								else{
 									$this->updateWhitelist($this->getipzone("all"));
