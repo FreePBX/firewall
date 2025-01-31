@@ -984,6 +984,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				}
 			}
 		}
+		//adding this ips to trusted zone
+		foreach ($list as $customip) {
+			$this->addNetworkToZone($customip, 'trusted');
+		}
 		$result 	= !empty($list) ? implode("\n", array_unique($list)) : "";
 		$this->setConfig("custom_whitelist",$result);
 		return $result;
@@ -1187,6 +1191,27 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				$this->runHook("dynamic-jails", array("action" => "unbanip", "ip" => $_REQUEST["ip"] )); 
 				return true;
 			case "del_entire_whitelist":
+				$wl 		= preg_replace('!\n+!', chr(10), $this->getConfig("custom_whitelist"));
+				$wl 		= explode("\n", $wl);
+				foreach($wl as $ip){
+					$nsips = $this->NSLookUp_Check($ip);
+					if(is_array($nsips)){
+						foreach($nsips as $nsip){
+							if(!empty($nsip)){
+								$list[] = $nsip;
+							}
+						}
+					}
+				}
+				$trustedips = explode("\n",$this->getipzone("trusted"));
+				foreach ($list as $nip) {
+					foreach ($trustedips as $t_ip) {
+						$ip = explode("/",$t_ip);
+						if($nip == $t_ip || $nip == $ip[0]) {
+							$this->removeNetwork($t_ip);
+						}
+					}
+				}
 				$this->setConfig("custom_whitelist", "");
 				return true;
 			case "del_custom" :
@@ -1200,6 +1225,13 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 								$list[] = $nsip;
 							}							
 						}
+					}
+				}
+				$trustedips = explode("\n",$this->getipzone("trusted"));
+				foreach ($trustedips as $t_ip) {
+					$ip = explode("/",$t_ip);
+					if($_REQUEST["ip"] == $t_ip || $_REQUEST["ip"] == $ip[0]) {
+						$this->removeNetwork($t_ip);
 					}
 				}
 				$wl 		= !empty($list) ? implode("\n", array_unique($list)) : "";
@@ -1229,6 +1261,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 							if(is_array($nsips)){
 								foreach($nsips as $nsip){
 									if(!empty($nsip)){
+										if($key == 'Trusted' && in_array($nsip,$list["Custom"])) {
+											continue;
+										}
 										$result[] = array("action" => "", "source" => $nsip, "type" => $key);
 									}
 								}
