@@ -1280,6 +1280,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				}
 	
 				$list["Custom"] = explode("\n",$this->getConfig("custom_whitelist"));
+				//custom list whithout cidr
+				$custom_white_ips = array_map(function($ip) {
+					return explode('/', $ip)[0];
+				}, $list["Custom"]);
 				foreach($list as $key => $value){
 					foreach($value as $ip){
 						if(!empty($ip)){
@@ -1287,7 +1291,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 							if(is_array($nsips)){
 								foreach($nsips as $nsip){
 									if(!empty($nsip)){
-										if($key == 'Trusted' && in_array($nsip,$list["Custom"])) {
+										if($key == 'Trusted' && in_array($nsip,$custom_white_ips)) {
 											continue;
 										}
 										$result[] = array("action" => "", "source" => $nsip, "type" => $key);
