@@ -612,34 +612,39 @@ class Services {
 	}
 
 	private function getNfsPorts() {
-		if (!file_exists("/etc/sysconfig/nfs")) {
+		if (!file_exists("/etc/nfs.conf")) {
 			return array();
 		}
-		$retarr= array(
-			array('protocol' => 'udp', 'port' => '2049'),
-			array('protocol' => 'tcp', 'port' => '2049'),
-		);
 
+		$nfsd = 2049;
 		$mountd = 892;
 		$statd = 662;
 		$lockdtcp = 32803;
 		$lockdudp = 32769;
 
 		// Now, are any of them overridden?
-		$nfsconf = @parse_ini_file("/etc/sysconfig/nfs");
-
-		if (isset($nfsconf['MOUNTD_PORT'])) {
-			$mountd = $nfsconf['MOUNTD_PORT'];
-		}
-		if (isset($nfsconf['STATD_PORT'])) {
-			$statd = $nfsconf['STATD_PORT'];
-		}
-		if (isset($nfsconf['LOCKD_TCPPORT'])) {
-			$lockdtcp = $nfsconf['LOCKD_TCPPORT'];
-		}
-		if (isset($nfsconf['LOCKD_UDPPORT'])) {
-			$lockdudp = $nfsconf['LOCKD_UDPPORT'];
-		}
+		exec("/usr/sbin/nfsconf --get nfsd port", $output_nfsd, $output_nfsd_rc);
+        if ($output_nfsd_rc == 0) {
+            $nfs = $output_nfsd[0];
+        }
+        exec("/usr/sbin/nfsconf --get mountd port", $output_mountd, $output_mountd_rc);
+        if ($output_mountd_rc == 0) {
+            $mountd = $output_mountd[0];
+        }
+        exec("/usr/sbin/nfsconf --get statd port", $output_statd, $output_statd_rc);
+        if ($output_statd_rc == 0) {
+            $statd = $output_statd[0];
+        }
+        exec("/usr/sbin/nfsconf --get lockd port", $output_lockd_tcp, $output_lockd_tcp_rc);
+        if ($output_lockd_tcp_rc == 0) {
+            $lockdtcp = $output_lockd_tcp[0];
+        }
+        exec("/usr/sbin/nfsconf --get lockd udp-port", $output_lockd_udp, $output_lockd_udp_rc);
+        if ($output_lockd_udp_rc == 0) {
+            $lockdudp = $output_lockd_udp[0];
+        }
+        $retarr[] = array('protocol' => 'tcp', 'port' => $nfsd);
+        $retarr[] = array('protocol' => 'udp', 'port' => $nfsd);
 		$retarr[] = array('protocol' => 'udp', 'port' => $mountd);
 		$retarr[] = array('protocol' => 'udp', 'port' => $statd);
 		$retarr[] = array('protocol' => 'udp', 'port' => $lockdudp);
