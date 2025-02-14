@@ -969,8 +969,18 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				if($this->getConfig("other")== "true"){
 					$list["Other"] = explode("\n", $this->getTrustedZone("other"));
 				}
-				$list["Custom"] = explode("\n",$this->getConfig("custom_whitelist"));
+				$customList = explode("\n",$this->getConfig("custom_whitelist"));
 				$list["Hosts"] = explode("\n",$this->getConfig("whiteHosts"));
+				if (isset($list["Trusted"]) && is_array($list["Trusted"]) && count($list["Trusted"]) >0) {
+					$trustedList = $list["Trusted"];
+					$customIpSet = array_flip($customList);
+					$trustedList = array_values(array_diff($trustedList, $customList));
+					$filteredTrustedList = array_filter($trustedList, function ($trustedEntry) use ($customIpSet) {
+						return !isset($customIpSet[explode("/", $trustedEntry)[0]]);
+					});
+					$list["Trusted"] = array_values($filteredTrustedList);
+				}
+				$list["Custom"] = $customList;
 				return $list;
 			default:
 				$result = "";				
@@ -1055,6 +1065,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			}	
 		}
 		else{
+			$list=[];
 			$lines = explode("\n",$wl);
 			foreach($lines as $lip){
 				$nsips = $this->NSLookUp_Check($lip);
@@ -1279,8 +1290,18 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					$list["Other"] = explode("\n", $this->getipzone("other"));
 				}
 	
-				$list["Custom"] = explode("\n",$this->getConfig("custom_whitelist"));
+				$customList = $list["Custom"] = explode("\n",$this->getConfig("custom_whitelist"));
 				//custom list whithout cidr
+				if (isset($list["Trusted"]) && is_array($list["Trusted"]) && count($list["Trusted"]) >0) {
+					$trustedList = $list["Trusted"];
+					$customIpSet = array_flip($customList); // Faster lookup
+					$trustedList = array_values(array_diff($trustedList, $customList));
+					$filteredTrustedList = array_filter($trustedList, function ($trustedEntry) use ($customIpSet) {
+						return !isset($customIpSet[explode("/", $trustedEntry)[0]]);
+					});
+					$list["Trusted"] = array_values($filteredTrustedList);
+				}
+
 				$custom_white_ips = array_map(function($ip) {
 					return explode('/', $ip)[0];
 				}, $list["Custom"]);
