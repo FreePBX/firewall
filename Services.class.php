@@ -624,27 +624,27 @@ class Services {
 
 		// Now, are any of them overridden?
 		exec("/usr/sbin/nfsconf --get nfsd port", $output_nfsd, $output_nfsd_rc);
-        if ($output_nfsd_rc == 0) {
-            $nfs = $output_nfsd[0];
-        }
-        exec("/usr/sbin/nfsconf --get mountd port", $output_mountd, $output_mountd_rc);
-        if ($output_mountd_rc == 0) {
-            $mountd = $output_mountd[0];
-        }
-        exec("/usr/sbin/nfsconf --get statd port", $output_statd, $output_statd_rc);
-        if ($output_statd_rc == 0) {
-            $statd = $output_statd[0];
-        }
-        exec("/usr/sbin/nfsconf --get lockd port", $output_lockd_tcp, $output_lockd_tcp_rc);
-        if ($output_lockd_tcp_rc == 0) {
-            $lockdtcp = $output_lockd_tcp[0];
-        }
-        exec("/usr/sbin/nfsconf --get lockd udp-port", $output_lockd_udp, $output_lockd_udp_rc);
-        if ($output_lockd_udp_rc == 0) {
-            $lockdudp = $output_lockd_udp[0];
-        }
-        $retarr[] = array('protocol' => 'tcp', 'port' => $nfsd);
-        $retarr[] = array('protocol' => 'udp', 'port' => $nfsd);
+		if ($output_nfsd_rc == 0) {
+			$nfsd = $output_nfsd[0];
+		}
+		exec("/usr/sbin/nfsconf --get mountd port", $output_mountd, $output_mountd_rc);
+		if ($output_mountd_rc == 0) {
+			$mountd = $output_mountd[0];
+		}
+		exec("/usr/sbin/nfsconf --get statd port", $output_statd, $output_statd_rc);
+		if ($output_statd_rc == 0) {
+			$statd = $output_statd[0];
+		}
+		exec("/usr/sbin/nfsconf --get lockd port", $output_lockd_tcp, $output_lockd_tcp_rc);
+		if ($output_lockd_tcp_rc == 0) {
+			$lockdtcp = $output_lockd_tcp[0];
+		}
+		exec("/usr/sbin/nfsconf --get lockd udp-port", $output_lockd_udp, $output_lockd_udp_rc);
+		if ($output_lockd_udp_rc == 0) {
+			$lockdudp = $output_lockd_udp[0];
+		}
+		$retarr[] = array('protocol' => 'tcp', 'port' => $nfsd);
+		$retarr[] = array('protocol' => 'udp', 'port' => $nfsd);
 		$retarr[] = array('protocol' => 'udp', 'port' => $mountd);
 		$retarr[] = array('protocol' => 'udp', 'port' => $statd);
 		$retarr[] = array('protocol' => 'udp', 'port' => $lockdudp);
