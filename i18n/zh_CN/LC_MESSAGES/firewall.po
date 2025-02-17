@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: FreePBX 2.5 Chinese Translation\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-11 02:42-0500\n"
+"POT-Creation-Date: 2025-02-16 23:50-0500\n"
 "PO-Revision-Date: 2018-03-14 14:52+0200\n"
 "Last-Translator: james <zhulizhong@gmail.com>\n"
 "Language-Team: Simplified Chinese <http://weblate.freepbx.org/projects/"
@@ -56,12 +56,12 @@ msgstr ""
 msgid "%s Files Restored OK"
 msgstr ""
 
-#: Services.class.php:695
+#: Services.class.php:700
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr "%s 是基于页面的呼叫管理解决方案。"
 
-#: Services.class.php:691
+#: Services.class.php:696
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "还没有成功配置%s 。"
@@ -1842,15 +1842,15 @@ msgstr ""
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 
-#: Services.class.php:655
+#: Services.class.php:660
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:661
+#: Services.class.php:666
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr ""
 
-#: Services.class.php:664
+#: Services.class.php:669
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -2802,7 +2802,7 @@ msgstr ""
 msgid "function"
 msgstr ""
 
-#: Services.class.php:709
+#: Services.class.php:714
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
