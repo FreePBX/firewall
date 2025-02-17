@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-11 02:42-0500\n"
+"POT-Creation-Date: 2025-02-16 23:50-0500\n"
 "PO-Revision-Date: 2018-07-28 08:00+0000\n"
 "Last-Translator: Bastian Mertgen <b.mertgen@bastian-mertgen.de>\n"
 "Language-Team: German <http://*/projects/freepbx/firewall/de/>\n"
@@ -55,12 +55,12 @@ msgstr ""
 msgid "%s Files Restored OK"
 msgstr ""
 
-#: Services.class.php:695
+#: Services.class.php:700
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr "%s ist eine web-basierte Lösung zur Anrufverwaltung."
 
-#: Services.class.php:691
+#: Services.class.php:696
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s ist nicht richtig konfiguriert."
@@ -1856,15 +1856,15 @@ msgstr "SIP Protokoll"
 msgid "SIP Protocol (pjsip)"
 msgstr "SIP Protokoll (pjsip)"
 
-#: Services.class.php:655
+#: Services.class.php:660
 msgid "SMB/CIFS"
 msgstr "SMB/CIFS"
 
-#: Services.class.php:661
+#: Services.class.php:666
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr "SMB/CIFS (Samba) ist auf dieser Maschine nicht Installiert"
 
-#: Services.class.php:664
+#: Services.class.php:669
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -2816,7 +2816,7 @@ msgstr ""
 msgid "function"
 msgstr ""
 
-#: Services.class.php:709
+#: Services.class.php:714
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
