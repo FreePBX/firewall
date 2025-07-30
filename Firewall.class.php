@@ -226,7 +226,11 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	}
 
 	public function get_networkmaps(){
-		return $this->getConfig("networkmaps");
+		$networkmaps  = $this->getConfig("networkmaps");
+		if($networkmaps == false) {
+			return [];
+		}
+		return $networkmaps;
 	}
 
 	public function backup() {}
