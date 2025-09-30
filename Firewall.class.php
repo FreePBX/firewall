@@ -1233,6 +1233,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			case "del_entire_whitelist":
 				$wl 		= preg_replace('!\n+!', chr(10), $this->getConfig("custom_whitelist"));
 				$wl 		= explode("\n", $wl);
+				$list = [];
 				foreach($wl as $ip){
 					$nsips = $this->NSLookUp_Check($ip);
 					if(is_array($nsips)){
@@ -1281,6 +1282,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				return true; 
 			case "getNewWhitelist":
 				$result = array();
+				$list = [];
 				if($_REQUEST["idregextip"] == "true" ){
 					$list["Ext. Registered"] = explode("\n", $this->getipzone("extregips"));
 				}
