@@ -6,7 +6,7 @@
     }
     $fw     = FreePBX::Firewall();
     $FC     = fpbx_which("fail2ban-client");
-    $cmd    = "$FC status | grep 'Jail list' | cut -f3";
+    $cmd    = "$FC status | grep 'Jail list' | cut -f2";
     $wl     = $fw->getConfig("dynamic_whitelist");
     $wl     = explode("\n",$wl);
     exec($cmd, $out, $ret);
