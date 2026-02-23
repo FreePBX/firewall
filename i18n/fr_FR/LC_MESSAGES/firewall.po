@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-30 03:47-0400\n"
+"POT-Creation-Date: 2026-02-23 05:08-0500\n"
 "PO-Revision-Date: 2017-12-11 22:24+0200\n"
 "Last-Translator: JCattan <jeremie@famillecattan.com>\n"
 "Language-Team: French <http://weblate.freepbx.org/projects/freepbx/firewall/"
@@ -1175,6 +1175,10 @@ msgid ""
 "further information."
 msgstr ""
 
+#: Firewall.class.php:2580
+msgid "Interface"
+msgstr ""
+
 #: Firewall.class.php:557
 #, php-format
 msgid ""
@@ -1199,8 +1203,8 @@ msgstr ""
 msgid "Internet"
 msgstr ""
 
-#: views/intrusion_detection.php:45 views/intrusion_detection.php:188
-#: views/page.about.php:64
+#: Firewall.class.php:2577 views/intrusion_detection.php:45
+#: views/intrusion_detection.php:188 views/page.about.php:64
 msgid "Intrusion Detection"
 msgstr ""
 
@@ -1461,6 +1465,10 @@ msgstr ""
 
 #: Services.class.php:54
 msgid "NTP"
+msgstr ""
+
+#: Firewall.class.php:2578
+msgid "Network"
 msgstr ""
 
 #: views/view.networks.php:14
@@ -1795,7 +1803,7 @@ msgstr ""
 msgid "Reset"
 msgstr "Reset"
 
-#: views/page.about.php:54 views/view.smart.php:3
+#: Firewall.class.php:2581 views/page.about.php:54 views/view.smart.php:3
 msgid "Responsive Firewall"
 msgstr ""
 
@@ -1962,7 +1970,7 @@ msgstr ""
 msgid "Set the trusted host, default is true"
 msgstr ""
 
-#: views/page.about.php:51
+#: Firewall.class.php:2579 views/page.about.php:51
 msgid "Settings"
 msgstr "Paramètres"
 

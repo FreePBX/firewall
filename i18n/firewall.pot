@@ -3,13 +3,13 @@
 # For licensing information, please see the file named LICENSE located in the module directory
 #
 # FreePBX language template for firewall
-# Copyright (C) 2008-2025 Sangoma Technologies, Inc.
+# Copyright (C) 2008-2026 Sangoma Technologies, Inc.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-07 02:34-0500\n"
+"POT-Creation-Date: 2026-02-23 05:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1194,6 +1194,10 @@ msgid ""
 "further information."
 msgstr ""
 
+#: Firewall.class.php:2580
+msgid "Interface"
+msgstr ""
+
 #: Firewall.class.php:557
 #, php-format
 msgid ""
@@ -1218,6 +1222,7 @@ msgstr ""
 msgid "Internet"
 msgstr ""
 
+#: Firewall.class.php:2577
 #: views/intrusion_detection.php:45
 #: views/intrusion_detection.php:188
 #: views/page.about.php:64
@@ -1486,6 +1491,10 @@ msgstr ""
 
 #: Services.class.php:54
 msgid "NTP"
+msgstr ""
+
+#: Firewall.class.php:2578
+msgid "Network"
 msgstr ""
 
 #: views/view.networks.php:14
@@ -1831,6 +1840,7 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
+#: Firewall.class.php:2581
 #: views/page.about.php:54
 #: views/view.smart.php:3
 msgid "Responsive Firewall"
@@ -2005,6 +2015,7 @@ msgstr ""
 msgid "Set the trusted host, default is true"
 msgstr ""
 
+#: Firewall.class.php:2579
 #: views/page.about.php:51
 msgid "Settings"
 msgstr ""
