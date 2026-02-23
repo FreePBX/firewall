@@ -2571,5 +2571,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig("descriptions", $descriptions, "network");
 		}
 	}
+
+	public function search($query, &$results) {
+		// return all the searchable items in this module
+		$results[] = ["text" => _("Intrusion Detection"), "type" => "get", "dest" => "?display=firewall&tab=intrusion_detection"];
+		$results[] = ["text" => _("Network"), "type" => "get", "dest" => "?display=firewall&tab=networks"];
+		$results[] = ["text" => _("Settings"), "type" => "get", "dest" => "?display=firewall&view=about"];
+		$results[] = ["text" => _("Interface"), "type" => "get", "dest" => "?display=firewall&tab=interfaces"];
+		$results[] = ["text" => _("Responsive Firewall"), "type" => "get", "dest" => "?display=firewall&tab=smart"];
+	}
 }
 
