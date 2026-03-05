@@ -14,7 +14,7 @@ class Services {
 	public function __construct() {
 		// Can't define arrays in some versions of PHP.
 		$this->coreservices = array("ssh", "http", "https", "ucp","ucp_ssl", "pjsip", "chansip", "iax", "webrtc", "letsencrypt", "api", "api_ssl", "ntp");
-		$this->extraservices = array("sng_phone_svc", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "xmpp", "ftp", "tftp", "nfs", "smb");
+		$this->extraservices = array("sng_phone_svc", "provis", "provis_ssl", "vpn", "restapps", "restapps_ssl", "scim", "xmpp", "ftp", "tftp", "nfs", "smb");
 
 		$this->allservices = array_merge($this->coreservices, $this->extraservices);
 
@@ -557,6 +557,50 @@ class Services {
 			$retarr['descr'] = _("REST Apps are only available with System Admin");
 			$retarr['disabled'] = true;
 		}
+		return $retarr;
+	}
+
+	private function getSvc_scim() {
+		$retarr = array(
+			"name" => _("SCIM Provisioning (HTTPS)"),
+			"defzones" => array("internal"),
+			"descr" => _("SCIM provisioning is used by external identity providers to create and manage users."),
+			"fw" => array(),
+		);
+
+		$fpbx = \FreePBX::Create();
+		if (!$fpbx->Modules->checkStatus("pbxsaml")) {
+			$retarr['descr'] = _("SCIM provisioning requires the PBX SAML module.");
+			$retarr['disabled'] = true;
+			return $retarr;
+		}
+
+		try {
+			$pbxsaml = $fpbx->Pbxsaml();
+			if (method_exists($pbxsaml, 'isLicensed') && !$pbxsaml->isLicensed()) {
+				$retarr['descr'] = _("SCIM provisioning is not licensed.");
+				$retarr['disabled'] = true;
+				return $retarr;
+			}
+		} catch (\Throwable $e) {
+			// If we can't verify licensing, fall through to port detection.
+		}
+
+		try {
+			$ports = $this->getSysadminObj()->getPorts();
+			if (isset($ports['sslscim']) && $ports['sslscim'] !== 'disabled' && $ports['sslscim'] >= 80) {
+				$retarr['fw'][] = array("protocol" => "tcp", "port" => $ports['sslscim']);
+				$retarr['defzones'] = array("external", "other", "internal");
+			}
+			if (!$retarr['fw']) {
+				$retarr['descr'] = _("SCIM provisioning is disabled in Sysadmin Port Management");
+				$retarr['disabled'] = true;
+			}
+		} catch (\Exception $e) {
+			$retarr['descr'] = _("SCIM provisioning is only available with System Admin");
+			$retarr['disabled'] = true;
+		}
+
 		return $retarr;
 	}
 
