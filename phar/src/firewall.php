@@ -22,7 +22,12 @@ include_once 'common.php';
 $v = new \FreePBX\modules\Firewall\Validator($sig);
 
 $advSvc			= getServices(); #returning services along with advancedsettings fetched via \FreePBX::Firewall()->getAdvancedSettings()
-$id_service 		= $advSvc['advancedsettings']['id_service'];
+if (!is_array($advSvc) || !isset($advSvc['advancedsettings']) || !is_array($advSvc['advancedsettings'])) {
+	fwLog("Unable to load advanced settings from getServices; defaulting id_service to disabled");
+	$id_service = "disabled";
+} else {
+	$id_service = $advSvc['advancedsettings']['id_service'] ?? "disabled";
+}
 
 
 // Regen fail2ban conf, if we can
