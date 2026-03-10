@@ -33,8 +33,12 @@
      */
     $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
     exec($cmd, $out, $ret);
-    if($ret === 0 && is_array($out)){
+    if($ret === 0 && !empty($out)){
         foreach($out as $jail){
+            $jail = trim($jail);
+            if ($jail === "") {
+                continue;
+            }
             $d = @date("Y-m-d H:i:s");
             switch($action){
                 case "addignoreip" :
