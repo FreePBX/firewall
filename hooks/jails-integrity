@@ -6,17 +6,13 @@
     }
     $fw     = FreePBX::Firewall();
     $FC     = fpbx_which("fail2ban-client");
-    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\\t+//g' | sed -e 's/ *//g' -e 's/\\,/\\n/g'";
+    $cmd    = "$FC status | grep 'Jail list' | cut -f2";
     $wl     = $fw->getConfig("dynamic_whitelist");
     $wl     = explode("\n",$wl);
     exec($cmd, $out, $ret);
-    $jails  = $out;
-    if($ret === 0 && !empty($jails)){
+    $jails  = explode(", ",$out[0]);
+    if($ret === 0 && is_array($jails)){
         foreach($jails as $jail){
-            $jail = trim($jail);
-            if ($jail === "") {
-                continue;
-            }
             exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $out2, $ret2);
             foreach($wl as $ip){
                 if(array_search($ip, $out2) === false){
