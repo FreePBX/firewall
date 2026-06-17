@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>16.0.57.13</version>
+	<version>16.0.57.14</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://wiki.freepbx.org/display/FPG/Firewall</more-info>
 	<changelog>
+		*16.0.57.14* FREEI-2731 extra firewall service for allowing type of scim traffic 
 		*16.0.57.13* #issue-808 fail2ban error fix on running ignoreip and addignoreip commands 
 		*16.0.57.12* #Issue-808 Fail2ban.log error 
 		*16.0.57.11* #Issue-625 repeated custom whitelisted ip are removed in UI 

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-11 07:41+0000\n"
+"POT-Creation-Date: 2026-06-17 07:21+0000\n"
 "PO-Revision-Date: 2020-09-02 11:50+0000\n"
 "Last-Translator: Javier Pastor <jpastor@cerebelum.net>\n"
 "Language-Team: Spanish <http://*/projects/freepbx/firewall/es/>\n"
@@ -55,12 +55,12 @@ msgstr ""
 msgid "%s Files Restored OK"
 msgstr ""
 
-#: Services.class.php:723
+#: Services.class.php:767
 #, php-format
 msgid "%s is a web-based call management solution."
 msgstr "%s es una solución de gestión de llamadas basada en web."
 
-#: Services.class.php:719
+#: Services.class.php:763
 #, php-format
 msgid "%s is not configured correctly."
 msgstr "%s no está configurado correctamente."
@@ -899,11 +899,11 @@ msgstr "Dirección Externa: %s"
 msgid "Extra Services"
 msgstr "Servicios Extra"
 
-#: Services.class.php:603
+#: Services.class.php:647
 msgid "FTP"
 msgstr "FTP"
 
-#: Services.class.php:605
+#: Services.class.php:649
 msgid ""
 "FTP is used by Endpoint Manager to send firmware images to phones, as well "
 "as additional data."
@@ -1538,11 +1538,11 @@ msgstr ""
 msgid "Multiple Ports: %s"
 msgstr ""
 
-#: Services.class.php:626
+#: Services.class.php:670
 msgid "NFS"
 msgstr ""
 
-#: Services.class.php:633
+#: Services.class.php:677
 msgid "NFS Services are not available on this machine"
 msgstr ""
 
@@ -1917,6 +1917,32 @@ msgstr ""
 msgid "Restart the System Firewall"
 msgstr ""
 
+#: Services.class.php:593
+msgid "SCIM Provisioning (HTTPS)"
+msgstr ""
+
+#: Services.class.php:624
+msgid "SCIM provisioning is disabled in Sysadmin Port Management"
+msgstr ""
+
+#: Services.class.php:609
+msgid "SCIM provisioning is not licensed."
+msgstr ""
+
+#: Services.class.php:628
+msgid "SCIM provisioning is only available with System Admin"
+msgstr ""
+
+#: Services.class.php:595
+msgid ""
+"SCIM provisioning is used by external identity providers to create and "
+"manage users."
+msgstr ""
+
+#: Services.class.php:601
+msgid "SCIM provisioning requires the PBX SAML module."
+msgstr ""
+
 #: Services.class.php:352
 msgid "SIP Protocol"
 msgstr ""
@@ -1925,15 +1951,15 @@ msgstr ""
 msgid "SIP Protocol (pjsip)"
 msgstr ""
 
-#: Services.class.php:683
+#: Services.class.php:727
 msgid "SMB/CIFS"
 msgstr ""
 
-#: Services.class.php:689
+#: Services.class.php:733
 msgid "SMB/CIFS (Samba) is not installed on this machine"
 msgstr ""
 
-#: Services.class.php:692
+#: Services.class.php:736
 msgid ""
 "SMB/CIFS is used to access files on this machine from Windows or Mac systems."
 msgstr ""
@@ -2232,11 +2258,11 @@ msgstr ""
 msgid "TCP Ports:"
 msgstr ""
 
-#: Services.class.php:613
+#: Services.class.php:657
 msgid "TFTP"
 msgstr "TFTP"
 
-#: Services.class.php:615
+#: Services.class.php:659
 msgid "TFTP is used normally for provisioning and upgrading of devices."
 msgstr ""
 
@@ -2356,7 +2382,7 @@ msgid ""
 "is enabled."
 msgstr ""
 
-#: Services.class.php:636
+#: Services.class.php:680
 msgid ""
 "This allows this machine to be used as a NFS server. This can be useful when "
 "you want to easily access files on this machine (for example, to access call "
@@ -2435,7 +2461,7 @@ msgstr ""
 msgid "This is the SIP driver (pjsip). Most devices use SIP."
 msgstr ""
 
-#: Services.class.php:595
+#: Services.class.php:639
 msgid ""
 "This is the XMPP server. If you wish to connect to it using an external "
 "Jabber client, you need to open this port."
@@ -2776,7 +2802,7 @@ msgstr ""
 msgid "Write to firewall"
 msgstr ""
 
-#: Services.class.php:593
+#: Services.class.php:637
 msgid "XMPP"
 msgstr "XMPP"
 
@@ -2899,7 +2925,7 @@ msgstr ""
 msgid "function"
 msgstr ""
 
-#: Services.class.php:737
+#: Services.class.php:781
 msgid "iSymphony is not installed on this server."
 msgstr ""
 
