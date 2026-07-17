@@ -20,32 +20,22 @@ if (!filter_var($settings['unblock'], \FILTER_VALIDATE_IP)) {
 	throw new \Exception("Not an IP address");
 }
 
-// Now remove it from all recent chains
-$recent = array ("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING", "TEMPWHITELIST");
-foreach ($recent as $chain) {
-	$fh = fopen("/proc/net/xt_recent/$chain", "w");
-	fwrite($fh, "-".$settings['unblock']."\n");
-	fclose($fh);
+$ip = $settings['unblock'];
+$nft = is_executable('/usr/sbin/nft') ? '/usr/sbin/nft' : '/sbin/nft';
+if (!is_executable($nft)) {
+	throw new \Exception("nftables is required");
+}
+$suffix = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? '6' : '';
+$sets = array('rfw_attacker', 'rfw_clamped', 'rfw_tempwhitelist', 'rfw_whitelist', 'rfw_discovered');
+foreach ($sets as $set) {
+	$cmd = escapeshellcmd($nft).' delete element inet fpbx '.$set.$suffix.' { '.$ip.' } 2>/dev/null';
+	exec($cmd);
 }
 
 if (!empty($settings['login'])) {
-	$ip = $settings['unblock'];
-	if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-		$iptables = "ip6tables";
-	} else {
-		$iptables = "iptables";
-	}
-	// The user has been logged in by an external process. Add this IP to the logged in table.
-	$cmd = "$iptables -A fpbxregistrations -s $ip -j fpbxknownreg";
-	`$cmd`;
-	// Did we add it at the same time as something else did?
-	$cmd = "${iptables}-save | grep fpbxregistrations | grep '$ip' | wc -l";
-	$res = trim(`$cmd`);
-	if ($res == 2) {
-		// Something else added it at the same time. Remove one.
-		$delcmd = "$iptables -D fpbxregistrations -s $ip -j fpbxknownreg";
-		`$delcmd`;
-	}
+	$set = 'registrations'.$suffix;
+	$cmd = escapeshellcmd($nft).' add element inet fpbx '.$set.' { '.$ip.' } 2>/dev/null';
+	exec($cmd);
 }
 
 

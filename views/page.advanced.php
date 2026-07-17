@@ -56,6 +56,7 @@ default:
         <?php echo load_view(__DIR__."/view.shortcuts.php", array("fw" => $fw)); ?>
       </div>
       <div role="tabpanel" id="settings" class="tab-pane <?php echo $settings; ?>">
+        <?php echo load_view(__DIR__."/view.backend.php", array("fw" => $fw)); ?>
         <?php echo load_view(__DIR__."/view.settings.php", array("fw" => $fw)); ?>
       </div>
       <div role="tabpanel" id="advanced_customrules" class="tab-pane <?php echo $advanced_customrules; ?>">

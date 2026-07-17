@@ -18,7 +18,7 @@ $(document).ready(function() {
 				url: 'ajax.php?command=setrfrules&module=firewall',
 				data: formdata(),
 				success: function () {
-					alert('Please note : These changes are auto applied ,  Please Monitor the firewall.log for any config mismatch  in the iptables rules');
+					alert('Please note: These changes are applied automatically. Monitor firewall.log for any nftables rule mismatch.');
 				}
 			});
 		} else {
@@ -54,7 +54,7 @@ $(document).ready(function() {
 				url: 'ajax.php?command=setrfrules&module=firewall',
 				data: formdata(),
 				success: function () {
-					alert('Please note : These changes are auto applied, Please Monitor the firewall.log for any config mismatch in the iptables rules');
+					alert('Please note: These changes are applied automatically. Monitor firewall.log for any nftables rule mismatch.');
 				}
 			});
 

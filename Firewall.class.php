@@ -24,6 +24,28 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->webuser = $this->FreePBX->Config->get('AMPASTERISKWEBUSER');
 	    $this->webgroup = $this->FreePBX->Config->get("AMPASTERISKWEBGROUP");
 	}
+
+	/**
+	 * Translate FreePBX 17 custom INPUT rules into /etc/firewall.nft.
+	 */
+	public function migrateLegacyCustomRules() {
+		if (!class_exists('\FreePBX\modules\Firewall\LegacyRulesMigrator')) {
+			include __DIR__.'/LegacyRulesMigrator.class.php';
+		}
+		$migrator = new Firewall\LegacyRulesMigrator();
+		$result = $migrator->migrate();
+		if (!empty($result['status'])) {
+			$this->setConfig('custom_rules_format', Firewall\Schema::BACKEND_NFTABLES);
+		}
+		return $result;
+	}
+
+	public function normalizeFail2BanActions() {
+		if (!class_exists('\FreePBX\modules\Firewall\LegacyRulesMigrator')) {
+			include __DIR__.'/LegacyRulesMigrator.class.php';
+		}
+		return (new Firewall\LegacyRulesMigrator())->normalizeFail2Ban();
+	}
 	
 	/**
 	 * setServices
@@ -79,6 +101,39 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			if($type == $from){
 				$trusted .= (string) "$ip\n";
 			}
+		}
+
+		// Do not remove compatibility tables until native fpbx is really present.
+		$nativeReady = !$wasOn;
+		if ($wasOn) {
+			for ($i = 0; $i < 30; $i++) {
+				exec('nft list table inet fpbx >/dev/null 2>&1', $unused, $nativeStatus);
+				$commitFile = '/var/lib/asterisk/firewall/fpbx.nft';
+				clearstatcache(true, $commitFile);
+				if ($nativeStatus === 0
+					&& is_file($commitFile)
+					&& filemtime($commitFile) >= $migrationStarted
+					&& $this->getDriver()->validateRunning()) {
+					$nativeReady = true;
+					break;
+				}
+				sleep(1);
+			}
+		}
+		if (!$nativeReady) {
+			return array(
+				'status' => false,
+				'message' => _('Native nftables did not become ready within 30 seconds. Legacy rules were retained for safety; check firewall.log.'),
+				'data' => $this->getFirewallRuntimeStatus(),
+			);
+		}
+		$cleanup = (new Firewall\LegacyRulesMigrator())->removeLegacyRuntime();
+		if (empty($cleanup['status'])) {
+			return array(
+				'status' => false,
+				'message' => $cleanup['message'],
+				'data' => $cleanup,
+			);
 		}
 		return $trusted;
 	}
@@ -554,7 +609,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if ($error) {
 			$trusted = array_merge($trusted, $this->Dashboard()->genStatusIcon('error', _("Firewall Integrity Failed")));
 			$this->Notifications()->add_critical('firewall', 'zoneerror', _("Firewall Integrity Failed"),
-				sprintf(_("Interface %s is not in the correct zone. This can be caused by manual alterations of iptables, or, an unexpected error. Please restart the firewall service."), $error),
+				sprintf(_("Interface %s is not in the correct zone. This can be caused by manual alterations of nftables or an unexpected error. Please restart the firewall service."), $error),
 				"?display=firewall",
 				true, // Reset on update.
 				true); // Can delete
@@ -1195,6 +1250,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$asfw 		= $this->getAdvancedSettings();
 		$IDsetting	= $this->FreePBX->Sysadmin->getIntrusionDetection();
 		switch ($_REQUEST['command']) {
+			case "migratebackend":
+				return $this->migrateFirewallBackend($_REQUEST['target'] ?? '');
 			case "switchlegacy":
 				if(!empty($_REQUEST["option"])){
 					switch($_REQUEST["option"]){
@@ -1435,6 +1492,9 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				return "stopped";
 			case "start_id":
 				$this->FreePBX->Sysadmin->runHook("fail2ban-generate");
+				if (!$this->normalizeFail2BanActions()) {
+					throw new \RuntimeException(_("Unable to convert generated Fail2Ban actions to native nftables."));
+				}
 				$this->FreePBX->Sysadmin->runHook("fail2ban-start");
 				return true;
 			case "getIPsZone":
@@ -1728,7 +1788,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		}
 	}
 
-	// Manage Jiffies, for xt_recent
+	// Manage kernel time units used by attack-history presentation.
 	public function getJiffies() {
 		static $j = false;
 		if (!$j) {
@@ -2026,9 +2086,164 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (!class_exists('\FreePBX\modules\Firewall\Driver')) {
 			include __DIR__."/Driver.class.php";
 		}
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__."/Schema.class.php";
+		}
 
 		$d = new Firewall\Driver;
 		return $d->getDriver();
+	}
+
+	/**
+	 * Ensure firewall_schema / firewall_backend meta exist (FreePBX 18).
+	 */
+	public function ensureSchemaMeta() {
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__.'/Schema.class.php';
+		}
+		return Firewall\Schema::ensureMeta($this);
+	}
+
+	/**
+	 * Runtime status for CLI / UI diagnostics.
+	 */
+	public function getFirewallRuntimeStatus() {
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__.'/Schema.class.php';
+		}
+		$meta = Firewall\Schema::ensureMeta($this);
+		$driverName = 'unknown';
+		$valid = false;
+		try {
+			$driver = $this->getDriver();
+			if (method_exists($driver, 'getDriverName')) {
+				$driverName = $driver->getDriverName();
+			} else {
+				$driverName = (new \ReflectionClass($driver))->getShortName();
+			}
+			// validateRunning can require root/sysadmin hooks; don't fail status on it.
+			if ($this->getConfig('status')) {
+				ob_start();
+				$valid = (bool) $driver->validateRunning();
+				ob_end_clean();
+			}
+		} catch (\Throwable $e) {
+			$driverName = isset($driverName) && $driverName !== 'unknown'
+				? $driverName
+				: ((isset($driver) && is_object($driver)) ? (new \ReflectionClass($driver))->getShortName() : 'unknown');
+			$valid = false;
+		} catch (\Exception $e) {
+			$valid = false;
+		}
+		return array_merge($meta, array(
+			'enabled' => (bool) $this->getConfig('status'),
+			'driver_instance' => $driverName,
+			'rules_valid' => $valid,
+			'nftables_enabled_flag' => (bool) $this->getConfig('firewall_nftables_enabled'),
+		));
+	}
+
+	/**
+	 * Set native backend. Iptables is import-only in schema 3.
+	 */
+	public function setFirewallBackend($backend, $enableNftables = null) {
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__.'/Schema.class.php';
+		}
+		$allowed = array(Firewall\Schema::BACKEND_AUTO, Firewall\Schema::BACKEND_NFTABLES);
+		if (!in_array($backend, $allowed, true)) {
+			return false;
+		}
+		$this->setConfig('firewall_backend', Firewall\Schema::BACKEND_NFTABLES);
+		$this->setConfig('firewall_nftables_enabled', true);
+		if (!class_exists('\FreePBX\modules\Firewall\Driver')) {
+			include __DIR__.'/Driver.class.php';
+		}
+		Firewall\Driver::resetDriverCache();
+		return Firewall\Schema::ensureMeta($this);
+	}
+
+	/**
+	 * Perform the supported one-way migration to native nftables.
+	 */
+	public function migrateFirewallBackend($target) {
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__.'/Schema.class.php';
+		}
+		if (strtolower(trim((string) $target)) !== Firewall\Schema::BACKEND_NFTABLES) {
+			return array(
+				'status' => false,
+				'message' => _('Iptables is no longer a runtime backend. Use nftables; legacy rules can be imported with migrate_rules.'),
+			);
+		}
+		if (!Firewall\Schema::nftAvailable()) {
+			return array(
+				'status' => false,
+				'message' => _('nftables is not available. Install the nftables package and try again.'),
+			);
+		}
+
+		$format = $this->getConfig('custom_rules_format');
+		if ($format === Firewall\Schema::BACKEND_NFTABLES && is_file('/etc/firewall.nft')) {
+			$legacy = array('status' => true, 'message' => _('Existing native custom rules were kept.'));
+		} else {
+			$legacy = $this->migrateLegacyCustomRules();
+			if (empty($legacy['status'])) {
+				return array('status' => false, 'message' => $legacy['message'], 'data' => $legacy);
+			}
+		}
+
+		$wasOn = (bool) $this->getConfig('status');
+		$migrationStarted = time();
+		$this->setFirewallBackend(Firewall\Schema::BACKEND_NFTABLES, true);
+		if ($wasOn) {
+			try {
+				$this->restartFirewall();
+			} catch (\Throwable $exception) {
+				return array('status' => false, 'message' => $exception->getMessage());
+			}
+		}
+
+		$nativeReady = !$wasOn;
+		for ($i = 0; $wasOn && $i < 30; $i++) {
+			exec('nft list table inet fpbx >/dev/null 2>&1', $output, $status);
+			$commitFile = '/var/lib/asterisk/firewall/fpbx.nft';
+			clearstatcache(true, $commitFile);
+			if ($status === 0 && is_file($commitFile)
+				&& filemtime($commitFile) >= $migrationStarted
+				&& $this->getDriver()->validateRunning()) {
+				$nativeReady = true;
+				break;
+			}
+			sleep(1);
+		}
+		if (!$nativeReady) {
+			return array(
+				'status' => false,
+				'message' => _('Native nftables did not become ready within 30 seconds. Legacy rules were retained for safety.'),
+				'data' => $this->getFirewallRuntimeStatus(),
+			);
+		}
+
+		$cleanup = (new Firewall\LegacyRulesMigrator())->removeLegacyRuntime();
+		if (empty($cleanup['status'])) {
+			return array('status' => false, 'message' => $cleanup['message'], 'data' => $cleanup);
+		}
+		return array(
+			'status' => true,
+			'message' => _('Firewall migration to native nftables completed.'),
+			'data' => array('custom_rules' => $legacy, 'cleanup' => $cleanup),
+		);
+	}
+
+	/**
+	 * Run schema migration explicitly (CLI / post-upgrade).
+	 */
+	public function migrateSchema($log = null) {
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__.'/Schema.class.php';
+		}
+		return Firewall\Schema::migrateAfterRestore($this, null, $log);
 	}
 
 	public function getSystemZones() {

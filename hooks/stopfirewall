@@ -1,93 +1,14 @@
-#!/bin/bash
+#!/bin/sh
 
-# Find the voipfirewalld process
-PID=`pgrep -f voipfirewalld`
-
-# Kill it dead.
-
-if [ "$PID" ]; then
-	kill -9 $PID
+# Stop the FreePBX firewall daemon and remove only FreePBX-owned tables.
+PID="$(pgrep -f '[v]oipfirewalld' 2>/dev/null)"
+if [ -n "$PID" ]; then
+	kill "$PID" 2>/dev/null || true
 fi
 
-# The following is imported from bin/clean-iptables (We can't run it directly,
-# as there is no integrity validation in bash, so we just paste it in here)
-
-# This re-implements the 'service iptables stop' command from the
-# pre-systemd era, if systemd is in use. 
-
-# If it's not (eg if /usr/bin/systemctl doesn't exist), then it just
-# uses those commands.
-if [ ! -x /usr/bin/systemctl ]; then
-	service iptables stop
-	service ip6tables stop
-	ipset -F lefilter
-	ipset -X lefilter
-	grep xt_recent /proc/modules >/dev/null && rmmod xt_recent
-	grep ipt_recent /proc/modules >/dev/null && rmmod ipt_recent
-	exit
+NFT="$(command -v nft 2>/dev/null)"
+if [ -n "$NFT" ]; then
+	"$NFT" delete table inet fpbx 2>/dev/null || true
+	"$NFT" delete table ip fpbxnat 2>/dev/null || true
 fi
-
-# Systemd is in use. Find all our modules and remove them
-
-NF_MODULES=($(lsmod | awk "/^ip6?table_|^ipt_|^nf_|^xt_/ {print \$1}") ip_tables ip6_tables)
-NF_MODULES_COMMON=(x_tables nf_nat nf_conntrack)
-
-rmmod_r() {
-	# Unload module with all referring modules.
-	# At first all referring modules will be unloaded, then the module itself.
-	local mod=$1
-	local ref=
-
-	# Get referring modules.
-	ref=$(lsmod | awk "/^${mod}/ { print \$4; }" | tr ',' ' ')
-
-	# recursive call for all referring modules
-	for i in $ref; do
-		rmmod_r $i
-	done
-
-	# Unload module.
-	# The extra test is for 2.6: The module might have autocleaned,
-	# after all referring modules are unloaded.
-	if grep -q "^${mod}" /proc/modules ; then
-		modprobe -r $mod > /dev/null 2>&1
-		res=$?
-		[ $res -eq 0 ] || echo -n " $mod"
-	fi
-}
-
-#Before flushing IPTABLES, backup fail2ban chains
-iptables -S | grep -E "(fail2ban)|(f2b)" > /tmp/firewall-f2b
-
-/usr/sbin/iptables -F
-/usr/sbin/iptables -X
-/usr/sbin/ip6tables -F
-/usr/sbin/ip6tables -X
-
-# Also flush NAT tables, too
-/usr/sbin/iptables -t nat -F
-/usr/sbin/iptables -t nat -X
-/usr/sbin/ip6tables -t nat -F
-/usr/sbin/ip6tables -t nat -X
-# and remove ipset
-/usr/sbin/ipset -F lefilter
-/usr/sbin/ipset -X lefilter
-
-# and remove ipset
-/usr/sbin/ipset -F lefilter
-/usr/sbin/ipset -X lefilter
-
-for mod in ${NF_MODULES[*]}; do
-	rmmod_r $mod
-done
-# try to unload remaining netfilter modules used by ipv4 and ipv6
-# netfilter
-for mod in ${NF_MODULES_COMMON[*]}; do
-	rmmod_r $mod >/dev/null
-done
-
-#Restore fail2ban IPTABLES rules, if any
-cat /tmp/firewall-f2b | while read line || [[ -n $line ]]; do
-iptables $line
-done
-rm -f /tmp/firewall-f2b
+exit 0

@@ -91,6 +91,14 @@ class Firewall extends Command {
 			return $this->f2bstatus($output);
 		case "fix_custom_rules":
 			return $this->customRulesFix($output);
+		case "status":
+			return $this->statusFirewall($output);
+		case "backend":
+			return $this->backendFirewall($output, $input->getArgument('opt'), $input->getArgument('ids'));
+		case "migrate_schema":
+			return $this->migrateSchema($output);
+		case "migrate_rules":
+			return $this->migrateRules($output);
 		default:
 			$output->writeln($this->showHelp());
 		}
@@ -114,7 +122,11 @@ class Firewall extends Command {
 			// TODO: "flush [zone]" => _("Delete ALL entries from zone 'zone'."),
 			"fix_custom_rules" => _("Create the files for the custom rules if they don't exist and set the permissions and owners correctly."),
 			"sync" => _("Synchronizes all selected zones of the firewall module with the intrusion detection whitelist."),
-			"f2bstatus or f2bs" => _("Display ignored and banned IPs. (Only root user).")
+			"f2bstatus or f2bs" => _("Display ignored and banned IPs. (Only root user)."),
+			"status" => _("Show firewall schema, backend preference, and resolved driver (FreePBX 18)."),
+			"backend [nftables]" => _("Show the native firewall engine or migrate the running firewall to nftables."),
+			"migrate_rules" => _("Translate supported FreePBX 17 custom INPUT rules to /etc/firewall.nft."),
+			"migrate_schema" => _("Migrate firewall KVStore schema from FreePBX 17/older to current (18)."),
 		);
 		foreach ($commands as $o => $t) {
 			$help .= "<info>$o</info> : <comment>$t</comment>\n";
@@ -597,5 +609,82 @@ class Firewall extends Command {
 			}
 		}
 		return $return_fix;
+	}
+
+	private function statusFirewall($output) {
+		$fw = \FreePBX::Firewall();
+		$status = $fw->getFirewallRuntimeStatus();
+		$table = new \Symfony\Component\Console\Helper\Table($output);
+		$rows = array();
+		foreach ($status as $k => $v) {
+			if (is_bool($v)) {
+				$v = $v ? 'true' : 'false';
+			} elseif (is_array($v)) {
+				$v = json_encode($v);
+			}
+			$rows[] = array($k, (string) $v);
+		}
+		$table->setHeaders(array(_('Key'), _('Value')))->setRows($rows);
+		$table->render();
+		return 0;
+	}
+
+	private function backendFirewall($output, $opt, $ids = array()) {
+		$fw = \FreePBX::Firewall();
+		if (!$opt) {
+			$status = $fw->getFirewallRuntimeStatus();
+			$output->writeln(sprintf(
+				_('backend=%s resolved=%s nftables_enabled=%s'),
+				$status['backend'],
+				$status['resolved_driver'],
+				$status['nftables_enabled_flag'] ? 'true' : 'false'
+			));
+			return 0;
+		}
+		if ($opt !== 'nftables') {
+			$output->writeln('<error>'._("Iptables is import-only. Use: fwconsole firewall backend nftables").'</error>');
+			return 1;
+		}
+		$result = $fw->migrateFirewallBackend($opt);
+		$output->writeln(empty($result['status'])
+			? '<error>'.$result['message'].'</error>'
+			: '<info>'.$result['message'].'</info>');
+		return empty($result['status']) ? 1 : 0;
+	}
+
+	private function migrateSchema($output) {
+		$fw = \FreePBX::Firewall();
+		$result = $fw->migrateSchema(function ($msg, $level = 'INFO') use ($output) {
+			if ($level === 'ERROR') {
+				$output->writeln('<error>'.$msg.'</error>');
+			} elseif ($level === 'WARNING') {
+				$output->writeln('<comment>'.$msg.'</comment>');
+			} else {
+				$output->writeln('<info>'.$msg.'</info>');
+			}
+		});
+		$output->writeln(sprintf(
+			_('Done. from=%s to=%s migrated=%s'),
+			$result['from'],
+			$result['to'],
+			!empty($result['migrated']) ? 'yes' : 'no'
+		));
+		return 0;
+	}
+
+	private function migrateRules($output) {
+		$result = \FreePBX::Firewall()->migrateLegacyCustomRules();
+		if (empty($result['status'])) {
+			$output->writeln('<error>'.$result['message'].'</error>');
+			foreach ($result['unsupported'] ?? array() as $line) {
+				$output->writeln('<comment>'.$line.'</comment>');
+			}
+			return 1;
+		}
+		$output->writeln('<info>'.$result['message'].'</info>');
+		if (!empty($result['backup'])) {
+			$output->writeln(_('Previous native rules backup: ').$result['backup']);
+		}
+		return 0;
 	}
 }

@@ -37,8 +37,7 @@ class Jiffies {
 		// We want to make sure that there's not more than 10% variance
 		// in ticks.
 		//
-		// This is to catch tickless systems, which won't work AT ALL with
-		// xt_recent.
+		// Catch unstable timer sources before using them for attack history.
 		$baseline = $jiffies[0] - $first;
 		$maxdiff = $baseline * 1.10;
 		$mindiff = $baseline * .9;
@@ -107,14 +106,14 @@ class Jiffies {
 		if (!$current || $refresh) {
 			exec('grep -i "jiffies:" /proc/timer_list',$jf);
 			if (empty($jf[0]) || strpos($jf[0], "jiffies: ") !== 0) {
-				// If we didn't get anything, then we're probably in a restricted container.
-				// We'll guess by getting the highest jiffy amount from xt_recent, and crossing
-				// our fingers that that's close enough to accurate.
-				exec('sort -k5 -r /proc/self/net/xt_recent/* | cut -d\  -f 5 | head -1', $xt);
-				if (empty($xt[0]) || !is_numeric($xt[0])) {
+				// Restricted containers may hide timer_list. Approximate from
+				// monotonic uptime without depending on the legacy xt_recent module.
+				$uptime = @file_get_contents('/proc/uptime');
+				$seconds = ($uptime !== false) ? (float) explode(' ', trim($uptime))[0] : 0;
+				if ($seconds <= 0) {
 					return 0;
 				} else {
-					$current = trim($xt[0]);
+					$current = (int) round($seconds * $this->getKnownJiffies());
 				}
 			} else {
 				$current = substr($jf[0], 9);
