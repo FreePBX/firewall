@@ -2,7 +2,7 @@
 	<rawname>firewall</rawname>
 	<repo>standard</repo>
 	<name>System Firewall</name>
-	<version>17.0.2</version>
+	<version>18.0.1</version>
 	<publisher>Sangoma Technologies Corporation</publisher>
 	<license>AGPLv3+</license>
 	<licenselink>https://www.gnu.org/licenses/agpl-3.0.txt</licenselink>
@@ -11,27 +11,13 @@
 	<description>Integrated PBX Firewall. Currently works with RHEL 6 and RHEL 7 compatible distributions. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://sangomakb.atlassian.net/wiki/spaces/PG/pages/26181828/Firewall</more-info>
 	<changelog>
-		*17.0.2* FREEI-2443 fix:extend validation to detect suspicious command patterns
-		*17.0.1.43* Packaging of ver 17.0.1.43
-		*17.0.1.42* #808 Firewalll - Fail2ban.log errors 
-		*17.0.1.41* #980 Firewalll - PHP warnings 
-		*17.0.1.40* FREEI-2731 extra firewall service for allowing type of scim traffic 
-		*17.0.1.39* #971 Changes done for fixing Clears whitelist issur while opening Intrusion Detection 
-		*17.0.1.38* Packaging of ver 17.0.1.38
-		*17.0.1.37* Github Issue #871 undefined variable 
-		*17.0.1.36* #814 Fail2ban - Cannot set ban time 
-		*17.0.1.35* #Issue-645 Fixing getNfsPorts API for Debian OS. 
-		*17.0.1.34* #Issue-625 repeated custom whitelisted ip are removed in UI 
-		*17.0.1.33* #Issue-625 repeated custom whitelisted ip are removed in UI 
-		*17.0.1.32* Github #625 adding whitelist ips to trusted network 
-		*17.0.1.31* Fixing FREEI-1595 Undefined index error on fresh non-activated system 
-		*17.0.1* 17.0.1 alpha release
+		*18.0.1* initial release
 	</changelog>
 	<depends>
 		<file>/usr/lib/sysadmin/includes.php</file>
-		<module>sipsettings ge 17.0.1</module>
-		<module>manager ge 17.0.1</module>
-		<version>17.0.1</version>
+		<module>sipsettings ge 18.0.1</module>
+		<module>manager ge 18.0.1</module>
+		<version>18.0</version>
 	</depends>
 	<menuitems>
 		<firewall>Firewall</firewall>
@@ -39,7 +25,7 @@
 	<location>compatibility</location>
 	<md5sum>compatibility</md5sum>
 	<supported>
-		<version>17.0</version>
+		<version>18.0</version>
 	</supported>
 	<console>
 		<command>
