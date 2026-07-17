@@ -25,7 +25,6 @@ $apps = array(
 		"common.php", 
 		array(__DIR__."/../hooks/validator.php", "validator.php"), 
 		array(__DIR__."/../Lock.class.php", "lock.php"), 
-		"modprobe.php", 
 		"asmanager.php", 
 		"monitor.php",
 		array($ipUtils, "IpUtils.php")

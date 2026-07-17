@@ -4,38 +4,58 @@ namespace FreePBX\modules\Firewall;
 
 class Driver {
 
+	private static $driverObject = false;
+	private static $driverName = false;
+
 	public function getDriver() {
-		static $driverObject = false;
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__.'/Schema.class.php';
+		}
 
-		if (!$driverObject) {
-			// firewalld is really slow. REALLY slow. Disabled.
-			$driver = "Iptables";
+		$wanted = 'Nftables';
+		if (!Schema::nftAvailable()) {
+			throw new \RuntimeException(
+				'nftables is required by the FreePBX Firewall. Install the nftables package before starting the firewall.'
+			);
+		}
 
+		if (self::$driverObject && self::$driverName !== $wanted) {
+			self::resetDriverCache();
+		}
+
+		if (!self::$driverObject) {
+			$driver = $wanted;
 			$fn = __DIR__."/drivers/$driver.class.php";
 			if (!file_exists($fn)) {
-				throw new \Exception("Unknown driver $driver");
+				throw new \RuntimeException("Required native nftables driver is missing: $fn");
 			}
 
-			// Note the double slash here so we don't escape the single quote.
-			// Turn on syntax highlighting if it's not obvious.
 			$class = '\FreePBX\modules\Firewall\Drivers\\'.$driver;
-			// Do we need to load it?
 			if (!class_exists($class)) {
-				// Woah there, cowboy. This file COULD be run as root. If it is, then the Validator class should exist.
 				if (class_exists('\FreePBX\modules\Firewall\Validator')) {
 					$v = new Validator;
 					$v->secureInclude("drivers/$driver.class.php");
 				} else {
 					include $fn;
 				}
-			} else {
-				// Debugging
-				throw new \Exception("How did $class already exist?");
 			}
 
-			$driverObject = new $class();
+			self::$driverObject = new $class();
+			self::$driverName = $driver;
 		}
 
-		return $driverObject;
+		return self::$driverObject;
+	}
+
+	/**
+	 * Clear cached driver after backend switch or unit tests.
+	 */
+	public static function resetDriverCache() {
+		self::$driverObject = false;
+		self::$driverName = false;
+	}
+
+	public static function getCachedDriverName() {
+		return self::$driverName;
 	}
 }
