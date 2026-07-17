@@ -21,7 +21,7 @@ $ss     = $fw->getSmartSettings();
 $asfw   = $fw->getAdvancedSettings();
 $salic  = false;
 
-if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->getIntrusionDetection() != false){
+if(($sa = $fw->sysadmin()) && $sa->getIntrusionDetection() != false){
   $salic    = true;
   $indetec  = $fw->getIDDataPage();
   $indetec['idregextip'] =$indetec['idregextip'].'='.(!empty($indetec['idregextip']) ? 'true' : '');

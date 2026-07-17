@@ -27,8 +27,8 @@ $sections = array(
 	),
 	 */
 	"customrules" => array( "desc" => _("Custom Firewall Rules"), "values" => array("enabled" => $ena, "disabled" => $dis), "docs" => array(
-		_("This authorizes the system to import custom iptables rules after the firewall has started."),
-		_("The files /etc/firewall-4.rules and /etc/firewall-6.rules (for IPv4 and IPv6 rules) must be owned by the 'root' user and not writable by any other user. Each line in the file will be given as a parameter to 'iptables' or 'ip6tables, respectively."),
+		_("This authorizes the system to import native custom nftables rules after the firewall has started."),
+		_("The file /etc/firewall.nft must be owned by root and not writable by group or others. FreePBX validates it with nft --check before applying it. Older /etc/firewall-4.rules and /etc/firewall-6.rules files can be converted with 'fwconsole firewall migrate_rules'."),
 		_("This allows expert users to customize the firewall to their specifications. This should be <strong>Disabled</strong> unless you explicitly know why it is enabled."),
 		),
 	),

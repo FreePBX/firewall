@@ -1,0 +1,14 @@
+#!/bin/sh
+# Remove only FreePBX-owned native nftables tables.
+# Do not flush the global ruleset: Fail2Ban, containers, VPNs, and administrator
+# tables may share the same Netfilter hooks.
+
+NFT="$(command -v nft 2>/dev/null)"
+if [ -z "$NFT" ]; then
+	echo "nftables is required but nft was not found" >&2
+	exit 1
+fi
+
+"$NFT" delete table inet fpbx 2>/dev/null || true
+"$NFT" delete table ip fpbxnat 2>/dev/null || true
+exit 0

@@ -3,7 +3,7 @@
 
 require '/usr/lib/sysadmin/includes.php';
 
-$iptables 		= json_encode(getIptables());
+$iptables 		= json_encode(getNativeFirewallState());
 $astspooldir	= \Sysadmin\FreePBX::Config()->get('ASTSPOOLDIR');
 
 if (is_dir("/run")) {
@@ -19,58 +19,39 @@ if (file_exists($out)) {
 file_put_contents($out, $iptables);
 chmod($out, 0777);
 
-function getIptables() {
-	// Parse iptables-save output
-	exec('/sbin/iptables-save 2>&1', $ipv4, $ret);
-	exec('/sbin/ip6tables-save 2>&1', $ipv6, $ret);
+function getNativeFirewallState() {
+	$nft = is_executable('/usr/sbin/nft') ? '/usr/sbin/nft' : '/sbin/nft';
+	if (!is_executable($nft)) {
+		throw new \RuntimeException('nftables is required');
+	}
+	exec(escapeshellcmd($nft).' -j list table inet fpbx 2>/dev/null', $output, $ret);
+	$interfaces = array();
+	if ($ret === 0) {
+		$json = json_decode(implode("\n", $output), true);
+		foreach ($json['nftables'] ?? array() as $item) {
+			if (($item['rule']['chain'] ?? '') !== 'fpbxinterfaces') {
+				continue;
+			}
+			$iface = null;
+			$zone = null;
+			foreach ($item['rule']['expr'] ?? array() as $expr) {
+				if (($expr['match']['left']['meta']['key'] ?? '') === 'iifname') {
+					$iface = $expr['match']['right'] ?? null;
+				}
+				if (strpos($expr['jump']['target'] ?? '', 'zone-') === 0) {
+					$zone = substr($expr['jump']['target'], 5);
+				}
+			}
+			if ($iface && $zone) {
+				$interfaces[] = '-i '.$iface.' -j zone-'.$zone;
+			}
+		}
+	}
 	$conf = array(
-		"ipv4" => parseIptablesOutput($ipv4),
-		"ipv6" => parseIptablesOutput($ipv6),
+		"ipv4" => array("filter" => array("fpbxinterfaces" => $interfaces), "nat" => array()),
+		"ipv6" => array("filter" => array("fpbxinterfaces" => $interfaces)),
 		"timestamp" => time(),
 	);
-	return $conf;
-}
-
-function parseIptablesOutput($iptsave) {
-	$table = "unknown";
-
-	$conf = array();
-
-	foreach ($iptsave as $line) {
-		if (empty($line)) {
-			continue;
-		}
-		$firstchar = $line[0];
-
-		if ($firstchar == "*") {
-			// It's a new table.
-			$table = substr($line, 1);
-			continue;
-		}
-
-		if ($firstchar == ":") {
-			// It's a chain definition
-			list($chain, $stuff) = explode(" ", $line);
-			$chain = substr($chain, 1);
-			$conf[$table][$chain] = array();
-			continue;
-		}
-
-		// Skip lines we don't care about..
-		if ($firstchar != "-") { // Everything we care about now starts with -A
-			continue;
-		}
-		$linearr = explode(" ", $line);
-		array_shift($linearr);
-		$chain = array_shift($linearr);
-		$conf[$table][$chain][] = join(" ", $linearr);
-	}
-
-	// Make sure we have SOMETHING there.
-	if (!isset($conf['filter'])) {
-		$conf['filter'] = array("INPUT" => array());
-	}
-
 	return $conf;
 }
 

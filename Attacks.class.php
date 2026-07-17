@@ -5,15 +5,10 @@ namespace FreePBX\modules\Firewall;
 class Attacks {
 
 	private $tags;
-	private $module;
 	private $jiffies;
 
 	public function __construct($jiffies) {
-		if (file_exists("/proc/net/xt_recent/ATTACKER")) {
-			$this->module = "/proc/net/xt_recent/";
-		} elseif (file_exists("/proc/net/ipt_recent/ATTACKER")) {
-			$this->module = "/proc/net/ipt_recent/";
-		} else {
+		if (!$this->nftTableExists()) {
 			throw new \Exception("Firewall is not running!");
 		}
 
@@ -37,23 +32,45 @@ class Attacks {
 	}
 
 	private function parseRecent($tag) {
-		$file = $this->module.$tag;
-		if (!file_exists($file)) {
+		$sets = array(
+			'ATTACKER' => 'rfw_attacker',
+			'REPEAT' => 'rfw_discovered',
+			'SIGNALLING' => 'rfw_clamped',
+			'CLAMPED' => 'rfw_clamped',
+			'DISCOVERED' => 'rfw_discovered',
+		);
+		if (!isset($sets[$tag])) {
 			return array();
 		}
-		$tmparr = file($file, \FILE_IGNORE_NEW_LINES|\FILE_SKIP_EMPTY_LINES);
 		$retarr = array();
-
-		foreach ($tmparr as $line) {
-			// Looks like this: 
-			// src=192.168.15.11 ttl: 61 last_seen: 5317769715 oldest_pkt: 30 5316922978, 5316929714, 5316982978, 5316989717, 5317042978, ...
-			// Note the number is actually kernel jiffies.
-			if (!preg_match('/^src=([a-f0-9\.:]+)\s.+\slast_seen: (\d+) oldest_pkt: (\d+) (.+)/', $line, $out)) {
-				throw new \Exception("Don't understand line $line");
+		foreach (array($sets[$tag], $sets[$tag].'6') as $set) {
+			exec('nft list set inet fpbx '.escapeshellarg($set).' 2>/dev/null', $lines, $status);
+			if ($status !== 0) {
+				$lines = array();
+				continue;
 			}
-			$retarr[$out[1]] = array("last_seen" => $out[2], "oldest_pkt" => $out[3], "previous" => explode(", ", $out[4]));
+			$blob = implode("\n", $lines);
+			if (preg_match('/elements\s*=\s*\{([^}]*)\}/s', $blob, $match)) {
+				foreach (explode(',', $match[1]) as $element) {
+					if (!preg_match('/^\s*([0-9a-fA-F:.]+)/', trim($element), $address)) {
+						continue;
+					}
+					$now = $this->jiffies->getCurrentJiffie();
+					$retarr[$address[1]] = array(
+						'last_seen' => $now,
+						'oldest_pkt' => 1,
+						'previous' => array($now),
+					);
+				}
+			}
+			$lines = array();
 		}
 		return $retarr;
+	}
+
+	private function nftTableExists() {
+		exec('nft list table inet fpbx >/dev/null 2>&1', $output, $status);
+		return $status === 0;
 	}
 
 	private function generateSummary($tags, $registrations) {

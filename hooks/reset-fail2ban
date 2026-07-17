@@ -1,2 +1,4 @@
-#!/bin/bash
-fail2ban-client reload asterisk-iptables
+#!/bin/sh
+# Reload every jail. Historic jail names may contain "iptables", but actions are
+# normalized to native nftables before Fail2Ban starts.
+exec fail2ban-client reload

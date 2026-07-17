@@ -1,0 +1,27 @@
+#!/usr/bin/php -q
+<?php
+// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
+
+// Root side of the GUI "Migrate to nftables" action. The web user cannot write
+// /etc or call nft, so the privileged migration runs here and the result is
+// written where the web interface can read it.
+
+include '/etc/freepbx.conf';
+
+$fw = FreePBX::Firewall();
+$dir = $fw->get_astspooldir()."/firewall";
+if (!is_dir($dir)) {
+	mkdir($dir, 0755, true);
+}
+$resultFile = $dir."/migration-result.json";
+
+try {
+	$result = $fw->migrateFirewallBackend('nftables', false);
+} catch (\Throwable $e) {
+	$result = array('status' => false, 'message' => $e->getMessage());
+}
+
+file_put_contents($resultFile, json_encode($result));
+chown($resultFile, 'asterisk');
+chgrp($resultFile, 'asterisk');
+chmod($resultFile, 0644);

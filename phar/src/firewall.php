@@ -128,31 +128,25 @@ $monitorpid = start_monitor();
 // Delete our safemode flag if it exists.
 @unlink("/var/run/firewalld.safemode");
 
-// Flush all iptables rules
-$f = $v->checkFile("bin/clean-iptables");
+// Remove only FreePBX-owned native nftables tables.
+$f = $v->checkFile("bin/clean-nftables");
 `$f`;
+
+// Sysadmin may generate legacy iptables actions. Normalize them before start.
+normalizeFail2BanNftables();
 
 // Start fail2ban if we can
 if($id_service == "enabled"){
 	`service fail2ban start`;
 }
 
-// Flush all fail2ban rules in asterisk-iptables jail
+// The historic jail name is retained for backup compatibility; its action is nft.
 `fail2ban-client reload asterisk-iptables`;
 
-// Always load ip_contrack_ftp, even if FTP isn't allowed,
+// Load native conntrack helpers for outbound FTP/TFTP.
 // as it helps with OUTBOUND connections, too.
-`/sbin/modprobe ip_conntrack_ftp`;
 `/sbin/modprobe nf_conntrack_ftp`;
-// Same for TFTP
-`/sbin/modprobe ip_conntrack_tftp`;
 `/sbin/modprobe nf_conntrack_tftp`;
-
-// Make sure our conntrack kernel module is configured correctly
-include_once 'modprobe.php';
-$m = new \FreePBX\Firewall\Modprobe;
-$m->checkModules();
-unset($m);
 
 $path = $v->checkFile("Services.class.php");
 include_once $path;
@@ -360,8 +354,8 @@ function shutdown() {
 		`service fail2ban stop`;
 	}
 
-	// Flush all iptables rules
-	$f = $v->checkFile("bin/clean-iptables");
+	// Remove only FreePBX-owned native nftables tables.
+	$f = $v->checkFile("bin/clean-nftables");
 	`$f`;
 	
 	// If sysadmin is configuring fail2ban, it'll need to regenerate the
@@ -372,6 +366,7 @@ function shutdown() {
 		if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
 			`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
 		}
+		normalizeFail2BanNftables();
 		// And restart fail2ban
 		if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start")) {
 			`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
@@ -508,7 +503,7 @@ function updateFirewallRules($firstrun = false) {
 		if($id_service == "enabled"){
 			`service fail2ban stop`;
 		}
-		$f = $v->checkFile("bin/clean-iptables");
+		$f = $v->checkFile("bin/clean-nftables");
 		`$f`;
 		// Wait 4 seconds to give incron a chance to catch up
 		sleep(4);
@@ -637,20 +632,10 @@ function updateFirewallRules($firstrun = false) {
         }
      }
   }
-	// Make sure we nuke any kernel conntrack rules that may be hanging around for 
-	// those hosts.
-	$a = new FreePBX\modules\Firewall\Attacks(1000); // We don't care about jiffies
-	$attacks = $a->getAllAttacks(false, false); // Don't want a summary
-	$tmparr = array_flip($getservices['smartports']['registrations']);
-
-	foreach ($attacks as $chain => $attacker) {
-		foreach (array_keys($attacker) as $ip) {
-			if (isset($tmparr[$ip])) {
-				// Found one. Remove it. It's legit now.
-				$fh = fopen("/proc/net/xt_recent/$chain", "w");
-				fwrite($fh, "-$ip\n");
-				fclose($fh);
-			}
+	// Registered hosts are legitimate; remove them from native attack sets.
+	foreach ($getservices['smartports']['registrations'] as $ip) {
+		foreach (array('rfw_attacker', 'rfw_clamped', 'rfw_tempwhitelist') as $set) {
+			$driver->removeAttackAddress($set, $ip);
 		}
 	}
 
@@ -784,7 +769,7 @@ function updateFirewallRules($firstrun = false) {
 			 $known[$out[1]]['config']['ZONE'] = "trusted";
 		}
 
-		// Is iptables pointing to the correct zone?
+		// Is the native interface rule pointing to the correct zone?
 		if ($out[2] !== $known[$out[1]]['config']['ZONE']) {
 			// No. Fix it.
 			$driver->changeInterfaceZone($out[1], $known[$out[1]]['config']['ZONE']);
@@ -813,7 +798,13 @@ function updateFirewallRules($firstrun = false) {
 			$driver->changeInterfaceZone($intname, $zoneshouldbe);
 		}
 	}
-	
+
+	// Native custom rules are loaded last, after every referenced chain/set exists.
+	if (isset($getservices['advancedsettings']['customrules'])
+		&& $getservices['advancedsettings']['customrules'] === 'enabled') {
+		importCustomRules();
+	}
+	$driver->commit();
 }
 
 function sigSleep($secs = 10) {
@@ -872,30 +863,48 @@ function getServices() {
 }
 
 function importCustomRules() {
-	$files = array("/sbin/iptables" => "/etc/firewall-4.rules", "/sbin/ip6tables" => "/etc/firewall-6.rules");
-	foreach ($files as $ipt => $f) {
-		// Validate file
-		if (!file_exists($f)) {
-			fwLog("Custom Firewall rules file $f does not exist, skipping");
-			continue;
-		}
-		$stat = stat($f);
-		if ($stat['uid'] !== 0) {
-			fwLog("Custom Firewall rules file $f not owned by root, skipping");
-			continue;
-		}
-		// Todo: Writable checks
-		$cmds = file($f, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
-		foreach ($cmds as $id => $cmd) {
-			if (empty($cmd) || strpos($cmd, "#") === 0 || strpos($cmd, ";") === 0) {
-				$lineno = $id + 1;
-				fwLog("Skipping line $lineno in file $f ('$cmd')");
-				continue;
-			}
-			$safecmd = escapeshellcmd($cmd);
-			fwLog("Custom rule: $ipt $safecmd");
-			exec("$ipt $safecmd");
-		}
+	global $driver;
+	if (!$driver->importCustomRules('/etc/firewall.nft')) {
+		throw new \Exception('Native custom nftables rules failed validation');
 	}
+}
+
+/**
+ * Convert Sysadmin-generated explicit actions to Fail2Ban's native nft action.
+ * Jail names are intentionally unchanged so older backups and integrations work.
+ */
+function normalizeFail2BanNftables() {
+	$file = '/etc/fail2ban/jail.local';
+	if (!is_file($file) || !is_readable($file)) {
+		return true;
+	}
+	$cfg = file_get_contents($file);
+	if ($cfg === false) {
+		return false;
+	}
+	$cfg = preg_replace(
+		'/action\s*=\s*iptables-allports\[name=([^,\]]+),\s*protocol=([^\]]+)\]/',
+		'action = nftables[name=$1, type=allports, protocol=$2]',
+		$cfg
+	);
+	$cfg = preg_replace(
+		'/action\s*=\s*iptables-multiport\[name=([^,\]]+),\s*protocol=([^,\]]+),\s*port=([^\]]+)\]/',
+		'action = nftables[name=$1, type=multiport, protocol=$2, port=$3]',
+		$cfg
+	);
+	if (strpos($cfg, 'iptables-allports[') !== false || strpos($cfg, 'iptables-multiport[') !== false) {
+		fwLog('Unable to normalize every Fail2Ban iptables action');
+		return false;
+	}
+	$tmp = $file.'.nft.tmp';
+	if (file_put_contents($tmp, $cfg) === false) {
+		return false;
+	}
+	chmod($tmp, 0644);
+	if (!rename($tmp, $file)) {
+		@unlink($tmp);
+		return false;
+	}
+	return true;
 }
 
