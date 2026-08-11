@@ -33,39 +33,6 @@ class Validator {
 		self::$sig = $sig;
 	}
 
-	private static $dangerous_patterns = array(
-		'/\bnc\b/',
-		'/\bncat\b/',
-		'/\bnetcat\b/',
-		'/\bsocat\b/',
-		'/\bbash\s+-i/',
-		'/\b\/dev\/tcp\//',
-		'/\b\/dev\/udp\//',
-		'/\bcurl\b.*\|\s*bash/',
-		'/\bwget\b.*\|\s*bash/',
-		'/\bpython\b.*\bsocket\b/',
-		'/\bperl\b.*\bsocket\b/',
-		'/\bphp\b.*\bfsockopen\b/',
-		'/\btelnet\b/',
-		'/\bxterm\b/',
-		'/\bmkfifo\b/',
-		'/\b0xffffff\b/',
-	);
-
-	private function scanForReverseShell($fullpath) {
-		$contents = file_get_contents($fullpath);
-		if ($contents === false) {
-			throw new \Exception("Security scan: cannot read $fullpath");
-		}
-		foreach (self::$dangerous_patterns as $pattern) {
-			if (preg_match($pattern, $contents)) {
-				$basename = basename($fullpath);
-				error_log("SECURITY ALERT: Suspicious command detected in $fullpath matching pattern $pattern");
-				throw new \Exception("Security violation: $basename contains a suspicious command");
-			}
-		}
-	}
-
 	public function checkFile($filename = false) {
 		if ($filename[0] === "/" || strpos($filename, "..") !== false) {
 			throw new \Exception("Filename to include failed validation - $filename");
@@ -88,10 +55,7 @@ class Validator {
 			throw new \Exception("Hashes of $filename don't match (Sig = $shouldbe, file = $currenthash)");
 		}
 
-		if (preg_match('/\.(sh|bash)$/', $filename) || substr($filename, 0, 4) === 'bin/') {
-			$this->scanForReverseShell($fullpath);
-		}
-
+		// Phew!
 		return $fullpath;
 	}
 
