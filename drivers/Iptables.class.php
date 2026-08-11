@@ -95,6 +95,8 @@ class Iptables {
 	// Root process
 	public function addNetworkToZone($zone = false, $network = false, $cidr = false) {
 		$this->checkFpbxFirewall();
+		$this->assertValidZone($zone);
+		$cidr = $this->assertValidCidr($cidr);
 
 		// Make sure this zone exists
 		$this->checkTarget("zone-$zone");
@@ -141,12 +143,12 @@ class Iptables {
 		// If we're not inserting, just add it
 		if (!$insert) {
 			$nets[] = $p;
-			$cmd = "$ipt -A fpbxnets -s $network/$cidr -j zone-$zone";
+			$cmd = "$ipt -A fpbxnets -s ".escapeshellarg("$network/$cidr")." -j zone-$zone";
 		} else {
 			// Splice it into the array
 			array_splice($nets, $i, 0, $p);
 			$i++;
-			$cmd = "$ipt -I fpbxnets $i -s $network/$cidr -j zone-$zone";
+			$cmd = "$ipt -I fpbxnets $i -s ".escapeshellarg("$network/$cidr")." -j zone-$zone";
 		}
 		$this->l($cmd);
 		exec($cmd, $output, $ret);
@@ -157,10 +159,14 @@ class Iptables {
 	public function removeNetworkFromZone($zone = false, $network = false, $cidr = false) {
 
 		$this->checkFpbxFirewall();
+		$this->assertValidZone($zone);
 
 		// Check to see if we have a cidr or not.
 		if (strpos($network, "/") !== false) {
 			list($network, $cidr) = explode("/", $network);
+		}
+		if ($cidr !== false) {
+			$cidr = $this->assertValidCidr($cidr);
 		}
 		$current = &$this->getCurrentIptables();
 		// Are we IPv6 or IPv4? Note, again, they're passed as ref, as we array_splice
@@ -199,6 +205,7 @@ class Iptables {
 	// Root process
 	public function changeNetworksZone($newzone = false, $network = false, $cidr = false) {
 		$this->checkFpbxFirewall();
+		$this->assertValidZone($newzone);
 
 		// Check to see if we have a cidr or not.
 		if ($cidr === false && strpos($network, "/") !== false) {
@@ -629,16 +636,30 @@ class Iptables {
 		$current = &$this->getCurrentIptables();
 		$ipvers = array("ipv6" => "/sbin/ip6tables ".$this->wlock, "ipv4" => "/sbin/iptables ".$this->wlock);
 		$mask = array("ipv6" => "--mask ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "ipv4" => "--mask 255.255.255.255");
+
+		$rfwAsec = $this->assertBoundedInt($rules['fpbxrfw']['TIERA']['seconds'], 'seconds');
+		$rfwAhit = $this->assertBoundedInt($rules['fpbxrfw']['TIERA']['hitcount'], 'hitcount');
+		$rfwBsec = $this->assertBoundedInt($rules['fpbxrfw']['TIERB']['seconds'], 'seconds');
+		$rfwBhit = $this->assertBoundedInt($rules['fpbxrfw']['TIERB']['hitcount'], 'hitcount');
+		$rfwCsec = $this->assertBoundedInt($rules['fpbxrfw']['TIERC']['seconds'], 'seconds');
+		$rfwChit = $this->assertBoundedInt($rules['fpbxrfw']['TIERC']['hitcount'], 'hitcount');
+		$rl3sec = $this->assertBoundedInt($rules['fpbxratelimit']['TIER3']['seconds'], 'seconds');
+		$rl3hit = $this->assertBoundedInt($rules['fpbxratelimit']['TIER3']['hitcount'], 'hitcount');
+		$rl2sec = $this->assertBoundedInt($rules['fpbxratelimit']['TIER2']['seconds'], 'seconds');
+		$rl2hit = $this->assertBoundedInt($rules['fpbxratelimit']['TIER2']['hitcount'], 'hitcount');
+		$rl1sec = $this->assertBoundedInt($rules['fpbxratelimit']['TIER1']['seconds'], 'seconds');
+		$rl1hit = $this->assertBoundedInt($rules['fpbxratelimit']['TIER1']['hitcount'], 'hitcount');
+
 		foreach ($ipvers as $ipv => $ipt) {
 
 			//Generate what the rules should be
-			$tiera = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERA']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERA']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
-			$tierb = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERB']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERB']['hitcount']." --name SIGNALLING ".$mask[$ipv]." --rsource -j fpbxshortblock";
-			$tierc = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERC']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERC']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			$tiera = "-m recent --rcheck --seconds ".$rfwAsec." --hitcount ".$rfwAhit." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			$tierb = "-m recent --rcheck --seconds ".$rfwBsec." --hitcount ".$rfwBhit." --name SIGNALLING ".$mask[$ipv]." --rsource -j fpbxshortblock";
+			$tierc = "-m recent --rcheck --seconds ".$rfwCsec." --hitcount ".$rfwChit." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
 			$rfwarray = array("a" => $tiera, "b" => $tierb, "c" => $tierc);
-			$tier3 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER3']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER3']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
-			$tier2 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER2']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER2']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
-			$tier1 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER1']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER1']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxshortblock";
+			$tier3 = "-m recent --rcheck --seconds ".$rl3sec." --hitcount ".$rl3hit." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			$tier2 = "-m recent --rcheck --seconds ".$rl2sec." --hitcount ".$rl2hit." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			$tier1 = "-m recent --rcheck --seconds ".$rl1sec." --hitcount ".$rl1hit." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxshortblock";
 			$rlarray = array("3" => $tier3, "2" => $tier2, "1" => $tier1);
 
 			$me = &$current[$ipv]['filter']['fpbxrfw'];
@@ -1118,6 +1139,7 @@ class Iptables {
 			$me = &$current[$ipv]['filter']['fpbxhosts'];
 			$exists = array_flip($me);
 			foreach ($tmparr['targets'] as $addr => $zone) {
+				$this->assertValidZone($zone);
 				$p = "-s $addr -j zone-$zone";
 				if (isset($exists[$p])) {
 					// It's already there, no need to change
@@ -1126,7 +1148,7 @@ class Iptables {
 				}
 				// It doesn't exist. We need to add it.
 				$me[] = $p;
-				$cmd = $tmparr['ipt']." -A fpbxhosts $p";
+				$cmd = $tmparr['ipt']." -A fpbxhosts -s ".escapeshellarg($addr)." -j zone-$zone";
 				$this->l($cmd);
 				exec($cmd, $output, $ret);
 			}
@@ -1272,6 +1294,47 @@ class Iptables {
 				importCustomRules();
 			}
 		}
+	}
+
+	/**
+	 * Zone names that may be interpolated into iptables shell commands.
+	 */
+	private function assertValidZone($zone) {
+		static $allowed = array('external', 'internal', 'other', 'reject', 'trusted');
+		if (!is_string($zone) || !in_array($zone, $allowed, true)) {
+			throw new \Exception("Invalid zone");
+		}
+		return $zone;
+	}
+
+	/**
+	 * CIDR must be a non-negative integer suitable for iptables.
+	 */
+	private function assertValidCidr($cidr) {
+		// Allow values like "32" or "/32" from callers
+		if (is_string($cidr) && strlen($cidr) && $cidr[0] === '/') {
+			$cidr = substr($cidr, 1);
+		}
+		$cidr = filter_var($cidr, \FILTER_VALIDATE_INT, array(
+			'options' => array('min_range' => 0, 'max_range' => 128),
+		));
+		if ($cidr === false) {
+			throw new \Exception("Invalid cidr");
+		}
+		return $cidr;
+	}
+
+	/**
+	 * RFW seconds/hitcount must be bounded integers before shell interpolation.
+	 */
+	private function assertBoundedInt($val, $name) {
+		$int = filter_var($val, \FILTER_VALIDATE_INT, array(
+			'options' => array('min_range' => 0, 'max_range' => 604800),
+		));
+		if ($int === false) {
+			throw new \Exception("Invalid $name");
+		}
+		return $int;
 	}
 
 	private function backupFail2ban($ipt) {

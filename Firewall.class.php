@@ -1498,9 +1498,14 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					throw new \Exception("Invalid JSON");
 				}
 
+				$zones = $this->getZones();
 				foreach ($nets as $net => $tmparr) {
+					if (!is_array($tmparr) || !isset($tmparr['zone']) || !isset($zones[$tmparr['zone']])) {
+						throw new \Exception("Invalid zone");
+					}
+					$descr = isset($tmparr['description']) ? trim($tmparr['description']) : "";
 					$global_net = "";
-					$this->changeNetworksZone($net, $tmparr['zone'], $tmparr['description']);
+					$this->changeNetworksZone($net, $tmparr['zone'], $descr);
 					if($asfw["id_sync_fw"] == "enabled"){
 						switch($tmparr['zone']){
 							case "trusted":
@@ -1706,15 +1711,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				return;
 
 			case "setrfrules":
-				foreach($_REQUEST as $field => $val){
-					$k = explode('_',$field);
-					$id = $k[0];
-					if($id == 'fpbxratelimit' || $id == 'fpbxrfw'){
-						$key = $k[1];
-						$set = $k[2];
-						$responsive[$id][$key][$set] = $val;
-					}
-				}
+				$responsive = $this->parseResponsiveFirewallRequest($_REQUEST);
 				foreach($responsive as $id => $rows){
 					foreach($rows as $key => $val){
 						\FreePBX::Firewall()->SetConfig($key,$val,$id);
@@ -1805,15 +1802,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig('fail2banbypass', false);
 			return;
 		case "saveresponsive":
-			foreach($_REQUEST as $field => $val){
-				$k = explode('_',$field);
-				$id = $k[0];
-				if($id == 'fpbxratelimit' || $id == 'fpbxrfw'){
-					$key = $k[1];
-					$set = $k[2];
-					$responsive[$id][$key][$set] = $val;
-				}
-			}
+			$responsive = $this->parseResponsiveFirewallRequest($_REQUEST);
 			foreach($responsive as $id => $rows){
 				foreach($rows as $key => $val){
 					\FreePBX::Firewall()->SetConfig($key,$val,$id);
@@ -2118,6 +2107,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			// Someone clicked on an empty box..
 			return;
 		}
+		$zones = $this->getZones();
+		if (!isset($zones[$zone])) {
+			throw new \Exception("Invalid zone");
+		}
 		// Is this a network?
 		if (strpos($net, "/") !== false) {
 			list($addr, $subnet) = explode("/", trim($net));
@@ -2187,6 +2180,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		if (!$host) {
 			throw new \Exception("Can't add empty host");
 		}
+		$zones = $this->getZones();
+		if (!isset($zones[$zone])) {
+			throw new \Exception("Invalid zone");
+		}
 
 		$hosts = $this->getConfig("hostmaps");
 		if (!is_array($hosts)) {
@@ -2215,10 +2212,58 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $this->setConfig("hostmaps", $hosts);
 	}
 
+	/**
+	 * Parse and validate responsive firewall (RFW / ratelimit) request fields.
+	 * Only known tier keys and bounded integers / allowlisted types are accepted.
+	 */
+	private function parseResponsiveFirewallRequest($request) {
+		$allowedKeys = array(
+			'fpbxrfw' => array('TIERA', 'TIERB', 'TIERC'),
+			'fpbxratelimit' => array('TIER1', 'TIER2', 'TIER3'),
+		);
+		$allowedSets = array('seconds', 'hitcount', 'type');
+		$allowedTypes = array('BLOCK', 'THROTTLE');
+		$responsive = array();
+
+		foreach ($request as $field => $val) {
+			$k = explode('_', $field, 3);
+			if (count($k) !== 3) {
+				continue;
+			}
+			list($id, $key, $set) = $k;
+			if (!isset($allowedKeys[$id]) || !in_array($key, $allowedKeys[$id], true) || !in_array($set, $allowedSets, true)) {
+				continue;
+			}
+			if ($set === 'type') {
+				if (!in_array($val, $allowedTypes, true)) {
+					throw new \Exception("Invalid type");
+				}
+				$responsive[$id][$key][$set] = $val;
+				continue;
+			}
+			// seconds / hitcount must be non-negative integers within a sane bound
+			if (!is_scalar($val) || !ctype_digit((string)$val)) {
+				throw new \Exception("Invalid $set");
+			}
+			$int = (int)$val;
+			if ($int < 0 || $int > 604800) {
+				throw new \Exception("Out of range $set");
+			}
+			$responsive[$id][$key][$set] = $int;
+		}
+
+		return $responsive;
+	}
+
 	public function changeNetworksZone($net, $zone, $descr = "") {
 		$net = trim($net);
 		if (!$net) {
 			throw new \Exception("Can't add empty net");
+		}
+
+		$zones = $this->getZones();
+		if (!isset($zones[$zone])) {
+			throw new \Exception("Invalid zone");
 		}
 
 		// Get our current maps...
