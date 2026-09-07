@@ -28,7 +28,7 @@ class Firewall extends Command {
 	];
 
 	// This is the fwconsole __construct equivalent
-	protected function configure(){
+	protected function configure(): void {
 		$this->setName('firewall')
 			->setDescription(_('Firewall functions'))
 			->addOption('force', 'f', InputOption::VALUE_NONE, _('Force Add/Removal of entry'))
@@ -40,7 +40,7 @@ class Firewall extends Command {
 	}
 
 	// We've been called
-	protected function execute(InputInterface $input, OutputInterface $output){
+	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$cmd = $input->getArgument('cmd');
 		switch ($cmd) {
 		case "stop":

@@ -1,30 +1,3 @@
-(function($) {
-	"use strict";
-
-	$("#fw-migrate-nftables").on("click", function(e) {
-		e.preventDefault();
-		if (!window.confirm(_("Migrate the running firewall to native nftables?") + "\n\n" +
-			_("Zones, networks, services, and Responsive Firewall settings are kept. Supported legacy custom INPUT rules are translated and the firewall restarts briefly."))) {
-			return;
-		}
-		var $button = $(this).prop("disabled", true);
-		$.post(window.FreePBX.ajaxurl, {
-			module: "firewall",
-			command: "migratebackend",
-			target: "nftables"
-		}).done(function(result) {
-			if (result && result.status) {
-				window.location.reload();
-				return;
-			}
-			alert((result && result.message) || _("Firewall migration failed."));
-			$button.prop("disabled", false);
-		}).fail(function() {
-			alert(_("Firewall migration failed."));
-			$button.prop("disabled", false);
-		});
-	});
-})(jQuery);
 $(document).ready(function() {
 	function firewallBackendMigrate(target) {
 		var title = _("Migrate the running firewall to native nftables?");

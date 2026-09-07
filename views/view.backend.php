@@ -1,72 +1,127 @@
 <?php
-$status = $fw->getFirewallRuntimeStatus();
-$driver = isset($status['resolved_driver']) ? $status['resolved_driver'] : 'Unavailable';
-$usingNft = strcasecmp($driver, 'Nftables') === 0;
-$nftok = !empty($status['nft_available']);
+$status = $fw->getFirewallConfigurationHealth();
+$escape = function ($value) {
+	return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
+};
+$storedOk = !empty($status['settings_stored_properly']);
+$migrationRequired = !empty($status['migration_required']);
+$runtimeOk = empty($status['enabled']) || !empty($status['rules_valid']);
 ?>
 <script type="text/javascript" src="modules/firewall/assets/js/views/backend.js"></script>
-<div class="panel panel-default">
-	<div class="panel-heading"><strong><?php echo _('Firewall Engine'); ?></strong></div>
-	<div class="panel-body">
-		<p>
-			<?php echo _("FreePBX 18 applies firewall policy with native <strong>nftables</strong>. Older iptables-era backups and custom INPUT rules remain supported as migration input; iptables is not a runtime engine."); ?>
-		</p>
-		<p><?php echo _('Current engine:'); ?>
-			<span class="label <?php echo $usingNft ? 'label-success' : 'label-warning'; ?>">
-				<?php echo $usingNft ? _('nftables') : _('migration required'); ?>
-			</span>
-		</p>
-<?php if (!$nftok) { ?>
-		<div class="alert alert-danger">
-			<?php echo _("nftables is not installed on this host, so the FreePBX firewall cannot start. Install the <code>nftables</code> package to continue."); ?>
-		</div>
-<?php } elseif (!$usingNft) { ?>
-		<p><?php echo _("Legacy firewall state was detected. Click once to migrate: policy is kept, supported custom INPUT rules are translated, and live rules are rebuilt with native nftables."); ?></p>
-		<button type="button" class="btn btn-primary" id="fw-migrate-nftables">
-			<?php echo _('Migrate to nftables'); ?>
-		</button>
-<?php } ?>
-	</div>
-</div>
-<?php
-$status = $fw->getFirewallRuntimeStatus();
-$driver = isset($status['resolved_driver']) ? $status['resolved_driver'] : 'Unavailable';
-$nftok = !empty($status['nft_available']);
-$usingNft = (strcasecmp($driver, 'Nftables') === 0);
-$engineLabel = $usingNft ? _('nftables') : _('migration required');
-?>
 <div class='well firewall-backend-panel' id='firewall-backend-panel'>
-	<h4><?php echo _("Firewall Engine"); ?></h4>
-	<p><?php echo _("FreePBX 18 applies firewall policy with native <strong>nftables</strong>. Older iptables-era backups and custom INPUT rules remain supported as migration input; iptables is not a runtime engine."); ?></p>
+	<h4><?php echo _("Firewall Engine and Migration Status"); ?></h4>
+	<p>
+		<?php echo _("FreePBX 18 uses native <strong>nftables</strong>. Legacy iptables data is supported only as migration input and is not a selectable runtime engine."); ?>
+	</p>
 	<div class='row form-horizontal clearfix'>
 		<div class='col-sm-4'>
 			<label class='control-label'><?php echo _("Current engine"); ?></label>
 		</div>
 		<div class='col-sm-8'>
-			<span class='firewall-engine-badge <?php echo $usingNft ? 'nft' : 'ipt'; ?>' id='firewall-engine-badge'>
-				<?php echo htmlspecialchars($engineLabel, ENT_QUOTES, 'UTF-8'); ?>
+			<span class='label <?php echo !empty($status['nft_available']) ? 'label-success' : 'label-danger'; ?>'>
+				<?php echo _("nftables"); ?>
 			</span>
-			<span class='text-muted' id='firewall-engine-driver'>
-				<?php echo htmlspecialchars(sprintf(_('driver: %s'), $driver), ENT_QUOTES, 'UTF-8'); ?>
+			<?php if (empty($status['nft_available'])) { ?>
+				<span class='text-danger'><?php echo _("nft executable not found"); ?></span>
+			<?php } ?>
+		</div>
+	</div>
+
+	<div class='row form-horizontal clearfix'>
+		<div class='col-sm-4'>
+			<label class='control-label'><?php echo _("Migration"); ?></label>
+		</div>
+		<div class='col-sm-8'>
+			<span class='label <?php echo $migrationRequired ? 'label-warning' : 'label-success'; ?>'>
+				<?php echo $migrationRequired ? _("Required") : _("Not required"); ?>
+			</span>
+			<?php if ($migrationRequired) { ?>
+				<span>
+					<?php echo $escape(sprintf(
+						_("Pending: %s"),
+						implode(', ', $status['migration_reasons'])
+					)); ?>
+				</span>
+			<?php } ?>
+		</div>
+	</div>
+
+	<div class='row form-horizontal clearfix'>
+		<div class='col-sm-4'>
+			<label class='control-label'><?php echo _("Stored settings"); ?></label>
+		</div>
+		<div class='col-sm-8'>
+			<span class='label <?php echo $storedOk ? 'label-success' : 'label-danger'; ?>'>
+				<?php echo $storedOk ? _("Valid") : _("Needs attention"); ?>
+			</span>
+			<span class='text-muted'>
+				<?php echo $escape(sprintf(
+					_("schema %d/%d, backend %s, custom rules %s"),
+					$status['schema'],
+					$status['current_schema'],
+					$status['backend'] !== '' ? $status['backend'] : _('not set'),
+					$status['custom_rules_format'] !== '' ? $status['custom_rules_format'] : _('not set')
+				)); ?>
 			</span>
 		</div>
 	</div>
-<?php if ($usingNft) { ?>
+
+	<div class='row form-horizontal clearfix'>
+		<div class='col-sm-4'>
+			<label class='control-label'><?php echo _("Live firewall"); ?></label>
+		</div>
+		<div class='col-sm-8'>
+			<span class='label <?php echo $runtimeOk ? 'label-success' : 'label-danger'; ?>'>
+				<?php
+				if (empty($status['enabled'])) {
+					echo _("Disabled");
+				} elseif (!empty($status['rules_valid'])) {
+					echo _("Running");
+				} else {
+					echo _("Rules not active");
+				}
+				?>
+			</span>
+			<span class='text-muted'>
+				<?php
+				if (!empty($status['ruleset_queryable'])) {
+					echo !empty($status['nft_table_present'])
+						? _("inet fpbx table present")
+						: _("inet fpbx table missing");
+				} else {
+					echo !empty($status['daemon_running'])
+						? _("firewall daemon running")
+						: _("firewall daemon stopped");
+				}
+				?>
+			</span>
+		</div>
+	</div>
+
+<?php if (!$storedOk) { ?>
+	<div class='alert alert-danger firewall-backend-msg'>
+		<strong><?php echo _("Stored firewall settings are not consistent:"); ?></strong>
+		<ul>
+		<?php foreach ($status['settings_issues'] as $issue) { ?>
+			<li><?php echo $escape($issue); ?></li>
+		<?php } ?>
+		</ul>
+	</div>
+<?php } elseif (!$runtimeOk) { ?>
+	<div class='alert alert-danger firewall-backend-msg'>
+		<?php echo _("The module is configured for nftables, but the native rules are not active. Migrate if shown above, then restart the firewall and check firewall.log."); ?>
+	</div>
+<?php } elseif (!$migrationRequired) { ?>
 	<div class='alert alert-success firewall-backend-msg'>
-		<?php echo _("This system is using <strong>nftables</strong>. Your existing policy (zones, networks, services) is applied with native nft sets and rate meters."); ?>
+		<?php echo _("Configuration is current: native nftables is selected, settings are stored correctly, and no legacy migration is pending."); ?>
 	</div>
-<?php } elseif ($nftok) { ?>
-	<div class='alert alert-info firewall-backend-msg'>
-		<?php echo _("Legacy firewall state was detected. Click once to migrate: policy is kept, supported custom INPUT rules are translated, and live rules are rebuilt with native nftables."); ?>
-	</div>
+<?php } ?>
+
+<?php if ($migrationRequired && !empty($status['nft_available'])) { ?>
 	<p>
 		<button type='button' class='btn btn-primary' id='fw-migrate-nftables'>
 			<?php echo _("Migrate to nftables"); ?>
 		</button>
 	</p>
-<?php } else { ?>
-	<div class='alert alert-warning firewall-backend-msg'>
-		<?php echo _("nftables is not installed on this host, so the FreePBX firewall cannot start. Install the <code>nftables</code> package to continue."); ?>
-	</div>
 <?php } ?>
 </div>

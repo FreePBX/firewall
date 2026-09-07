@@ -4,6 +4,7 @@ $ssf = _("System Firewall");
 
 ?>
 <h3><?php echo $ssf; ?></h3>
+<?php echo load_view(__DIR__."/view.backend.php", array("fw" => $fw)); ?>
 <?php
 $docs = array(
 	"$ssf "._("is a fully integrated and tightly coupled firewall that constantly monitors the remote clients allowed to connect to this machine, and automatically allows access from valid hosts."),
