@@ -35,8 +35,8 @@ if(!empty($module_status["sysadmin"]) && ($sa = FreePBX::Sysadmin()) && $sa->get
 <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="alert alert-dismissable alert-warning">				 
-          <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> × </button>
+        <div class="alert alert-dismissible alert-warning" role="alert">
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           <h4> <?php echo _("Warning!") ?> </h4> 
           <?php echo _("Note: The Intrusion Detection handling method has been updated recently. Please clear your browser cache and refresh if you are having issues seeing the Intrusion Detection Start/Restart/Stop button.") ?>
         </div>
