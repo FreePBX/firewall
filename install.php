@@ -1,8 +1,10 @@
 <?php
-//check ipset  installed or not 
-$ipset = fpbx_which("ipset");
-if ($ipset == "") {
-	out( _("Latest firewall module is depends on 'ipset' utility which is missing so please install this by either 'yum install ipset -y' for distro(centos) or equivalent package install command as per your OS and try again.") );
+// FreePBX 18 uses native nftables exclusively.
+$nft = fpbx_which("nft");
+if ($nft == "") {
+	throw new \RuntimeException(
+		_("The firewall requires nftables. Install the nftables package and run the module installation again.")
+	);
 }
 
 // There's been reports of empty networkmaps being discovered. This
@@ -70,4 +72,10 @@ if ($repair) {
 // Trigger firewalld to ensure that any old firewalld is killed
 $file = "/var/spool/asterisk/incron/firewall.firewall";
 fclose(fopen($file, "c"));
+
+// FreePBX 18: stamp schema/backend metadata (idempotent; safe on upgrades from 17)
+if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+	include __DIR__.'/Schema.class.php';
+}
+\FreePBX\modules\Firewall\Schema::ensureMeta(\FreePBX::Firewall());
 

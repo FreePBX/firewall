@@ -196,28 +196,11 @@ function good_remote($ip, $event) {
 
 	if (needs_whitelist($ip)) {
 		print time().": Firewall-Monitoring - $ip reported as good, adding to whitelist.$debug\n";
-
-		// Add it to the whitelist which lets it bypass RFW for 90 seconds.
-		@file_put_contents("/proc/net/xt_recent/WHITELIST", "+$ip\n");
-
-		// Now remove it from any recent chains it may be a member of. Note
-		// we don't remove from DISCOVERED, as that's only used in the GUI.
-		$chains = array("ATTACKER", "CLAMPED", "REPEAT", "SIGNALLING", "TEMPWHITELIST");
-		$line = "-$ip\n";
-		foreach ($chains as $c) {
-			@file_put_contents("/proc/net/xt_recent/$c", $line);
+		nft_rfw_update('rfw_whitelist', $ip, true);
+		foreach (array('rfw_attacker', 'rfw_clamped', 'rfw_tempwhitelist') as $set) {
+			nft_rfw_update($set, $ip, false);
 		}
-
 	}
-}
-
-function get_iptables() {
-	$ipt = array("ipv4" => array(), "ipv6" => array());
-	exec("/usr/sbin/iptables-save 2>/dev/null", $ipt['ipv4'], $ret);
-	exec("/usr/sbin/ip6tables-save 2>/dev/null", $ipt['ipv6'], $ret);
-	// Cache the result for 10 seconds
-	$expires = time() + 10;
-	return $ipt;
 }
 
 function get_registered() {
@@ -228,35 +211,8 @@ function get_registered() {
 	}
 
 	if ($cache['expires'] < time()) {
-
-		// If this returns an empty ipv4 array, only cache it for 5 seconds. Otherwise,
-		// cache it for 60 seconds.
-		$ipt = get_iptables();
-		if (!$ipt['ipv4']) {
-			$cache['expires'] = time() + 5;
-		} else {
-			$cache['expires'] = time() + 60;
-		}
-
-		$retarr = array();
-
-		foreach ($ipt['ipv4'] as $line) {
-			if (strpos($line, '-A fpbxregistrations -s ') === 0) {
-				$tmparr = explode(" ", $line);
-				$net = explode("/", $tmparr[3]);
-				$retarr[$net[0]] = $net[0];
-			}
-		}
-
-		foreach ($ipt['ipv6'] as $line) {
-			if (strpos($line, '-A fpbxregistrations -s ') === 0) {
-				$tmparr = explode(" ", $line);
-				$net = explode("/", $tmparr[3]);
-				$retarr[$net[0]] = $net[0];
-			}
-		}
-
-		$cache['registered'] = $retarr;
+		$cache['registered'] = nft_get_registered();
+		$cache['expires'] = time() + ($cache['registered'] ? 60 : 5);
 	}
 	return $cache['registered'];
 }
@@ -279,16 +235,67 @@ function needs_whitelist($ip) {
 	// Is this IP address already known about in fpbxregistrations?
 	$registered = get_registered();
 	if (isset($registered[$ip])) {
-		$chains = array("WHITELIST", "TEMPWHITELIST");
-		$line = "-$ip\n";
-		foreach ($chains as $c) {
-			@file_put_contents("/proc/net/xt_recent/$c", $line);
-		}
+		nft_rfw_update('rfw_whitelist', $ip, false);
+		nft_rfw_update('rfw_tempwhitelist', $ip, false);
 		return false;
 	}
 
 	// OK, it needs to be added to the temporary whitelist
 	return true;
+}
+
+function nft_binary() {
+	foreach (array('/usr/sbin/nft', '/sbin/nft', '/usr/bin/nft') as $path) {
+		if (is_executable($path)) {
+			return $path;
+		}
+	}
+	return false;
+}
+
+function nft_fpbx_available() {
+	$nft = nft_binary();
+	if (!$nft) {
+		return false;
+	}
+	exec(escapeshellcmd($nft).' list table inet fpbx >/dev/null 2>&1', $output, $status);
+	return $status === 0;
+}
+
+function nft_rfw_update($set, $ip, $add) {
+	if (!preg_match('/^rfw_(whitelist|attacker|clamped|tempwhitelist|discovered)$/', $set)) {
+		return false;
+	}
+	$nft = nft_binary();
+	if (!$nft || !filter_var($ip, FILTER_VALIDATE_IP)) {
+		return false;
+	}
+	$suffix = filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? '6' : '';
+	$verb = $add ? 'add' : 'delete';
+	$timeout = $add ? ' timeout 90s' : '';
+	$cmd = escapeshellcmd($nft)." $verb element inet fpbx ".$set.$suffix." { $ip$timeout } 2>/dev/null";
+	exec($cmd, $output, $status);
+	return $status === 0;
+}
+
+function nft_get_registered() {
+	$nft = nft_binary();
+	if (!$nft || !nft_fpbx_available()) {
+		return array();
+	}
+	$ret = array();
+	foreach (array('registrations', 'registrations6') as $set) {
+		exec(escapeshellcmd($nft).' list set inet fpbx '.$set.' 2>/dev/null', $lines, $status);
+		if ($status === 0 && preg_match('/elements\s*=\s*\{([^}]*)\}/s', implode("\n", $lines), $match)) {
+			foreach (explode(',', $match[1]) as $element) {
+				if (preg_match('/^\s*([0-9a-fA-F:.]+)/', trim($element), $address)) {
+					$ret[$address[1]] = $address[1];
+				}
+			}
+		}
+		$lines = array();
+	}
+	return $ret;
 }
 
 function is_IPlocal($ip) {
