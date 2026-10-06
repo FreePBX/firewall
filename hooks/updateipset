@@ -66,11 +66,14 @@ $v = new \FreePBX\modules\Firewall\Validator($sig);
 // /////////////////////////////////// //
 
 
-if (!isset($settings['ipset'])) {
-	throw new \Exception("No ipset provided");
+if (!isset($settings['ipset']) || $settings['ipset'] !== 'lefilter') {
+	throw new \Exception("Only the LetsEncrypt nftables set may be updated");
 }
-$ipset = $settings['ipset'];
 $action = (isset($settings['action'])) ? $settings['action'] : "No action provided";
+$nft = is_executable('/usr/sbin/nft') ? '/usr/sbin/nft' : '/sbin/nft';
+if (!is_executable($nft)) {
+	throw new \Exception("nftables is required");
+}
 
 switch ($action) {
 	case 'add':
@@ -78,11 +81,15 @@ switch ($action) {
 			throw new \Exception("No ports provided");
 		}
 		foreach($settings['ports'] as $port) {
-			exec("ipset add -exist $ipset $port");
+			$port = (int) $port;
+			if ($port < 1 || $port > 65535) {
+				throw new \Exception("Invalid LetsEncrypt port");
+			}
+			exec(escapeshellcmd($nft)." add element inet fpbx le_ports { $port timeout 60s } 2>/dev/null");
 		}
 		break;
 	case 'flush':
-		exec("ipset flush $ipset");
+		exec(escapeshellcmd($nft)." flush set inet fpbx le_ports 2>/dev/null");
 		break;
 	default:
 		throw new \Exception("Invalid request: $action");

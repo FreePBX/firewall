@@ -8,12 +8,35 @@ class Restore Extends Base\RestoreBase{
 			return false;
 		}
 
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__.'/Schema.class.php';
+		}
+
 		$settings = $this->getConfigs();
-		$this->importKVStore($settings);
+		$kv = Schema::extractKvstore($settings);
+
+		// FreePBX 17 / older backups: flat dumpKVStore() payload (no meta/kvstore wrapper).
+		// FreePBX 18+ backups: may include kvstore + meta.
+		$this->importKVStore($kv);
+
+		$fw = \FreePBX::Firewall();
+		$migration = Schema::migrateAfterRestore($fw, $settings, function ($msg, $level = 'INFO') {
+			$this->log($msg, $level);
+		});
+
+		if (!empty($migration['migrated'])) {
+			$this->log(sprintf(
+				_('Firewall upgrade migration complete (schema %s → %s).'),
+				$migration['from'],
+				$migration['to']
+			), 'INFO');
+		}
 
 		$files = $this->getFiles();
 		$nfiles = 0;
 		$nfiles_err = 0;
+		$restoredLegacyRules = false;
+		$restoredNativeRules = false;
 		foreach($files as $file){
 			if($file->getType() != 'firewall rules') { 
 				continue;
@@ -45,6 +68,15 @@ class Restore Extends Base\RestoreBase{
 					$nfiles_err++;
 				} else {
 					$this->log(sprintf(_("Firewall recovery rules: %s"), $dest),'INFO');
+					if ($filename === 'firewall-4.rules' || $filename === 'firewall-6.rules') {
+						$this->log(_("Restored legacy custom rules; they will be translated to native nftables."), 'INFO');
+						$fw->setConfig('custom_rules_format', Schema::BACKEND_IPTABLES);
+						$restoredLegacyRules = true;
+					}
+					if ($filename === 'firewall.nft') {
+						$fw->setConfig('custom_rules_format', Schema::BACKEND_NFTABLES);
+						$restoredNativeRules = true;
+					}
 					$nfiles++;
 				}
 			}
@@ -53,10 +85,41 @@ class Restore Extends Base\RestoreBase{
 		if ($nfiles_err > 0) {
 			$this->log(sprintf(_("%s Files Not Restored by Error!!"), $nfiles++),'INFO');	
 		}
+		if ($restoredLegacyRules && !$restoredNativeRules) {
+			$rulesMigration = $fw->migrateLegacyCustomRules();
+			$this->log($rulesMigration['message'], empty($rulesMigration['status']) ? 'ERROR' : 'INFO');
+			if (empty($rulesMigration['status'])) {
+				$fw->setConfig('customrules', 'disabled');
+				foreach ($rulesMigration['unsupported'] as $line) {
+					$this->log($line, 'ERROR');
+				}
+				$this->log(_("Custom rules were disabled until the unsupported legacy rules are reviewed."), 'WARNING');
+			}
+		}
+
+		// Clear driver cache so next start picks backend for *this* host.
+		if (!class_exists('\FreePBX\modules\Firewall\Driver')) {
+			include __DIR__.'/Driver.class.php';
+		}
+		Driver::resetDriverCache();
+
+		return true;
 	}
 
 	public function processLegacy($pdo, $data, $tables, $unknownTables){
 		$this->restoreLegacyKvstore($pdo);
+
+		if (!class_exists('\FreePBX\modules\Firewall\Schema')) {
+			include __DIR__.'/Schema.class.php';
+		}
+		$fw = \FreePBX::Firewall();
+		Schema::migrateAfterRestore($fw, null, function ($msg, $level = 'INFO') {
+			$this->log($msg, $level);
+		});
+		if (!class_exists('\FreePBX\modules\Firewall\Driver')) {
+			include __DIR__.'/Driver.class.php';
+		}
+		Driver::resetDriverCache();
 	}
 
 
