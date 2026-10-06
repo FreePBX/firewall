@@ -11,6 +11,7 @@
 	<description>Integrated PBX Firewall using native nftables. FreePBX 17 and older iptables-era policy is migrated during upgrade or restore. Note: This requires the Sysadmin RPM. Please see wiki for further information.</description>
   	<more-info>https://sangomakb.atlassian.net/wiki/spaces/PG/pages/26181828/Firewall</more-info>
 	<changelog>
+		*18.0.1.1* Packaging of ver 18.0.1.1
 		*18.0.1* initial release
 	</changelog>
 	<depends>
