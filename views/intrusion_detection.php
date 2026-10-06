@@ -6,8 +6,8 @@ if ($from_sysadmin) {
 	echo '<script type="text/javascript" src="modules/firewall/assets/js/views/main.js"></script>';
 	echo '<script type="text/javascript" src="modules/firewall/assets/js/views/advanced.js"></script>';
 	?>
-	<div class="alert alert-dismissable alert-warning">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true"> × </button>
+	<div class="alert alert-dismissible alert-warning" role="alert">
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		<h4>
 			<?php echo _("Warning!") ?>
 		</h4>
@@ -45,22 +45,21 @@ else {
 					<?php echo _("Intrusion Detection") ?>
 				</h1>
 			</div>
-			<div class="col-md-6 text-right">
+			<div class="col-md-6 text-end">
 				<?php if ($from_sysadmin) { ?>
 					<!-- Modal -->
-					<i class="fa fa-2x fa-cogs adv-settings" title="Advanced Settings" data-toggle="modal"
-						data-target="#advanced-settings"></i>
+					<button type="button" class="btn btn-default adv-settings" title="Advanced Settings" data-bs-toggle="modal" data-bs-target="#advanced-settings">
+						<i class="fa fa-cogs"></i>
+					</button>
 					<div class="modal fade" id="advanced-settings" tabindex="-1" role="dialog"
 						aria-labelledby="advanced-settingsLabel" aria-hidden="true">
 						<div class="modal-dialog" role="document">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title text-left" id="advanced-settingsLabel">
+									<h5 class="modal-title text-start" id="advanced-settingsLabel">
 										<?php echo _("Advanced Settings") ?>
 									</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 								</div>
 								<div class="modal-body text-left">
 									<div class="fpbx-container">
@@ -397,7 +396,7 @@ else {
 	</div>
 	<br>
 	<div class="alert alert-warning alert-dismissible" id="needApply" style="display: none">
-		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		<strong>Warning!</strong> ' . _("The changes are not yet applied. They will be applied during the next synchronization. However, you can apply them immediately by clicking the Save button.") . '.
   	</div>
 	<div class="container-fuild">

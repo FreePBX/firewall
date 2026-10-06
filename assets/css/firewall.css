@@ -50,6 +50,35 @@ tr[zone='other']>td { background-color: #ede7f6; }
 // Dont' display the action bar unless we've explictly asked for it.
 #action-bar{ display: none; }
 
+.alert .btn-close,
+.alert .btn-close-sm {
+	width: 10px;
+	height: 10px;
+	padding: 0.4em;
+	background-size: 10px;
+}
+
+#whitelisttable,
+#banlisttable,
+#whitelisttable th,
+#whitelisttable td,
+#banlisttable th,
+#banlisttable td,
+.bootstrap-table:has(#whitelisttable),
+.bootstrap-table:has(#banlisttable),
+.bootstrap-table:has(#whitelisttable) .fixed-table-container,
+.bootstrap-table:has(#banlisttable) .fixed-table-container,
+.bootstrap-table:has(#whitelisttable) .table > :not(caption) > * > *,
+.bootstrap-table:has(#banlisttable) .table > :not(caption) > * > * {
+	--bs-table-border-color: rgba(94, 156, 125, 0.9);
+	--bt-table-border-color: rgba(94, 156, 125, 0.9);
+	border-color: rgba(94, 156, 125, 0.9) !important;
+}
+#whitelisttable,
+#banlisttable {
+	border-collapse: collapse;
+}
+
 
 
 
