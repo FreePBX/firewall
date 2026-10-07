@@ -3,7 +3,11 @@ namespace FreePBX\modules\Firewall;
 use FreePBX\modules\Backup as Base;
 class Restore Extends Base\RestoreBase{
 	public function runRestore(){
-		
+		if ($this->getSkipReset()) {
+			$this->log(_('Advanced Recovery restore is leaving the local firewall configuration unchanged'));
+			return true;
+		}
+
 		if (! $this->preHook() ) {
 			return false;
 		}
