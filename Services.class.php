@@ -139,7 +139,7 @@ class Services {
 		// Ask sysadmin for the REAL port of the admin interface
 		try {
 			$ports = $this->getSysadminObj()->getPorts();
-			if (isset($ports['acp']) && $ports['acp'] >= 80) {
+			if (isset($ports['acp']) && is_numeric($ports['acp']) && $ports['acp'] >= 80) {
 				$retarr['fw'][0]['port'] = $ports['acp'];
 			}
 		} catch (\Exception $e) {
@@ -158,7 +158,7 @@ class Services {
 		);
 		try {
 			$ports = $this->getSysadminObj()->getPorts();
-			if (isset($ports['sslacp']) && $ports['sslacp'] >= 80) {
+			if (isset($ports['sslacp']) && is_numeric($ports['sslacp']) && $ports['sslacp'] >= 80) {
 				$retarr['fw'][0]['port'] = $ports['sslacp'];
 			}
 		} catch (\Exception $e) {
@@ -282,7 +282,7 @@ class Services {
 			$ports = array( "leport" => 0 );
 		}
 
-		if (isset($ports['leport']) && $ports['leport'] >= 80) {
+		if (isset($ports['leport']) && is_numeric($ports['leport']) && $ports['leport'] >= 80) {
 			$retarr['fw'] = array(array("protocol" => "tcp", "port" => $ports['leport'], "leport" => true),);
 			$advancedsettingsurl = "<a href=?display=firewall&page=advanced&tab=settings>";
 			$as = $this->getFirewallObj()->getAdvancedSettings();
