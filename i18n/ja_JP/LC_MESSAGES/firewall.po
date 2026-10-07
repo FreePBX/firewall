@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-05 01:50-0500\n"
+"POT-Creation-Date: 2026-10-07 06:28-0400\n"
 "PO-Revision-Date: 2015-10-29 06:31+0200\n"
 "Last-Translator: Kevin <kevin@qloog.com>\n"
 "Language-Team: Japanese <http://weblate.freepbx.org/projects/freepbx/"
@@ -46,12 +46,12 @@ msgstr ""
 msgid "# %s: %s\\n"
 msgstr ""
 
-#: Restore.php:54
+#: Restore.php:58
 #, php-format
 msgid "%s Files Not Restored by Error!!"
 msgstr ""
 
-#: Restore.php:52
+#: Restore.php:56
 #, php-format
 msgid "%s Files Restored OK"
 msgstr ""
@@ -78,7 +78,7 @@ msgid ""
 "    return "
 msgstr ""
 
-#: Restore.php:43
+#: Restore.php:47
 #, php-format
 msgid ""
 "** Error!!!\n"
@@ -87,7 +87,7 @@ msgid ""
 " File: %s\n"
 msgstr ""
 
-#: Restore.php:41
+#: Restore.php:45
 msgid ""
 "**FIX** Manual action needed:\n"
 " # fwconsole firewall fix_custom_rules\n"
@@ -266,6 +266,12 @@ msgstr ""
 
 #: views/page.advanced.php:43
 msgid "Advanced Custom Rules"
+msgstr ""
+
+#: Restore.php:7
+msgid ""
+"Advanced Recovery restore is leaving the local firewall configuration "
+"unchanged"
 msgstr ""
 
 #: views/intrusion_detection.php:59 views/page.advanced.php:40
@@ -502,7 +508,7 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: Restore.php:67
+#: Restore.php:71
 msgid "Check Custrom Rules..."
 msgstr ""
 
@@ -670,17 +676,17 @@ msgstr ""
 msgid "E-mail:"
 msgstr ""
 
-#: Restore.php:88
+#: Restore.php:92
 msgid "ERROR: Custom rule recovery process aborted, timeout exceeded!!!"
 msgstr ""
 
-#: Restore.php:98
+#: Restore.php:102
 msgid ""
 "ERROR: Files required for custom rules are missing, run the following "
 "command for manual repair !!!"
 msgstr ""
 
-#: Restore.php:89
+#: Restore.php:93
 msgid "ERROR: Requires manual execution of the following command:"
 msgstr ""
 
@@ -783,7 +789,7 @@ msgstr ""
 msgid "Error!"
 msgstr ""
 
-#: Restore.php:40
+#: Restore.php:44
 #, php-format
 msgid "Error!! Permission denied copy rules: %s"
 msgstr ""
@@ -947,7 +953,7 @@ msgstr ""
 msgid "Firewall is not enabled, can't disable it"
 msgstr ""
 
-#: Restore.php:47
+#: Restore.php:51
 #, php-format
 msgid "Firewall recovery rules: %s"
 msgstr ""
@@ -1035,7 +1041,7 @@ msgstr ""
 msgid "IDs to add or remove from a zone"
 msgstr ""
 
-#: Restore.php:95
+#: Restore.php:99
 msgid "INFO: Not detected module Sysadmin."
 msgstr ""
 
@@ -1160,7 +1166,7 @@ msgid ""
 "behind the same public IP to be blocked."
 msgstr ""
 
-#: Restore.php:102
+#: Restore.php:106
 msgid ""
 "Info: If custom firewall rules are not retrieved correctly, run the "
 "following command to force manual repair of the necessary files."
@@ -2229,7 +2235,7 @@ msgstr ""
 msgid "The file (%s) could not be found!"
 msgstr ""
 
-#: Restore.php:34
+#: Restore.php:38
 #, php-format
 msgid "The file exists, a backup copy is saved in: %s"
 msgstr ""
@@ -2456,7 +2462,7 @@ msgstr ""
 msgid "This will allow access to the LetsEncrypt service when it is enabled."
 msgstr ""
 
-#: Restore.php:81
+#: Restore.php:85
 #, php-format
 msgid "Timeout in %s seconds!"
 msgstr ""
@@ -2633,7 +2639,7 @@ msgstr ""
 msgid "Value of the current jiffies"
 msgstr ""
 
-#: Restore.php:79
+#: Restore.php:83
 msgid "Waiting..."
 msgstr ""
 
