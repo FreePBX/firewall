@@ -1,53 +1,65 @@
 #!/usr/bin/env php
 <?php
-    if (!@include_once(getenv('FREEPBX_CONF') ? getenv('FREEPBX_CONF') : '/etc/freepbx.conf')) { 
-        include_once('/etc/asterisk/freepbx.conf'); 
-        $restrict_mods = array('firewall' => true);
-    }
+$trust = __DIR__.'/../Trust.class.php';
+$stat = @lstat($trust);
+if (is_link($trust) || !$stat || $stat['uid'] !== 0 || ($stat['mode'] & 0022)) {
+	fwrite(STDERR, "Refusing to load the firewall trust helper\n");
+	exit(1);
+}
+include $trust;
 
-    $fw         = FreePBX::Firewall();
-    $advanced   = $fw->getConfig("advancedsettings");
-    $hosts      = file("/etc/hosts");
-    $ipHosts    = [];
-    foreach ($hosts as $h) {
-        $line = preg_split("/\s+/", trim($h));
-        if (empty($line[0])) {
-            continue;
-        }
-        if (filter_var($line[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            if(!empty($advanced["import_hosts"]) && ($advanced["import_hosts"] != "disabled" && $line[0] != "127.0.0.1")){
-                $ipHosts[] = $line[0];
-                $fw->setConfig("whiteHosts",implode("\n", $ipHosts));
-            }
-            else{
-                $fw->setConfig("whiteHosts");
-            }	
-        }
-    }
+\FreePBX\modules\Firewall\Trust::assertRootFile('/etc/freepbx.conf');
+$conf = file_get_contents('/etc/freepbx.conf');
+if (!is_string($conf) || !preg_match('/AMPWEBROOT[\'"]\]\s*=\s*[\'"]([^\'"]+)/', $conf, $webroot)) {
+	fwrite(STDERR, "Unable to resolve the FreePBX web root\n");
+	exit(1);
+}
+\FreePBX\modules\Firewall\Trust::assertRootFile($webroot[1].'/admin/bootstrap.php');
+$restrict_mods = array('firewall' => true);
+include '/etc/freepbx.conf';
 
-    $FC     = fc();
-    /**
-     * cmd line below, ready for Fail2ban 0.11.1 
-     */
-    $cmd    = "$FC status | grep 'Jail list' | sed -r 's/.+Jail list:\t+//g' | sed -e 's/ *//g' -e 's/\,/\\n/g'";
-    exec($cmd, $out, $ret);
-    if($ret === 0 && is_array($out)){
-        foreach($out as $jail){
-            exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $whiteips, $ret2);
-            $whiteips   = array_merge($whiteips, $ipHosts);
-            $whitelist  = implode("\n",array_unique($whiteips));
-            $fw->setConfig("dynamic_whitelist",str_replace("/32","",$whitelist));
-            break;      
-        }
-    }
+$fw = FreePBX::Firewall();
+$advanced = $fw->getConfig("advancedsettings");
+$hosts = file("/etc/hosts");
+$ipHosts = array();
+foreach ($hosts as $host) {
+	$line = preg_split("/\s+/", trim($host));
+	if (empty($line[0]) || !filter_var($line[0], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+		continue;
+	}
+	if (!empty($advanced["import_hosts"]) && $advanced["import_hosts"] != "disabled" && $line[0] != "127.0.0.1") {
+		$ipHosts[] = $line[0];
+		$fw->setConfig("whiteHosts", implode("\n", $ipHosts));
+	} else {
+		$fw->setConfig("whiteHosts");
+	}
+}
 
-    /**
-     * Removing flag at the end of script.
-     */
-    @unlink($fw->get_astspooldir()."/tmp/getdyn.flg");
-    exit();
+$client = \FreePBX\modules\Firewall\Trust::systemBinary(array('/usr/bin/fail2ban-client', '/usr/sbin/fail2ban-client'));
+if ($client) {
+	list($code, $status) = array_slice(\FreePBX\modules\Firewall\Trust::run(array($client, 'status')), 0, 2);
+	if ($code === 0 && preg_match('/Jail list:\s*(.+)/', $status, $match)) {
+		foreach (preg_split('/\s*,\s*/', trim($match[1])) as $jail) {
+			if (!preg_match('/^[A-Za-z0-9_.-]+$/', $jail)) {
+				continue;
+			}
+			list($ignoredCode, $ignored) = array_slice(\FreePBX\modules\Firewall\Trust::run(array($client, 'get', $jail, 'ignoreip')), 0, 2);
+			if ($ignoredCode !== 0) {
+				break;
+			}
+			$whiteips = $ipHosts;
+			foreach (preg_split('/\R/', $ignored) as $line) {
+				$parts = preg_split('/\s+/', trim($line));
+				$candidate = isset($parts[1]) ? $parts[1] : '';
+				if (filter_var($candidate, FILTER_VALIDATE_IP)) {
+					$whiteips[] = $candidate;
+				}
+			}
+			$fw->setConfig("dynamic_whitelist", str_replace("/32", "", implode("\n", array_unique($whiteips))));
+			break;
+		}
+	}
+}
 
-    function fc(){
-        return fpbx_which("fail2ban-client");
-    }
-?>
+@unlink($fw->get_astspooldir()."/tmp/getdyn.flg");
+exit(0);

@@ -7,39 +7,37 @@ class Lock {
 	private static $locks;
 
 	public static function getLockDir() {
-		$setting = getSettings();
-		$astrundir = !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk";
-		return $astrundir;
+		$state = '/run/fpbx-firewall';
+		$lockdir = $state.'/locks';
+		if (is_link($state) || is_link($lockdir)) {
+			throw new \Exception('Firewall lock directory must not be a symlink');
+		}
+		if (!is_dir($lockdir)) {
+			if (!is_dir($state) && !@mkdir($state, 0755, true)) {
+				throw new \Exception("Can't create $state");
+			}
+			if (!@mkdir($lockdir, 0700, true) && !is_dir($lockdir)) {
+				throw new \Exception("Can't create $lockdir");
+			}
+			@chmod($lockdir, 0700);
+		}
+		return $lockdir;
 	}
 
 	public static function canLock($lockname = false) {
-		if (!$lockname) {
+		if (!$lockname || !preg_match('/^[A-Za-z0-9_-]+$/', $lockname)) {
 			throw new \Exception("No lock given");
 		}
-		// So, we see if we CAN lock a name, and if we can, lock it.
 		$lockdir = self::getLockDir();
-		/* During the initial boot, it might possible that /var/run/asterisk itself is not created 
-		/* so trying to wait here at max 30 sec before giving up */
-		$x=1;
-		while($x <= 6) {
-			if (!is_dir($lockdir)) {
-				sleep(5);
-				$x++;
-			} else {
-				break;
-			}
+		$lf = $lockdir."/lock-".$lockname;
+		if (is_link($lf)) {
+			throw new \Exception("Refusing to lock through a symlink");
 		}
-		if (!is_dir("$lockdir/firewall")) {
-			@unlink("$lockdir/firewall");
-			mkdir("$lockdir/firewall");
-			@chmod("$lockdir/firewall", 0666);
-			if (!is_dir("$lockdir/firewall")) {
-				throw new \Exception("Can't create $lockdir/firewall directory");
-			}
+		$lockfh = fopen($lf, "c");
+		if ($lockfh === false) {
+			throw new \Exception("Can't create $lf");
 		}
-		$lf = "$lockdir/firewall/lock-$lockname";
-		$lockfh = fopen($lf, "c"); // Create it if it doesn't exist
-		@chmod($lf, 0666);
+		@chmod($lf, 0600);
 		if (!flock($lockfh, LOCK_EX|LOCK_NB)) {
 			// Unable to lock the file.
 			return false;

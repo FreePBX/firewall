@@ -2,9 +2,9 @@
 
 $debug 			= true;
 $setting 		= getSettings();
-$astlogdir 		= !empty($setting['ASTLOGDIR']) ? $setting['ASTLOGDIR'] : "/var/log/asterisk";
-$astspooldir 	= !empty($setting['ASTSPOOLDIR']) ? $setting['ASTSPOOLDIR'] : "/var/spool/asterisk";
-$astrundir 		= !empty($setting['ASTRUNDIR']) ? $setting['ASTRUNDIR'] : "/var/run/asterisk" ;
+$astlogdir 		= "/var/log/asterisk";
+$astspooldir 	= "/var/spool/asterisk";
+$astrundir 		= "/var/run/asterisk";
 $thissvc 		= "firewall";
 
 // Include once because *sometimes*, on *some machines*, it crashes?
@@ -17,6 +17,8 @@ if (!Lock::canLock($thissvc)) {
 	exit;
 }
 include_once 'common.php';
+include_once 'Trust.class.php';
+use \FreePBX\modules\Firewall\Trust;
 
 // Load our validator
 $v = new \FreePBX\modules\Firewall\Validator($sig);
@@ -30,10 +32,13 @@ if (!is_array($advSvc) || !isset($advSvc['advancedsettings']) || !is_array($advS
 }
 
 
-// Regen fail2ban conf, if we can
-if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate") && $id_service == "enabled") {
-	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
-	`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start $astrundir`;
+// Regen fail2ban configuration only from root-owned hooks.
+if ($id_service == "enabled") {
+	runOwnedHook("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate");
+	runOwnedHook(
+		"/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start",
+		array(\FreePBX\modules\Firewall\Trust::safeRuntimeDir("/var/run/asterisk"))
+	);
 }
 
 
@@ -129,24 +134,29 @@ $monitorpid = start_monitor();
 @unlink("/var/run/firewalld.safemode");
 
 // Remove only FreePBX-owned native nftables tables.
-$f = $v->checkFile("bin/clean-nftables");
-`$f`;
+runSigned("bin/clean-nftables");
 
 // Sysadmin may generate legacy iptables actions. Normalize them before start.
 normalizeFail2BanNftables();
 
 // Start fail2ban if we can
 if($id_service == "enabled"){
-	`service fail2ban start`;
+	runOwnedHook("/usr/sbin/service", array("fail2ban", "start"));
 }
 
 // The historic jail name is retained for backup compatibility; its action is nft.
-`fail2ban-client reload asterisk-iptables`;
+$fail2ban = Trust::systemBinary(array("/usr/bin/fail2ban-client", "/usr/sbin/fail2ban-client"));
+if ($fail2ban) {
+	Trust::run(array($fail2ban, "reload", "asterisk-iptables"));
+}
 
 // Load native conntrack helpers for outbound FTP/TFTP.
 // as it helps with OUTBOUND connections, too.
-`/sbin/modprobe nf_conntrack_ftp`;
-`/sbin/modprobe nf_conntrack_tftp`;
+$modprobe = Trust::systemBinary(array("/sbin/modprobe", "/usr/sbin/modprobe"));
+if ($modprobe) {
+	Trust::run(array($modprobe, "nf_conntrack_ftp"));
+	Trust::run(array($modprobe, "nf_conntrack_tftp"));
+}
 
 $path = $v->checkFile("Services.class.php");
 include_once $path;
@@ -202,7 +212,8 @@ $fwversion = false;
 // Always run the update the first time.
 $lastfin = 1;
 
-`/usr/sbin/fwconsole firewall sync &`;
+// Intrusion-detection synchronization is owned by the root cron job.
+// The long-running daemon must not execute fwconsole itself.
 
 while(true) {
 	$fwconf = getSettings();
@@ -351,12 +362,11 @@ function shutdown() {
 
 	// Clean up on exit. Start by stopping fail2ban, if it's running
 	if($id_service == "enabled"){
-		`service fail2ban stop`;
+		runOwnedHook("/usr/sbin/service", array("fail2ban", "stop"));
 	}
 
 	// Remove only FreePBX-owned native nftables tables.
-	$f = $v->checkFile("bin/clean-nftables");
-	`$f`;
+	runSigned("bin/clean-nftables");
 	
 	// If sysadmin is configuring fail2ban, it'll need to regenerate the
 	// conf file
@@ -364,14 +374,14 @@ function shutdown() {
 		// If sysadmin is configuring fail2ban, it'll need to regenerate the
 		// conf file
 		if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate")) {
-			`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate`;
+			runOwnedHook("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-generate");
 		}
 		normalizeFail2BanNftables();
 		// And restart fail2ban
 		if (file_exists("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start")) {
-			`/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start`;
+			runOwnedHook("/var/www/html/admin/modules/sysadmin/hooks/fail2ban-start", array(\FreePBX\modules\Firewall\Trust::safeRuntimeDir("/var/run/asterisk")));
 		} else {
-			`service fail2ban start`;
+			runOwnedHook("/usr/sbin/service", array("fail2ban", "start"));
 		}
 	}
 	exit;
@@ -501,10 +511,9 @@ function updateFirewallRules($firstrun = false) {
 		wall("Firewall Rules corrupted! Restarting in 5 seconds\nMore information available in ".$astlogdir."/firewall.log\n");
 		Lock::unLock($thissvc);
 		if($id_service == "enabled"){
-			`service fail2ban stop`;
+			runOwnedHook("/usr/sbin/service", array("fail2ban", "stop"));
 		}
-		$f = $v->checkFile("bin/clean-nftables");
-		`$f`;
+		runSigned("bin/clean-nftables");
 		// Wait 4 seconds to give incron a chance to catch up
 		sleep(4);
 		// Restart me.
@@ -599,7 +608,14 @@ function updateFirewallRules($firstrun = false) {
   if (isset($fwconf['responsivefw']) && isset($fwconf['fail2banbypass'])){
          if (isset($ipaddrs)) {
 	//grab a list of IPs already in the ignore list
-	$allowed_ips = `fail2ban-client get asterisk-iptables ignoreip`;
+	$fail2ban = Trust::systemBinary(array("/usr/bin/fail2ban-client", "/usr/sbin/fail2ban-client"));
+	$allowed = array("", "");
+	if ($fail2ban) {
+		list($status, $allowed_ips) = array_slice(Trust::run(array($fail2ban, "get", "asterisk-iptables", "ignoreip")), 0, 2);
+		$allowed = array($status, $allowed_ips);
+	}
+	$allowed_ips = $allowed[1];
+	$parsed_ips = array();
 	$f2b_lines = explode(PHP_EOL, $allowed_ips);
 	foreach ($f2b_lines as $l) {
         	if (preg_match('/(`-|\|-)\s(.+)/', $l, $m))
@@ -616,17 +632,15 @@ function updateFirewallRules($firstrun = false) {
 			break;
 			}
 	}
-        if (!$f2b_exists){ 
-		$f2bancmd = "fail2ban-client set asterisk-iptables addignoreip $ip";
-        	print time().": Fail2Ban Bypass- $ip reported as good, executing $f2bancmd\n";
-                $cmdoutput = `$f2bancmd`;
+        if (!$f2b_exists && $fail2ban && filter_var($ip, FILTER_VALIDATE_IP)){
+        	print time().": Fail2Ban Bypass- $ip reported as good\n";
+                list($status, $cmdoutput) = array_slice(Trust::run(array($fail2ban, "set", "asterisk-iptables", "addignoreip", $ip)), 0, 2);
                 print time().": $cmdoutput\n";
 		}
     }
-    if ($action === "iprem") {
-        $f2bancmd = "fail2ban-client set asterisk-iptables delignoreip $ip";
-        print time().": Fail2Ban Bypass- $ip no longer registered, executing $f2bancmd\n";
-                $cmdoutput = `$f2bancmd`;
+    if ($action === "iprem" && $fail2ban && filter_var($ip, FILTER_VALIDATE_IP)) {
+        print time().": Fail2Ban Bypass- $ip no longer registered\n";
+                list($status, $cmdoutput) = array_slice(Trust::run(array($fail2ban, "set", "asterisk-iptables", "delignoreip", $ip)), 0, 2);
         print time().": $cmdoutput\n";
     }
         }
@@ -844,15 +858,38 @@ function getServices() {
 		return array();
 	}
 
-	// Make sure it's executable
-	$s = stat("/var/www/html/admin/modules/firewall/bin/getservices");
-	if ($s['mode'] !== 0755) {
-		chmod("/var/www/html/admin/modules/firewall/bin/getservices", 0755);
+	// Make sure it's the signed copy, then run it as asterisk rather than root.
+	try {
+		$script = $v->checkFile("bin/getservices");
+	} catch (\Exception $e) {
+		fwLog("Can't validate bin/getservices");
+		return array();
+	}
+	if (is_link($script)) {
+		fwLog("Refusing to run a symlinked bin/getservices");
+		return array();
 	}
 
-	exec("whereis runuser | awk '{print($2)}'", $outRun, $retRun);
-	$runuser = $outRun[0];
-	exec("$runuser $astuser -c /var/www/html/admin/modules/firewall/bin/getservices", $out, $ret);
+	$runuser = \FreePBX\modules\Firewall\Trust::systemBinary(array("/usr/sbin/runuser", "/sbin/runuser", "/bin/runuser"));
+	if (!$runuser) {
+		fwLog("runuser is not a root-owned system binary");
+		return array();
+	}
+	$process = proc_open(
+		array($runuser, "-u", $astuser, "--", $script),
+		array(1 => array("pipe", "w"), 2 => array("pipe", "w")),
+		$pipes
+	);
+	if (!is_resource($process)) {
+		fwLog("Unable to run bin/getservices");
+		return array();
+	}
+	$stdout = stream_get_contents($pipes[1]);
+	stream_get_contents($pipes[2]);
+	fclose($pipes[1]);
+	fclose($pipes[2]);
+	$ret = proc_close($process);
+	$out = preg_split("/\r\n|\n|\r/", trim((string) $stdout));
 
 	$getservices = @json_decode($out[0], true);
 	if (!is_array($getservices) || !isset($getservices['smartports'])) {
@@ -897,7 +934,7 @@ function normalizeFail2BanNftables() {
 		return false;
 	}
 	$tmp = $file.'.nft.tmp';
-	if (file_put_contents($tmp, $cfg) === false) {
+	if (is_link($file) || is_link($tmp) || file_put_contents($tmp, $cfg) === false) {
 		return false;
 	}
 	chmod($tmp, 0644);
@@ -905,6 +942,27 @@ function normalizeFail2BanNftables() {
 		@unlink($tmp);
 		return false;
 	}
+	return true;
+}
+
+function runSigned($relative, $args = array(), $mode = 0700) {
+	global $v;
+	$staged = $v->stageFile($relative, $mode);
+	Trust::run(array_merge(array($staged), $args));
+}
+
+function runOwnedHook($path, $args = array()) {
+	$binary = false;
+	if (strpos($path, "/var/www/") === 0 || strpos($path, "/usr/lib/") === 0) {
+		$binary = Trust::rootLocked($path) ? $path : false;
+	} else {
+		$binary = Trust::systemBinary(array($path, "/sbin/".basename($path), "/usr/sbin/".basename($path), "/usr/bin/".basename($path)));
+	}
+	if (!$binary) {
+		fwLog("Skipping $path because it is not a root-owned executable");
+		return false;
+	}
+	Trust::run(array_merge(array($binary), $args));
 	return true;
 }
 

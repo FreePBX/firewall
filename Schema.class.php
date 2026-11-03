@@ -84,13 +84,29 @@ class Schema {
 	}
 
 	public static function which($cmd) {
+		if (!is_string($cmd) || !preg_match('/^[A-Za-z0-9._-]+$/', $cmd)) {
+			return '';
+		}
+		foreach (array('/usr/sbin/', '/sbin/', '/usr/bin/', '/bin/') as $directory) {
+			$path = $directory.$cmd;
+			if (!is_executable($path)) {
+				continue;
+			}
+			$real = realpath($path);
+			$stat = $real ? @stat($real) : false;
+			if ($real && $stat && $stat['uid'] === 0 && ($stat['mode'] & 0022) === 0
+				&& preg_match('#^/(?:usr/)?(?:s?bin)/#', $real)) {
+				return $real;
+			}
+		}
+		if (function_exists('posix_geteuid') && posix_geteuid() === 0) {
+			return '';
+		}
 		if (function_exists('fpbx_which')) {
 			$p = fpbx_which($cmd);
 			return $p ? $p : '';
 		}
-		$out = array();
-		exec('command -v '.escapeshellarg($cmd).' 2>/dev/null', $out, $ret);
-		return ($ret === 0 && !empty($out[0])) ? $out[0] : '';
+		return '';
 	}
 
 	/**
