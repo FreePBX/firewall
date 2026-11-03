@@ -27,6 +27,7 @@ $apps = array(
 		array(__DIR__."/../Lock.class.php", "lock.php"), 
 		"asmanager.php", 
 		"monitor.php",
+		array(__DIR__."/../Trust.class.php", "Trust.class.php"),
 		array($ipUtils, "IpUtils.php")
 	),
 );

@@ -33,6 +33,9 @@ nft_assert(
 		=== 'svc-a1b2c3d4-e5f6-7890-abcd-ef1234567890',
 	'UUID service chain'
 );
+nft_assert(Nftables::hostRule('203.0.113.2', 'internal') === 'add rule inet fpbx fpbxhosts ip saddr 203.0.113.2 jump zone-internal', 'safe host rule');
+nft_assert(Nftables::hostRule("203.0.113.2\ninclude \"/etc/shadow\"", 'internal') === false, 'host rule rejects script injection');
+nft_assert(Nftables::hostRule('203.0.113.2', 'reject') === false, 'host rule rejects unknown zone');
 
 if (getenv('FIREWALL_NFTABLES_LIVE_TEST') === '1') {
 	$d = new Nftables();

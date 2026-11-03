@@ -95,6 +95,29 @@ class Validator {
 		return $fullpath;
 	}
 
+	/**
+	 * Hash the bytes that will actually be executed and copy them into the
+	 * root-owned state directory. The caller executes the returned path.
+	 */
+	public function stageFile($filename = false, $mode = 0700) {
+		$this->checkFile($filename);
+		if (!class_exists('\FreePBX\modules\Firewall\Trust')) {
+			$local = __DIR__.'/Trust.class.php';
+			$module = dirname(__DIR__).'/Trust.class.php';
+			if (is_file($local)) {
+				include $local;
+			} else {
+				include $module;
+			}
+		}
+		return Trust::stageVerified(
+			$this->modroot.'/'.$filename,
+			str_replace('/', '_', $filename),
+			self::$sig['hashes'][$filename],
+			$mode
+		);
+	}
+
 	public function secureInclude($filename = false) {
 		if (!isset(self::$sig['hashes'][$filename])) {
 			throw new \Exception("File $filename isn't signed");

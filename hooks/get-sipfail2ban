@@ -1,16 +1,29 @@
 #!/usr/bin/env php
 <?php
-    $file = '/var/spool/asterisk/firewall/sipbanned';
-    if (!is_dir('/var/spool/asterisk/firewall')) {
-	mkdir('/var/spool/asterisk/firewall');
-    }
-    $FC     = "/usr/bin/fail2ban-client";
-    $cmd    = "$FC status asterisk-iptables | grep 'IP list' | sed -r 's/.+IP list:\t//g' | sed -e 's/ /\\n/g'";
-    exec($cmd, $out, $ret);
-    if($ret === 0 && is_array($out)){
-        $ipstr = implode(',', $out);
-        file_put_contents($file, $ipstr);
-        chown($file, 'asterisk');
-    }
-    exit();
-?>
+$trust = __DIR__.'/../Trust.class.php';
+$stat = @lstat($trust);
+if (is_link($trust) || !$stat || $stat['uid'] !== 0 || ($stat['mode'] & 0022)) {
+	fwrite(STDERR, "Refusing to load the firewall trust helper\n");
+	exit(1);
+}
+include $trust;
+
+$client = \FreePBX\modules\Firewall\Trust::systemBinary(array('/usr/bin/fail2ban-client', '/usr/sbin/fail2ban-client'));
+if (!$client) {
+	fwrite(STDERR, "fail2ban-client is not a root-owned system binary\n");
+	exit(1);
+}
+list($code, $output) = array_slice(\FreePBX\modules\Firewall\Trust::run(array($client, 'status', 'asterisk-iptables')), 0, 2);
+if ($code !== 0) {
+	exit(0);
+}
+$addresses = array();
+if (preg_match('/IP list:\s*(.*)/', $output, $match)) {
+	foreach (preg_split('/\s+/', trim($match[1])) as $address) {
+		if (filter_var($address, FILTER_VALIDATE_IP)) {
+			$addresses[] = $address;
+		}
+	}
+}
+\FreePBX\modules\Firewall\Trust::publish('sipbanned', implode(',', $addresses), 0644);
+exit(0);

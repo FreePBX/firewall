@@ -265,16 +265,34 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 	public function chownFreepbx() {
 		$this->fix_custom_rules_files();
+		// Root executes this module's hooks and PHP. The web user can read
+		// them, but must not be able to replace them. Cache stays writable.
 		$files = array(
+			array('type' => 'rdir',
+			'path' => __DIR__,
+			'perms' => 0755,
+			'owner' => 'root',
+			'group' => 'root'),
 			array('type' => 'execdir',
 			'path' => __DIR__."/hooks",
-			'perms' => 0755),
+			'perms' => 0755,
+			'owner' => 'root',
+			'group' => 'root'),
 			array('type' => 'execdir',
 			'path' => __DIR__."/bin",
-			'perms' => 0755),
+			'perms' => 0755,
+			'owner' => 'root',
+			'group' => 'root'),
 			array('type' => 'execdir',
 			'path' => __DIR__."/phar",
-			'perms' => 0755)
+			'perms' => 0755,
+			'owner' => 'root',
+			'group' => 'root'),
+			array('type' => 'rdir',
+			'path' => __DIR__."/assets/less/cache",
+			'perms' => 0755,
+			'owner' => 'asterisk',
+			'group' => 'asterisk')
 		);
 		return $files;
 	}
@@ -1655,7 +1673,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 				$retarr['failed'] = array();
 				$this->runHook("get-sipfail2ban");
-				$file = '/var/spool/asterisk/firewall/sipbanned';
+				$file = '/run/fpbx-firewall/sipbanned';
 				if(file_exists($file)) {
 					$banliststr = file_get_contents($file);
 					file_put_contents($file, '');
@@ -2337,7 +2355,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$nativeReady = !$wasOn;
 		for ($i = 0; $wasOn && $i < 30; $i++) {
 			exec('nft list table inet fpbx >/dev/null 2>&1', $output, $status);
-			$commitFile = '/var/lib/asterisk/firewall/fpbx.nft';
+			$commitFile = '/run/fpbx-firewall/fpbx.nft';
 			clearstatcache(true, $commitFile);
 			if ($status === 0 && is_file($commitFile)
 				&& filemtime($commitFile) >= $migrationStarted
@@ -2374,7 +2392,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 	 * Hand the privileged migration to the root hook and wait for its result.
 	 */
 	private function delegateBackendMigration() {
-		$resultFile = $this->get_astspooldir().'/firewall/migration-result.json';
+		$resultFile = '/run/fpbx-firewall/migration-result.json';
+		$migrationStarted = time();
 		@unlink($resultFile);
 
 		try {
@@ -2385,7 +2404,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 
 		for ($i = 0; $i < 90; $i++) {
 			clearstatcache(true, $resultFile);
-			if (is_file($resultFile)) {
+			if (is_file($resultFile) && filemtime($resultFile) >= $migrationStarted) {
 				$decoded = json_decode(file_get_contents($resultFile), true);
 				if (is_array($decoded) && isset($decoded['status'])) {
 					@unlink($resultFile);
@@ -2877,7 +2896,10 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		$this->removeCronJob();
 		$hookfile 		= $this->get_astspooldir()."/incron/firewall.firewall";
 		$enabledfile 		= $this->get_astetcdir()."/firewall.enabled";
-		$fwc 			= fpbx_which("fwconsole");
+		$fwc = is_executable('/usr/sbin/fwconsole') ? '/usr/sbin/fwconsole' : '/var/lib/asterisk/bin/fwconsole';
+		$fwc = escapeshellarg($fwc);
+		$enabledfile = escapeshellarg($enabledfile);
+		$hookfile = escapeshellarg($hookfile);
 
 		$this->FreePBX->Job()->addCommand("firewall", "firewall", "[ -e $enabledfile ] && touch $hookfile", "*/15 * * * *");
 		$this->FreePBX->Job()->addCommand('firewall', 'syncIDetection', '[ -e '.$fwc.' ] && '.$fwc.' firewall sync', '*/5 * * * *', 0);

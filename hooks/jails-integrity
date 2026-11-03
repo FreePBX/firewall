@@ -1,27 +1,48 @@
 #!/usr/bin/env php
 <?php
-    if (!@include_once(getenv('FREEPBX_CONF') ? getenv('FREEPBX_CONF') : '/etc/freepbx.conf')) { 
-        include_once('/etc/asterisk/freepbx.conf'); 
-        $restrict_mods = array('firewall' => true);
-    }
-    $fw     = FreePBX::Firewall();
-    $FC     = fpbx_which("fail2ban-client");
-    $cmd    = "$FC status | grep 'Jail list' | cut -f2";
-    $wl     = $fw->getConfig("dynamic_whitelist");
-    $wl     = explode("\n",$wl);
-    exec($cmd, $out, $ret);
-    $jails  = explode(", ",$out[0]);
-    if($ret === 0 && is_array($jails)){
-        foreach($jails as $jail){
-            exec("$FC get $jail ignoreip | grep - | cut -d' ' -f2 | uniq", $out2, $ret2);
-            foreach($wl as $ip){
-                if(array_search($ip, $out2) === false){
-                    exec("$FC set $jail addignoreip $ip");
-                }
-            }
-            unset($out2);
-        }
-    }
-    $fw->setConfig("syncing", "no");
-    exit();
-?>
+$trust = __DIR__.'/../Trust.class.php';
+$stat = @lstat($trust);
+if (is_link($trust) || !$stat || $stat['uid'] !== 0 || ($stat['mode'] & 0022)) {
+	fwrite(STDERR, "Refusing to load the firewall trust helper\n");
+	exit(1);
+}
+include $trust;
+
+\FreePBX\modules\Firewall\Trust::assertRootFile('/etc/freepbx.conf');
+$conf = file_get_contents('/etc/freepbx.conf');
+if (!is_string($conf) || !preg_match('/AMPWEBROOT[\'"]\]\s*=\s*[\'"]([^\'"]+)/', $conf, $webroot)) {
+	fwrite(STDERR, "Unable to resolve the FreePBX web root\n");
+	exit(1);
+}
+\FreePBX\modules\Firewall\Trust::assertRootFile($webroot[1].'/admin/bootstrap.php');
+$restrict_mods = array('firewall' => true);
+include '/etc/freepbx.conf';
+
+$fw = FreePBX::Firewall();
+$client = \FreePBX\modules\Firewall\Trust::systemBinary(array('/usr/bin/fail2ban-client', '/usr/sbin/fail2ban-client'));
+if (!$client) {
+	$fw->setConfig("syncing", "no");
+	exit(1);
+}
+list($code, $status) = array_slice(\FreePBX\modules\Firewall\Trust::run(array($client, 'status')), 0, 2);
+if ($code === 0 && preg_match('/Jail list:\s*(.+)/', $status, $match)) {
+	$whitelist = array_filter(explode("\n", (string) $fw->getConfig("dynamic_whitelist")), function ($ip) {
+		return filter_var($ip, FILTER_VALIDATE_IP);
+	});
+	foreach (preg_split('/\s*,\s*/', trim($match[1])) as $jail) {
+		if (!preg_match('/^[A-Za-z0-9_.-]+$/', $jail)) {
+			continue;
+		}
+		list($ignoredCode, $ignored) = array_slice(\FreePBX\modules\Firewall\Trust::run(array($client, 'get', $jail, 'ignoreip')), 0, 2);
+		if ($ignoredCode !== 0) {
+			continue;
+		}
+		foreach ($whitelist as $ip) {
+			if (strpos($ignored, $ip) === false) {
+				\FreePBX\modules\Firewall\Trust::run(array($client, 'set', $jail, 'addignoreip', $ip));
+			}
+		}
+	}
+}
+$fw->setConfig("syncing", "no");
+exit(0);

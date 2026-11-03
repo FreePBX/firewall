@@ -1,9 +1,15 @@
-#!/usr/bin/php -q
+#!/usr/bin/env php
 <?php
-// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
-
-include __DIR__."/../Firewall.class.php";
+$file = __DIR__.'/../Firewall.class.php';
+$stat = @lstat($file);
+if (function_exists('posix_geteuid') && posix_geteuid() === 0) {
+	if (is_link($file) || !$stat || $stat['uid'] !== 0 || ($stat['mode'] & 0022)) {
+		fwrite(STDERR, "Refusing to load Firewall.class.php as root\n");
+		exit(1);
+	}
+}
+include $file;
 $fw = new \FreePBX\modules\Firewall;
 if (! $fw->remove_custom_rules_files()) {
-    throw new \Exception(_("Remove files for custom rules firewall failed!"));
+	throw new \Exception(_("Remove files for custom rules firewall failed!"));
 }

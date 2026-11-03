@@ -243,7 +243,19 @@ class Network {
 		}
 		$interfaceZoneData = $this->getAllInterfaceZoneData();
 		$interfaceZoneData[$interface] = $data;
-		return file_put_contents(self::INTERFACE_ZONES_CONFIG, json_encode($interfaceZoneData));
+		$config = self::INTERFACE_ZONES_CONFIG;
+		if (is_link($config) || is_link(dirname($config))) {
+			return false;
+		}
+		$temporary = $config.'.tmp';
+		if (is_link($temporary) || file_put_contents($temporary, json_encode($interfaceZoneData)) === false) {
+			return false;
+		}
+		if (!rename($temporary, $config)) {
+			@unlink($temporary);
+			return false;
+		}
+		return true;
 	}
 }
 
