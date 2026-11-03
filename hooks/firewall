@@ -29,15 +29,43 @@ try {
 	if ($fhash !== $sig['hashes']['hooks/voipfirewalld']) {
 		throw new \Exception("Firewalld tampered");
 	}
+	$trust = __DIR__."/../Trust.class.php";
+	$trustStat = @lstat($trust);
+	if (is_link($trust) || !$trustStat || $trustStat['uid'] !== 0 || ($trustStat['mode'] & 0022)) {
+		throw new \Exception("Firewall trust helper is not root-owned");
+	}
+	include $trust;
+	$staged = \FreePBX\modules\Firewall\Trust::stageVerified($fd, "voipfirewalld", $sig['hashes']['hooks/voipfirewalld'], 0700);
+	$log = "/var/log/asterisk/firewall.log";
+	if (is_link("/var/log/asterisk") || is_link($log)) {
+		throw new \Exception("Firewall log path is a symlink");
+	}
+	$pid = pcntl_fork();
+	if ($pid < 0) {
+		throw new \Exception("Unable to start the firewall daemon");
+	}
+	if ($pid === 0) {
+		if (posix_setsid() < 0) {
+			exit(1);
+		}
+		$output = fopen($log, "ab");
+		if ($output) {
+			posix_dup2(fileno($output), 1);
+			posix_dup2(fileno($output), 2);
+		}
+		pcntl_exec($staged, array());
+		exit(1);
+	}
+	exit(0);
 } catch (\Exception $e) {
 	print "Error: ".$e->getMessage().". Sleeping for 10 seconds and retrying start.\n";
 	sleep(10);
-	touch($astspooldir."/incron/firewall.firewall");
+	$retry = "/var/spool/asterisk/incron/firewall.firewall";
+	if (!is_link($retry) && !is_link(dirname($retry))) {
+		touch($retry);
+	}
 	exit;
 }
 
 // Start the daemon
-chmod($fd, 0755);
-exec("nohup $fd >> ".$logfile." 2>&1 &");
-chown($logfile, $webuser);
-chgrp($logfile, $webgroup);
+exit(0);

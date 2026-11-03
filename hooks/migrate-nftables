@@ -1,27 +1,27 @@
-#!/usr/bin/php -q
+#!/usr/bin/env php
 <?php
-// vim: :set filetype=php tabstop=4 shiftwidth=4 autoindent smartindent:
-
-// Root side of the GUI "Migrate to nftables" action. The web user cannot write
-// /etc or call nft, so the privileged migration runs here and the result is
-// written where the web interface can read it.
-
+$trust = __DIR__.'/../Trust.class.php';
+$stat = @lstat($trust);
+if (is_link($trust) || !$stat || $stat['uid'] !== 0 || ($stat['mode'] & 0022)) {
+	fwrite(STDERR, "Refusing to load the firewall trust helper\n");
+	exit(1);
+}
+include $trust;
+\FreePBX\modules\Firewall\Trust::assertRootFile('/etc/freepbx.conf');
+$conf = file_get_contents('/etc/freepbx.conf');
+if (!is_string($conf) || !preg_match('/AMPWEBROOT[\'"]\]\s*=\s*[\'"]([^\'"]+)/', $conf, $match)) {
+	fwrite(STDERR, "Unable to resolve the FreePBX web root\n");
+	exit(1);
+}
+\FreePBX\modules\Firewall\Trust::assertRootFile($match[1].'/admin/bootstrap.php');
+$restrict_mods = array('firewall' => true);
 include '/etc/freepbx.conf';
 
 $fw = FreePBX::Firewall();
-$dir = $fw->get_astspooldir()."/firewall";
-if (!is_dir($dir)) {
-	mkdir($dir, 0755, true);
-}
-$resultFile = $dir."/migration-result.json";
-
+$resultFile = '/run/fpbx-firewall/migration-result.json';
 try {
 	$result = $fw->migrateFirewallBackend('nftables', false);
 } catch (\Throwable $e) {
 	$result = array('status' => false, 'message' => $e->getMessage());
 }
-
-file_put_contents($resultFile, json_encode($result));
-chown($resultFile, 'asterisk');
-chgrp($resultFile, 'asterisk');
-chmod($resultFile, 0644);
+\FreePBX\modules\Firewall\Trust::publish('migration-result.json', json_encode($result), 0644);

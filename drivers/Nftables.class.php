@@ -40,14 +40,19 @@ class Nftables {
 	}
 
 	private function findNft() {
-		if (function_exists('fpbx_which')) {
-			$path = fpbx_which('nft');
-			if ($path) {
-				return $path;
+		foreach (array('/usr/sbin/nft', '/sbin/nft', '/usr/bin/nft') as $path) {
+			if (!is_executable($path)) {
+				continue;
+			}
+			$real = realpath($path);
+			$stat = $real ? @stat($real) : false;
+			if ($real && $stat && $stat['uid'] === 0 && ($stat['mode'] & 0022) === 0) {
+				return $real;
 			}
 		}
-		foreach (array('/usr/sbin/nft', '/sbin/nft', '/usr/bin/nft') as $path) {
-			if (is_executable($path)) {
+		if ((!function_exists('posix_geteuid') || posix_geteuid() !== 0) && function_exists('fpbx_which')) {
+			$path = fpbx_which('nft');
+			if ($path && is_executable($path)) {
 				return $path;
 			}
 		}
@@ -265,8 +270,14 @@ NFT;
 	}
 
 	public function commit() {
-		$dir = '/var/lib/asterisk/firewall';
-		if (!is_dir($dir) && !@mkdir($dir, 0750, true)) {
+		$dir = '/run/fpbx-firewall';
+		if (is_link($dir)) {
+			return false;
+		}
+		if (!is_dir($dir) && (!function_exists('posix_geteuid') || posix_geteuid() !== 0 || !@mkdir($dir, 0755, true))) {
+			return false;
+		}
+		if (!is_dir($dir)) {
 			return false;
 		}
 		$output = array();
@@ -275,10 +286,23 @@ NFT;
 		if ($status !== 0) {
 			return false;
 		}
-		return file_put_contents(
-			$dir.'/fpbx.nft',
+		$target = $dir.'/fpbx.nft';
+		if (is_link($dir) || is_link($target)) {
+			return false;
+		}
+		$temporary = $target.'.tmp';
+		if (is_link($temporary) || file_put_contents(
+			$temporary,
 			"#!/usr/sbin/nft -f\n".implode("\n", $output)."\n"
-		) !== false;
+		) === false) {
+			return false;
+		}
+		chmod($temporary, 0640);
+		if (!rename($temporary, $target)) {
+			@unlink($temporary);
+			return false;
+		}
+		return true;
 	}
 
 	public function getKnownNetworks() {
@@ -660,18 +684,37 @@ NFT;
 		return $this->replaceSet('blacklist', $v4) && $this->replaceSet('blacklist6', $v6);
 	}
 
+	public static function hostRule($address, $zone) {
+		if (!is_string($address) || !is_string($zone)) {
+			return false;
+		}
+		if (!in_array($zone, array('trusted', 'internal', 'other', 'external'), true)) {
+			return false;
+		}
+		if (!preg_match('#^[0-9a-fA-F:.]+(?:/[0-9]{1,3})?$#', $address)) {
+			return false;
+		}
+		$host = explode('/', $address, 2)[0];
+		if (filter_var($host, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6)) {
+			$family = 'ip6';
+		} elseif (filter_var($host, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV4)) {
+			$family = 'ip';
+		} else {
+			return false;
+		}
+		return 'add rule inet fpbx fpbxhosts '.$family.' saddr '.$address.' jump zone-'.$zone;
+	}
+
 	public function updateHostZones($hosts) {
 		$this->hostZones = array();
-		foreach ((array) $hosts as $address => $zone) {
-			if ($this->normalizeAddress($address) !== false && $this->validZone($zone)) {
-				$this->hostZones[$address] = $zone;
-			}
-		}
 		$script = "flush chain inet fpbx fpbxhosts\n";
-		foreach ($this->hostZones as $address => $zone) {
-			$host = explode('/', $address, 2)[0];
-			$family = filter_var($host, \FILTER_VALIDATE_IP, \FILTER_FLAG_IPV6) ? 'ip6' : 'ip';
-			$script .= "add rule inet fpbx fpbxhosts $family saddr $address jump zone-$zone\n";
+		foreach ((array) $hosts as $address => $zone) {
+			$rule = self::hostRule($address, $zone);
+			if ($rule === false) {
+				continue;
+			}
+			$this->hostZones[$address] = $zone;
+			$script .= $rule."\n";
 		}
 		return $this->applyScript($script);
 	}

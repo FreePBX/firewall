@@ -14,6 +14,9 @@ $thisphar = \Phar::running(false);
 if (!$thisphar) {
 	throw new \Exception("Not in a phar.");
 }
+if (posix_geteuid() !== 0) {
+	throw new \Exception("I must be run as root.");
+}
 
 // Record the startup stats so we can check if we've been modified, so we
 // know when to restart.
@@ -71,9 +74,15 @@ function pharChanged() {
 }
 
 function fwLog($str) {
-	global $STDIN, $STDOUT, $STDERR, $astlogdir;
+	global $STDIN, $STDOUT, $STDERR;
 
-	$lfstat = @stat($astlogdir."/firewall.log");
+	$astlogdir = '/var/log/asterisk';
+	$log = $astlogdir.'/firewall.log';
+	if (is_link($astlogdir) || is_link($log) || is_link($astlogdir.'/firewall.log.old') || is_link($astlogdir.'/firewall.err')) {
+		error_log('Refusing to write the firewall log through a symlink');
+		return;
+	}
+	$lfstat = @stat($log);
 	if (is_array($lfstat) && $lfstat['size'] > 1048576) {
 		// Logfile is over 1mb
 		print time().": Rotating Log\n";
@@ -120,7 +129,7 @@ function wall($msg = false) {
 	// Open a process handle to wall
 	$fds = array(0 => array("pipe", "r"), 1 => array("file", "/dev/null", "a"), 2 => array("file", "/dev/null", "a"));
 	$pipes = array();
-	$ph = proc_open("/usr/bin/wall", $fds, $pipes, $astspooldir."/tmp");
+	$ph = proc_open("/usr/bin/wall", $fds, $pipes, "/run/fpbx-firewall");
 	fwrite($pipes[0], $msg);
 	fclose($pipes[0]);
 	$ret = proc_close($ph);
