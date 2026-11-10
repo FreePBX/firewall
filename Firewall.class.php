@@ -1498,6 +1498,15 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 					throw new \Exception("Invalid JSON");
 				}
 
+				// Same zone allowlist as addnetworktozone. Reject the whole
+				// request before any zone is applied.
+				$zones = $this->getZones();
+				foreach ($nets as $tmparr) {
+					if (!is_array($tmparr) || !isset($tmparr['zone']) || !is_string($tmparr['zone']) || !isset($zones[$tmparr['zone']])) {
+						throw new \Exception("Invalid zone");
+					}
+				}
+
 				foreach ($nets as $net => $tmparr) {
 					$global_net = "";
 					$this->changeNetworksZone($net, $tmparr['zone'], $tmparr['description']);
@@ -1706,20 +1715,7 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 				return;
 
 			case "setrfrules":
-				foreach($_REQUEST as $field => $val){
-					$k = explode('_',$field);
-					$id = $k[0];
-					if($id == 'fpbxratelimit' || $id == 'fpbxrfw'){
-						$key = $k[1];
-						$set = $k[2];
-						$responsive[$id][$key][$set] = $val;
-					}
-				}
-				foreach($responsive as $id => $rows){
-					foreach($rows as $key => $val){
-						\FreePBX::Firewall()->SetConfig($key,$val,$id);
-					}
-				}
+				$this->saveResponsiveRules($_REQUEST);
 				return true;
 
 
@@ -1805,21 +1801,8 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 			$this->setConfig('fail2banbypass', false);
 			return;
 		case "saveresponsive":
-			foreach($_REQUEST as $field => $val){
-				$k = explode('_',$field);
-				$id = $k[0];
-				if($id == 'fpbxratelimit' || $id == 'fpbxrfw'){
-					$key = $k[1];
-					$set = $k[2];
-					$responsive[$id][$key][$set] = $val;
-				}
-			}
-			foreach($responsive as $id => $rows){
-				foreach($rows as $key => $val){
-					\FreePBX::Firewall()->SetConfig($key,$val,$id);
-				}
-			}
-		return ;
+			$this->saveResponsiveRules($_REQUEST);
+			return;
 		default:
 			throw new \Exception("Unknown action $action");
 		}
@@ -2215,7 +2198,73 @@ class Firewall extends \FreePBX_Helpers implements \BMO {
 		return $this->setConfig("hostmaps", $hosts);
 	}
 
+	/**
+	 * Store responsive-firewall thresholds from an AJAX request.
+	 * seconds and hitcount must be bounded integers. type is an allowlist.
+	 */
+	private function saveResponsiveRules($request) {
+		$tiers = array(
+			'fpbxratelimit' => array('TIER1' => true, 'TIER2' => true, 'TIER3' => true),
+			'fpbxrfw' => array('TIERA' => true, 'TIERB' => true, 'TIERC' => true),
+		);
+		$responsive = array();
+		foreach ($request as $field => $val) {
+			$k = explode('_', (string) $field);
+			if (count($k) !== 3 || !isset($tiers[$k[0]][$k[1]])) {
+				continue;
+			}
+			$id = $k[0];
+			$key = $k[1];
+			$set = $k[2];
+			if ($set === 'seconds') {
+				$responsive[$id][$key][$set] = $this->boundedThreshold($val, 31536000);
+			} elseif ($set === 'hitcount') {
+				$responsive[$id][$key][$set] = $this->boundedThreshold($val, 1000000);
+			} elseif ($set === 'type') {
+				if ($val !== 'BLOCK' && $val !== 'SHORTBLOCK') {
+					throw new \Exception("Invalid threshold type");
+				}
+				$responsive[$id][$key][$set] = $val;
+			}
+		}
+		foreach ($responsive as $id => $rows) {
+			foreach ($rows as $key => $val) {
+				$this->setConfig($key, $val, $id);
+			}
+		}
+	}
+
+	/**
+	 * Accept only an integer in 0..$max. Rejects anything that is not a
+	 * plain decimal integer, including values that would overflow.
+	 */
+	private function boundedThreshold($value, $max) {
+		if (is_int($value)) {
+			$value = (string) $value;
+		}
+		if (!is_string($value) || !preg_match('/^\d+$/', $value)) {
+			throw new \Exception("Invalid threshold");
+		}
+		$trimmed = ltrim($value, '0');
+		if ($trimmed === '') {
+			$trimmed = '0';
+		}
+		if (strlen($trimmed) > strlen((string) $max)) {
+			throw new \Exception("Invalid threshold");
+		}
+		$number = (int) $trimmed;
+		if ((string) $number !== $trimmed || $number < 0 || $number > $max) {
+			throw new \Exception("Invalid threshold");
+		}
+		return $number;
+	}
+
 	public function changeNetworksZone($net, $zone, $descr = "") {
+		$zones = $this->getZones();
+		if (!is_string($zone) || !isset($zones[$zone])) {
+			throw new \Exception("Invalid zone");
+		}
+
 		$net = trim($net);
 		if (!$net) {
 			throw new \Exception("Can't add empty net");
