@@ -94,6 +94,7 @@ class Iptables {
 
 	// Root process
 	public function addNetworkToZone($zone = false, $network = false, $cidr = false) {
+		$this->assertZone($zone);
 		$this->checkFpbxFirewall();
 
 		// Make sure this zone exists
@@ -141,15 +142,15 @@ class Iptables {
 		// If we're not inserting, just add it
 		if (!$insert) {
 			$nets[] = $p;
-			$cmd = "$ipt -A fpbxnets -s $network/$cidr -j zone-$zone";
+			$args = array('-A', 'fpbxnets', '-s', $network.'/'.$cidr, '-j', 'zone-'.$zone);
 		} else {
 			// Splice it into the array
 			array_splice($nets, $i, 0, $p);
 			$i++;
-			$cmd = "$ipt -I fpbxnets $i -s $network/$cidr -j zone-$zone";
+			$args = array('-I', 'fpbxnets', (string) $i, '-s', $network.'/'.$cidr, '-j', 'zone-'.$zone);
 		}
-		$this->l($cmd);
-		exec($cmd, $output, $ret);
+		$output = array();
+		$ret = $this->runIptables($ipt, $args, $output);
 		return $ret;
 	}
 
@@ -198,6 +199,7 @@ class Iptables {
 
 	// Root process
 	public function changeNetworksZone($newzone = false, $network = false, $cidr = false) {
+		$this->assertZone($newzone);
 		$this->checkFpbxFirewall();
 
 		// Check to see if we have a cidr or not.
@@ -413,6 +415,7 @@ class Iptables {
 			// Remove service from zones it shouldn't be in..
 			$live = &$current[$ipv]['filter'];
 			foreach ($zones['removefrom'] as $z) {
+				$this->assertZone($z);
 
 				if (!isset($live["zone-$z"])) {
 					// This zone doesn't exist. Easy
@@ -444,6 +447,7 @@ class Iptables {
 
 			// Add it to the zones it should be
 			foreach ($zones['addto'] as $z) {
+				$this->assertZone($z);
 				$this->checkTarget("zone-$z");
 				// Loop through, add it if it's not here.
 				$found = false;
@@ -498,11 +502,10 @@ class Iptables {
 
 			// Now we can just add it, if we're not deleting it
 			if ($newzone) {
+				$this->assertZone($newzone);
 				$this->checkTarget("zone-$newzone");
-				$cmd = "$ipt -A fpbxinterfaces $p$newzone";
-				$this->l($cmd);
 				$output = null;
-				exec($cmd, $output, $ret);
+				$ret = $this->runIptables($ipt, array('-A', 'fpbxinterfaces', '-i', $iface, '-j', 'zone-'.$newzone), $output);
 				$interfaces[] = "$p$newzone";
 			}
 		}
@@ -631,14 +634,15 @@ class Iptables {
 		$mask = array("ipv6" => "--mask ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff", "ipv4" => "--mask 255.255.255.255");
 		foreach ($ipvers as $ipv => $ipt) {
 
-			//Generate what the rules should be
-			$tiera = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERA']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERA']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
-			$tierb = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERB']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERB']['hitcount']." --name SIGNALLING ".$mask[$ipv]." --rsource -j fpbxshortblock";
-			$tierc = "-m recent --rcheck --seconds ".$rules['fpbxrfw']['TIERC']['seconds']." --hitcount ".$rules['fpbxrfw']['TIERC']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
+			// Thresholds are stored from the UI. Coerce them again here so a
+			// previously stored value cannot be concatenated into a command.
+			$tiera = $this->responsiveRule('REPEAT', 'fpbxattacker', $mask[$ipv], $rules, 'fpbxrfw', 'TIERA');
+			$tierb = $this->responsiveRule('SIGNALLING', 'fpbxshortblock', $mask[$ipv], $rules, 'fpbxrfw', 'TIERB');
+			$tierc = $this->responsiveRule('REPEAT', 'fpbxattacker', $mask[$ipv], $rules, 'fpbxrfw', 'TIERC');
 			$rfwarray = array("a" => $tiera, "b" => $tierb, "c" => $tierc);
-			$tier3 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER3']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER3']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
-			$tier2 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER2']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER2']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxattacker";
-			$tier1 = "-m recent --rcheck --seconds ".$rules['fpbxratelimit']['TIER1']['seconds']." --hitcount ".$rules['fpbxratelimit']['TIER1']['hitcount']." --name REPEAT ".$mask[$ipv]." --rsource -j fpbxshortblock";
+			$tier3 = $this->responsiveRule('REPEAT', 'fpbxattacker', $mask[$ipv], $rules, 'fpbxratelimit', 'TIER3');
+			$tier2 = $this->responsiveRule('REPEAT', 'fpbxattacker', $mask[$ipv], $rules, 'fpbxratelimit', 'TIER2');
+			$tier1 = $this->responsiveRule('REPEAT', 'fpbxshortblock', $mask[$ipv], $rules, 'fpbxratelimit', 'TIER1');
 			$rlarray = array("3" => $tier3, "2" => $tier2, "1" => $tier1);
 
 			$me = &$current[$ipv]['filter']['fpbxrfw'];
@@ -662,15 +666,10 @@ class Iptables {
 			//Did we not get 3 rules?
 			if ($foundrfwrules < 3) {
 				//Replace all the rules
-				$cmd = "$ipt -R fpbxrfw $rfwruleline[0] $tiera";
-				$this->l($cmd);
-				exec($cmd, $output, $ret);
-				$cmd = "$ipt -R fpbxrfw $rfwruleline[1] $tierb";
-				$this->l($cmd);
-				exec($cmd, $output, $ret);
-				$cmd = "$ipt -R fpbxrfw $rfwruleline[2] $tierc";
-				$this->l($cmd);
-				exec($cmd, $output, $ret);
+				$output = array();
+				$ret = $this->runIptables($ipt, $this->replaceRuleArgs('fpbxrfw', $rfwruleline[0], $tiera), $output);
+				$ret = $this->runIptables($ipt, $this->replaceRuleArgs('fpbxrfw', $rfwruleline[1], $tierb), $output);
+				$ret = $this->runIptables($ipt, $this->replaceRuleArgs('fpbxrfw', $rfwruleline[2], $tierc), $output);
 			}
 
 			//Rinse repeat fpbxratelimit
@@ -697,15 +696,10 @@ class Iptables {
 			if ($foundrfwrules < 3) {
 			//Replace all the rules
 			//The tiers are deliberatly assigned in reverse order
-				$cmd = "$ipt -R fpbxratelimit $rfwruleline[0] $tier3";
-				$this->l($cmd);
-				exec($cmd, $output, $ret);
-				$cmd = "$ipt -R fpbxratelimit $rfwruleline[1] $tier2";
-				$this->l($cmd);
-				exec($cmd, $output, $ret);
-				$cmd = "$ipt -R fpbxratelimit $rfwruleline[2] $tier1";
-				$this->l($cmd);
-				exec($cmd, $output, $ret);
+				$output = array();
+				$ret = $this->runIptables($ipt, $this->replaceRuleArgs('fpbxratelimit', $rfwruleline[0], $tier3), $output);
+				$ret = $this->runIptables($ipt, $this->replaceRuleArgs('fpbxratelimit', $rfwruleline[1], $tier2), $output);
+				$ret = $this->runIptables($ipt, $this->replaceRuleArgs('fpbxratelimit', $rfwruleline[2], $tier1), $output);
 			}
 		}
 	}
@@ -1118,6 +1112,7 @@ class Iptables {
 			$me = &$current[$ipv]['filter']['fpbxhosts'];
 			$exists = array_flip($me);
 			foreach ($tmparr['targets'] as $addr => $zone) {
+				$this->assertZone($zone);
 				$p = "-s $addr -j zone-$zone";
 				if (isset($exists[$p])) {
 					// It's already there, no need to change
@@ -1126,9 +1121,8 @@ class Iptables {
 				}
 				// It doesn't exist. We need to add it.
 				$me[] = $p;
-				$cmd = $tmparr['ipt']." -A fpbxhosts $p";
-				$this->l($cmd);
-				exec($cmd, $output, $ret);
+				$output = array();
+				$ret = $this->runIptables($tmparr['ipt'], array('-A', 'fpbxhosts', '-s', $addr, '-j', 'zone-'.$zone), $output);
 			}
 
 			// Are any left over? They can be removed.
@@ -1834,8 +1828,117 @@ class Iptables {
 		return;
 	}
 
+	/**
+	 * Zones accepted by Firewall::getZones(). Used when that class has not
+	 * already been loaded by a signed hook.
+	 */
+	private function assertZone($zone) {
+		if (!is_string($zone)) {
+			throw new \Exception("Invalid zone");
+		}
+		if (class_exists('\\FreePBX\\modules\\Firewall\\Zones', false)) {
+			$zones = (new \FreePBX\modules\Firewall\Zones())->getZones();
+		} else {
+			$zones = array(
+				'external' => true,
+				'internal' => true,
+				'other' => true,
+				'reject' => true,
+				'trusted' => true,
+			);
+		}
+		if (!isset($zones[$zone])) {
+			throw new \Exception("Invalid zone");
+		}
+	}
+
+	/**
+	 * seconds max is one year. hitcount max stays well above the shipped defaults.
+	 */
+	private function boundedThreshold($value, $max) {
+		if (is_int($value)) {
+			$value = (string) $value;
+		}
+		if (!is_string($value) || !preg_match('/^\d+$/', $value)) {
+			throw new \Exception("Invalid threshold");
+		}
+		$trimmed = ltrim($value, '0');
+		if ($trimmed === '') {
+			$trimmed = '0';
+		}
+		if (strlen($trimmed) > strlen((string) $max)) {
+			throw new \Exception("Invalid threshold");
+		}
+		$number = (int) $trimmed;
+		if ((string) $number !== $trimmed || $number < 0 || $number > $max) {
+			throw new \Exception("Invalid threshold");
+		}
+		return (string) $number;
+	}
+
+	private function responsiveRule($name, $jump, $mask, $rules, $family, $tier) {
+		if (!isset($rules[$family][$tier]['seconds']) || !isset($rules[$family][$tier]['hitcount'])) {
+			throw new \Exception("Invalid threshold");
+		}
+		$seconds = $this->boundedThreshold($rules[$family][$tier]['seconds'], 31536000);
+		$hitcount = $this->boundedThreshold($rules[$family][$tier]['hitcount'], 1000000);
+		if (!preg_match('/^[A-Z]+$/', $name) || !preg_match('/^[a-z0-9]+$/', $jump)) {
+			throw new \Exception("Invalid threshold");
+		}
+		return "-m recent --rcheck --seconds ".$seconds." --hitcount ".$hitcount." --name ".$name." ".$mask." --rsource -j ".$jump;
+	}
+
+	private function replaceRuleArgs($chain, $line, $rule) {
+		if (!preg_match('/^[a-z0-9]+$/', $chain) || !preg_match('/^\d+$/', (string) $line)) {
+			throw new \Exception("Invalid iptables rule");
+		}
+		$args = preg_split('/\s+/', trim($rule));
+		if ($args === false || in_array('', $args, true)) {
+			throw new \Exception("Invalid iptables rule");
+		}
+		return array_merge(array('-R', $chain, (string) $line), $args);
+	}
+
+	/**
+	 * Run iptables with an argument vector. The shell is not involved.
+	 */
+	private function runIptables($ipt, array $args, &$output = null) {
+		$parts = preg_split('/\s+/', trim((string) $ipt));
+		if (!isset($parts[0]) || ($parts[0] !== '/sbin/iptables' && $parts[0] !== '/sbin/ip6tables')) {
+			throw new \Exception("Unexpected iptables command");
+		}
+		$argv = array_merge($parts, $args);
+		foreach ($argv as $i => $arg) {
+			if (!is_string($arg) && !is_int($arg)) {
+				throw new \Exception("Invalid iptables argument");
+			}
+			$argv[$i] = (string) $arg;
+			if ($argv[$i] === '' || strpos($argv[$i], "\0") !== false) {
+				throw new \Exception("Invalid iptables argument");
+			}
+		}
+		$this->l(implode(' ', $argv));
+		$output = array();
+		$descriptors = array(
+			0 => array('file', '/dev/null', 'r'),
+			1 => array('pipe', 'w'),
+			2 => array('file', '/dev/null', 'w'),
+		);
+		$proc = @proc_open($argv, $descriptors, $pipes);
+		if (!is_resource($proc)) {
+			return 1;
+		}
+		$stdout = stream_get_contents($pipes[1]);
+		fclose($pipes[1]);
+		$ret = proc_close($proc);
+		if (is_string($stdout) && $stdout !== '') {
+			$output = explode("\n", rtrim($stdout, "\n"));
+		}
+		return $ret;
+	}
+
 	private function checkTarget($target = false) {
-		if (!$target) {
+		if (!$target || !is_string($target) || !preg_match('/^[A-Za-z0-9_.:-]+$/', $target)) {
 			throw new \Exception("No Target");
 		}
 
@@ -1858,18 +1961,15 @@ class Iptables {
 		// It doesn't exist.
 
 		// IPv4
-		$cmd = "/sbin/iptables ".$this->wlock." -N ".escapeshellcmd($target);
-		$this->l($cmd);
-		exec($cmd, $output, $ret);
+		$output = array();
+		$ret = $this->runIptables("/sbin/iptables ".$this->wlock, array('-N', $target), $output);
 		if ($ret == 0) {
 			$this->currentconf['ipv4']['filter'][$target] = array();
 		}
 
 		$output = null;
 		// IPv6
-		$cmd = "/sbin/ip6tables ".$this->wlock." -N ".escapeshellcmd($target);
-		$this->l($cmd);
-		exec($cmd, $output, $ret);
+		$ret = $this->runIptables("/sbin/ip6tables ".$this->wlock, array('-N', $target), $output);
 		if ($ret == 0) {
 			$this->currentconf['ipv6']['filter'][$target] = array();
 		}

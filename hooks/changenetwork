@@ -75,6 +75,11 @@ $newzone = $settings['newzone'];
 
 $v->secureInclude('Zones.class.php');
 $v->secureInclude('Driver.class.php');
+
+$zoneList = (new \FreePBX\modules\Firewall\Zones())->getZones();
+if (!isset($zoneList[$newzone])) {
+	throw new \Exception("Invalid zone");
+}
 $d = new \FreePBX\modules\Firewall\Driver;
 $driver = $d->getDriver();
 
